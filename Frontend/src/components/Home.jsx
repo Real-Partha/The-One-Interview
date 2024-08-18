@@ -1,4 +1,4 @@
-
+import NavBar from "./Navbar/Navbar";
 const Home = () => {
     const handleGoogleClick = () => {
         // console.log();
@@ -7,6 +7,7 @@ const Home = () => {
       };
   return (
     <div>
+      <NavBar />
       <h1>
         Hello this is Home Page
       </h1>
