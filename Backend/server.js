@@ -1,25 +1,37 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const user = require('./models/user');
+//modules
+// const user = require('./models/user');
 const connectDB = require('./database');
+const cors = require('cors');
+// const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const express = require('express');
+const passport = require('passport');
+const session = require('express-session');
+const passportSetup = require('./passport');
 
+const app = express();
+const port = process.env.PORT || 3000;
 
 //load .env file
 require('dotenv').config();
 
-const cors = require('cors');
-const mongoose = require('mongoose');
+//middleware
+app.use(session({
+    resave: false,
+    saveUninitialized: true,
+    secret: 'SECRET' 
+  }));
+app.use(passport.initialize());
+app.use(passport.session());
 
-const app = express();
-app.use(cors());
+app.use(cors({
+    origin: process.env.CLIENT_URL,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
+}));
+app.use(bodyParser.json()); 
 
-const authRoutes = require('./authentication');
-const homeRoutes = require('./home');
-const port = process.env.PORT || 3000;
-
-
-//body parser middleware
-app.use(bodyParser.json());
+//routes
 
 function getFormattedDateTime() {
     const now = new Date();
@@ -39,6 +51,8 @@ app.use((req, res, next) => {
 
     next();
 });
+const authRoutes = require('./authentication');
+const homeRoutes = require('./home');
 
 //routes middleware
 app.use("/auth", authRoutes);

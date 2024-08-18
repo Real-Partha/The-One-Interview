@@ -1,7 +1,9 @@
 
 const Home = () => {
     const handleGoogleClick = () => {
-        window.location.href = '/auth/google';
+        // console.log();
+        console.log(`${import.meta.env.VITE_API_URL}/auth/google/callback`);
+        window.open(`${import.meta.env.VITE_API_URL}/auth/google/callback`, "_self");
       };
   return (
     <div>
