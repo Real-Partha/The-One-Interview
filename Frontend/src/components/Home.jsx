@@ -1,4 +1,5 @@
 import NavBar from "./Navbar/Navbar";
+
 const Home = () => {
     const handleGoogleClick = () => {
         // console.log();

@@ -1,0 +1,146 @@
+/* MainContent.css */
+.main-content {
+    display: flex;
+    background-color: #f5f7fb;
+    padding: 20px;
+  }
+  
+  .sidebar {
+    width: 20%;
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .join-class {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #6c63ff;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .threads {
+    width: 60%;
+    margin: 0 20px;
+  }
+  
+  .thread-card {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+  
+  .thread-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .thread-info {
+    display: flex;
+    align-items: center;
+  }
+  
+  .profile-pic {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+  }
+  
+  .thread-details {
+    flex-grow: 1;
+  }
+  
+  .thread-description {
+    margin-top: 10px;
+    color: #555555;
+  }
+  
+  .add-response {
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    margin-top: 15px;
+  }
+  
+  .right-sidebar {
+    width: 20%;
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .lecturer-info {
+    text-align: center;
+  }
+  
+  .lecturer-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+  }
+  
+  .attendees-list {
+    margin-top: 20px;
+  }
+
+
+  .right-sidebar {
+    padding: 20px;
+    background-color:#f5f7fb;;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .Side-bar-cards {
+    margin-bottom: 20px;
+  }
+  
+  .card {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    /* border: 1px solid #d1daf3; */
+    border-radius: 8px;
+    transition: background-color 0.3s;
+    cursor: pointer;
+  }
+  
+  .card:hover {
+    background-color: #f0f4ff;
+  }
+  
+  .card img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+  }
+  
+  .card-details {
+    flex: 1;
+  }
+  
+  .card-details h4 {
+    font-size: 16px;
+    margin: 0;
+    color: #1a1a1a;
+  }
+  
+  .card-details p {
+    font-size: 14px;
+    margin: 5px 0 0 0;
+    color: #555;
+  }
