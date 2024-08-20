@@ -1,7 +1,18 @@
 // import React from "react";
 import "./MainComponent.css";
+import CreateQuestionPage from "../CreateQuestionPage/CreateQuestionPage";
+import { useNavigate } from 'react-router-dom';
 
-const MainContent = () => {
+
+
+
+const MainComponent = () => {
+  const navigate = useNavigate();
+
+  const handleRedirect = () => {
+    navigate('/create-question'); 
+  };
+
   return (
     <div className="main-content">
       <aside className="sidebar">
@@ -46,8 +57,8 @@ const MainContent = () => {
             <div className="company_names">
               {/* <h3>Editor's Choices</h3> */}
               <div className="card">
-              <i className="fa-regular fa-building"></i> 
-                             <div className="card-details">
+                <i className="fa-regular fa-building"></i>
+                <div className="card-details">
                   <h4>Corporate </h4>
                 </div>
               </div>
@@ -58,6 +69,16 @@ const MainContent = () => {
         <button className="join-class">Join a new Community</button>
       </aside>
       <section className="threads">
+      <div className="add-thread-container">
+  <input 
+    type="text" 
+    placeholder="Add a new thread" 
+    className="add-thread-input" 
+  />
+  <button className="add-thread-button" onClick={handleRedirect}>
+    <i className="fa-solid fa-plus"></i>
+  </button>
+</div>
         <div className="thread-card">
           <h3 className="thread-title">Electric Pe Interview Experience</h3>
           <div className="thread-info">
@@ -68,9 +89,18 @@ const MainContent = () => {
                 lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </p>
             </div>
+
           </div>
-          <button className="add-response">Add Comment</button>
+          <div className="giving_responses">
+
+            <button className="add-response">Add Comment</button>
+            <div className="vote-buttons">
+              <i className="fa-regular fa-thumbs-up"></i>
+              <i className="fa-regular fa-thumbs-down"></i>
+            </div>
+          </div>
         </div>
+
         <div className="thread-card">
           <h3 className="thread-title">Western Digital Interview Experience</h3>
           <div className="thread-info">
@@ -82,12 +112,20 @@ const MainContent = () => {
                 lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </p>
             </div>
+
           </div>
-          <button className="add-response">Add Comment</button>
+          <div className="giving_responses">
+
+            <button className="add-response">Add Comment</button>
+            <div className="vote-buttons">
+              <i className="fa-regular fa-thumbs-up"></i>
+              <i className="fa-regular fa-thumbs-down"></i>
+            </div>
+          </div>
         </div>
       </section>
       <section className="right-sidebar">
-      {/* <aside className="right-sidebar"> */}
+        {/* <aside className="right-sidebar"> */}
         <div className="Side-bar-cards">
           <div className="editors-choices">
             {/* <h3>Editor's Choices</h3> */}
@@ -126,8 +164,8 @@ const MainContent = () => {
             </div>
           </div>
         </div>
-        </section>
-          
+      </section>
+
 
 
       {/* </aside> */}
@@ -135,4 +173,4 @@ const MainContent = () => {
   );
 };
 
-export default MainContent;
+export default MainComponent;
