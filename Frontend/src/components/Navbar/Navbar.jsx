@@ -13,8 +13,9 @@ const NavBar = () => {
       <nav className="navbar">
         <div className="navbar-left">
           <img
+            style={{ width: "60px", height: "60px", margin: "-15px 10px" }}
             className="logo"
-            src="../../../public/img/WhatsApp Image 2024-08-19 at 00.45.45_158b68e7.jpg"
+            src="/img/logo_final_transparent.png"
             alt="logo"
           />
           <span className="university-name">The One Interview</span>

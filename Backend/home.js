@@ -1,23 +1,23 @@
 const express = require('express');
 const router = express.Router();
 
-router.post("/addpost", (req, res) => {
+router.post("/post", (req, res) => {
     res.send("complete the addpost route");
 });
 
-router.post("/deletepost", (req, res) => {
+router.delete("/post", (req, res) => {
     res.send("complete the deletepost route");
 });
 
-router.post("/addreply", (req, res) => {
+router.post("/reply", (req, res) => {
     res.send("complete the addreply route");
 });
 
-router.post("/deletereply", (req, res) => {
+router.delete("/reply", (req, res) => {
     res.send("complete the deletereply route");
 });
 
-router.get("/getreplies", (req, res) => {
+router.get("/reply", (req, res) => {
     res.send("complete the getreplies route");
 });
 
