@@ -2,9 +2,7 @@ import NavBar from "./Navbar/Navbar";
 
 const Home = () => {
     const handleGoogleClick = () => {
-        // console.log();
-        console.log(`${import.meta.env.VITE_API_URL}/auth/google/callback`);
-        window.open(`${import.meta.env.VITE_API_URL}/auth/google/callback`, "_self");
+        window.open(`http://localhost:3000/auth/google`, "_self");
       };
   return (
     <div>

@@ -7,7 +7,8 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const passport = require('passport');
 const session = require('express-session');
-const passportSetup = require('./passport');
+const MongoStore = require('connect-mongo');
+const mongoose = require('mongoose');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -15,14 +16,7 @@ const port = process.env.PORT || 3000;
 //load .env file
 require('dotenv').config();
 
-//middleware
-app.use(session({
-    resave: false,
-    saveUninitialized: true,
-    secret: 'SECRET' 
-  }));
-app.use(passport.initialize());
-app.use(passport.session());
+require('./passport');
 
 app.use(cors({
     origin: process.env.CLIENT_URL,
@@ -48,15 +42,13 @@ app.use((req, res, next) => {
         const elapsedTime = new Date() - startTime;
         console.log(`[${getFormattedDateTime()}] ${req.method} ${url} - ${res.statusCode} (${elapsedTime}ms)`);
     });
-
+    
     next();
 });
 const authRoutes = require('./authentication');
 const homeRoutes = require('./home');
 
-//routes middleware
-app.use("/auth", authRoutes);
-app.use("/home", homeRoutes);
+
 
 connectDB().then(() => {
     app.listen(port, () => {
@@ -65,3 +57,23 @@ connectDB().then(() => {
 }).catch(error => {
     console.error('Database connection failed:', error);
 });
+
+mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true });
+
+// Session middleware
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+        mongoUrl: process.env.DATABASE_URL,
+    }),
+    cookie: { maxAge: 1000 * 60 * 60 * 24 } // 1 day
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+//routes middleware
+app.use("/auth", authRoutes);
+app.use("/home", homeRoutes);

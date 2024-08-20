@@ -1,50 +1,45 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
-        required: true,
-        unique: true,
-        trim: true
+        required: [true, 'Please provide a username'],
+        unique: [true, 'Username already exists'],
     },
-    firstName: {
+    first_name: {
         type: String,
-        required: true,
-        trim: true
+        required: [true, 'Please provide a first name'],
     },
-    lastName: {
+    last_name: {
         type: String,
-        required: true,
-        trim: true
+        required: [true, 'Please provide a last name'],
     },
     email: {
         type: String,
-        required: true,
-        unique: true,
-        trim: true
+        required: [true, 'Please provide an email'],
+        unique: [true, 'Email already exists'],
     },
     password: {
         type: String,
-        required: true
     },
-
-    login_with_email: {
-        type: Boolean,
-        default: false
+    created_at: {
+        type: Date,
+        default: Date.now,
+    },
+    type: {
+        type: String,
+        required: [true, 'An account type is required'],
     },
     role: {
         type: String,
-        enum: ['Student', 'Working Professional'],
-        required: true
-    }
+        required: [true, 'A role is required'],
+    },
 });
 
-
-//hash the password before saving it to the database
-
-userSchema.pre('save', async function(next) {
-    if (this.isModified('password') || this.isNew) {
+// Hash password before saving if it was set
+userSchema.pre('save', async function (next) {
+    if (this.password && this.isModified('password')) {
         this.password = await bcrypt.hash(this.password, 10);
     }
     next();
