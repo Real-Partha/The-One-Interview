@@ -36,34 +36,41 @@ const NavBar = () => {
           <a href="#" className="nav-link">
             Register
           </a>
-         <i className="notifications fa fa-bell"></i>
+          <i className="notifications fa fa-bell"></i>
           <i
             className="fas fa-user-circle profile"
             onClick={toggleSidebar}
           ></i>
-          {/* <i className="fas fa-sun"></i>
-          <i className="fas fa-moon"></i> */}
         </div>
       </nav>
 
-      {isSidebarOpen && (
-        <aside className="right-sidebar">
-          <div className="lecturer-info">
-            <img
-              src="lecturer-pic.png"
-              alt="Lecturer"
-              className="lecturer-pic"
-            />
-            <h4>Dr. Ronald Jackson</h4>
-            <p>Main Lecturer</p>
-            <p>+48 550 233 553</p>
-            <p>ronald.jackson@uniec.pl</p>
-          </div>
-          <div className="attendees-list">
-            {/* List of attendees here */}
-          </div>
-        </aside>
-      )}
+      <div className={`profile-dropdown ${isSidebarOpen ? "open" : ""}`}>
+        <div className="user-info">
+          <img
+            src="user-pic.png"
+            alt="Profile Pic"
+            className="user-pic"
+          />
+          <h4>Dedipya Goswami</h4>
+          <p>AP21110010650</p>
+          <p>+91-9832994010</p>
+          <p>Logged in via Google </p>
+        </div>
+        <div className="profile-settings">
+      <a href="#">
+        <i className="fas fa-user-cog"></i>Account Settings
+      </a>
+      <a href="#">
+        <i className="fas fa-shield-alt"></i>Privacy Settings
+      </a>
+      <a href="#">
+        <i className="fas fa-key"></i>Change Password
+      </a>
+      <a href="#">
+        <i className="fas fa-sign-out-alt"></i>Logout
+      </a>
+    </div>
+      </div>
     </div>
   );
 };

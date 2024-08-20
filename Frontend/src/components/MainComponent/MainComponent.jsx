@@ -6,11 +6,54 @@ const MainContent = () => {
     <div className="main-content">
       <aside className="sidebar">
         <nav className="course-navigation">
-        
-          <a href="Home">Home</a>
-            <a href="Courses">Questions</a>
-            <a href="Interviews">Tags</a>
-            <a href="Following">Following</a>
+          <div className="Left-Side-bar-cards">
+            <div className="home_Section">
+              {/* <h3>Editor's Choices</h3> */}
+              <div className="card">
+                <i className="fa fa-home" />
+                <div className="card-details">
+                  <h4>Home</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="Left-Side-bar-cards">
+            <div className="questions_section">
+              {/* <h3>Editor's Choices</h3> */}
+              <div className="card">
+                < i className="fa-solid fa-layer-group" />
+                <div className="card-details">
+                  <h4>Questions</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="Left-Side-bar-cards">
+            <div className="tags_section">
+              {/* <h3>Editor's Choices</h3> */}
+              <div className="card">
+                <i className="fa-solid fa-hashtag"></i>
+                <div className="card-details">
+                  <h4>Tags</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="Left-Side-bar-cards">
+            <div className="company_names">
+              {/* <h3>Editor's Choices</h3> */}
+              <div className="card">
+              <i className="fa-regular fa-building"></i> 
+                             <div className="card-details">
+                  <h4>Corporate </h4>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </nav>
         <button className="join-class">Join a new Community</button>
       </aside>
@@ -43,7 +86,8 @@ const MainContent = () => {
           <button className="add-response">Add Comment</button>
         </div>
       </section>
-      <aside className="right-sidebar">
+      <section className="right-sidebar">
+      {/* <aside className="right-sidebar"> */}
         <div className="Side-bar-cards">
           <div className="editors-choices">
             {/* <h3>Editor's Choices</h3> */}
@@ -55,9 +99,9 @@ const MainContent = () => {
               </div>
             </div>
           </div>
-          </div>
-          
-          <div className="Side-bar-cards">
+        </div>
+
+        <div className="Side-bar-cards">
           <div className="most-liked">
             {/* <h3>Editor's Choices</h3> */}
             <div className="card">
@@ -68,9 +112,9 @@ const MainContent = () => {
               </div>
             </div>
           </div>
-          </div>
+        </div>
 
-          <div className="Side-bar-cards">
+        <div className="Side-bar-cards">
           <div className="top-companies">
             {/* <h3>Editor's Choices</h3> */}
             <div className="card">
@@ -82,9 +126,11 @@ const MainContent = () => {
             </div>
           </div>
         </div>
-
+        </section>
           
-      </aside>
+
+
+      {/* </aside> */}
     </div>
   );
 };
