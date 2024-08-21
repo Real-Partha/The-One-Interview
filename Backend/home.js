@@ -1,13 +1,30 @@
 const express = require('express');
 const User = require('./models/user');
+const Comment = require('./models/comment');
+const Question = require('./models/question');
 const router = express.Router();
 
-router.post("/post", (req, res) => {
-    res.send("complete the addpost route");
+router.get("/question", async (req, res) => {
+    try{
+        const questions = await Question.find().skip((req.query.pageno-1)*10).limit(10);
+        return res.status(200).send({questions:questions});
+    }
+    catch(err){
+        console.error(err);
+        return res.status(500).send({questions:[]});
+    }
 });
 
-router.delete("/post", (req, res) => {
-    res.send("complete the deletepost route");
+router.delete("/question", async(req, res) => {
+    try{
+        console.log(req.body.id);
+        await Question.findByIdAndDelete(req.body.id);
+        return res.status(200).send({status:true});
+    }
+    catch(err){
+        console.error(err);
+        return res.status(500).send({status:false});
+    }
 });
 
 router.post("/reply", (req, res) => {

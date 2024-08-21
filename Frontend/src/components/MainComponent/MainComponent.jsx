@@ -2,13 +2,28 @@
 import "./MainComponent.css";
 import CreateQuestionPage from "../CreateQuestionPage/CreateQuestionPage";
 import { useNavigate } from 'react-router-dom';
-
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 
 
 const MainComponent = () => {
   const navigate = useNavigate();
+  const [threads, setThreads] = useState([]);
+  useEffect(() => {
+    const fetchThreads = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/home/question`, {
+          params: { pageno: 1 }
+        });
+        setThreads(response.data.questions);
+      } catch (error) {
+        console.error('Error fetching threads:', error);
+      }
+    };
 
+    fetchThreads();
+  }, []);
   const handleRedirect = () => {
     navigate('/create-question'); 
   };
@@ -68,7 +83,7 @@ const MainComponent = () => {
         </nav>
         <button className="join-class">Join a new Community</button>
       </aside>
-      <section className="threads">
+      {/* <section className="threads">
       <div className="add-thread-container">
   <input 
     type="text" 
@@ -123,7 +138,40 @@ const MainComponent = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
+          <section className="threads">
+      <div className="add-thread-container">
+        <input 
+          type="text" 
+          placeholder="Add a new thread" 
+          className="add-thread-input" 
+        />
+        <button className="add-thread-button" onClick={handleRedirect}>
+          <i className="fa-solid fa-plus"></i>
+        </button>
+      </div>
+      {threads.map(thread => (
+        <div key={thread._id} className="thread-card">
+          <h3 className="thread-title">{thread.question}</h3>
+          <div className="thread-info">
+            <img src="profile-pic.png" alt="Profile" className="profile-pic" />
+            <div className="thread-details">
+              <p>{thread.user_id} • {new Date(thread.created_at).toLocaleString()} • {thread.tags.join(', ')}</p>
+              <p className="thread-description">
+                {thread.answer}
+              </p>
+            </div>
+          </div>
+          <div className="giving_responses">
+            <button className="add-response">Add Comment</button>
+            <div className="vote-buttons">
+              <i className="fa-regular fa-thumbs-up"></i>
+              <i className="fa-regular fa-thumbs-down"></i>
+            </div>
+          </div>
+        </div>
+      ))}
+    </section>
       <section className="right-sidebar">
         {/* <aside className="right-sidebar"> */}
         <div className="Side-bar-cards">
