@@ -30,7 +30,9 @@ router.post("/signup", async (req, res) => {
           .status(500)
           .json({ message: "Error logging in after signup" });
       }
-      return res.json({ message: "Signup successful", user: newUser });
+      const user = newUser.toObject();
+      delete user.password;
+      return res.json({ message: "Signup successful", user: user });
     });
   } catch (error) {
     res.status(500).json({ message: "Error signing up", error: error.message });
@@ -39,9 +41,6 @@ router.post("/signup", async (req, res) => {
 
 // Local Login
 router.post("/login", (req, res, next) => {
-  if (req.user) {
-    return res.json({ message: "Already logged in", user: req.user });
-  }
   passport.authenticate("local", (err, user, info) => {
     if (err) {
       return res
@@ -57,6 +56,8 @@ router.post("/login", (req, res, next) => {
           .status(500)
           .json({ message: "Error logging in", error: err.message });
       }
+      user = user.toObject();
+      delete user.password;
       return res.json({
         message: "Login successful",
         user,
@@ -77,6 +78,16 @@ router.get(
     res.redirect(process.env.CLIENT_URL);
   }
 );
+
+router.get("/user", (req, res) => {
+  if (req.user) {
+    req.user = req.user.toObject();
+    delete req.user.password;
+    res.json({ msg: "User is logged in", user: req.user });
+  } else {
+    res.status(401).json({ msg: "User is not logged in" });
+  }
+});
 
 // Logout
 router.get("/logout", (req, res) => {
