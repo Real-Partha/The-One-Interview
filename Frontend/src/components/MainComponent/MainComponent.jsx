@@ -1,11 +1,8 @@
 // import React from "react";
 import "./MainComponent.css";
-import CreateQuestionPage from "../CreateQuestionPage/CreateQuestionPage";
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-
-
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 const MainComponent = () => {
   const navigate = useNavigate();
@@ -13,19 +10,22 @@ const MainComponent = () => {
   useEffect(() => {
     const fetchThreads = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/home/question`, {
-          params: { pageno: 1 }
-        });
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/home/question`,
+          {
+            params: { pageno: 1 },
+          }
+        );
         setThreads(response.data.questions);
       } catch (error) {
-        console.error('Error fetching threads:', error);
+        console.error("Error fetching threads:", error);
       }
     };
 
     fetchThreads();
   }, []);
   const handleRedirect = () => {
-    navigate('/create-question'); 
+    navigate("/create-question");
   };
 
   return (
@@ -48,7 +48,7 @@ const MainComponent = () => {
             <div className="questions_section">
               {/* <h3>Editor's Choices</h3> */}
               <div className="card">
-                < i className="fa-solid fa-layer-group" />
+                <i className="fa-solid fa-layer-group" />
                 <div className="card-details">
                   <h4>Questions</h4>
                 </div>
@@ -79,99 +79,48 @@ const MainComponent = () => {
               </div>
             </div>
           </div>
-
         </nav>
         <button className="join-class">Join a new Community</button>
       </aside>
-      {/* <section className="threads">
-      <div className="add-thread-container">
-  <input 
-    type="text" 
-    placeholder="Add a new thread" 
-    className="add-thread-input" 
-  />
-  <button className="add-thread-button" onClick={handleRedirect}>
-    <i className="fa-solid fa-plus"></i>
-  </button>
-</div>
-        <div className="thread-card">
-          <h3 className="thread-title">Electric Pe Interview Experience</h3>
-          <div className="thread-info">
-            <img src="profile-pic.png" alt="Profile" className="profile-pic" />
-            <div className="thread-details">
-              <p>Dedipya Goswami • 6h ago • Technical Interview - 1</p>
-              <p className="thread-description">
-                lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </p>
-            </div>
-
-          </div>
-          <div className="giving_responses">
-
-            <button className="add-response">Add Comment</button>
-            <div className="vote-buttons">
-              <i className="fa-regular fa-thumbs-up"></i>
-              <i className="fa-regular fa-thumbs-down"></i>
-            </div>
-          </div>
+      <section className="threads">
+        <div className="add-thread-container">
+          <input
+            type="text"
+            placeholder="Add a new thread"
+            className="add-thread-input"
+          />
+          <button className="add-thread-button" onClick={handleRedirect}>
+            <i className="fa-solid fa-plus"></i>
+          </button>
         </div>
-
-        <div className="thread-card">
-          <h3 className="thread-title">Western Digital Interview Experience</h3>
-          <div className="thread-info">
-            <img src="profile-pic.png" alt="Profile" className="profile-pic" />
-            <div className="thread-details">
-              <p>Partha Pratim Paul • 3d ago • Tech Rounds</p>
-              <p className="thread-description">
-                Clear ho gya bc. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </p>
+        {threads.map((thread) => (
+          <div key={thread._id} className="thread-card">
+            <h3 className="thread-title">{thread.question}</h3>
+            <div className="thread-info">
+              <img
+                src="profile-pic.png"
+                alt="Profile"
+                className="profile-pic"
+              />
+              <div className="thread-details">
+                <p>
+                  {thread.username} •{" "}
+                  {new Date(thread.created_at).toLocaleString()} •{" "}
+                  {thread.tags.join(", ")}
+                </p>
+                <p className="thread-description">{thread.answer}</p>
+              </div>
             </div>
-
-          </div>
-          <div className="giving_responses">
-
-            <button className="add-response">Add Comment</button>
-            <div className="vote-buttons">
-              <i className="fa-regular fa-thumbs-up"></i>
-              <i className="fa-regular fa-thumbs-down"></i>
-            </div>
-          </div>
-        </div>
-      </section> */}
-          <section className="threads">
-      <div className="add-thread-container">
-        <input 
-          type="text" 
-          placeholder="Add a new thread" 
-          className="add-thread-input" 
-        />
-        <button className="add-thread-button" onClick={handleRedirect}>
-          <i className="fa-solid fa-plus"></i>
-        </button>
-      </div>
-      {threads.map(thread => (
-        <div key={thread._id} className="thread-card">
-          <h3 className="thread-title">{thread.question}</h3>
-          <div className="thread-info">
-            <img src="profile-pic.png" alt="Profile" className="profile-pic" />
-            <div className="thread-details">
-              <p>{thread.user_id} • {new Date(thread.created_at).toLocaleString()} • {thread.tags.join(', ')}</p>
-              <p className="thread-description">
-                {thread.answer}
-              </p>
+            <div className="giving_responses">
+              <button className="add-response">Add Comment</button>
+              <div className="vote-buttons">
+                <i className="fa-regular fa-thumbs-up"></i>
+                <i className="fa-regular fa-thumbs-down"></i>
+              </div>
             </div>
           </div>
-          <div className="giving_responses">
-            <button className="add-response">Add Comment</button>
-            <div className="vote-buttons">
-              <i className="fa-regular fa-thumbs-up"></i>
-              <i className="fa-regular fa-thumbs-down"></i>
-            </div>
-          </div>
-        </div>
-      ))}
-    </section>
+        ))}
+      </section>
       <section className="right-sidebar">
         {/* <aside className="right-sidebar"> */}
         <div className="Side-bar-cards">
@@ -213,8 +162,6 @@ const MainComponent = () => {
           </div>
         </div>
       </section>
-
-
 
       {/* </aside> */}
     </div>

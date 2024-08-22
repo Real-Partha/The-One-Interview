@@ -20,7 +20,7 @@ router.post("/signup", async (req, res) => {
       last_name,
       email,
       password: hashedPassword,
-      type: "local",
+      type: "oneid",
       role: "user",
     });
     await newUser.save();

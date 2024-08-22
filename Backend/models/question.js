@@ -9,12 +9,22 @@ const questionSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please provide an answer'],
     },
+    category: {
+        //Technical Round, HR Round, Aptitude, General
+        type: String,
+        required: [true, 'Please provide a category'],
+    },
+    company_name: {
+        //this is optional field
+        type: String,
+    },
+    tags: {
+        //this is optional field
+        type: [String],
+    },
     created_at: {
         type: Date,
         default: Date.now,
-    },
-    tags: {
-        type: [String],
     },
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
