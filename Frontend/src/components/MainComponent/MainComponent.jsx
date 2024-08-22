@@ -87,8 +87,8 @@ const MainComponent = () => {
   };
 
   return (
-    <div className={`main-content ${isDarkMode ? "dark-mode" : "light-mode"}`}>
-      <div className="main-content">
+    <div className={`${isDarkMode ? "dark-mode" : "light-mode"}`}>
+      <div className={`main-content ${isDarkMode ? "dark-mode" : ""}`}>
         <aside className="sidebar">
           <nav className="course-navigation">
             <div className="Left-Side-bar-cards">
