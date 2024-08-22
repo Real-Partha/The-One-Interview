@@ -21,7 +21,6 @@ const CreateQuestionPage = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(formData);
-    // Here you would typically handle the submission to a backend server
   };
 
   return (
@@ -99,7 +98,6 @@ const CreateQuestionPage = () => {
   );
 };
 
-// Specify the necessary Quill modules and formats
 CreateQuestionPage.modules = {
   toolbar: [
     [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
@@ -110,7 +108,6 @@ CreateQuestionPage.modules = {
     ['link', 'image', 'code-block']
   ],
   clipboard: {
-    // Match visual, not semantic, structure:
     matchVisual: false,
   }
 };
