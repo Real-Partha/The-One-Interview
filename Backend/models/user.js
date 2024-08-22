@@ -34,6 +34,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, 'A role is required'],
     },
+    proflie_pic:{
+        type:String,
+        default: 'user.png'
+    },
 });
 
 

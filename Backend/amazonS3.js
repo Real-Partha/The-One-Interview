@@ -15,7 +15,7 @@ const getSignedUrlForObject = async (filename) => {
         Bucket: process.env.AWS_BUCKET_NAME,
         Key: filename
     });
-    const url = await getSignedUrl(s3, command, { expiresIn: 3600 }); // URL expires in 1 hour
+    const url = await getSignedUrl(s3, command, { expiresIn: 3600*24 });
     return url;
 };
 
