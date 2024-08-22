@@ -7,12 +7,12 @@ const Home = () => {
   return (
     <div>
       <NavBar />
-      <h1>
+      {/* <h1>
         Hello this is Home Page
       </h1>
       <button> Login </button>
       <button> Register </button>
-      <button onClick={handleGoogleClick}> Google </button>
+      <button onClick={handleGoogleClick}> Google </button> */}
     </div>
   )
 }

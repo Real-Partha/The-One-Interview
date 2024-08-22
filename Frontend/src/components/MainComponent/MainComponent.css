@@ -30,7 +30,7 @@
   
   .thread-card {
     background-color: #ffffff;
-    padding: 20px;
+    padding: 10px 20px 20px 20px;
     border-radius: 15px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
@@ -39,12 +39,13 @@
   .thread-title {
     font-size: 24px;
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    color: #333;
   }
   
   .thread-info {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
   }
   
   .profile-pic {
@@ -58,18 +59,88 @@
     flex-grow: 1;
   }
   
+  .thread-meta {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+  }
+  
+  .thread-meta .username {
+    font-weight: bold;
+    color: #333;
+  }
+  
   .thread-description {
-    margin-top: 10px;
-    color: #555555;
+    margin-bottom: 15px;
+    color: #444;
+    line-height: 1.6;
+  }
+  
+  .thread-tags {
+    margin-bottom: 10px;
+  }
+  
+  .tag {
+    display: inline-block;
+    background-color: rgba(108, 99, 255, 0.1);
+    color: #6c63ff;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+  }
+  
+  .thread-company, .thread-category {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+  }
+  
+  .thread-company span, .thread-category span {
+    font-weight: bold;
+    color: #333;
+    background-color: rgba(108, 99, 255, 0.1);
+    padding: 2px 6px;
+    border-radius: 10px;
+  }
+  
+  .giving_responses {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
   }
   
   .add-response {
-    padding: 10px 20px;
-    background-color: #f0f0f0;
-    border-radius: 8px;
+    padding: 8px 15px;
+    background-color: #6c63ff;
+    color: #ffffff;
     border: none;
+    border-radius: 5px;
     cursor: pointer;
-    margin-top: 15px;
+    transition: background-color 0.3s;
+  }
+  
+  .add-response:hover {
+    background-color: #5a48cc;
+  }
+  
+  .vote-buttons {
+    display: flex;
+    align-items: center;
+  }
+  
+  .vote-buttons i {
+    font-size: 18px;
+    color: #666;
+    margin-left: 15px;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  
+  .vote-buttons i:hover {
+    color: #6c63ff;
   }
 
   .right-sidebar {

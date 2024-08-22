@@ -33,6 +33,42 @@ const MainComponent = () => {
     }
   };
 
+  function timeAgo(date) {
+    const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+    
+    if (seconds < 10){
+      return "Just now";
+    }
+
+    if (seconds < 60) {
+      return seconds + (seconds === 1 ? " second ago" : " seconds ago");
+    }
+  
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) {
+      return minutes + (minutes === 1 ? " minute ago" : " minutes ago");
+    }
+  
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) {
+      return hours + (hours === 1 ? " hour ago" : " hours ago");
+    }
+  
+    const days = Math.floor(hours / 24);
+    if (days < 30) {
+      return days + (days === 1 ? " day ago" : " days ago");
+    }
+  
+    const months = Math.floor(days / 30);
+    if (months < 12) {
+      return months + (months === 1 ? " month ago" : " months ago");
+    }
+  
+    const years = Math.floor(months / 12);
+    return years + (years === 1 ? " year ago" : " years ago");
+  }
+  
+
   const handleRedirect = () => {
     navigate("/create-question");
   };
@@ -119,17 +155,28 @@ const MainComponent = () => {
             <h3 className="thread-title">{thread.question}</h3>
             <div className="thread-info">
               <img
-                src="profile-pic.png"
+                src={thread.profile_pic || "/img/profile_pic.png"}
                 alt="Profile"
                 className="profile-pic"
               />
               <div className="thread-details">
-                <p>
-                  {thread.username} •{" "}
-                  {new Date(thread.created_at).toLocaleString()} •{" "}
-                  {thread.tags.join(", ")}
+                <p className="thread-meta">
+                  <span className="username">{thread.username}</span> •{" "}
+                  <span className="date">{timeAgo(thread.created_at)}</span>
                 </p>
                 <p className="thread-description">{thread.answer}</p>
+                <div className="thread-tags">
+                  {thread.tags.map((tag, index) => (
+                    console.log(typeof tag),
+                    <span key={index} className="tag">{'#'+tag.toLowerCase()}</span>
+                  ))}
+                </div>
+                <p className="thread-category">
+                  Category: <span>{thread.category || "Not specified"}</span>
+                </p>
+                <p className="thread-company">
+                  Company: <span>{thread.company || "Not specified"}</span>
+                </p>
               </div>
             </div>
             <div className="giving_responses">
