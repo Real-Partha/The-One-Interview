@@ -30,7 +30,7 @@
   
   .thread-card {
     background-color: #ffffff;
-    padding: 20px;
+    padding: 10px 20px 20px 20px;
     border-radius: 15px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
@@ -39,12 +39,13 @@
   .thread-title {
     font-size: 24px;
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    color: #333;
   }
   
   .thread-info {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
   }
   
   .profile-pic {
@@ -58,18 +59,88 @@
     flex-grow: 1;
   }
   
+  .thread-meta {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+  }
+  
+  .thread-meta .username {
+    font-weight: bold;
+    color: #333;
+  }
+  
   .thread-description {
-    margin-top: 10px;
-    color: #555555;
+    margin-bottom: 15px;
+    color: #444;
+    line-height: 1.6;
+  }
+  
+  .thread-tags {
+    margin-bottom: 10px;
+  }
+  
+  .tag {
+    display: inline-block;
+    background-color: rgba(108, 99, 255, 0.1);
+    color: #6c63ff;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+  }
+  
+  .thread-company, .thread-category {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+  }
+  
+  .thread-company span, .thread-category span {
+    font-weight: bold;
+    color: #333;
+    background-color: rgba(108, 99, 255, 0.1);
+    padding: 2px 6px;
+    border-radius: 10px;
+  }
+  
+  .giving_responses {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
   }
   
   .add-response {
-    padding: 10px 20px;
-    background-color: #f0f0f0;
-    border-radius: 8px;
+    padding: 8px 15px;
+    background-color: #6c63ff;
+    color: #ffffff;
     border: none;
+    border-radius: 5px;
     cursor: pointer;
-    margin-top: 15px;
+    transition: background-color 0.3s;
+  }
+  
+  .add-response:hover {
+    background-color: #5a48cc;
+  }
+  
+  .vote-buttons {
+    display: flex;
+    align-items: center;
+  }
+  
+  .vote-buttons i {
+    font-size: 18px;
+    color: #666;
+    margin-left: 15px;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  
+  .vote-buttons i:hover {
+    color: #6c63ff;
   }
 
   .right-sidebar {
@@ -265,6 +336,149 @@
 .right-sidebar .Side-bar-cards .card{
   width: 270px;
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  margin: 0 10px;
+  padding: 5px 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  margin: 0 10px;
+}
+
+
+/* MainComponent.css - Dark Mode Styles */
+.dark-mode .main-content {
+  background-color: #1E1E1E; /* Darker Charcoal */
+  color: #D3D3D3; /* Light Gray */
+  padding: 0;
+}
+
+.dark-mode .sidebar {
+  background-color: #252525; /* Dark Gray */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.dark-mode .join-class {
+  background-color: #9966CC; /* Amethyst */
+  color: #FFFFFF; /* White */
+}
+
+.dark-mode .threads {
+  background-color: #1E1E1E; /* Darker Charcoal */
+}
+
+.dark-mode .thread-card {
+  background-color: #2E2E2E; /* Slightly Lighter Charcoal */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.dark-mode .thread-title {
+  color: #FFFFFF; /* White */
+}
+
+.dark-mode .thread-meta {
+  color: #AAAAAA; /* Light Silver */
+}
+
+.dark-mode .thread-meta .username {
+  color: #FFFFFF; /* White */
+}
+
+.dark-mode .thread-description {
+  color: #CCCCCC; /* Light Silver */
+}
+
+.dark-mode .tag {
+  background-color: rgba(153, 102, 204, 0.2); /* Amethyst with opacity */
+  color: #9966CC; /* Amethyst */
+}
+
+.dark-mode .thread-company span, 
+.dark-mode .thread-category span {
+  background-color: rgba(153, 102, 204, 0.2); /* Amethyst with opacity */
+  color: #FFFFFF; /* White */
+}
+
+.dark-mode .add-response {
+  background-color: #444454; /* Darker Gray */
+  color: #FFFFFF; /* White */
+}
+
+.dark-mode .vote-buttons i {
+  color: #AAAAAA; /* Light Silver */
+}
+
+.dark-mode .vote-buttons i:hover {
+  color: #FF6F61; /* Bright Coral */
+}
+
+.dark-mode .right-sidebar {
+  background-color: #252525; /* Dark Gray */
+}
+
+.dark-mode .card {
+  background-color: #3B3B3B; /* Darker Charcoal */
+}
+
+.dark-mode .card:hover {
+  background-color: #4B4B4B; /* Slightly Lighter Charcoal */
+}
+
+.dark-mode .card-details h4 {
+  color: #FFFFFF; /* White */
+}
+
+.dark-mode .card-details p {
+  color: #CCCCCC; /* Light Silver */
+}
+
+.dark-mode .add-thread-container {
+  background-color: #3B3B3B; /* Darker Charcoal */
+}
+
+.dark-mode .add-thread-input {
+  color: #D3D3D3; /* Light Gray */
+}
+
+.dark-mode .add-thread-input::placeholder {
+  color: #AAAAAA; /* Light Silver */
+}
+
+.dark-mode .add-thread-button {
+  background-color: #9966CC; /* Amethyst */
+}
+
+.dark-mode .add-thread-button:hover {
+  background-color: #8A4FD0; /* Darker Amethyst */
+}
+
+.dark-mode .pagination button {
+  background-color: #3B3B3B; /* Darker Charcoal */
+  border: 1px solid #555;
+  color: #D3D3D3; /* Light Gray */
+}
+
+.dark-mode .pagination span {
+  color: #D3D3D3; /* Light Gray */
+}
+
 
  
 /* Dark theme component css  */

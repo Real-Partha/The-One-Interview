@@ -1,8 +1,6 @@
 //modules
-// const user = require('./models/user');
 const connectDB = require('./database');
 const cors = require('cors');
-// const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const express = require('express');
 const passport = require('passport');
@@ -16,8 +14,8 @@ const port = process.env.PORT || 3000;
 //load .env file
 require('dotenv').config();
 
-require('./passport');
 
+//set cors policy
 app.use(cors({
     origin: process.env.CLIENT_URL,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -25,8 +23,8 @@ app.use(cors({
 }));
 app.use(bodyParser.json()); 
 
-//routes
 
+// Custom middleware to log requests with formatted time, method, URL, and response code
 function getFormattedDateTime() {
     const now = new Date();
     const date = now.toLocaleDateString('en-GB'); // Format: DD/MM/YYYY
@@ -34,7 +32,6 @@ function getFormattedDateTime() {
     return `${date} ${time}`;
 }
 
-// Custom middleware to log requests with formatted time, method, URL, and response code
 app.use((req, res, next) => {
     const startTime = new Date();
     let url = req.url;
@@ -45,6 +42,13 @@ app.use((req, res, next) => {
     
     next();
 });
+
+
+//import passport strategies
+require('./passport');
+
+
+//routes
 const authRoutes = require('./authentication');
 const homeRoutes = require('./home');
 
@@ -58,7 +62,7 @@ connectDB().then(() => {
     console.error('Database connection failed:', error);
 });
 
-mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true });
+// mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Session middleware
 app.use(session({
@@ -66,10 +70,19 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
-        mongoUrl: process.env.DATABASE_URL,
+        client: mongoose.connection.getClient(),
     }),
     cookie: { maxAge: 1000 * 60 * 60 * 24 } // 1 day
 }));
+
+
+// Middleware to check if session is restored
+app.use((req, res, next) => {
+    if (req.session.passport && req.session.passport.user) {
+      req.session.sessionRestored = true;
+    }
+    next();
+  });
 
 app.use(passport.initialize());
 app.use(passport.session());

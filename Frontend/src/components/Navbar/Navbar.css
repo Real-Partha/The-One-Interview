@@ -195,6 +195,103 @@ body {
 }
 
 
+.theme-toggle {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  margin-left: 15px;
+}
+
+/* NavBar.css - Dark Mode Styles */
+.dark-mode body {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+.dark-mode .navbar {
+  background-color: #1f1f1f;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.dark-mode .university-name {
+  color: #e0e0e0;
+}
+
+.dark-mode .navbar-center {
+  border: 1px solid #444;
+  background-color: #2b2b2b;
+}
+
+.dark-mode .search-input {
+  color: #e0e0e0;
+  background-color: #3a3a3a;
+}
+
+.dark-mode .search-input::placeholder {
+  color: #b0b0b0;
+}
+
+.dark-mode .search-button {
+  color: #b0b0b0;
+}
+
+.dark-mode .nav-link {
+  color: #e0e0e0;
+}
+
+.dark-mode .nav-link.active {
+  color: #fff;
+}
+
+.dark-mode .notifications,
+.dark-mode .profile {
+  color: #e0e0e0;
+}
+
+.dark-mode .profile-dropdown {
+  background-color: #2b2b2b;
+  color: #e0e0e0;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
+}
+
+.dark-mode .profile-dropdown .user-info {
+  border-bottom: 1px solid #444;
+}
+
+.dark-mode .user-pic {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.dark-mode .user-info h4 {
+  color: #ffffff;
+}
+
+.dark-mode .user-info p {
+  color: #b0b0b0;
+}
+
+.dark-mode .user-info p:first-of-type {
+  color: #cccccc;
+}
+
+.dark-mode .user-info p:last-of-type {
+  color: #8c8c8c;
+}
+
+.dark-mode .profile-settings a {
+  color: #1e90ff;
+  border-bottom: 1px solid #444;
+}
+
+.dark-mode .profile-settings a:hover {
+  color: #1c75d8;
+}
+
+.dark-mode .profile-settings i {
+  color: #e0e0e0;
+}
+
 
 /* Dark theme css for this component */
 /* 
