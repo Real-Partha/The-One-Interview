@@ -50,6 +50,36 @@ router.get("/question", async (req, res) => {
     }
 });
 
+router.get("/question/:questionId", async (req, res) => {
+    try {
+        const questionId = req.params.questionId;
+        const question = await Question.findById(questionId).lean();
+
+        if (!question) {
+            return res.status(404).send({ error: 'Question not found' });
+        }
+
+        const user = await User.findById(question.user_id, 'username profile_pic').lean();
+
+        if (!user) {
+            return res.status(404).send({ error: 'User not found' });
+        }
+
+        const profilePicUrl = await getSignedUrlForObject(user.profile_pic);
+
+        const questionWithUserInfo = {
+            ...question,
+            username: user.username,
+            profile_pic: profilePicUrl
+        };
+
+        return res.status(200).send(questionWithUserInfo);
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send({ error: 'An error occurred while fetching the question' });
+    }
+});
+
 router.get("/questionsearch", async (req, res) => {
     try {
         const search = req.query.query || "";

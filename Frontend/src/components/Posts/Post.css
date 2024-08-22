@@ -1,0 +1,159 @@
+/* Post.css */
+.post-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  .post-title {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .post-meta {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .profile-pic {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+  }
+  
+  .post-info {
+    font-size: 14px;
+  }
+  
+  .username {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .date {
+    color: #777;
+  }
+  
+  .post-content {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #444;
+    margin-bottom: 20px;
+  }
+  
+  .post-tags {
+    margin-bottom: 20px;
+  }
+  
+  .tag {
+    display: inline-block;
+    background-color: #f0f0f0;
+    color: #333;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    margin-right: 10px;
+  }
+  
+  .post-details {
+    margin-bottom: 20px;
+    font-size: 14px;
+  }
+  
+  .company, .category {
+    margin-bottom: 5px;
+  }
+  
+  .company span, .category span {
+    font-weight: bold;
+    color: #6c63ff;
+  }
+  
+  .post-actions {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .post-actions button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+  }
+  
+  .upvote {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .downvote {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .comment {
+    background-color: #2196f3;
+    color: white;
+  }
+  
+  .post-actions button:hover {
+    opacity: 0.9;
+  }
+  
+  /* Dark mode styles */
+  .dark-mode.post-container {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+  }
+  
+  .dark-mode .post-title {
+    color: #ffffff;
+  }
+  
+  .dark-mode .username {
+    color: #ffffff;
+  }
+  
+  .dark-mode .date {
+    color: #aaaaaa;
+  }
+  
+  .dark-mode .post-content {
+    color: #cccccc;
+  }
+  
+  .dark-mode .tag {
+    background-color: #333333;
+    color: #e0e0e0;
+  }
+  
+  .dark-mode .company span, 
+  .dark-mode .category span {
+    color: #9966cc;
+  }
+  
+  .dark-mode .post-actions button {
+    background-color: #333333;
+    color: #e0e0e0;
+  }
+  
+  .dark-mode .upvote:hover {
+    background-color: #4caf50;
+  }
+  
+  .dark-mode .downvote:hover {
+    background-color: #f44336;
+  }
+  
+  .dark-mode .comment:hover {
+    background-color: #2196f3;
+  }
+  

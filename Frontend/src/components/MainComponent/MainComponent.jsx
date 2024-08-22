@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useTheme } from "../../ThemeContext";
+import { Link } from "react-router-dom";
 
 const MainComponent = () => {
   const navigate = useNavigate();
@@ -92,7 +93,6 @@ const MainComponent = () => {
       console.log(answers);
     }, 2000);
   };
-  
 
   const handleRedirect = () => {
     navigate("/create-question");
@@ -136,7 +136,7 @@ const MainComponent = () => {
 
   return (
     <div className={`${isDarkMode ? "dark-mode" : "light-mode"}`}>
-      <div className={`main-content ${isDarkMode ? "dark-mode" : ""}`}>
+      <div className={`main-content`}>
         <aside className="sidebar">
           <nav className="course-navigation">
             <div className="Left-Side-bar-cards">
@@ -196,79 +196,95 @@ const MainComponent = () => {
               placeholder="Add a new thread"
               className="add-thread-input"
             />
-            <button className="add-thread-button" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-  <i className="fa-solid fa-plus"></i>
-</button>
+            <button
+              className="add-thread-button"
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            >
+              <i className="fa-solid fa-plus"></i>
+            </button>
           </div>
           {isDropdownOpen && (
-  <div className="dropdown-content" key={currentQuestion}>
-    <h3>{questions[currentQuestion]}</h3>
-    {currentQuestion < questions.length - 1 ? (
-      <input
-        type="text"
-        value={answers[currentQuestion] || ''}
-        onChange={(e) => setAnswers({...answers, [currentQuestion]: e.target.value})}
-      />
-    ) : (
-      <textarea
-        value={answers[currentQuestion] || ''}
-        onChange={(e) => setAnswers({...answers, [currentQuestion]: e.target.value})}
-        placeholder="Write your interview experience here..."
-      />
-    )}
-    {currentQuestion < questions.length - 1 ? (
-      <button onClick={() => setCurrentQuestion(currentQuestion + 1)}>Next</button>
-    ) : (
-      <button onClick={handleSubmit}>Submit</button>
-    )}
-  </div>
-)}
-
+            <div className="dropdown-content" key={currentQuestion}>
+              <h3>{questions[currentQuestion]}</h3>
+              {currentQuestion < questions.length - 1 ? (
+                <input
+                  type="text"
+                  value={answers[currentQuestion] || ""}
+                  onChange={(e) =>
+                    setAnswers({
+                      ...answers,
+                      [currentQuestion]: e.target.value,
+                    })
+                  }
+                />
+              ) : (
+                <textarea
+                  value={answers[currentQuestion] || ""}
+                  onChange={(e) =>
+                    setAnswers({
+                      ...answers,
+                      [currentQuestion]: e.target.value,
+                    })
+                  }
+                  placeholder="Write your interview experience here..."
+                />
+              )}
+              {currentQuestion < questions.length - 1 ? (
+                <button onClick={() => setCurrentQuestion(currentQuestion + 1)}>
+                  Next
+                </button>
+              ) : (
+                <button onClick={handleSubmit}>Submit</button>
+              )}
+            </div>
+          )}
 
           {threads.map((thread) => (
-            <div key={thread._id} className="thread-card">
-              <h3 className="thread-title">{thread.question}</h3>
-              <div className="thread-info">
-                <img
-                  src={thread.profile_pic || "/img/profile_pic.png"}
-                  alt="Profile"
-                  className="profile-pic"
-                />
-                <div className="thread-details">
-                  <p className="thread-meta">
-                    <span className="username">{thread.username}</span> •{" "}
-                    <span className="date">{timeAgo(thread.created_at)}</span>
-                  </p>
-                  <p className="thread-description">{thread.answer}</p>
-                  <div className="thread-tags">
-                    {thread.tags.map(
-                      (tag, index) => (
-                        console.log(typeof tag),
-                        (
-                          <span key={index} className="tag">
-                            {"#" + tag.toLowerCase()}
-                          </span>
-                        )
-                      )
-                    )}
+            <Link
+              to={`/question/${thread._id}`}
+              key={thread._id}
+              className="thread-card-link"
+            >
+              <div className="thread-card">
+                <h3 className="thread-title">{thread.question}</h3>
+                <p className="thread-answer-preview">
+                  {thread.answer.slice(0, 150)}
+                  {thread.answer.length > 100 ? "..." : ""}
+                </p>
+                <div className="thread-info">
+                  <img
+                    src={thread.profile_pic || "/img/profile_pic.png"}
+                    alt="Profile"
+                    className="profile-pic"
+                  />
+                  <div className="thread-details">
+                    <p className="thread-meta">
+                      <span className="username">{thread.username}</span> •
+                      <span className="date">{timeAgo(thread.created_at)}</span>
+                    </p>
+                    <div className="thread-tags">
+                      {thread.tags.slice(0, 3).map((tag, index) => (
+                        <span key={index} className="tag">
+                          #{tag.toLowerCase()}
+                        </span>
+                      ))}
+                      {thread.tags.length > 3 && (
+                        <span className="tag">...</span>
+                      )}
+                    </div>
                   </div>
-                  <p className="thread-category">
-                    Category: <span>{thread.category || "Not specified"}</span>
+                </div>
+                <div className="thread-footer">
+                  <p className="view-message">
+                    Click to view detailed answer and information
                   </p>
-                  <p className="thread-company">
-                    Company:{" "}
-                    <span>{thread.company_name || "Not specified"}</span>
-                  </p>
+                  <div className="thread-views">
+                    <i className="fa-solid fa-eye"></i>
+                    <span>{thread.impressions || 0}</span>
+                  </div>
                 </div>
               </div>
-              <div className="giving_responses">
-                <button className="add-response">Add Comment</button>
-                <div className="vote-buttons">
-                  <i className="fa-regular fa-thumbs-up"></i>
-                  <i className="fa-regular fa-thumbs-down"></i>
-                </div>
-              </div>
-            </div>
+            </Link>
           ))}
           <div className="pagination">
             <button onClick={handlePrevPage} disabled={!hasPrevPage}>
@@ -326,6 +342,7 @@ const MainComponent = () => {
 
         {/* </aside> */}
       </div>
+    </div>
   );
 };
 
