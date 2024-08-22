@@ -31,10 +31,10 @@ const NavBar = () => {
           </button>
         </div>
         <div className="navbar-right">
-          <a href="#" className="nav-link">
+          <a href="/login" className="nav-link">
             Login
           </a>
-          <a href="#" className="nav-link">
+          <a href="/signup" className="nav-link">
             Register
           </a>
           <i className="notifications fa fa-bell"></i>

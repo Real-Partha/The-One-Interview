@@ -175,7 +175,7 @@ const MainComponent = () => {
                   Category: <span>{thread.category || "Not specified"}</span>
                 </p>
                 <p className="thread-company">
-                  Company: <span>{thread.company || "Not specified"}</span>
+                  Company: <span>{thread.company_name || "Not specified"}</span>
                 </p>
               </div>
             </div>
