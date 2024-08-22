@@ -1,13 +1,26 @@
-import React, { useState } from "react";
+import React, { useState,useEffect  } from "react";
 import "./NavBar.css";
 import { useTheme } from "../../ThemeContext";
 
 const NavBar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { isDarkMode, toggleTheme } = useTheme();
+  const [icon, setIcon] = useState(isDarkMode ? "☀️" : "🌙");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIcon(isDarkMode ? "☀️" : "🌙");
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [isDarkMode]);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const handleToggleTheme = () => {
+    setIcon(isDarkMode ? "🌙" : "☀️");
+    toggleTheme();
   };
 
   return (
@@ -33,8 +46,8 @@ const NavBar = () => {
           </button>
         </div>
         <div className="navbar-right">
-          <button onClick={toggleTheme} className="theme-toggle">
-            {isDarkMode ? "☀️" : "🌙"}
+          <button onClick={handleToggleTheme} className="theme-toggle">
+            {icon}
           </button>
           <a href="/login" className="nav-link">
             Login

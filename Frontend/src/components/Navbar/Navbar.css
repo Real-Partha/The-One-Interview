@@ -1,10 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Rakkas&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+body, .navbar, .profile-dropdown, .search-input, .nav-link, .notifications, .profile, .user-info h4, .user-info p, .profile-settings a, .profile-settings i {
+  transition: all 0.3s ease;
+}
 
 body {
   margin: 0;
   font-family: 'Montserrat', sans-serif;
 }
+
 
 .navbar {
   display: flex;
@@ -194,13 +198,17 @@ body {
   color: #333333;
 }
 
-
 .theme-toggle {
   background: none;
   border: none;
   font-size: 24px;
   cursor: pointer;
   margin-left: 15px;
+  transition: transform 0.3s ease;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
 }
 
 /* NavBar.css - Dark Mode Styles */
@@ -292,201 +300,3 @@ body {
   color: #e0e0e0;
 }
 
-
-/* Dark theme css for this component */
-/* 
-body {
-  margin: 0;
-  font-family: 'Montserrat', sans-serif;
-  background-color: #121212;
-  color: #e0e0e0;
-}
-
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 20px;
-  background-color: #1f1f1f;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.navbar-left {
-  display: flex;
-  align-items: center;
-}
-
-.logo {
-  height: 40px;
-  margin-right: 20px;
-}
-
-.university-name {
-  font-family: 'Playfair Display', serif;
-  font-size: 18px;
-  font-weight: 500;
-  color: #e0e0e0;
-}
-
-.navbar-center {
-  display: flex;
-  align-items: center;
-  padding: 12px 15px;
-  border-radius: 20px;
-  border: 1px solid #444;
-  font-family: 'Montserrat', sans-serif;
-  background-color: #2b2b2b;
-}
-
-.search-input {
-  border: none;
-  outline: none;
-  border-radius: 20px;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 16px;
-  color: #e0e0e0;
-  background-color: #3a3a3a;
-}
-
-.search-input::placeholder {
-  color: #b0b0b0;
-}
-
-.search-button {
-  background: none;
-  border: none;
-  padding-left: 10px;
-  cursor: pointer;
-  color: #b0b0b0;
-}
-
-.navbar-right {
-  display: flex;
-  align-items: center;
-}
-
-.nav-link {
-  margin: 0 15px;
-  font-size: 16px;
-  color: #e0e0e0;
-  text-decoration: none;
-  font-family: 'Montserrat', sans-serif;
-}
-
-.nav-link.active {
-  font-weight: bold;
-  color: #fff;
-}
-
-.notifications,
-.profile {
-  margin-left: 20px;
-  cursor: pointer;
-}
-
-.notifications {
-  font-size: 20px;
-  color: #e0e0e0;
-}
-
-.profile {
-  font-size: 28px;
-  color: #e0e0e0;
-}
-
-.profile-dropdown {
-  position: absolute;
-  top: 70px;
-  right: 20px;
-  width: 250px;
-  background-color: #2b2b2b;
-  color: #e0e0e0;
-  border-radius: 8px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-20px);
-  transition: all 0.3s ease;
-  z-index: 1000;
-}
-
-.profile-dropdown.open {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-.profile-dropdown .user-info {
-  padding: 20px;
-  text-align: center;
-  border-bottom: 1px solid #444;
-  margin-bottom: 15px;
-}
-
-.user-pic {
-  width: 80px;
-  height: 80px;
-  border-radius: 12%;
-  object-fit: cover;
-  margin-bottom: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-  transition: transform 0.2s ease-in-out;
-}
-
-.user-pic:hover {
-  transform: scale(1.05);
-}
-
-.user-info h4 {
-  margin: 10px 0;
-  font-size: 18px;
-  color: #ffffff;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
-
-.user-info p {
-  margin: 4px 0;
-  font-size: 14px;
-  color: #b0b0b0;
-}
-
-.user-info p:first-of-type {
-  margin-top: 8px;
-  font-weight: 500;
-  color: #cccccc;
-}
-
-.user-info p:last-of-type {
-  font-size: 12px;
-  color: #8c8c8c;
-}
-
-.profile-settings {
-  padding: 15px 20px;
-  text-align: left;
-}
-
-.profile-settings a {
-  display: block;
-  padding: 10px 0;
-  font-size: 14px;
-  color: #1e90ff;
-  text-decoration: none;
-  border-bottom: 1px solid #444;
-  transition: color 0.2s ease-in-out;
-}
-
-.profile-settings a:last-child {
-  border-bottom: none;
-}
-
-.profile-settings a:hover {
-  color: #1c75d8;
-}
-
-.profile-settings i {
-  margin-right: 10px;
-  font-size: 16px;
-  color: #e0e0e0;
-} */

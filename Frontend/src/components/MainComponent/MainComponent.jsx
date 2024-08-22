@@ -109,10 +109,34 @@ const MainComponent = () => {
       setCurrentPage(currentPage - 1);
     }
   };
+  const handleUserSearch = async (e) => {
+    if (e.key === "Enter") {
+      const query = e.target.value.trim();
+      if (!query) {
+        alert("Please type something to search.");
+        return;
+      }
+
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/home/questionsearch`,
+          {
+            params: { query: query },
+          }
+        );
+        setThreads(response.data.questions);
+        setTotalPages(response.data.totalPages);
+        setHasNextPage(response.data.hasNextPage);
+        setHasPrevPage(response.data.hasPrevPage);
+      } catch (error) {
+        console.error("Error fetching threads:", error);
+      }
+    }
+  };
 
   return (
-    <div className={`main-content ${isDarkMode ? "dark-mode" : "light-mode"}`}>
-      
+    <div className={`${isDarkMode ? "dark-mode" : "light-mode"}`}>
+      <div className={`main-content ${isDarkMode ? "dark-mode" : ""}`}>
         <aside className="sidebar">
           <nav className="course-navigation">
             <div className="Left-Side-bar-cards">
