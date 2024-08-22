@@ -1,48 +1,109 @@
-// import React from 'react';
+import { useState } from 'react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import './CreateQuestionPage.css';
 
 const CreateQuestionPage = () => {
+  const [formData, setFormData] = useState({
+    companyName: '',
+    rounds: '',
+    location: '',
+    role: '',
+    experience: ''
+  });
+
+  const handleChange = (value, field) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(formData);
+    // Here you would typically handle the submission to a backend server
+  };
+
   return (
-    <div className="create-question-container">
+    <form className="interview-experience-container" onSubmit={handleSubmit}>
       <div className="form-group">
-        <label htmlFor="title">Title</label>
+        <label htmlFor="companyName">Company Name:</label>
         <input
           type="text"
-          id="title"
-          placeholder="Be specific and imagine you’re asking a question to another person."
+          id="companyName"
           className="form-control"
+          value={formData.companyName}
+          onChange={(e) => handleChange(e.target.value, 'companyName')}
         />
       </div>
       <div className="form-group">
-        <label htmlFor="details">What are the details of your problem?</label>
-        <textarea
-          id="details"
-          placeholder="Introduce the problem and expand on what you put in the title."
+        <label htmlFor="rounds">No of Rounds:</label>
+        <input
+          type="number"
+          id="rounds"
           className="form-control"
+          value={formData.rounds}
+          onChange={(e) => handleChange(e.target.value, 'rounds')}
         />
       </div>
       <div className="form-group">
-        <label htmlFor="tried">What did you try and what were you expecting?</label>
-        <textarea
-          id="tried"
-          placeholder="Describe what you tried, what you expected to happen, and what actually resulted."
+        <label htmlFor="location">On-Campus / Off-Campus:</label>
+        <select
+          id="location"
           className="form-control"
-        />
+          value={formData.location}
+          onChange={(e) => handleChange(e.target.value, 'location')}
+        >
+          <option value="on-campus">On-Campus</option>
+          <option value="off-campus">Off-Campus</option>
+        </select>
       </div>
       <div className="form-group">
-        <label htmlFor="tags">Tags</label>
+        <label htmlFor="role">Role:</label>
         <input
           type="text"
-          id="tags"
-          placeholder="Add up to 5 tags to describe what your question is about."
+          id="role"
           className="form-control"
+          value={formData.role}
+          onChange={(e) => handleChange(e.target.value, 'role')}
         />
       </div>
       <div className="form-group">
-        <button className="btn-next">Next</button>
+        <label htmlFor="experience">Experience:</label>
+        <ReactQuill
+          theme="snow"
+          value={formData.experience}
+          onChange={(value) => handleChange(value, 'experience')}
+          modules={CreateQuestionPage.modules}
+          formats={CreateQuestionPage.formats}
+        />
       </div>
-    </div>
+      <div className="form-group">
+        <button type="submit" className="btn-submit">Submit</button>
+      </div>
+    </form>
   );
 };
+
+// Specify the necessary Quill modules and formats
+CreateQuestionPage.modules = {
+  toolbar: [
+    [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
+    [{ 'size': [] }],
+    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+    [{'list': 'ordered'}, {'list': 'bullet'}, 
+     {'indent': '-1'}, {'indent': '+1'}],
+    ['link', 'image', 'code-block']
+  ],
+  clipboard: {
+    // Match visual, not semantic, structure:
+    matchVisual: false,
+  }
+};
+
+CreateQuestionPage.formats = [
+  'header', 'font', 'size',
+  'bold', 'italic', 'underline', 'strike', 'blockquote',
+  'list', 'bullet', 'indent',
+  'link', 'image', 'code-block'
+];
 
 export default CreateQuestionPage;
