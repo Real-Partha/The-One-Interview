@@ -2,6 +2,7 @@ const express = require('express');
 const User = require('./models/user');
 const Comment = require('./models/comment');
 const Question = require('./models/question');
+const {getSignedUrlForObject,uploadObject} =require('./amazonS3');
 const router = express.Router();
 
 router.get("/question", async (req, res) => {
@@ -26,13 +27,18 @@ router.get("/question", async (req, res) => {
             return acc;
         }, {});
 
-        const questionsWithUsernames = questions.map(question => ({
-            ...question,
-            username: userMap[question.user_id.toString()] || 'Unknown User'
+        const questionsWithUsernames = await Promise.all(questions.map(async (question) => {
+            const profilepic = await User.findOne({ _id: question.user_id }).select('profile_pic -_id');
+            const profilePicUrl = await getSignedUrlForObject(profilepic.toObject().profile_pic);
+            return {
+                ...question,
+                username: userMap[question.user_id.toString()] || 'Unknown User',
+                profile_pic: profilePicUrl
+            };
         }));
 
         return res.status(200).send({
-            questions: questionsWithUsernames,
+            questions: questionsWithUsernames, 
             currentPage: page,
             totalPages: totalPages,
             hasNextPage: page < totalPages,
@@ -82,4 +88,14 @@ router.get("/checkusername", async (req, res) => {
     }
 });
 
+router.get("/getprofilepic", async (req, res) => {
+    try {
+        const profilepic = req.user.proflie_pic;
+        const profilepicurl=await getSignedUrlForObject(profilepic);
+        return res.status(200).send({ status: true, profilePic:  profilepicurl});
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send({ status: false });
+    }
+});
 module.exports = router;
