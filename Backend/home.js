@@ -4,7 +4,8 @@ const Comment = require('./models/comment');
 const Question = require('./models/question');
 const {getSignedUrlForObject,uploadObject} =require('./amazonS3');
 const router = express.Router();
-
+const commentsRouter = require('./comments');
+router.use('/questions', commentsRouter);
 router.get("/question", async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
