@@ -7,14 +7,33 @@ import "./Post.css";
 
 const Post = () => {
   const { questionId } = useParams();
+  console.log(questionId);
   const [question, setQuestion] = useState(null);
   const { isDarkMode } = useTheme();
+
+  const handleUpvote = async (_id) => {
+    try {
+      await axios.patch(`${import.meta.env.VITE_API_URL}/upvote`, { _id: questionId });
+      // fetchThreads(currentPage);
+    } catch (error) {
+      console.error("Error upvoting thread:", error);
+    }
+  };
+  
+  const handleDownvote = async (_id) => {
+    try {
+      await axios.patch(`${import.meta.env.VITE_API_URL}/downvote`, { _id: questionId });
+      // fetchThreads(currentPage);
+    } catch (error) {
+      console.error("Error downvoting thread:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchQuestion = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/home/question/${questionId}`
+          `${import.meta.env.VITE_API_URL}/question/${questionId}`
         );
         setQuestion(response.data);
       } catch (error) {
@@ -64,10 +83,10 @@ const Post = () => {
           </p>
         </div>
         <div className="post-actions">
-          <button className="upvote">
+          <button className="upvote" onClick={handleUpvote}>
             <i className="fa-solid fa-thumbs-up"></i> Upvote
           </button>
-          <button className="downvote">
+          <button className="downvote" onClick={handleDownvote}>
             <i className="fa-solid fa-thumbs-down"></i> Downvote
           </button>
           <button className="comment">

@@ -24,7 +24,7 @@ const MainComponent = () => {
   const fetchThreads = async (page) => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/home/question`,
+        `${import.meta.env.VITE_API_URL}/questions`,
         {
           params: { page: page },
         }
@@ -111,7 +111,7 @@ const MainComponent = () => {
 
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/home/questionsearch`,
+          `${import.meta.env.VITE_API_URL}/questionsearch`,
           {
             params: { query: query },
           }

@@ -42,7 +42,7 @@ const questionSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
-    repliescount: {
+    commentscount: {
         type: Number,
         default: 0,
     }

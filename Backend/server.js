@@ -1,5 +1,5 @@
 //modules
-const connectDB = require('./database');
+const connectDB = require('./utils/database');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const express = require('express');
@@ -18,7 +18,7 @@ require('dotenv').config();
 //set cors policy
 app.use(cors({
     origin: process.env.CLIENT_URL,
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     credentials: true,
 }));
 app.use(bodyParser.json()); 
@@ -45,12 +45,12 @@ app.use((req, res, next) => {
 
 
 //import passport strategies
-require('./passport');
+require('./utils/passport');
 
 
 //routes
-const authRoutes = require('./authentication');
-const homeRoutes = require('./home');
+const authRoutes = require('./routes/authentication');
+const questionRoutes = require('./routes/questions');
 
 
 
@@ -89,4 +89,4 @@ app.use(passport.session());
 
 //routes middleware
 app.use("/auth", authRoutes);
-app.use("/home", homeRoutes);
+app.use("/", questionRoutes);

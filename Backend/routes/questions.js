@@ -1,12 +1,14 @@
 const express = require('express');
-const User = require('./models/user');
-const Comment = require('./models/comment');
-const Question = require('./models/question');
-const {getSignedUrlForObject,uploadObject} =require('./amazonS3');
+const User = require('../models/user');
+const Comment = require('../models/comment');
+const Question = require('../models/question');
+const {getSignedUrlForObject} =require('../utils/amazonS3');
 const router = express.Router();
+
 const commentsRouter = require('./comments');
 router.use('/questions', commentsRouter);
-router.get("/question", async (req, res) => {
+
+router.get("/questions", async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
         const limit = 10;
@@ -51,33 +53,21 @@ router.get("/question", async (req, res) => {
     }
 });
 
-router.get("/question/:questionId", async (req, res) => {
+router.get("/question/:id", async (req, res) => {
     try {
-        const questionId = req.params.questionId;
-        const question = await Question.findById(questionId).lean();
-
+        const question = await Question.findOne({ _id: req.params.id }).lean();
         if (!question) {
-            return res.status(404).send({ error: 'Question not found' });
+            return res.status(400).send({ error: 'Invalid question_id' });
         }
-
-        const user = await User.findById(question.user_id, 'username profile_pic').lean();
-
-        if (!user) {
-            return res.status(404).send({ error: 'User not found' });
-        }
-
-        const profilePicUrl = await getSignedUrlForObject(user.profile_pic);
-
-        const questionWithUserInfo = {
-            ...question,
-            username: user.username,
-            profile_pic: profilePicUrl
-        };
-
-        return res.status(200).send(questionWithUserInfo);
+        await Question.updateOne({ _id: req.params.id }, { $inc: { impressions: 1 } });
+        const user = await User.findOne({ _id: question.user_id }).lean();
+        const profilepic = await User.findOne({ _id: question.user_id }).select('profile_pic -_id');
+        const profilePicUrl = await getSignedUrlForObject(profilepic.toObject().profile_pic);
+        const comments = await Comment.find({ question_id: req.params.id }).lean();
+        return res.status(200).send({ ...question, username: user.username, profile_pic: profilePicUrl, comments: comments });
     } catch (err) {
         console.error(err);
-        return res.status(500).send({ error: 'An error occurred while fetching the question' });
+        return res.status(500).send({ error: 'An error occurred while fetching question' });
     }
 });
 
@@ -167,10 +157,22 @@ router.get("/questionsearch", async (req, res) => {
     }
 });
 
+router.post("/question", async (req, res) => {
+    try {
+        const question = await Question.create(req.body);
+        return res.status(201).send(question);
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send({status:false, error: 'An error occurred while creating question' });
+    }
+});
 
 router.delete("/question", async(req, res) => {
     try{
-        console.log(req.body.id);
+        const question = await Question.findById(req.body.id);
+        if(question === null) {
+            return res.status(400).send({ error: 'Invalid question_id' });
+        }
         await Question.findByIdAndDelete(req.body.id);
         return res.status(200).send({status:true});
     }
@@ -180,16 +182,32 @@ router.delete("/question", async(req, res) => {
     }
 });
 
-router.post("/reply", (req, res) => {
-    res.send("complete the addreply route");
+router.patch("/upvote", async (req, res) => {
+    try {
+        const question = await Question.findOne({ _id: req.body._id }).lean();
+        if (!question) {
+            return res.status(400).send({ error: 'Invalid question_id' });
+        }
+        await Question.updateOne({ _id: req.body._id }, { $inc: { upvotes: 1 } });
+        return res.status(200).send({ status: true , message: 'Question upvoted successfully' });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send({ status: false , error: 'An error occurred while upvoting question' });
+    }
 });
 
-router.delete("/reply", (req, res) => {
-    res.send("complete the deletereply route");
-});
-
-router.get("/reply", (req, res) => {
-    res.send("complete the getreplies route");
+router.patch("/downvote", async (req, res) => {
+    try {
+        const question = await Question.findOne({ _id: req.body._id }).lean();
+        if (!question) {
+            return res.status(400).send({ error: 'Invalid question_id' });
+        }
+        await Question.updateOne({ _id: req.body._id }, { $inc: { downvotes: 1 } });
+        return res.status(200).send({ status: true , message: 'Question downvoted successfully' });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send({ status: false , error: 'An error occurred while downvoting question' });
+    }
 });
 
 router.get("/checkusername", async (req, res) => {
@@ -199,17 +217,6 @@ router.get("/checkusername", async (req, res) => {
         const user = await User.findOne({ username: username });
         console.log(user);
         return res.status(200).send({ status: user===null ? true : false });
-    } catch (err) {
-        console.error(err);
-        return res.status(500).send({ status: false });
-    }
-});
-
-router.get("/getprofilepic", async (req, res) => {
-    try {
-        const profilepic = req.user.proflie_pic;
-        const profilepicurl=await getSignedUrlForObject(profilepic);
-        return res.status(200).send({ status: true, profilePic:  profilepicurl});
     } catch (err) {
         console.error(err);
         return res.status(500).send({ status: false });

@@ -3,7 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
-const User = require("./models/user");
+const User = require("../models/user");
 // OneID Signup
 // Local Signup
 router.post("/signup", async (req, res) => {

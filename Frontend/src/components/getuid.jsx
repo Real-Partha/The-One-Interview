@@ -7,7 +7,7 @@ const GetUid = () => {
 
     useEffect(() => {
         if (username) {
-            axios.get(`${import.meta.env.VITE_API_URL}/home/checkusername`, { params: { username } })
+            axios.get(`${import.meta.env.VITE_API_URL}/checkusername`, { params: { username } })
                 .then(response => {
                     console.log(response.data);
                     setIsValid(response.data.status);

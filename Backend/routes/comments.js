@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const Question = require('./models/question');
-const Comment = require('./models/comment');
+const Question = require('../models/question');
+const Comment = require('../models/comment');
 
 router.get('/comments', async (req, res) => {
     try {
@@ -28,9 +28,8 @@ router.post('/comments', async (req, res) => {
         if(req.body.comment === '') {
             return res.status(400).send({ status: false,error: 'Please provide a comment' });
         }
-        // if(req.body.user_id !== req.user._id) {
-        //     return res.status(400).send({ error: 'Invalid user_id' });
-        // }
+        // increase replies count by 1
+        await Question.updateOne({ _id: req.body.question_id }, { $inc: { commentscount: 1 }});
         const comment = await Comment.create(req.body);
         return res.status(201).send(comment);
     } catch (err) {
