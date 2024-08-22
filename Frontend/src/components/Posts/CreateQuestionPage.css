@@ -61,11 +61,15 @@
   }
   
   .form-control {
-    width: 100%;
+    width: 97%;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    margin-top: 10px;
+  }
+  .special-form-control{
+    width: 99.7%;
   }
   
   .btn-submit {
@@ -88,6 +92,16 @@
 }
 
 
+
+.quill{
+    margin-top: 10px;
+}
+
+
   /* Dark MODE Theme  */
 
   
+  .dark-mode .create-question-animation{
+    background-color: #282828;
+    border-radius: 10px;
+}

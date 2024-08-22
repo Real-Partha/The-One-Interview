@@ -9,6 +9,7 @@
     display: flex;
     background-color: #f5f7fb;
     padding: 20px;
+  
   }
   
   .sidebar {
@@ -17,6 +18,13 @@
     padding: 15px;
     border-radius: 15px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .course-navigation{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
   
   .join-class {
@@ -201,17 +209,19 @@
 
   .right-sidebar {
     width: 20%;
-    /* background-color: #ffffff; */
     padding: 15px;
     border-radius: 15px;
-    /* display: flex; */
     flex-wrap: wrap;
     justify-content: center;
     align-items: flex-start;
     padding: 20px;
-    /* background-color:#f5f7fb; */
     border-radius: 12px;
-     /* box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); */
+    background-color: white;
+    margin-left: 1.5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
 
 
   }
@@ -385,6 +395,8 @@
 
 .right-sidebar .Side-bar-cards .card {
   width: 270px;
+  position: relative;
+  right: 17px;
 }
 
 .pagination {
@@ -412,78 +424,34 @@
   margin: 0 10px;
 }
 
-.dropdown-content {
-  max-height: 0;
+/* MainComponent.css */
+.create-question-animation {
   overflow: hidden;
+  max-height: 0;
   transition: max-height 0.5s ease-out;
-  background-color: #f9f9f9;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  padding: 12px 16px;
-  border-radius: 5px;
-  margin-top: 10px;
 }
 
-.dropdown-content.open {
-  max-height: 500px;
+.create-question-animation.show {
+  max-height: max-content;
+  margin-bottom: 5%;
 }
 
-.dropdown-content input,
-.dropdown-content textarea {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.dropdown-content button {
-  background-color: #6c63ff;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.dropdown-content button:hover {
-  background-color: #5a48cc;
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateY(-20px);
+@keyframes rollOut {
+  0% {
+    transform: translateX(-100%);
     opacity: 0;
   }
-  to {
-    transform: translateY(0);
+  100% {
+    transform: translateX(0);
     opacity: 1;
   }
 }
 
-.dropdown-content {
-  animation: slideIn 0.3s ease-out;
+.create-question-animation .rolling {
+  animation: rollOut 0.5s ease-out;
 }
 
-.submit-button {
-  position: relative;
-  overflow: hidden;
-}
 
-.submit-button::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.3);
-  transition: width 2s linear;
-}
-
-.submit-button.submitting::after {
-  width: 100%;
-}
 
 
 
@@ -565,7 +533,7 @@
 }
 
 .dark-mode .right-sidebar {
-  background-color: #252525; /* Dark Gray */
+  /* background-color: #252525; Dark Gray */
 }
 
 .dark-mode .card {
@@ -574,6 +542,10 @@
 
 .dark-mode .card:hover {
   background-color: #4b4b4b; /* Slightly Lighter Charcoal */
+}
+
+.dark-mode .right-sidebar{
+  background-color: #252525;
 }
 
 .dark-mode .card-details h4 {

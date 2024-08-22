@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useTheme } from "../../ThemeContext";
+import CreateQuestionPage from "../CreateQuestionPage/CreateQuestionPage";
 import { Link } from "react-router-dom";
 
 const MainComponent = () => {
@@ -14,18 +15,7 @@ const MainComponent = () => {
   const [hasNextPage, setHasNextPage] = useState(false);
   const [hasPrevPage, setHasPrevPage] = useState(false);
   const { isDarkMode } = useTheme();
-
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const questions = [
-    "What company?",
-    "What position?",
-    "What was the interview process?",
-    // Add more questions as needed
-  ];
+  const [showCreateQuestion, setShowCreateQuestion] = useState(false);
 
   useEffect(() => {
     fetchThreads(currentPage);
@@ -47,6 +37,7 @@ const MainComponent = () => {
       console.error("Error fetching threads:", error);
     }
   };
+  
 
   function timeAgo(date) {
     const seconds = Math.floor((new Date() - new Date(date)) / 1000);
@@ -109,6 +100,7 @@ const MainComponent = () => {
       setCurrentPage(currentPage - 1);
     }
   };
+
   const handleUserSearch = async (e) => {
     if (e.key === "Enter") {
       const query = e.target.value.trim();
@@ -141,7 +133,6 @@ const MainComponent = () => {
           <nav className="course-navigation">
             <div className="Left-Side-bar-cards">
               <div className="home_Section">
-                {/* <h3>Editor's Choices</h3> */}
                 <div className="card">
                   <i className="fa fa-home" />
                   <div className="card-details">
@@ -153,7 +144,6 @@ const MainComponent = () => {
 
             <div className="Left-Side-bar-cards">
               <div className="questions_section">
-                {/* <h3>Editor's Choices</h3> */}
                 <div className="card">
                   <i className="fa-solid fa-layer-group" />
                   <div className="card-details">
@@ -165,7 +155,6 @@ const MainComponent = () => {
 
             <div className="Left-Side-bar-cards">
               <div className="tags_section">
-                {/* <h3>Editor's Choices</h3> */}
                 <div className="card">
                   <i className="fa-solid fa-hashtag"></i>
                   <div className="card-details">
@@ -177,7 +166,6 @@ const MainComponent = () => {
 
             <div className="Left-Side-bar-cards">
               <div className="company_names">
-                {/* <h3>Editor's Choices</h3> */}
                 <div className="card">
                   <i className="fa-regular fa-building"></i>
                   <div className="card-details">
@@ -195,6 +183,7 @@ const MainComponent = () => {
               type="text"
               placeholder="Add a new thread"
               className="add-thread-input"
+              // onKeyPress={handleUserSearch}
             />
             <button
               className="add-thread-button"
@@ -299,10 +288,8 @@ const MainComponent = () => {
           </div>
         </section>
         <section className="right-sidebar">
-          {/* <aside className="right-sidebar"> */}
           <div className="Side-bar-cards">
             <div className="editors-choices">
-              {/* <h3>Editor's Choices</h3> */}
               <div className="card">
                 <img src="editors-choice-1.png" alt="Editor's Choice 1" />
                 <div className="card-details">
@@ -315,7 +302,6 @@ const MainComponent = () => {
 
           <div className="Side-bar-cards">
             <div className="most-liked">
-              {/* <h3>Editor's Choices</h3> */}
               <div className="card">
                 <img src="editors-choice-1.png" alt="Editor's Choice 1" />
                 <div className="card-details">
@@ -328,7 +314,6 @@ const MainComponent = () => {
 
           <div className="Side-bar-cards">
             <div className="top-companies">
-              {/* <h3>Editor's Choices</h3> */}
               <div className="card">
                 <img src="editors-choice-1.png" alt="Editor's Choice 1" />
                 <div className="card-details">
