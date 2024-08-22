@@ -14,6 +14,18 @@ const MainComponent = () => {
   const [hasPrevPage, setHasPrevPage] = useState(false);
   const { isDarkMode } = useTheme();
 
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [answers, setAnswers] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const questions = [
+    "What company?",
+    "What position?",
+    "What was the interview process?",
+    // Add more questions as needed
+  ];
+
   useEffect(() => {
     fetchThreads(currentPage);
   }, [currentPage]);
@@ -69,6 +81,18 @@ const MainComponent = () => {
     const years = Math.floor(months / 12);
     return years + (years === 1 ? " year ago" : " years ago");
   }
+
+  const handleSubmit = () => {
+    setIsSubmitting(true);
+    // Simulating an API call
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setIsDropdownOpen(false);
+      // Here you would typically send the answers to your backend
+      console.log(answers);
+    }, 2000);
+  };
+  
 
   const handleRedirect = () => {
     navigate("/create-question");
@@ -148,10 +172,35 @@ const MainComponent = () => {
               placeholder="Add a new thread"
               className="add-thread-input"
             />
-            <button className="add-thread-button" onClick={handleRedirect}>
-              <i className="fa-solid fa-plus"></i>
-            </button>
+            <button className="add-thread-button" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+  <i className="fa-solid fa-plus"></i>
+</button>
           </div>
+          {isDropdownOpen && (
+  <div className="dropdown-content" key={currentQuestion}>
+    <h3>{questions[currentQuestion]}</h3>
+    {currentQuestion < questions.length - 1 ? (
+      <input
+        type="text"
+        value={answers[currentQuestion] || ''}
+        onChange={(e) => setAnswers({...answers, [currentQuestion]: e.target.value})}
+      />
+    ) : (
+      <textarea
+        value={answers[currentQuestion] || ''}
+        onChange={(e) => setAnswers({...answers, [currentQuestion]: e.target.value})}
+        placeholder="Write your interview experience here..."
+      />
+    )}
+    {currentQuestion < questions.length - 1 ? (
+      <button onClick={() => setCurrentQuestion(currentQuestion + 1)}>Next</button>
+    ) : (
+      <button onClick={handleSubmit}>Submit</button>
+    )}
+  </div>
+)}
+
+
           {threads.map((thread) => (
             <div key={thread._id} className="thread-card">
               <h3 className="thread-title">{thread.question}</h3>
