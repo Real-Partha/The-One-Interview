@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useTheme } from "../../ThemeContext";
-import CreateQuestionPage from "../CreateQuestionPage/CreateQuestionPage";
 import { Link } from "react-router-dom";
+import CreateQuestionPage from "../Posts/CreateQuestionPage";
 
 const MainComponent = () => {
   const navigate = useNavigate();
@@ -185,48 +185,21 @@ const MainComponent = () => {
               className="add-thread-input"
               // onKeyPress={handleUserSearch}
             />
-            <button
-              className="add-thread-button"
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            >
+           <button className="add-thread-button" onClick={() => setShowCreateQuestion(!showCreateQuestion)}>
               <i className="fa-solid fa-plus"></i>
             </button>
           </div>
-          {isDropdownOpen && (
-            <div className="dropdown-content" key={currentQuestion}>
-              <h3>{questions[currentQuestion]}</h3>
-              {currentQuestion < questions.length - 1 ? (
-                <input
-                  type="text"
-                  value={answers[currentQuestion] || ""}
-                  onChange={(e) =>
-                    setAnswers({
-                      ...answers,
-                      [currentQuestion]: e.target.value,
-                    })
-                  }
-                />
-              ) : (
-                <textarea
-                  value={answers[currentQuestion] || ""}
-                  onChange={(e) =>
-                    setAnswers({
-                      ...answers,
-                      [currentQuestion]: e.target.value,
-                    })
-                  }
-                  placeholder="Write your interview experience here..."
-                />
-              )}
-              {currentQuestion < questions.length - 1 ? (
-                <button onClick={() => setCurrentQuestion(currentQuestion + 1)}>
-                  Next
-                </button>
-              ) : (
-                <button onClick={handleSubmit}>Submit</button>
-              )}
-            </div>
-          )}
+          <div
+            className={`create-question-animation ${
+              showCreateQuestion ? "show" : ""
+            }`}
+          >
+            {showCreateQuestion && (
+              <div className="rolling">
+                <CreateQuestionPage />
+              </div>
+            )}
+          </div>
 
           {threads.map((thread) => (
             <Link
