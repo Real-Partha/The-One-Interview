@@ -39,10 +39,12 @@ body {
 .navbar-center {
   display: flex;
   align-items: center;
-  padding: 12px 15px;
+  justify-content: space-between;
+  padding: 12px 17px;
   border-radius: 20px;
   border: 1px solid #ccc;
   font-family: 'Montserrat', sans-serif;
+  width: 35%;
 }
 
 .search-input {

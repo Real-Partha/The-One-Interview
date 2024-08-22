@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { useTheme } from "../../ThemeContext";
 import { Link } from "react-router-dom";
 import CreateQuestionPage from "../Posts/CreateQuestionPage";
+import { Typewriter } from "react-simple-typewriter";
+
 
 const MainComponent = () => {
   const navigate = useNavigate();
@@ -16,6 +18,7 @@ const MainComponent = () => {
   const [hasPrevPage, setHasPrevPage] = useState(false);
   const { isDarkMode } = useTheme();
   const [showCreateQuestion, setShowCreateQuestion] = useState(false);
+
 
   useEffect(() => {
     fetchThreads(currentPage);
@@ -178,17 +181,25 @@ const MainComponent = () => {
           <button className="join-class">Join a new Community</button>
         </aside>
         <section className="threads">
-          <div className="add-thread-container">
-            <input
-              type="text"
-              placeholder="Add a new thread"
-              className="add-thread-input"
-              // onKeyPress={handleUserSearch}
-            />
-           <button className="add-thread-button" onClick={() => setShowCreateQuestion(!showCreateQuestion)}>
-              <i className="fa-solid fa-plus"></i>
-            </button>
-          </div>
+        <div className="add-thread-container">
+  <div className="add-thread-input">
+    <Typewriter
+      words={["ADD A NEW QUESTION"]}
+      loop={true}
+      cursor
+      cursorStyle="|"
+      typeSpeed={70}
+      deleteSpeed={50}
+      delaySpeed={1000}
+    />
+  </div>
+  <button
+    className="add-thread-button"
+    onClick={() => setShowCreateQuestion(!showCreateQuestion)}
+  >
+    <i className="fa-solid fa-plus"></i>
+  </button>
+</div>
           <div
             className={`create-question-animation ${
               showCreateQuestion ? "show" : ""
