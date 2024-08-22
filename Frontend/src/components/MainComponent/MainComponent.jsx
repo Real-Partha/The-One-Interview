@@ -7,25 +7,46 @@ import { useEffect, useState } from "react";
 const MainComponent = () => {
   const navigate = useNavigate();
   const [threads, setThreads] = useState([]);
-  useEffect(() => {
-    const fetchThreads = async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/home/question`,
-          {
-            params: { pageno: 1 },
-          }
-        );
-        setThreads(response.data.questions);
-      } catch (error) {
-        console.error("Error fetching threads:", error);
-      }
-    };
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [hasNextPage, setHasNextPage] = useState(false);
+  const [hasPrevPage, setHasPrevPage] = useState(false);
 
-    fetchThreads();
-  }, []);
+  useEffect(() => {
+    fetchThreads(currentPage);
+  }, [currentPage]);
+
+  const fetchThreads = async (page) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/home/question`,
+        {
+          params: { page: page },
+        }
+      );
+      setThreads(response.data.questions);
+      setTotalPages(response.data.totalPages);
+      setHasNextPage(response.data.hasNextPage);
+      setHasPrevPage(response.data.hasPrevPage);
+    } catch (error) {
+      console.error("Error fetching threads:", error);
+    }
+  };
+
   const handleRedirect = () => {
     navigate("/create-question");
+  };
+
+  const handleNextPage = () => {
+    if (hasNextPage) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (hasPrevPage) {
+      setCurrentPage(currentPage - 1);
+    }
   };
 
   return (
@@ -120,6 +141,17 @@ const MainComponent = () => {
             </div>
           </div>
         ))}
+        <div className="pagination">
+          <button onClick={handlePrevPage} disabled={!hasPrevPage}>
+            Previous
+          </button>
+          <span>
+            Page {currentPage} of {totalPages}
+          </span>
+          <button onClick={handleNextPage} disabled={!hasNextPage}>
+            Next
+          </button>
+        </div>
       </section>
       <section className="right-sidebar">
         {/* <aside className="right-sidebar"> */}
