@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import "./NavBar.css";
+import { useTheme } from "../../ThemeContext";
 
 const NavBar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { isDarkMode, toggleTheme } = useTheme();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
   return (
-    <div>
+    <div className={isDarkMode ? "dark-mode" : "light-mode"}>
       <nav className="navbar">
         <div className="navbar-left">
           <img
@@ -31,6 +33,9 @@ const NavBar = () => {
           </button>
         </div>
         <div className="navbar-right">
+          <button onClick={toggleTheme} className="theme-toggle">
+            {isDarkMode ? "☀️" : "🌙"}
+          </button>
           <a href="/login" className="nav-link">
             Login
           </a>
@@ -38,39 +43,32 @@ const NavBar = () => {
             Register
           </a>
           <i className="notifications fa fa-bell"></i>
-          <i
-            className="fas fa-user-circle profile"
-            onClick={toggleSidebar}
-          ></i>
+          <i className="fas fa-user-circle profile" onClick={toggleSidebar}></i>
         </div>
       </nav>
 
       <div className={`profile-dropdown ${isSidebarOpen ? "open" : ""}`}>
         <div className="user-info">
-          <img
-            src="user-pic.png"
-            alt="Profile Pic"
-            className="user-pic"
-          />
+          <img src="user-pic.png" alt="Profile Pic" className="user-pic" />
           <h4>Dedipya Goswami</h4>
           <p>AP21110010650</p>
           <p>+91-9832994010</p>
           <p>Logged in via Google </p>
         </div>
         <div className="profile-settings">
-      <a href="#">
-        <i className="fas fa-user-cog"></i>Account Settings
-      </a>
-      <a href="#">
-        <i className="fas fa-shield-alt"></i>Privacy Settings
-      </a>
-      <a href="#">
-        <i className="fas fa-key"></i>Change Password
-      </a>
-      <a href="#">
-        <i className="fas fa-sign-out-alt"></i>Logout
-      </a>
-    </div>
+          <a href="#">
+            <i className="fas fa-user-cog"></i>Account Settings
+          </a>
+          <a href="#">
+            <i className="fas fa-shield-alt"></i>Privacy Settings
+          </a>
+          <a href="#">
+            <i className="fas fa-key"></i>Change Password
+          </a>
+          <a href="#">
+            <i className="fas fa-sign-out-alt"></i>Logout
+          </a>
+        </div>
       </div>
     </div>
   );

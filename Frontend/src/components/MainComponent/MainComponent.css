@@ -362,6 +362,124 @@
   margin: 0 10px;
 }
 
+
+/* MainComponent.css - Dark Mode Styles */
+.dark-mode .main-content {
+  background-color: #1E1E1E; /* Darker Charcoal */
+  color: #D3D3D3; /* Light Gray */
+  padding: 0;
+}
+
+.dark-mode .sidebar {
+  background-color: #252525; /* Dark Gray */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.dark-mode .join-class {
+  background-color: #9966CC; /* Amethyst */
+  color: #FFFFFF; /* White */
+}
+
+.dark-mode .threads {
+  background-color: #1E1E1E; /* Darker Charcoal */
+}
+
+.dark-mode .thread-card {
+  background-color: #2E2E2E; /* Slightly Lighter Charcoal */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.dark-mode .thread-title {
+  color: #FFFFFF; /* White */
+}
+
+.dark-mode .thread-meta {
+  color: #AAAAAA; /* Light Silver */
+}
+
+.dark-mode .thread-meta .username {
+  color: #FFFFFF; /* White */
+}
+
+.dark-mode .thread-description {
+  color: #CCCCCC; /* Light Silver */
+}
+
+.dark-mode .tag {
+  background-color: rgba(153, 102, 204, 0.2); /* Amethyst with opacity */
+  color: #9966CC; /* Amethyst */
+}
+
+.dark-mode .thread-company span, 
+.dark-mode .thread-category span {
+  background-color: rgba(153, 102, 204, 0.2); /* Amethyst with opacity */
+  color: #FFFFFF; /* White */
+}
+
+.dark-mode .add-response {
+  background-color: #444454; /* Darker Gray */
+  color: #FFFFFF; /* White */
+}
+
+.dark-mode .vote-buttons i {
+  color: #AAAAAA; /* Light Silver */
+}
+
+.dark-mode .vote-buttons i:hover {
+  color: #FF6F61; /* Bright Coral */
+}
+
+.dark-mode .right-sidebar {
+  background-color: #252525; /* Dark Gray */
+}
+
+.dark-mode .card {
+  background-color: #3B3B3B; /* Darker Charcoal */
+}
+
+.dark-mode .card:hover {
+  background-color: #4B4B4B; /* Slightly Lighter Charcoal */
+}
+
+.dark-mode .card-details h4 {
+  color: #FFFFFF; /* White */
+}
+
+.dark-mode .card-details p {
+  color: #CCCCCC; /* Light Silver */
+}
+
+.dark-mode .add-thread-container {
+  background-color: #3B3B3B; /* Darker Charcoal */
+}
+
+.dark-mode .add-thread-input {
+  color: #D3D3D3; /* Light Gray */
+}
+
+.dark-mode .add-thread-input::placeholder {
+  color: #AAAAAA; /* Light Silver */
+}
+
+.dark-mode .add-thread-button {
+  background-color: #9966CC; /* Amethyst */
+}
+
+.dark-mode .add-thread-button:hover {
+  background-color: #8A4FD0; /* Darker Amethyst */
+}
+
+.dark-mode .pagination button {
+  background-color: #3B3B3B; /* Darker Charcoal */
+  border: 1px solid #555;
+  color: #D3D3D3; /* Light Gray */
+}
+
+.dark-mode .pagination span {
+  color: #D3D3D3; /* Light Gray */
+}
+
+
  
 /* Dark theme component css  */
 
