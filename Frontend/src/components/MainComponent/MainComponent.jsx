@@ -88,7 +88,7 @@ const MainComponent = () => {
 
   return (
     <div className={`main-content ${isDarkMode ? "dark-mode" : "light-mode"}`}>
-      <div className="main-content">
+      
         <aside className="sidebar">
           <nav className="course-navigation">
             <div className="Left-Side-bar-cards">
@@ -253,7 +253,6 @@ const MainComponent = () => {
 
         {/* </aside> */}
       </div>
-    </div>
   );
 };
 

@@ -148,7 +148,7 @@
     /* background-color: #ffffff; */
     padding: 15px;
     border-radius: 15px;
-    display: flex;
+    /* display: flex; */
     flex-wrap: wrap;
     justify-content: center;
     align-items: flex-start;
@@ -176,7 +176,7 @@
   }
 
   .Side-bar-cards {
-    margin-bottom: 20px;
+    margin-bottom: 50px;
   }
   
   .card {
