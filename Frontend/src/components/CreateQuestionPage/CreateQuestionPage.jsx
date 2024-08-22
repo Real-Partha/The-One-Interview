@@ -2,7 +2,7 @@ import { useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import './CreateQuestionPage.css';
-
+import { useTheme } from '../../ThemeContext';
 const CreateQuestionPage = () => {
   const [formData, setFormData] = useState({
     companyName: '',
@@ -11,6 +11,8 @@ const CreateQuestionPage = () => {
     role: '',
     experience: ''
   });
+
+  const { isDarkMode } = useTheme();
 
   const handleChange = (value, field) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -34,7 +36,7 @@ const CreateQuestionPage = () => {
           onChange={(e) => handleChange(e.target.value, 'companyName')}
         />
       </div>
-      <div className="form-group">
+      {/* <div className="form-group">
         <label htmlFor="rounds">No of Rounds:</label>
         <input
           type="number"
@@ -43,17 +45,21 @@ const CreateQuestionPage = () => {
           value={formData.rounds}
           onChange={(e) => handleChange(e.target.value, 'rounds')}
         />
-      </div>
+      </div> */}
       <div className="form-group">
-        <label htmlFor="location">On-Campus / Off-Campus:</label>
+        <label htmlFor="location">In which Round can the Question be Expected? </label>
         <select
           id="location"
-          className="form-control"
+          className="form-control special-form-control"
           value={formData.location}
           onChange={(e) => handleChange(e.target.value, 'location')}
         >
-          <option value="on-campus">On-Campus</option>
-          <option value="off-campus">Off-Campus</option>
+          <option value="techinterview">Technical Interviews</option>
+          <option value="hrinterview">HR Interviews</option>
+          <option value="aptitide">Aptitude</option>
+        <option value="onlinecoding">Online Coding Round</option>        
+        <option value="general">General</option>        
+
         </select>
       </div>
       <div className="form-group">
@@ -67,7 +73,17 @@ const CreateQuestionPage = () => {
         />
       </div>
       <div className="form-group">
-        <label htmlFor="experience">Experience:</label>
+        <label htmlFor="Question">What was the Question asked?</label>
+        <input
+          type="text"
+          id="question"
+          className="form-control"
+          value={formData.question}
+          onChange={(e) => handleChange(e.target.value, 'question')}
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="experience">What should be the Perfect Answer? </label>
         <ReactQuill
           theme="snow"
           value={formData.experience}

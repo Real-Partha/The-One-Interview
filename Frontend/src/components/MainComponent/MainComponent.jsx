@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useTheme } from "../../ThemeContext";
+import CreateQuestionPage from "../CreateQuestionPage/CreateQuestionPage";
 
 const MainComponent = () => {
   const navigate = useNavigate();
@@ -13,18 +14,7 @@ const MainComponent = () => {
   const [hasNextPage, setHasNextPage] = useState(false);
   const [hasPrevPage, setHasPrevPage] = useState(false);
   const { isDarkMode } = useTheme();
-
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const questions = [
-    "What company?",
-    "What position?",
-    "What was the interview process?",
-    // Add more questions as needed
-  ];
+  const [showCreateQuestion, setShowCreateQuestion] = useState(false);
 
   useEffect(() => {
     fetchThreads(currentPage);
@@ -46,6 +36,7 @@ const MainComponent = () => {
       console.error("Error fetching threads:", error);
     }
   };
+  
 
   function timeAgo(date) {
     const seconds = Math.floor((new Date() - new Date(date)) / 1000);
@@ -82,18 +73,6 @@ const MainComponent = () => {
     return years + (years === 1 ? " year ago" : " years ago");
   }
 
-  const handleSubmit = () => {
-    setIsSubmitting(true);
-    // Simulating an API call
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsDropdownOpen(false);
-      // Here you would typically send the answers to your backend
-      console.log(answers);
-    }, 2000);
-  };
-  
-
   const handleRedirect = () => {
     navigate("/create-question");
   };
@@ -109,6 +88,7 @@ const MainComponent = () => {
       setCurrentPage(currentPage - 1);
     }
   };
+
   const handleUserSearch = async (e) => {
     if (e.key === "Enter") {
       const query = e.target.value.trim();
@@ -141,7 +121,6 @@ const MainComponent = () => {
           <nav className="course-navigation">
             <div className="Left-Side-bar-cards">
               <div className="home_Section">
-                {/* <h3>Editor's Choices</h3> */}
                 <div className="card">
                   <i className="fa fa-home" />
                   <div className="card-details">
@@ -153,7 +132,6 @@ const MainComponent = () => {
 
             <div className="Left-Side-bar-cards">
               <div className="questions_section">
-                {/* <h3>Editor's Choices</h3> */}
                 <div className="card">
                   <i className="fa-solid fa-layer-group" />
                   <div className="card-details">
@@ -165,7 +143,6 @@ const MainComponent = () => {
 
             <div className="Left-Side-bar-cards">
               <div className="tags_section">
-                {/* <h3>Editor's Choices</h3> */}
                 <div className="card">
                   <i className="fa-solid fa-hashtag"></i>
                   <div className="card-details">
@@ -177,7 +154,6 @@ const MainComponent = () => {
 
             <div className="Left-Side-bar-cards">
               <div className="company_names">
-                {/* <h3>Editor's Choices</h3> */}
                 <div className="card">
                   <i className="fa-regular fa-building"></i>
                   <div className="card-details">
@@ -195,35 +171,25 @@ const MainComponent = () => {
               type="text"
               placeholder="Add a new thread"
               className="add-thread-input"
+              // onKeyPress={handleUserSearch}
             />
-            <button className="add-thread-button" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-  <i className="fa-solid fa-plus"></i>
-</button>
+            <button className="add-thread-button" onClick={() => setShowCreateQuestion(!showCreateQuestion)}>
+              <i className="fa-solid fa-plus"></i>
+            </button>
           </div>
-          {isDropdownOpen && (
-  <div className="dropdown-content" key={currentQuestion}>
-    <h3>{questions[currentQuestion]}</h3>
-    {currentQuestion < questions.length - 1 ? (
-      <input
-        type="text"
-        value={answers[currentQuestion] || ''}
-        onChange={(e) => setAnswers({...answers, [currentQuestion]: e.target.value})}
-      />
-    ) : (
-      <textarea
-        value={answers[currentQuestion] || ''}
-        onChange={(e) => setAnswers({...answers, [currentQuestion]: e.target.value})}
-        placeholder="Write your interview experience here..."
-      />
-    )}
-    {currentQuestion < questions.length - 1 ? (
-      <button onClick={() => setCurrentQuestion(currentQuestion + 1)}>Next</button>
-    ) : (
-      <button onClick={handleSubmit}>Submit</button>
-    )}
-  </div>
-)}
 
+
+          <div
+            className={`create-question-animation ${
+              showCreateQuestion ? "show" : ""
+            }`}
+          >
+            {showCreateQuestion && (
+              <div className="rolling">
+                <CreateQuestionPage />
+              </div>
+            )}
+          </div>
 
           {threads.map((thread) => (
             <div key={thread._id} className="thread-card">
@@ -283,10 +249,8 @@ const MainComponent = () => {
           </div>
         </section>
         <section className="right-sidebar">
-          {/* <aside className="right-sidebar"> */}
           <div className="Side-bar-cards">
             <div className="editors-choices">
-              {/* <h3>Editor's Choices</h3> */}
               <div className="card">
                 <img src="editors-choice-1.png" alt="Editor's Choice 1" />
                 <div className="card-details">
@@ -299,7 +263,6 @@ const MainComponent = () => {
 
           <div className="Side-bar-cards">
             <div className="most-liked">
-              {/* <h3>Editor's Choices</h3> */}
               <div className="card">
                 <img src="editors-choice-1.png" alt="Editor's Choice 1" />
                 <div className="card-details">
@@ -312,7 +275,6 @@ const MainComponent = () => {
 
           <div className="Side-bar-cards">
             <div className="top-companies">
-              {/* <h3>Editor's Choices</h3> */}
               <div className="card">
                 <img src="editors-choice-1.png" alt="Editor's Choice 1" />
                 <div className="card-details">
@@ -323,9 +285,8 @@ const MainComponent = () => {
             </div>
           </div>
         </section>
-
-        {/* </aside> */}
       </div>
+    </div>
   );
 };
 

@@ -20,7 +20,7 @@ function App() {
                 <div>
                   <Home />
                   <MainContent />
-                  <CreateQuestionPage />
+                  {/* <CreateQuestionPage /> */}
                 </div>
               }
             />
