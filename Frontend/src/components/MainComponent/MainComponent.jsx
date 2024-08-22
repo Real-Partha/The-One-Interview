@@ -326,6 +326,7 @@ const MainComponent = () => {
 
         {/* </aside> */}
       </div>
+      </div>
   );
 };
 
