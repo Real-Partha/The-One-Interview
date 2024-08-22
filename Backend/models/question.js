@@ -48,6 +48,7 @@ const questionSchema = new mongoose.Schema({
     }
 });
 
+questionSchema.index({ question: 'text', answer: 'text' });
 const Question = mongoose.model('Question', questionSchema);
 
 module.exports = Question;

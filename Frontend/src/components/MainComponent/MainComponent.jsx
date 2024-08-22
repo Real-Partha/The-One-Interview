@@ -85,6 +85,30 @@ const MainComponent = () => {
       setCurrentPage(currentPage - 1);
     }
   };
+  const handleUserSearch = async (e) => {
+    if (e.key === "Enter") {
+      const query = e.target.value.trim();
+      if (!query) {
+        alert("Please type something to search.");
+        return;
+      }
+
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/home/questionsearch`,
+          {
+            params: { query: query },
+          }
+        );
+        setThreads(response.data.questions);
+        setTotalPages(response.data.totalPages);
+        setHasNextPage(response.data.hasNextPage);
+        setHasPrevPage(response.data.hasPrevPage);
+      } catch (error) {
+        console.error("Error fetching threads:", error);
+      }
+    }
+  };
 
   return (
     <div className={`${isDarkMode ? "dark-mode" : "light-mode"}`}>
@@ -151,6 +175,9 @@ const MainComponent = () => {
             <button className="add-thread-button" onClick={handleRedirect}>
               <i className="fa-solid fa-plus"></i>
             </button>
+          </div>
+          <div>
+            <input type="text" onKeyDown={handleUserSearch} />
           </div>
           {threads.map((thread) => (
             <div key={thread._id} className="thread-card">

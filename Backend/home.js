@@ -50,6 +50,92 @@ router.get("/question", async (req, res) => {
     }
 });
 
+router.get("/questionsearch", async (req, res) => {
+    try {
+        const search = req.query.query || "";
+        const page = parseInt(req.query.page) || 1;
+        const limit = 10;
+        const skip = (page - 1) * limit;
+
+        let mainSearchTerm = search;
+        let hashtagKeyword = "";
+
+        if (search.includes("#")) {
+            const parts = search.split("#");
+            mainSearchTerm = parts[0].trim();
+            hashtagKeyword = parts[1].trim();
+        }
+
+        const searchQueries = [];
+
+        if (mainSearchTerm && hashtagKeyword) {
+            searchQueries.push(
+                Question.find(
+                    { $text: { $search: mainSearchTerm }, tags: hashtagKeyword },
+                    { score: { $meta: "textScore" } }
+                ).sort({ score: { $meta: "textScore" } }).lean()
+            );
+        }
+
+        if (mainSearchTerm) {
+            searchQueries.push(
+                Question.find(
+                    { $text: { $search: mainSearchTerm } },
+                    { score: { $meta: "textScore" } }
+                ).sort({ score: { $meta: "textScore" } }).lean()
+            );
+        }
+
+        if (hashtagKeyword) {
+            searchQueries.push(
+                Question.find(
+                    { tags: hashtagKeyword }
+                ).lean()
+            );
+        }
+
+        const [mainAndTagResults, mainResults, tagResults] = await Promise.all(searchQueries);
+
+        const combinedResults = [
+            ...(mainAndTagResults || []),
+            ...(mainResults || []),
+            ...(tagResults || [])
+        ];
+
+        const totalQuestions = combinedResults.length;
+        const totalPages = Math.ceil(totalQuestions / limit);
+        const paginatedResults = combinedResults.slice(skip, skip + limit);
+
+        const userIds = paginatedResults.map(q => q.user_id);
+        const users = await User.find({ _id: { $in: userIds } }, { _id: 1, username: 1 }).lean();
+        const userMap = users.reduce((acc, user) => {
+            acc[user._id.toString()] = user.username;
+            return acc;
+        }, {});
+
+        const questionsWithUsernames = await Promise.all(paginatedResults.map(async (question) => {
+            const profilepic = await User.findOne({ _id: question.user_id }).select('profile_pic -_id');
+            const profilePicUrl = await getSignedUrlForObject(profilepic.toObject().profile_pic);
+            return {
+                ...question,
+                username: userMap[question.user_id.toString()] || 'Unknown User',
+                profile_pic: profilePicUrl
+            };
+        }));
+
+        return res.status(200).send({
+            questions: questionsWithUsernames,
+            currentPage: page,
+            totalPages: totalPages,
+            hasNextPage: page < totalPages,
+            hasPrevPage: page > 1
+        });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send({ questions: [], error: 'An error occurred while fetching questions' });
+    }
+});
+
 
 router.delete("/question", async(req, res) => {
     try{
