@@ -2,45 +2,54 @@
 import "./MainComponent.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useTheme } from "../../ThemeContext";
 import { Link } from "react-router-dom";
 import CreateQuestionPage from "../Posts/CreateQuestionPage";
 import { Typewriter } from "react-simple-typewriter";
-
+import { debounce } from "lodash";
 
 const MainComponent = () => {
   const navigate = useNavigate();
   const [threads, setThreads] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(null);
   const [totalPages, setTotalPages] = useState(1);
   const [hasNextPage, setHasNextPage] = useState(false);
   const [hasPrevPage, setHasPrevPage] = useState(false);
   const { isDarkMode } = useTheme();
   const [showCreateQuestion, setShowCreateQuestion] = useState(false);
 
+  const fetchThreads = useCallback(async (page) => {
+    if (page) {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/questions`,
+          {
+            params: { page: page },
+          }
+        );
+        setThreads(response.data.questions);
+        setTotalPages(response.data.totalPages);
+        setHasNextPage(response.data.hasNextPage);
+        setHasPrevPage(response.data.hasPrevPage);
+      } catch (error) {
+        console.error("Error fetching threads:", error);
+      }
+    }
+  }, []);
 
   useEffect(() => {
-    fetchThreads(currentPage);
-  }, [currentPage]);
-
-  const fetchThreads = async (page) => {
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/questions`,
-        {
-          params: { page: page },
-        }
-      );
-      setThreads(response.data.questions);
-      setTotalPages(response.data.totalPages);
-      setHasNextPage(response.data.hasNextPage);
-      setHasPrevPage(response.data.hasPrevPage);
-    } catch (error) {
-      console.error("Error fetching threads:", error);
+    const savedPage = getPageWithExpiration();
+    if (savedPage) {
+      setCurrentPage(parseInt(savedPage, 10));
+    } else {
+      setCurrentPage(1);
     }
-  };
-  
+    fetchThreads(savedPage ? parseInt(savedPage, 10) : 1);
+  }, []);
+  useEffect(() => {
+    fetchThreads(currentPage);
+  }, [currentPage, fetchThreads]);
 
   function timeAgo(date) {
     const seconds = Math.floor((new Date() - new Date(date)) / 1000);
@@ -92,16 +101,56 @@ const MainComponent = () => {
     navigate("/create-question");
   };
 
-  const handleNextPage = () => {
-    if (hasNextPage) {
-      setCurrentPage(currentPage + 1);
-    }
+  const setPageWithExpiration = (page) => {
+    const now = new Date().getTime();
+    const item = {
+      value: page,
+      expiry: now + 5 * 60 * 1000, // 15 minutes from now
+    };
+    localStorage.setItem("currentPage", JSON.stringify(item));
   };
 
-  const handlePrevPage = () => {
-    if (hasPrevPage) {
-      setCurrentPage(currentPage - 1);
+  const getPageWithExpiration = () => {
+    const itemStr = localStorage.getItem("currentPage");
+    if (!itemStr) {
+      return null;
     }
+    const item = JSON.parse(itemStr);
+    const now = new Date().getTime();
+    if (now > item.expiry) {
+      localStorage.removeItem("currentPage");
+      return null;
+    }
+    return item.value;
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const debouncedScrollToTop = useCallback(debounce(scrollToTop, 300), []);
+
+  const handleNextPage = useCallback(() => {
+    if (hasNextPage) {
+      const newPage = currentPage + 1;
+      setCurrentPage(newPage);
+      setPageWithExpiration(newPage.toString());
+      debouncedScrollToTop();
+    }
+  }, [hasNextPage, currentPage, debouncedScrollToTop]);
+
+  const handlePrevPage = useCallback(() => {
+    if (hasPrevPage) {
+      const newPage = currentPage - 1;
+      setCurrentPage(newPage);
+      setPageWithExpiration(newPage.toString());
+      debouncedScrollToTop();
+    }
+  }, [hasPrevPage, currentPage, debouncedScrollToTop]);
+
+  const resetPage = () => {
+    setCurrentPage(1);
+    setPageWithExpiration('1');
   };
 
   const handleUserSearch = async (e) => {
@@ -113,6 +162,7 @@ const MainComponent = () => {
       }
 
       try {
+        resetPage();
         const response = await axios.get(
           `${import.meta.env.VITE_API_URL}/questionsearch`,
           {
@@ -181,25 +231,25 @@ const MainComponent = () => {
           <button className="join-class">Join a new Community</button>
         </aside>
         <section className="threads">
-        <div className="add-thread-container">
-  <div className="add-thread-input">
-    <Typewriter
-      words={["ADD A NEW QUESTION"]}
-      loop={true}
-      cursor
-      cursorStyle="|"
-      typeSpeed={70}
-      deleteSpeed={50}
-      delaySpeed={1000}
-    />
-  </div>
-  <button
-    className="add-thread-button"
-    onClick={() => setShowCreateQuestion(!showCreateQuestion)}
-  >
-    <i className="fa-solid fa-plus"></i>
-  </button>
-</div>
+          <div className="add-thread-container">
+            <div className="add-thread-input">
+              <Typewriter
+                words={["ADD A NEW QUESTION"]}
+                loop={true}
+                cursor
+                cursorStyle="|"
+                typeSpeed={70}
+                deleteSpeed={50}
+                delaySpeed={1000}
+              />
+            </div>
+            <button
+              className="add-thread-button"
+              onClick={() => setShowCreateQuestion(!showCreateQuestion)}
+            >
+              <i className="fa-solid fa-plus"></i>
+            </button>
+          </div>
           <div
             className={`create-question-animation ${
               showCreateQuestion ? "show" : ""
@@ -217,6 +267,8 @@ const MainComponent = () => {
               to={`/question/${thread._id}`}
               key={thread._id}
               className="thread-card-link"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               <div className="thread-card">
                 <h3 className="thread-title">{thread.question}</h3>

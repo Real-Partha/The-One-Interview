@@ -41,6 +41,7 @@
     width: 60%;
     margin: 0 20px;
     margin-right: -8px;
+    border-radius: 30px;
   }
   
   .thread-card {
@@ -410,25 +411,39 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
 .pagination button {
   margin: 0 10px;
-  padding: 5px 10px;
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
-  border-radius: 3px;
+  padding: 10px 20px;
+  background-color: #6c63ff;
+  color: #ffffff;
+  border: none;
+  border-radius: 25px;
   cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(108, 99, 255, 0.2);
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: #5a48cc;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
 }
 
 .pagination button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  background-color: #d1d1d1;
 }
 
 .pagination span {
-  margin: 0 10px;
+  margin: 0 15px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
 }
 
 /* MainComponent.css */
@@ -597,13 +612,20 @@
 }
 
 .dark-mode .pagination button {
-  background-color: #3b3b3b; /* Darker Charcoal */
-  border: 1px solid #555;
-  color: #d3d3d3; /* Light Gray */
+  background-color: #9966cc;
+  box-shadow: 0 2px 5px rgba(153, 102, 204, 0.2);
+}
+
+.dark-mode .pagination button:hover:not(:disabled) {
+  background-color: #8a4fd0;
+  box-shadow: 0 4px 8px rgba(153, 102, 204, 0.3);
+}
+
+.dark-mode .pagination button:disabled {
+  background-color: #4b4b4b;
 }
 
 .dark-mode .pagination span {
-  color: #d3d3d3; /* Light Gray */
+  color: #d3d3d3;
 }
-
 
