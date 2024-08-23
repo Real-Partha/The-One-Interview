@@ -147,8 +147,8 @@
 
   .tag {
     display: inline-block;
-    background-color: rgba(108, 99, 255, 0.1);
-    color: #6c63ff;
+    background-color: rgba(107, 99, 255, 0.733);
+    color: #3c3c3c;
     padding: 5px 10px;
     border-radius: 15px;
     font-size: 12px;
@@ -532,8 +532,9 @@
 }
 
 .dark-mode .tag {
-  background-color: rgba(153, 102, 204, 0.2); /* Amethyst with opacity */
-  color: #9966cc; /* Amethyst */
+  background-color: rgba(153, 102, 204, 0.28); /* Amethyst with opacity */
+  /* color: #9966cc; Amethyst */
+  color: #e0e0e0;
 }
 
 .dark-mode .thread-company span,
@@ -587,7 +588,10 @@
 }
 
 .dark-mode .add-thread-input {
-  color: #d3d3d3; /* Light Gray */
+  /* color: #d3d3d3; Light Gray */
+  /* color: #ff6f61 */
+  color: #9966cc;
+  font-weight: bold;
 }
 
 .dark-mode .add-thread-input::placeholder {

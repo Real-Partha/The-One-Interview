@@ -1,100 +1,48 @@
-
-/* 
-.create-question-container {
-    max-width: 800px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .form-group {
-    margin-bottom: 20px;
-  }
-  
-  .form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #333;
-  }
-  
-  .form-control {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-  }
-  
-  .form-control::placeholder {
-    color: #888;
-  }
-  
-  .btn-next {
-    background-color: #6c5ce7;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-  }
-  
-  .btn-next:hover {
-    background-color: #5a48cc;
-  } */
-
-
 .interview-experience-container {
-    max-width: 800px;
-    margin: auto;
-    padding: 20px;
-    font-weight: 600;
-    font-family: 'Montserrat', sans-serif;
-  }
-  
-  .form-group {
-    margin-bottom: 20px;
-  }
-  
-  .form-control {
-    width: 97%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-top: 10px;
-  }
-  .special-form-control{
-    width: 99.7%;
-  }
-  
-  .btn-submit {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  .btn-submit:hover {
-    background-color: #0056b3;
-  }
-
-  .ql-toolbar.ql-snow + .ql-container.ql-snow {
-    border-top: 0px;
-    height: 500px;
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  font-weight: 600;
+  font-family: "Montserrat", sans-serif;
 }
 
+.form-group {
+  margin-bottom: 20px;
+}
 
+.form-control {
+  width: 97%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+.special-form-control {
+  width: 99.7%;
+}
 
-.quill{
-    margin-top: 10px;
+.btn-submit {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.btn-submit:hover {
+  background-color: #0056b3;
+}
+
+.ql-toolbar.ql-snow + .ql-container.ql-snow {
+  border-top: 0px;
+  height: 500px;
+}
+
+.quill {
+  margin-top: 10px;
 }
 
 .tags-input-container {
@@ -116,6 +64,7 @@
   margin-right: 5px;
   display: flex;
   align-items: center;
+  margin-bottom: 5px;
 }
 
 .tag-remove {
@@ -149,10 +98,61 @@
   background-color: #0056b3;
 }
 
-  /* Dark MODE Theme  */
+/* Dark MODE Theme  */
 
-  
-  .dark-mode .create-question-animation{
-    background-color: #282828;
-    border-radius: 10px;
+.dark-mode .create-question-animation {
+  background-color: #282828;
+  border-radius: 10px;
+}
+
+/* Dark MODE Theme */
+.dark-mode .interview-experience-container {
+  background-color: #282828;
+  color: #e0e0e0;
+}
+
+.dark-mode .form-control,
+.dark-mode .ql-toolbar,
+.dark-mode .ql-container {
+  background-color: #3b3b3b;
+  color: #e0e0e0;
+  border-color: #555;
+}
+
+.dark-mode .ql-toolbar .ql-stroke {
+  stroke: #e0e0e0;
+}
+
+.dark-mode .ql-toolbar .ql-fill {
+  fill: #e0e0e0;
+}
+
+.dark-mode .ql-toolbar .ql-picker {
+  color: #e0e0e0;
+}
+
+.dark-mode .tags-input-container {
+  background-color: #3b3b3b;
+  border-color: #555;
+}
+
+.dark-mode .tag-item {
+  background-color: #ff6f61;
+}
+
+.dark-mode .tag-input {
+  color: #e0e0e0;
+}
+
+.dark-mode .btn-submit {
+  background-color: #4a4a4a;
+}
+
+.dark-mode .btn-submit:hover {
+  background-color: #5a5a5a;
+}
+
+.dark-mode .create-question-animation {
+  background-color: #282828;
+  border-radius: 10px;
 }

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useTheme } from "../../ThemeContext";
-import NavBar from "../Navbar/Navbar";
 import "./Post.css";
 
 const Post = () => {
@@ -59,7 +58,6 @@ const Post = () => {
   return (
     <div className={`${isDarkMode ? `dark-mode` : ``}`}>
       <div className="post-main">
-        <NavBar />
         <div className={`post-container ${isDarkMode ? "dark-mode" : ""}`}>
           <h1 className="post-title">{question.question}</h1>
           <div className="post-meta">

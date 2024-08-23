@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const User = require("../models/user");
+const {getSignedUrlForObject} =require('../utils/amazonS3');
 // OneID Signup
 // Local Signup
 router.post("/signup", async (req, res) => {
@@ -79,13 +80,18 @@ router.get(
   }
 );
 
-router.get("/user", (req, res) => {
-  if (req.user) {
+router.get('/status', async (req, res) => {
+  if (req.isAuthenticated()) {
     req.user = req.user.toObject();
     delete req.user.password;
-    res.json({ msg: "User is logged in", user: req.user });
+    const profilePicUrl = await getSignedUrlForObject(req.user.profile_pic);
+    req.user.profile_pic = profilePicUrl;
+    res.json({
+      isAuthenticated: true,
+      user: req.user,
+    });
   } else {
-    res.status(401).json({ msg: "User is not logged in" });
+    res.json({ isAuthenticated: false });
   }
 });
 

@@ -58,8 +58,8 @@
   
   .tag {
     display: inline-block;
-    background-color: #f0f0f0;
-    color: #333;
+    background-color: #6c5ce769;
+    color: #3c3c3c;
     padding: 5px 10px;
     border-radius: 20px;
     font-size: 12px;
@@ -145,7 +145,6 @@
   }
   
   .dark-mode .tag {
-    background-color: #333333;
     color: #e0e0e0;
   }
   
