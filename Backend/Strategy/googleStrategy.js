@@ -17,8 +17,12 @@ passport.use(
         if (user) {
           return done(null, user);
         } else {
+          const username = profile.displayName.replace(/\s/g, "").toLowerCase();
+          while (await User.findOne({ username: username })) {
+            username = username + Math.floor(Math.random() * 100);
+          }
           const newUser = new User({
-            username: "%%",
+            username: username,
             email: profile.emails[0].value,
             first_name: profile.name.givenName,
             last_name: profile.name.familyName,

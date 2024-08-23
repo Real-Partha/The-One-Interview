@@ -155,7 +155,7 @@ const MainComponent = () => {
 
   const resetPage = () => {
     setCurrentPage(1);
-    setPageWithExpiration('1');
+    setPageWithExpiration("1");
   };
 
   const { searchQuery } = useContext(SearchContext);
@@ -257,8 +257,9 @@ const MainComponent = () => {
             </button>
           </div>
           <div
-            className={`create-question-animation ${showCreateQuestion ? "show" : ""
-              }`}
+            className={`create-question-animation ${
+              showCreateQuestion ? "show" : ""
+            }`}
           >
             {showCreateQuestion && (
               <div className="rolling">
@@ -268,58 +269,66 @@ const MainComponent = () => {
           </div>
 
           {isquestionloading
-            ? Array(7).fill().map((_, index) => (
-              <ThreadSkeleton key={index} />
-            ))
+            ? Array(7)
+                .fill()
+                .map((_, index) => <ThreadSkeleton key={index} />)
             : threads.map((thread) => (
-              <Link
-                to={`/question/${thread._id}`}
-                key={thread._id}
-                className="thread-card-link"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <div className="thread-card">
-                  <h3 className="thread-title">{thread.question}</h3>
-                  <p className="thread-answer-preview">
-                    {thread.answer.slice(0, 150)}
-                    {thread.answer.length > 100 ? "..." : ""}
-                  </p>
-                  <div className="thread-info">
-                    <img
-                      src={thread.profile_pic || "/img/profile_pic.png"}
-                      alt="Profile"
-                      className="profile-pic"
-                    />
-                    <div className="thread-details">
-                      <p className="thread-meta">
-                        <span className="username">{thread.username}</span> •
-                        <span className="date">{timeAgo(thread.created_at)}</span>
-                      </p>
-                      <div className="thread-tags">
-                        {thread.tags.slice(0, 3).map((tag, index) => (
-                          <span key={index} className="tag">
-                            #{tag.toLowerCase()}
+                <Link
+                  to={`/question/${thread._id}`}
+                  key={thread._id}
+                  className="thread-card-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <div className="thread-card">
+                    <h3 className="thread-title">{thread.question}</h3>
+                    <p className="thread-answer-preview">
+                      {thread.answer.slice(0, 150)}
+                      {thread.answer.length > 100 ? "..." : ""}
+                    </p>
+                    <div className="thread-info">
+                      <img
+                        src={thread.profile_pic || "/img/profile_pic.png"}
+                        alt="Profile"
+                        className="profile-pic"
+                      />
+                      <div className="thread-details">
+                        <p className="thread-meta">
+                          <span className="username">{thread.username}</span> •
+                          <span className="date">
+                            {timeAgo(thread.created_at)}
                           </span>
-                        ))}
-                        {thread.tags.length > 3 && (
-                          <span className="tag">...</span>
-                        )}
+                        </p>
+                        <div className="thread-tags">
+                          {thread.tags.slice(0, 3).map((tag, index) => (
+                            <span key={index} className="tag">
+                              #{tag.toLowerCase()}
+                            </span>
+                          ))}
+                          {thread.tags.length > 3 && (
+                            <span className="tag">...</span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="thread-footer">
+                      <p className="view-message">
+                        Click to view detailed answer and information
+                      </p>
+                      <div className="thread-stats">
+                        <div className="thread-views">
+                          <i class="fa-solid fa-chart-line-up"></i>
+                          <span>{thread.impressions || 0} Views</span>
+                        </div>
+                        <div className="thread-comments">
+                          <i class="fa-solid fa-comments"></i>
+                          <span>{thread.commentscount || 0} Comments</span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div className="thread-footer">
-                    <p className="view-message">
-                      Click to view detailed answer and information
-                    </p>
-                    <div className="thread-views">
-                      <i className="fa-solid fa-eye"></i>
-                      <span>{thread.impressions || 0}</span>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              ))}
           <div className="pagination">
             <button onClick={handlePrevPage} disabled={!hasPrevPage}>
               Previous

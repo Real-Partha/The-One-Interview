@@ -32,7 +32,7 @@ const Post = () => {
 
   const debouncedUpvote = debounce(async () => {
     try {
-      const response  = await axios.patch(
+      const response = await axios.patch(
         `${import.meta.env.VITE_API_URL}/upvote`,
         { _id: questionId },
         { withCredentials: true }
@@ -146,8 +146,6 @@ const Post = () => {
 
   if (!question) return <div>Loading...</div>;
 
-
-
   return (
     <div className={`${isDarkMode ? `dark-mode` : ``}`}>
       <div className="post-main">
@@ -193,8 +191,7 @@ const Post = () => {
               disabled={isDebouncing}
             >
               <i className="fa-solid fa-thumbs-up"></i>{" "}
-              {userVote === "upvote" ? " Upvoted" : " Upvote"} (
-              {upvotes})
+              {userVote === "upvote" ? " Upvoted" : " Upvote"} ({upvotes})
               {debouncingButton === "upvote" && (
                 <div className="debounce-bar"></div>
               )}
@@ -214,8 +211,13 @@ const Post = () => {
               )}
             </button>
           </div>
+          <div className="post-stats">
+            <span className="view-count">
+              <i className="fas fa-eye"></i> {question.impressions || 0} Views
+            </span>
+          </div>
           <div className="comments-section">
-            <h3>Comments</h3>
+            <h3>{comments.length} Comments</h3>
             <form onSubmit={handleCommentSubmit} className="comment-form">
               <input
                 type="text"
@@ -240,7 +242,9 @@ const Post = () => {
                           alt={comment.username}
                           className="comment-profile-pic"
                         />
-                        <span className="comment-username">{comment.username}</span>
+                        <span className="comment-username">
+                          {comment.username}
+                        </span>
                       </div>
                       <span className="comment-time">
                         {formatTimeAgo(comment.created_at)}

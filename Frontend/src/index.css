@@ -1,6 +1,7 @@
 body {
   padding-top: 80px;
   transition: background-color 0.3s, color 0.3s;
+  overflow-x: hidden;
 }
 
 body.dark-mode {

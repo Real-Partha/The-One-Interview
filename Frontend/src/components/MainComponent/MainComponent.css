@@ -74,14 +74,22 @@
     font-style: italic;
   }
   
-  .thread-views {
+  .thread-stats {
+    display: flex;
+    align-items: center;
+  }
+  
+  .thread-views,
+  .thread-comments {
     display: flex;
     align-items: center;
     font-size: 14px;
     color: #666;
+    margin-left: 15px;
   }
   
-  .thread-views i {
+  .thread-views i,
+  .thread-comments i {
     margin-right: 5px;
   }
 
@@ -512,8 +520,9 @@
   color: #777;
 }
 
-.dark-mode .thread-views {
-  color: #999;
+.dark-mode .thread-views,
+.dark-mode .thread-comments {
+  color: #aaaaaa;
 }
 
 .dark-mode .thread-title {
