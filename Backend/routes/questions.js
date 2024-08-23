@@ -55,6 +55,10 @@ router.get("/questions", async (req, res) => {
 
 router.get("/question/:id", async (req, res) => {
     try {
+        if (!req.isAuthenticated()) {
+            return res.status(401).send({ error: 'User not authenticated' });
+        }
+
         const question = await Question.findOne({ _id: req.params.id }).lean();
         if (!question) {
             return res.status(400).send({ error: 'Invalid question_id' });
@@ -64,7 +68,17 @@ router.get("/question/:id", async (req, res) => {
         const profilepic = await User.findOne({ _id: question.user_id }).select('profile_pic -_id');
         const profilePicUrl = await getSignedUrlForObject(profilepic.toObject().profile_pic);
         const comments = await Comment.find({ question_id: req.params.id }).lean();
-        return res.status(200).send({ ...question, username: user.username, profile_pic: profilePicUrl, comments: comments });
+
+        const userVote = question.upvotedBy.includes(req.user._id) ? 'upvote' :
+                         question.downvotedBy.includes(req.user._id) ? 'downvote' : null;
+
+        return res.status(200).send({
+            ...question,
+            username: user.username,
+            profile_pic: profilePicUrl,
+            comments: comments,
+            userVote: userVote
+        });
     } catch (err) {
         console.error(err);
         return res.status(500).send({ error: 'An error occurred while fetching question' });
@@ -184,29 +198,71 @@ router.delete("/question", async(req, res) => {
 
 router.patch("/upvote", async (req, res) => {
     try {
-        const question = await Question.findOne({ _id: req.body._id }).lean();
+        if (!req.isAuthenticated()) {
+            return res.status(401).send({ error: 'User not authenticated' });
+        }
+
+        const { _id } = req.body;
+        const userId = req.user._id;
+
+        const question = await Question.findById(_id);
         if (!question) {
             return res.status(400).send({ error: 'Invalid question_id' });
         }
-        await Question.updateOne({ _id: req.body._id }, { $inc: { upvotes: 1 } });
-        return res.status(200).send({ status: true , message: 'Question upvoted successfully' });
+
+        const alreadyUpvoted = question.upvotedBy.includes(userId);
+        const alreadyDownvoted = question.downvotedBy.includes(userId);
+
+        if (alreadyUpvoted) {
+            return res.status(400).send({ error: 'User has already upvoted this question' });
+        }
+
+        let update = { $inc: { upvotes: 1 }, $push: { upvotedBy: userId } };
+        if (alreadyDownvoted) {
+            update.$inc.downvotes = -1;
+            update.$pull = { downvotedBy: userId };
+        }
+
+        await Question.updateOne({ _id }, update);
+        return res.status(200).send({ status: true, message: 'Question upvoted successfully' });
     } catch (err) {
         console.error(err);
-        return res.status(500).send({ status: false , error: 'An error occurred while upvoting question' });
+        return res.status(500).send({ status: false, error: 'An error occurred while upvoting question' });
     }
 });
 
 router.patch("/downvote", async (req, res) => {
     try {
-        const question = await Question.findOne({ _id: req.body._id }).lean();
+        if (!req.isAuthenticated()) {
+            return res.status(401).send({ error: 'User not authenticated' });
+        }
+
+        const { _id } = req.body;
+        const userId = req.user._id;
+
+        const question = await Question.findById(_id);
         if (!question) {
             return res.status(400).send({ error: 'Invalid question_id' });
         }
-        await Question.updateOne({ _id: req.body._id }, { $inc: { downvotes: 1 } });
-        return res.status(200).send({ status: true , message: 'Question downvoted successfully' });
+
+        const alreadyDownvoted = question.downvotedBy.includes(userId);
+        const alreadyUpvoted = question.upvotedBy.includes(userId);
+
+        if (alreadyDownvoted) {
+            return res.status(400).send({ error: 'User has already downvoted this question' });
+        }
+
+        let update = { $inc: { downvotes: 1 }, $push: { downvotedBy: userId } };
+        if (alreadyUpvoted) {
+            update.$inc.upvotes = -1;
+            update.$pull = { upvotedBy: userId };
+        }
+
+        await Question.updateOne({ _id }, update);
+        return res.status(200).send({ status: true, message: 'Question downvoted successfully' });
     } catch (err) {
         console.error(err);
-        return res.status(500).send({ status: false , error: 'An error occurred while downvoting question' });
+        return res.status(500).send({ status: false, error: 'An error occurred while downvoting question' });
     }
 });
 

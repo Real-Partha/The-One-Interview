@@ -26,6 +26,7 @@ const MainComponent = () => {
           `${import.meta.env.VITE_API_URL}/questions`,
           {
             params: { page: page },
+            withCredentials: true,
           }
         );
         setThreads(response.data.questions);
