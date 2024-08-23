@@ -336,7 +336,7 @@ const MainComponent = () => {
           <div className="Side-bar-cards">
             <div className="editors-choices">
               <div className="card">
-                <img src="editors-choice-1.png" alt="Editor's Choice 1" />
+                <img src="/img/ec.png" alt="Editor's Choice 1" />
                 <div className="card-details">
                   <h4>Editors Choice</h4>
                   <p>Description of Editors Choice </p>
@@ -348,7 +348,7 @@ const MainComponent = () => {
           <div className="Side-bar-cards">
             <div className="most-liked">
               <div className="card">
-                <img src="editors-choice-1.png" alt="Editor's Choice 1" />
+                <img src="img/mliked.png" alt="Most-Liked" />
                 <div className="card-details">
                   <h4>Most Upvoted</h4>
                   <p>Description of Most Upvoted </p>
@@ -360,7 +360,7 @@ const MainComponent = () => {
           <div className="Side-bar-cards">
             <div className="top-companies">
               <div className="card">
-                <img src="editors-choice-1.png" alt="Editor's Choice 1" />
+                <img src="img/TopComp.png" alt="Editor's Choice 1" />
                 <div className="card-details">
                   <h4>Top Companies</h4>
                   <p>Description of Top Companies </p>
