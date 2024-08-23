@@ -9,7 +9,6 @@ import Signup from "./components/Authentication/Signup";
 import { ThemeProvider } from "./ThemeContext";
 import Post from "./components/Posts/Post";
 import Profile from "./components/Profile/Profile";
-import {SearchProvider} from "./components/context/SearchContext";
 
 function App() {
   return (
@@ -21,10 +20,8 @@ function App() {
               path="/"
               element={
                 <div>
-                  <SearchProvider>
                   <Home />
                   <MainContent />
-                  </SearchProvider>
                 </div>
               }
             />

@@ -9,7 +9,7 @@ import CreateQuestionPage from "../Posts/CreateQuestionPage";
 import { Typewriter } from "react-simple-typewriter";
 import { debounce } from "lodash";
 import { SearchContext } from "../context/SearchContext";
-import ThreadSkeleton from "./ThreadSkeleton";
+import ThreadSkeleton from "./threadskeleton";
 
 const MainComponent = () => {
   const navigate = useNavigate();
@@ -161,7 +161,6 @@ const MainComponent = () => {
   const { searchQuery } = useContext(SearchContext);
   const handleUserSearch = async (e) => {
     if (!searchQuery) {
-      alert("Please type something to search.");
       return;
     }
 
