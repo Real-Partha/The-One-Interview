@@ -22,8 +22,6 @@ function App() {
                 <div>
                   <Home />
                   <MainContent />
-                  {/* <CreateQuestionPage /> */}
-                  <Profile/>
                 </div>
               }
             />

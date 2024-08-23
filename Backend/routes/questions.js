@@ -59,7 +59,7 @@ router.get("/question/:id", async (req, res) => {
             return res.status(401).send({ error: 'User not authenticated' });
         }
 
-        const question = await Question.findOne({ _id: req.params.id }).lean();
+        const question = await Question.findOne({ _id: req.params.id });
         if (!question) {
             return res.status(400).send({ error: 'Invalid question_id' });
         }
@@ -68,12 +68,12 @@ router.get("/question/:id", async (req, res) => {
         const profilepic = await User.findOne({ _id: question.user_id }).select('profile_pic -_id');
         const profilePicUrl = await getSignedUrlForObject(profilepic.toObject().profile_pic);
         const comments = await Comment.find({ question_id: req.params.id }).lean();
-
-        const userVote = question.upvotedBy.includes(req.user._id) ? 'upvote' :
-                         question.downvotedBy.includes(req.user._id) ? 'downvote' : null;
-
+        const currentUserId = req.user._id;
+        const userVote = question.upvotedBy.includes(currentUserId) ? 'upvote' :
+                         question.downvotedBy.includes(currentUserId) ? 'downvote' : null;
+        
         return res.status(200).send({
-            ...question,
+            ...question.toObject(),
             username: user.username,
             profile_pic: profilePicUrl,
             comments: comments,
@@ -214,9 +214,11 @@ router.patch("/upvote", async (req, res) => {
         const alreadyDownvoted = question.downvotedBy.includes(userId);
 
         if (alreadyUpvoted) {
-            return res.status(400).send({ error: 'User has already upvoted this question' });
+            let update = { $inc: { upvotes: -1 }, $pull: { upvotedBy: userId } };
+            await Question.updateOne({ _id }, update);
+            return res.status(200).send({ status: true, message: 'Upvote Removed Successfully' });
         }
-
+            
         let update = { $inc: { upvotes: 1 }, $push: { upvotedBy: userId } };
         if (alreadyDownvoted) {
             update.$inc.downvotes = -1;
@@ -249,7 +251,9 @@ router.patch("/downvote", async (req, res) => {
         const alreadyUpvoted = question.upvotedBy.includes(userId);
 
         if (alreadyDownvoted) {
-            return res.status(400).send({ error: 'User has already downvoted this question' });
+            let update = { $inc: { downvotes: -1 }, $pull: { downvotedBy: userId } };
+            await Question.updateOne({ _id }, update);
+            return res.status(200).send({ status: true, message: 'Downvote Removed Successfully' });
         }
 
         let update = { $inc: { downvotes: 1 }, $push: { downvotedBy: userId } };

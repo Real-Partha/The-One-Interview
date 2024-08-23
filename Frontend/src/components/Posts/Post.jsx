@@ -97,17 +97,15 @@ const Post = () => {
             <button
               className={`upvote ${userVote === "upvote" ? "active" : ""}`}
               onClick={handleUpvote}
-              disabled={userVote === "upvote"}
             >
-              <i className="fa-solid fa-thumbs-up"></i> Upvote (
+              <i className="fa-solid fa-thumbs-up"></i> {userVote === "upvote" ? " Upvoted" : " Upvote"} (
               {question.upvotes})
             </button>
             <button
               className={`downvote ${userVote === "downvote" ? "active" : ""}`}
               onClick={handleDownvote}
-              disabled={userVote === "downvote"}
             >
-              <i className="fa-solid fa-thumbs-down"></i> Downvote (
+              <i className="fa-solid fa-thumbs-down"></i> {userVote === "downvote" ? " Downvoted" : " Downvote"} (
               {question.downvotes})
             </button>
             <button className="comment">

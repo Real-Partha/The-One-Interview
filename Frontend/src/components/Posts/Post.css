@@ -94,11 +94,6 @@
     transition: background-color 0.3s, opacity 0.3s;
   }
   
-  .post-actions button:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-  }
-  
   .post-actions button.voted {
     opacity: 0.7;
   }
@@ -119,11 +114,7 @@
   }
   
   .post-actions button:hover:not(:disabled) {
-    opacity: 0.9;
-  }
-  
-  .post-actions button:disabled:hover {
-    opacity: 0.7;
+    opacity: 0.8;
   }
   
   /* Dark mode styles */
