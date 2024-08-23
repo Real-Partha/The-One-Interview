@@ -1,8 +1,9 @@
-import React, { useState, useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./NavBar.css";
 import { useTheme } from "../../ThemeContext";
 import { useNavigate } from "react-router-dom";
 import { SearchContext } from "../context/SearchContext";
+import axios from "axios";
 
 const NavBar = () => {
   const navigate = useNavigate();
@@ -10,12 +11,32 @@ const NavBar = () => {
   const { isDarkMode, toggleTheme } = useTheme();
   const [icon, setIcon] = useState(isDarkMode ? "☀️" : "🌙");
   const { setSearchQuery } = useContext(SearchContext);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
+
+  const checkAuthStatus = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/auth/status`,
+        { withCredentials: true }
+      );
+      setIsAuthenticated(response.data.isAuthenticated);
+      setUser(response.data.user);
+    } catch (error) {
+      console.error("Error checking auth status:", error);
+    }
+  };
+
+  useEffect(() => {
+    checkAuthStatus();
+  }, []);
+
   const handleSearchChange = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       setSearchQuery(e.target.value);
-      e.target.value = '';
-  }
-  }
+      e.target.value = "";
+    }
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -64,25 +85,49 @@ const NavBar = () => {
           <button onClick={handleToggleTheme} className="theme-toggle">
             {icon}
           </button>
-          <a href="/login" className="nav-link">
-            Login
-          </a>
-          <a href="/signup" className="nav-link">
-            Register
-          </a>
-          <i className="notifications fa fa-bell"></i>
-          <i className="fas fa-user-circle profile" onClick={toggleSidebar}></i>
+          {isAuthenticated ? (
+            <>
+              <i className="notifications fa fa-bell"></i>
+              <i
+                className="fas fa-user-circle profile"
+                onClick={toggleSidebar}
+              ></i>
+            </>
+          ) : (
+            <>
+              <a href="/login" className="nav-link">
+                Login
+              </a>
+              <a href="/signup" className="nav-link">
+                Register
+              </a>
+            </>
+          )}
         </div>
       </nav>
 
       <div className={`profile-dropdown ${isSidebarOpen ? "open" : ""}`}>
-        <div className="user-info">
-          <img src="user-pic.png" alt="Profile Pic" className="user-pic" />
-          <h4>Dedipya Goswami</h4>
-          <p>AP21110010650</p>
-          <p>+91-9832994010</p>
-          <p>Logged in via Google </p>
-        </div>
+        {user && (
+          <div className="user-info">
+            <img
+              src={user.profile_pic || "/img/default-profile.png"}
+              alt="Profile Picture"
+              className="user-pic"
+            />
+            <h3 className="user-name">{`${user.first_name} ${user.last_name}`}</h3>
+            <p className="user-username">@{user.username}</p>
+            <p className="user-email">{user.email}</p>
+            <p
+              className={`user-login-type ${
+                user.type === "google" ? "google" : "oneid"
+              }`}
+            >
+              {user.type === "google"
+                ? "Logged in using Google"
+                : "Logged in using The One ID"}
+            </p>
+          </div>
+        )}
         <div className="profile-settings">
           <a onClick={navigateToProfile}>
             <i className="fas fa-user-cog"></i>Account Settings

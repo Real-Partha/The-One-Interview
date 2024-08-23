@@ -11,6 +11,11 @@ body {
 
 
 .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -107,7 +112,8 @@ body {
   position: absolute;
   top: 70px;
   right: 20px;
-  width: 250px;
+  min-width: 250px;
+  max-width: 350px;
   background-color: #fff;
   color: #000;
   border-radius: 8px;
@@ -160,12 +166,6 @@ body {
   color: #777777;
 }
 
-.user-info p:first-of-type {
-  margin-top: 8px;
-  font-weight: 500;
-  color: #555555;
-}
-
 .user-info p:last-of-type {
   font-size: 12px;
   color: #999999;
@@ -211,6 +211,59 @@ body {
 
 .theme-toggle:hover {
   transform: scale(1.1);
+}
+
+.profile-dropdown .user-info {
+  padding: 20px;
+  text-align: center;
+  border-bottom: 1px solid #e0e0e0;
+  word-wrap: break-word;
+}
+
+.user-pic {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.user-name {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 5px 0;
+}
+
+.user-username {
+  font-size: 14px;
+  color: #777;
+  margin: 5px 0;
+  color: #ff6f61 !important;
+  font-weight: bold;
+}
+
+.user-email {
+  font-size: 14px;
+  margin: 5px 0;
+  word-break: break-all;
+}
+
+.user-login-type {
+  font-size: 12px;
+  margin: 10px 0;
+  padding: 5px 10px;
+  border-radius: 15px;
+  display: inline-block;
+}
+
+.user-login-type.google {
+  background-color: #f1f3f4;
+  color: #4285F4;
+}
+
+.user-login-type.oneid {
+  background-color: #fff0ee;
+  color: #ff6f61;
 }
 
 /* NavBar.css - Dark Mode Styles */
@@ -281,10 +334,6 @@ body {
   color: #b0b0b0;
 }
 
-.dark-mode .user-info p:first-of-type {
-  color: #cccccc;
-}
-
 .dark-mode .user-info p:last-of-type {
   color: #8c8c8c;
 }
@@ -302,3 +351,16 @@ body {
   color: #e0e0e0;
 }
 
+.dark-mode .profile-dropdown .user-info {
+  border-bottom: 1px solid #444;
+}
+
+.dark-mode .user-login-type.google {
+  background-color: #303134;
+  color: #8ab4f8 !important;
+}
+
+.dark-mode .user-login-type.oneid {
+  background-color: #3d2d2b;
+  color: #ff8f85 !important;
+}
