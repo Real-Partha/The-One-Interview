@@ -9,31 +9,55 @@ const Post = () => {
   const [question, setQuestion] = useState(null);
   const [userVote, setUserVote] = useState(null);
   const { isDarkMode } = useTheme();
+  const [isDebouncing, setIsDebouncing] = useState(false);
+  const [debouncingButton, setDebouncingButton] = useState(null);
 
-  const handleUpvote = async () => {
+  const debounce = (func, buttonId) => {
+    return async (...args) => {
+      if (isDebouncing) return;
+      setIsDebouncing(true);
+      setDebouncingButton(buttonId);
+      try {
+        await func(...args);
+      } finally {
+        setIsDebouncing(false);
+        setDebouncingButton(null);
+      }
+    };
+  };
+
+  const debouncedUpvote = debounce(async () => {
     try {
       await axios.patch(
         `${import.meta.env.VITE_API_URL}/upvote`,
         { _id: questionId },
         { withCredentials: true }
       );
-      fetchQuestion();
+      await fetchQuestion();
     } catch (error) {
       console.error("Error upvoting question:", error);
     }
-  };
+  }, "upvote");
 
-  const handleDownvote = async () => {
+  const debouncedDownvote = debounce(async () => {
     try {
       await axios.patch(
         `${import.meta.env.VITE_API_URL}/downvote`,
         { _id: questionId },
         { withCredentials: true }
       );
-      fetchQuestion();
+      await fetchQuestion();
     } catch (error) {
       console.error("Error downvoting question:", error);
     }
+  }, "downvote");
+
+  const handleUpvote = () => {
+    debouncedUpvote();
+  };
+
+  const handleDownvote = () => {
+    debouncedDownvote();
   };
 
   const fetchQuestion = async () => {
@@ -93,18 +117,32 @@ const Post = () => {
           </div>
           <div className="post-actions">
             <button
-              className={`upvote ${userVote === "upvote" ? "active" : ""}`}
+              className={`upvote ${userVote === "upvote" ? "active" : ""} ${
+                debouncingButton === "upvote" ? "debouncing" : ""
+              }`}
               onClick={handleUpvote}
+              disabled={isDebouncing}
             >
-              <i className="fa-solid fa-thumbs-up"></i> {userVote === "upvote" ? " Upvoted" : " Upvote"} (
+              <i className="fa-solid fa-thumbs-up"></i>{" "}
+              {userVote === "upvote" ? " Upvoted" : " Upvote"} (
               {question.upvotes})
+              {debouncingButton === "upvote" && (
+                <div className="debounce-bar"></div>
+              )}
             </button>
             <button
-              className={`downvote ${userVote === "downvote" ? "active" : ""}`}
+              className={`downvote ${userVote === "downvote" ? "active" : ""} ${
+                debouncingButton === "downvote" ? "debouncing" : ""
+              }`}
               onClick={handleDownvote}
+              disabled={isDebouncing}
             >
-              <i className="fa-solid fa-thumbs-down"></i> {userVote === "downvote" ? " Downvoted" : " Downvote"} (
+              <i className="fa-solid fa-thumbs-down"></i>{" "}
+              {userVote === "downvote" ? " Downvoted" : " Downvote"} (
               {question.downvotes})
+              {debouncingButton === "downvote" && (
+                <div className="debounce-bar"></div>
+              )}
             </button>
             <button className="comment">
               <i className="fa-solid fa-comment"></i> Comment
