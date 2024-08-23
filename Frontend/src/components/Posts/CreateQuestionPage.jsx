@@ -3,19 +3,40 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import './CreateQuestionPage.css';
 import { useTheme } from '../../ThemeContext';
+
 const CreateQuestionPage = () => {
   const [formData, setFormData] = useState({
     companyName: '',
     rounds: '',
     location: '',
     role: '',
-    experience: ''
+    question: '',
+    experience: '',
+    tags: []  // Add tags to the formData state
   });
 
   const { isDarkMode } = useTheme();
+  const [tagInput, setTagInput] = useState('');  // State to manage tag input
 
   const handleChange = (value, field) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleTagAdd = () => {
+    if (tagInput.trim()) {
+      setFormData(prev => ({
+        ...prev,
+        tags: [...prev.tags, tagInput.trim()]
+      }));
+      setTagInput('');  
+    }
+  };
+
+  const handleTagRemove = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      tags: prev.tags.filter((_, i) => i !== index)
+    }));
   };
 
   const handleSubmit = (event) => {
@@ -35,16 +56,6 @@ const CreateQuestionPage = () => {
           onChange={(e) => handleChange(e.target.value, 'companyName')}
         />
       </div>
-      {/* <div className="form-group">
-        <label htmlFor="rounds">No of Rounds:</label>
-        <input
-          type="number"
-          id="rounds"
-          className="form-control"
-          value={formData.rounds}
-          onChange={(e) => handleChange(e.target.value, 'rounds')}
-        />
-      </div> */}
       <div className="form-group">
         <label htmlFor="location">In which Round can the Question be Expected? </label>
         <select
@@ -56,9 +67,8 @@ const CreateQuestionPage = () => {
           <option value="techinterview">Technical Interviews</option>
           <option value="hrinterview">HR Interviews</option>
           <option value="aptitide">Aptitude</option>
-        <option value="onlinecoding">Online Coding Round</option>        
-        <option value="general">General</option>        
-
+          <option value="onlinecoding">Online Coding Round</option>        
+          <option value="general">General</option>        
         </select>
       </div>
       <div className="form-group">
@@ -90,6 +100,25 @@ const CreateQuestionPage = () => {
           modules={CreateQuestionPage.modules}
           formats={CreateQuestionPage.formats}
         />
+      </div>
+      <div className="form-group">
+        <label>Tags:</label>
+        <div className="tags-input-container">
+          {formData.tags.map((tag, index) => (
+            <div key={index} className="tag-item">
+              {tag}
+              <span className="tag-remove" onClick={() => handleTagRemove(index)}>x</span>
+            </div>
+          ))}
+          <input
+            type="text"
+            className="tag-input"
+            value={tagInput}
+            onChange={(e) => setTagInput(e.target.value)}
+            placeholder="Add tags that describe the post"
+          />
+          <button type="button" className="btn-add-tag" onClick={handleTagAdd}>Add Tag</button>
+        </div>
       </div>
       <div className="form-group">
         <button type="submit" className="btn-submit">Submit</button>
