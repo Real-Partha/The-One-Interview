@@ -111,18 +111,33 @@ const Post = () => {
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
     if (!newComment.trim()) return;
-
+    const response = await axios.get(
+      `${import.meta.env.VITE_API_URL}/auth/status`,
+      {
+        withCredentials: true,
+      }
+    );
+    if (response.data.isAuthenticated === false) {
+      alert("Please log in to comment");
+      return;
+    }
+    const user = response.data.user;
     try {
-      const response = await axios.post(
+      const commentResponse = await axios.post(
         `${import.meta.env.VITE_API_URL}/questions/comments`,
         {
           question_id: questionId,
           comment: newComment,
-          user_id: question.user_id, // Assuming the user is logged in
+          user_id: user._id,
         },
         { withCredentials: true }
       );
-      setComments([...comments, response.data]);
+      const newCommentData = {
+        ...commentResponse.data,
+        username: user.username,
+        profile_pic: user.profile_pic,
+      };
+      setComments([newCommentData, ...comments]);
       setNewComment("");
     } catch (error) {
       console.error("Error submitting comment:", error);
@@ -131,17 +146,37 @@ const Post = () => {
 
   const formatTimeAgo = (date) => {
     const seconds = Math.floor((new Date() - new Date(date)) / 1000);
-    let interval = seconds / 31536000;
-    if (interval > 1) return Math.floor(interval) + " years ago";
-    interval = seconds / 2592000;
-    if (interval > 1) return Math.floor(interval) + " months ago";
-    interval = seconds / 86400;
-    if (interval > 1) return Math.floor(interval) + " days ago";
-    interval = seconds / 3600;
-    if (interval > 1) return Math.floor(interval) + " hours ago";
-    interval = seconds / 60;
-    if (interval > 1) return Math.floor(interval) + " minutes ago";
-    return Math.floor(seconds) + " seconds ago";
+
+    if (seconds < 15) {
+      return "Just now";
+    }
+
+    if (seconds < 60) {
+      return seconds + (seconds === 1 ? " second ago" : " seconds ago");
+    }
+
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) {
+      return minutes + (minutes === 1 ? " minute ago" : " minutes ago");
+    }
+
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) {
+      return hours + (hours === 1 ? " hour ago" : " hours ago");
+    }
+
+    const days = Math.floor(hours / 24);
+    if (days < 30) {
+      return days + (days === 1 ? " day ago" : " days ago");
+    }
+
+    const months = Math.floor(days / 30);
+    if (months < 12) {
+      return months + (months === 1 ? " month ago" : " months ago");
+    }
+
+    const years = Math.floor(months / 12);
+    return years + (years === 1 ? " year ago" : " years ago");
   };
 
   if (!question) return <div>Loading...</div>;
@@ -232,7 +267,7 @@ const Post = () => {
             </form>
             <div className="comments-list">
               {comments
-                .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
+                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
                 .map((comment) => (
                   <div key={comment._id} className="comment">
                     <div className="comment-header">
