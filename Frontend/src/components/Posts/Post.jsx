@@ -11,6 +11,10 @@ const Post = () => {
   const { isDarkMode } = useTheme();
   const [isDebouncing, setIsDebouncing] = useState(false);
   const [debouncingButton, setDebouncingButton] = useState(null);
+  const [upvotes, setUpvotes] = useState(0);
+  const [downvotes, setDownvotes] = useState(0);
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState("");
 
   const debounce = (func, buttonId) => {
     return async (...args) => {
@@ -28,12 +32,24 @@ const Post = () => {
 
   const debouncedUpvote = debounce(async () => {
     try {
-      await axios.patch(
+      const response  = await axios.patch(
         `${import.meta.env.VITE_API_URL}/upvote`,
         { _id: questionId },
         { withCredentials: true }
       );
-      await fetchQuestion();
+      if (response.status === 200) {
+        if (userVote === "upvote") {
+          setUpvotes(upvotes - 1);
+          setUserVote(null);
+        } else if (userVote === "downvote") {
+          setUpvotes(upvotes + 1);
+          setDownvotes(downvotes - 1);
+          setUserVote("upvote");
+        } else {
+          setUpvotes(upvotes + 1);
+          setUserVote("upvote");
+        }
+      }
     } catch (error) {
       console.error("Error upvoting question:", error);
     }
@@ -41,12 +57,24 @@ const Post = () => {
 
   const debouncedDownvote = debounce(async () => {
     try {
-      await axios.patch(
+      const response = await axios.patch(
         `${import.meta.env.VITE_API_URL}/downvote`,
         { _id: questionId },
         { withCredentials: true }
       );
-      await fetchQuestion();
+      if (response.status === 200) {
+        if (userVote === "downvote") {
+          setDownvotes(downvotes - 1);
+          setUserVote(null);
+        } else if (userVote === "upvote") {
+          setDownvotes(downvotes + 1);
+          setUpvotes(upvotes - 1);
+          setUserVote("downvote");
+        } else {
+          setDownvotes(downvotes + 1);
+          setUserVote("downvote");
+        }
+      }
     } catch (error) {
       console.error("Error downvoting question:", error);
     }
@@ -68,6 +96,9 @@ const Post = () => {
       );
       setQuestion(response.data);
       setUserVote(response.data.userVote);
+      setUpvotes(response.data.upvotes);
+      setDownvotes(response.data.downvotes);
+      setComments(response.data.comments);
     } catch (error) {
       console.error("Error fetching question:", error);
     }
@@ -77,7 +108,45 @@ const Post = () => {
     fetchQuestion();
   }, [questionId]);
 
+  const handleCommentSubmit = async (e) => {
+    e.preventDefault();
+    if (!newComment.trim()) return;
+
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/questions/comments`,
+        {
+          question_id: questionId,
+          comment: newComment,
+          user_id: question.user_id, // Assuming the user is logged in
+        },
+        { withCredentials: true }
+      );
+      setComments([...comments, response.data]);
+      setNewComment("");
+    } catch (error) {
+      console.error("Error submitting comment:", error);
+    }
+  };
+
+  const formatTimeAgo = (date) => {
+    const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+    let interval = seconds / 31536000;
+    if (interval > 1) return Math.floor(interval) + " years ago";
+    interval = seconds / 2592000;
+    if (interval > 1) return Math.floor(interval) + " months ago";
+    interval = seconds / 86400;
+    if (interval > 1) return Math.floor(interval) + " days ago";
+    interval = seconds / 3600;
+    if (interval > 1) return Math.floor(interval) + " hours ago";
+    interval = seconds / 60;
+    if (interval > 1) return Math.floor(interval) + " minutes ago";
+    return Math.floor(seconds) + " seconds ago";
+  };
+
   if (!question) return <div>Loading...</div>;
+
+
 
   return (
     <div className={`${isDarkMode ? `dark-mode` : ``}`}>
@@ -125,7 +194,7 @@ const Post = () => {
             >
               <i className="fa-solid fa-thumbs-up"></i>{" "}
               {userVote === "upvote" ? " Upvoted" : " Upvote"} (
-              {question.upvotes})
+              {upvotes})
               {debouncingButton === "upvote" && (
                 <div className="debounce-bar"></div>
               )}
@@ -139,14 +208,48 @@ const Post = () => {
             >
               <i className="fa-solid fa-thumbs-down"></i>{" "}
               {userVote === "downvote" ? " Downvoted" : " Downvote"} (
-              {question.downvotes})
+              {downvotes})
               {debouncingButton === "downvote" && (
                 <div className="debounce-bar"></div>
               )}
             </button>
-            <button className="comment">
-              <i className="fa-solid fa-comment"></i> Comment
-            </button>
+          </div>
+          <div className="comments-section">
+            <h3>Comments</h3>
+            <form onSubmit={handleCommentSubmit} className="comment-form">
+              <input
+                type="text"
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                placeholder="Add a comment..."
+                className="comment-input"
+              />
+              <button type="submit" className="comment-submit">
+                Send
+              </button>
+            </form>
+            <div className="comments-list">
+              {comments
+                .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
+                .map((comment) => (
+                  <div key={comment._id} className="comment">
+                    <div className="comment-header">
+                      <div className="comment-user-info">
+                        <img
+                          src={comment.profile_pic || "/img/default_avatar.png"}
+                          alt={comment.username}
+                          className="comment-profile-pic"
+                        />
+                        <span className="comment-username">{comment.username}</span>
+                      </div>
+                      <span className="comment-time">
+                        {formatTimeAgo(comment.created_at)}
+                      </span>
+                    </div>
+                    <p className="comment-content">{comment.comment}</p>
+                  </div>
+                ))}
+            </div>
           </div>
         </div>
       </div>

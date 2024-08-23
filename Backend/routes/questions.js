@@ -67,7 +67,27 @@ router.get("/question/:id", async (req, res) => {
         const user = await User.findOne({ _id: question.user_id }).lean();
         const profilepic = await User.findOne({ _id: question.user_id }).select('profile_pic -_id');
         const profilePicUrl = await getSignedUrlForObject(profilepic.toObject().profile_pic);
-        const comments = await Comment.find({ question_id: req.params.id }).lean();
+        const comments = await Comment.find({ question_id: req.params.id });
+        const commentUserIds = comments.map(c => c.user_id);
+        const commentUsers = await User.find({ _id: { $in: commentUserIds } }, { _id: 1, username: 1, profile_pic: 1 }).lean();
+        const commentUserMap = commentUsers.reduce((acc, user) => {
+            acc[user._id.toString()] = {
+                username: user.username,
+                profile_pic: user.profile_pic
+            };
+            return acc;
+        }, {});
+
+        const commentsWithUsernames = await Promise.all(comments.map(async (comment) => {
+            const userInfo = commentUserMap[comment.user_id.toString()] || { username: 'Unknown User', profile_pic: null };
+            const commentProfilePicUrl = userInfo.profile_pic ? await getSignedUrlForObject(userInfo.profile_pic) : null;
+            return {
+                ...comment.toObject(),
+                username: userInfo.username,
+                profile_pic: commentProfilePicUrl
+            };
+        }));
+
         const currentUserId = req.user._id;
         const userVote = question.upvotedBy.includes(currentUserId) ? 'upvote' :
                          question.downvotedBy.includes(currentUserId) ? 'downvote' : null;
@@ -76,7 +96,7 @@ router.get("/question/:id", async (req, res) => {
             ...question.toObject(),
             username: user.username,
             profile_pic: profilePicUrl,
-            comments: comments,
+            comments: commentsWithUsernames,
             userVote: userVote
         });
     } catch (err) {
