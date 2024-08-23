@@ -2,17 +2,20 @@
 import "./MainComponent.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useContext } from "react";
 import { useTheme } from "../../ThemeContext";
 import { Link } from "react-router-dom";
 import CreateQuestionPage from "../Posts/CreateQuestionPage";
 import { Typewriter } from "react-simple-typewriter";
 import { debounce } from "lodash";
+import { SearchContext } from "../context/SearchContext";
+import ThreadSkeleton from "./ThreadSkeleton";
 
 const MainComponent = () => {
   const navigate = useNavigate();
   const [threads, setThreads] = useState([]);
   const [currentPage, setCurrentPage] = useState(null);
+  const [isquestionloading, setIsQuestionLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(1);
   const [hasNextPage, setHasNextPage] = useState(false);
   const [hasPrevPage, setHasPrevPage] = useState(false);
@@ -29,6 +32,7 @@ const MainComponent = () => {
             withCredentials: true,
           }
         );
+        setIsQuestionLoading(false);
         setThreads(response.data.questions);
         setTotalPages(response.data.totalPages);
         setHasNextPage(response.data.hasNextPage);
@@ -154,31 +158,33 @@ const MainComponent = () => {
     setPageWithExpiration('1');
   };
 
+  const { searchQuery } = useContext(SearchContext);
   const handleUserSearch = async (e) => {
-    if (e.key === "Enter") {
-      const query = e.target.value.trim();
-      if (!query) {
-        alert("Please type something to search.");
-        return;
-      }
+    if (!searchQuery) {
+      alert("Please type something to search.");
+      return;
+    }
 
-      try {
-        resetPage();
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/questionsearch`,
-          {
-            params: { query: query },
-          }
-        );
-        setThreads(response.data.questions);
-        setTotalPages(response.data.totalPages);
-        setHasNextPage(response.data.hasNextPage);
-        setHasPrevPage(response.data.hasPrevPage);
-      } catch (error) {
-        console.error("Error fetching threads:", error);
-      }
+    try {
+      resetPage();
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/questionsearch`,
+        {
+          params: { query: searchQuery },
+        }
+      );
+      setThreads(response.data.questions);
+      setTotalPages(response.data.totalPages);
+      setHasNextPage(response.data.hasNextPage);
+      setHasPrevPage(response.data.hasPrevPage);
+    } catch (error) {
+      console.error("Error fetching threads:", error);
     }
   };
+
+  useEffect(() => {
+    handleUserSearch();
+  }, [searchQuery]);
 
   return (
     <div className={`${isDarkMode ? "dark-mode" : "light-mode"}`}>
@@ -252,9 +258,8 @@ const MainComponent = () => {
             </button>
           </div>
           <div
-            className={`create-question-animation ${
-              showCreateQuestion ? "show" : ""
-            }`}
+            className={`create-question-animation ${showCreateQuestion ? "show" : ""
+              }`}
           >
             {showCreateQuestion && (
               <div className="rolling">
@@ -263,55 +268,59 @@ const MainComponent = () => {
             )}
           </div>
 
-          {threads.map((thread) => (
-            <Link
-              to={`/question/${thread._id}`}
-              key={thread._id}
-              className="thread-card-link"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <div className="thread-card">
-                <h3 className="thread-title">{thread.question}</h3>
-                <p className="thread-answer-preview">
-                  {thread.answer.slice(0, 150)}
-                  {thread.answer.length > 100 ? "..." : ""}
-                </p>
-                <div className="thread-info">
-                  <img
-                    src={thread.profile_pic || "/img/profile_pic.png"}
-                    alt="Profile"
-                    className="profile-pic"
-                  />
-                  <div className="thread-details">
-                    <p className="thread-meta">
-                      <span className="username">{thread.username}</span> •
-                      <span className="date">{timeAgo(thread.created_at)}</span>
+          {isquestionloading
+            ? Array(7).fill().map((_, index) => (
+              <ThreadSkeleton key={index} />
+            ))
+            : threads.map((thread) => (
+              <Link
+                to={`/question/${thread._id}`}
+                key={thread._id}
+                className="thread-card-link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <div className="thread-card">
+                  <h3 className="thread-title">{thread.question}</h3>
+                  <p className="thread-answer-preview">
+                    {thread.answer.slice(0, 150)}
+                    {thread.answer.length > 100 ? "..." : ""}
+                  </p>
+                  <div className="thread-info">
+                    <img
+                      src={thread.profile_pic || "/img/profile_pic.png"}
+                      alt="Profile"
+                      className="profile-pic"
+                    />
+                    <div className="thread-details">
+                      <p className="thread-meta">
+                        <span className="username">{thread.username}</span> •
+                        <span className="date">{timeAgo(thread.created_at)}</span>
+                      </p>
+                      <div className="thread-tags">
+                        {thread.tags.slice(0, 3).map((tag, index) => (
+                          <span key={index} className="tag">
+                            #{tag.toLowerCase()}
+                          </span>
+                        ))}
+                        {thread.tags.length > 3 && (
+                          <span className="tag">...</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="thread-footer">
+                    <p className="view-message">
+                      Click to view detailed answer and information
                     </p>
-                    <div className="thread-tags">
-                      {thread.tags.slice(0, 3).map((tag, index) => (
-                        <span key={index} className="tag">
-                          #{tag.toLowerCase()}
-                        </span>
-                      ))}
-                      {thread.tags.length > 3 && (
-                        <span className="tag">...</span>
-                      )}
+                    <div className="thread-views">
+                      <i className="fa-solid fa-eye"></i>
+                      <span>{thread.impressions || 0}</span>
                     </div>
                   </div>
                 </div>
-                <div className="thread-footer">
-                  <p className="view-message">
-                    Click to view detailed answer and information
-                  </p>
-                  <div className="thread-views">
-                    <i className="fa-solid fa-eye"></i>
-                    <span>{thread.impressions || 0}</span>
-                  </div>
-                </div>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            ))}
           <div className="pagination">
             <button onClick={handlePrevPage} disabled={!hasPrevPage}>
               Previous

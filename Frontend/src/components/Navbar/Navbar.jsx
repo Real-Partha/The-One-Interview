@@ -1,13 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import "./NavBar.css";
 import { useTheme } from "../../ThemeContext";
 import { useNavigate } from "react-router-dom";
+import { SearchContext } from "../context/SearchContext";
 
 const NavBar = () => {
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { isDarkMode, toggleTheme } = useTheme();
   const [icon, setIcon] = useState(isDarkMode ? "☀️" : "🌙");
+  const { setSearchQuery } = useContext(SearchContext);
+  const handleSearchChange = (e) => {
+    if (e.key === 'Enter') {
+      setSearchQuery(e.target.value);
+      e.target.value = '';
+  }
+  }
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -46,6 +54,7 @@ const NavBar = () => {
             type="text"
             placeholder="Type to search"
             className="search-input"
+            onKeyDown={handleSearchChange}
           />
           <button className="search-button">
             <i className="fas fa-search"></i>
