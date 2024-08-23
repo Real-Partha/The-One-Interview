@@ -8,6 +8,7 @@ import Login from "./components/Authentication/Login";
 import Signup from "./components/Authentication/Signup";
 import { ThemeProvider } from "./ThemeContext";
 import Post from "./components/Posts/Post";
+import Profile from "./components/Profile/Profile";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
                   <Home />
                   <MainContent />
                   {/* <CreateQuestionPage /> */}
+                  <Profile/>
                 </div>
               }
             />
@@ -29,6 +31,7 @@ function App() {
             <Route path="/getuid" element={<GetUid />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/profile" element={<Profile />} />
           </Routes>
         </BrowserRouter>
       </ThemeProvider>

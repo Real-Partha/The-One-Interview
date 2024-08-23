@@ -1,8 +1,10 @@
-import React, { useState,useEffect  } from "react";
+import React, { useState, useEffect } from "react";
 import "./NavBar.css";
 import { useTheme } from "../../ThemeContext";
+import { useNavigate } from "react-router-dom";
 
 const NavBar = () => {
+  const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { isDarkMode, toggleTheme } = useTheme();
   const [icon, setIcon] = useState(isDarkMode ? "☀️" : "🌙");
@@ -21,6 +23,10 @@ const NavBar = () => {
   const handleToggleTheme = () => {
     setIcon(isDarkMode ? "🌙" : "☀️");
     toggleTheme();
+  };
+
+  const navigateToProfile = () => {
+    navigate("/profile");
   };
 
   return (
@@ -69,7 +75,7 @@ const NavBar = () => {
           <p>Logged in via Google </p>
         </div>
         <div className="profile-settings">
-          <a href="#">
+          <a onClick={navigateToProfile}>
             <i className="fas fa-user-cog"></i>Account Settings
           </a>
           <a href="#">
