@@ -252,7 +252,7 @@ const Post = () => {
             </span>
           </div>
           <div className="comments-section">
-            <h3>{comments.length} Comments</h3>
+            <h3>{comments.length} {comments.length==1?"Comment":"Comments"}</h3>
             <form onSubmit={handleCommentSubmit} className="comment-form">
               <input
                 type="text"

@@ -176,6 +176,68 @@
     color: var(--text-color);
 }
 
+.login-type-badge {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .user-login-type {
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-weight: bold;
+  }
+  
+  .user-login-type.google {
+    background-color: #f1f3f4;
+    color: #4285F4;
+  }
+  
+  .user-login-type.oneid {
+    background-color: #fff0ee;
+    color: #ff6f61;
+  }
+  
+  .profile-edit-button,
+  .profile-save-button,
+  .profile-cancel-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  }
+  
+  .profile-edit-button {
+    background-color: var(--primary-color);
+    color: white;
+  }
+  
+  .profile-save-button {
+    background-color: #4CAF50;
+    color: white;
+    margin-right: 10px;
+  }
+  
+  .profile-cancel-button {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .profile-edit-button:hover,
+  .profile-save-button:hover,
+  .profile-cancel-button:hover {
+    opacity: 0.9;
+  }
+  
+  .profile-input:disabled {
+    background-color: var(--input-bg-color);
+    color: var(--text-color);
+    opacity: 0.7;
+  }
+
 /* Dark mode styles */
 .dark-mode .profile-main-content {
     background-color: var(--dark-bg-color);
@@ -228,6 +290,39 @@
 .dark-mode .profile-save-button:hover {
     background-color: var(--dark-primary-hover-color);
 }
+
+.dark-mode .user-login-type.google {
+    background-color: #303134;
+    color: #8ab4f8;
+  }
+  
+  .dark-mode .user-login-type.oneid {
+    background-color: #3d2d2b;
+    color: #ff8f85;
+  }
+  
+  .dark-mode .profile-edit-button,
+  .dark-mode .profile-save-button,
+  .dark-mode .profile-cancel-button {
+    color: var(--dark-text-color);
+  }
+  
+  .dark-mode .profile-edit-button {
+    background-color: var(--dark-primary-color);
+  }
+  
+  .dark-mode .profile-save-button {
+    background-color: #2e7d32;
+  }
+  
+  .dark-mode .profile-cancel-button {
+    background-color: #c62828;
+  }
+  
+  .dark-mode .profile-input:disabled {
+    background-color: var(--dark-input-bg-color);
+    color: var(--dark-text-color);
+  }
 
 /* Variables to match MainComponent.css */
 :root {

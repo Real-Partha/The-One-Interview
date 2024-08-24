@@ -132,4 +132,27 @@ router.get("/check-email/:email", async (req, res) => {
   }
 });
 
+router.put("/update-profile", async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.status(401).json({ message: "Not authenticated" });
+  }
+
+  try {
+    const updates = req.body;
+    const user = await User.findByIdAndUpdate(req.user._id, updates, { new: true });
+    
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const updatedUser = user.toObject();
+    delete updatedUser.password;
+    
+    res.json({ message: "Profile updated successfully", user: updatedUser });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating profile", error: error.message });
+  }
+});
+
+
 module.exports = router;
