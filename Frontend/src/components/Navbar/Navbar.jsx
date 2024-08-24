@@ -31,6 +31,19 @@ const NavBar = () => {
     checkAuthStatus();
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isSidebarOpen && !event.target.closest('.profile-dropdown') && !event.target.closest('.profile')) {
+        setIsSidebarOpen(false);
+      }
+    };
+  
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [isSidebarOpen]);
+
   const handleSearchChange = (e) => {
     if (e.key === "Enter") {
       setSearchQuery(e.target.value);
@@ -55,6 +68,7 @@ const NavBar = () => {
   };
 
   const navigateToProfile = () => {
+    setIsSidebarOpen(false);
     navigate("/profile");
   };
 

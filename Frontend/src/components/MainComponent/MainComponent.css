@@ -458,28 +458,16 @@
 /* MainComponent.css */
 .create-question-animation {
   overflow: hidden;
+  transition: max-height 0.5s ease-out, opacity 0.5s ease-out, margin-bottom 0.5s ease-out;
   max-height: 0;
-  transition: max-height 0.5s ease-out;
+  opacity: 0;
+  margin-bottom: 0;
 }
 
 .create-question-animation.show {
-  max-height: max-content;
+  max-height: 2000px; /* Adjust this value based on the maximum height of your form */
+  opacity: 1;
   margin-bottom: 5%;
-}
-
-@keyframes rollOut {
-  0% {
-    transform: translateY(-100%);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-.create-question-animation .rolling {
-  animation: rollOut 0.5s ease-out;
 }
 
 

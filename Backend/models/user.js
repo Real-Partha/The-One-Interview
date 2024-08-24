@@ -38,6 +38,10 @@ const userSchema = new mongoose.Schema({
         type:String,
         default: 'user.png'
     },
+    gender:{
+        type:String,
+        required: [true, 'Please provide a gender'],
+    },
 });
 
 

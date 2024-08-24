@@ -185,6 +185,10 @@ const MainComponent = () => {
     handleUserSearch();
   }, [searchQuery]);
 
+  const toggleCreateQuestion = () => {
+    setShowCreateQuestion((prev) => !prev);
+  };
+
   return (
     <div className={`${isDarkMode ? "dark-mode" : "light-mode"}`}>
       <div className={`main-content`}>
@@ -251,7 +255,7 @@ const MainComponent = () => {
             </div>
             <button
               className="add-thread-button"
-              onClick={() => setShowCreateQuestion(!showCreateQuestion)}
+              onClick={toggleCreateQuestion}
             >
               <i className="fa-solid fa-plus"></i>
             </button>
@@ -261,11 +265,7 @@ const MainComponent = () => {
               showCreateQuestion ? "show" : ""
             }`}
           >
-            {showCreateQuestion && (
-              <div className="rolling">
-                <CreateQuestionPage />
-              </div>
-            )}
+            <CreateQuestionPage />
           </div>
 
           {isquestionloading
@@ -317,12 +317,20 @@ const MainComponent = () => {
                       </p>
                       <div className="thread-stats">
                         <div className="thread-views">
-                          <i class="fa-solid fa-chart-line-up"></i>
-                          <span>{thread.impressions || 0} Views</span>
+                          <i className="fa-solid fa-eye"></i>
+                          <span>
+                            {thread.impressions || 0}{" "}
+                            {thread.impressions === 1 ? "View" : "Views"}
+                          </span>
                         </div>
                         <div className="thread-comments">
                           <i class="fa-solid fa-comments"></i>
-                          <span>{thread.commentscount || 0} Comments</span>
+                          <span>
+                            {thread.commentscount || 0}{" "}
+                            {thread.commentscount === 1
+                              ? "Comment"
+                              : "Comments"}
+                          </span>
                         </div>
                       </div>
                     </div>

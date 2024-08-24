@@ -109,7 +109,7 @@ body {
 
 /* Profile dropdown */
 .profile-dropdown {
-  position: absolute;
+  position: fixed;
   top: 70px;
   right: 20px;
   min-width: 250px;
