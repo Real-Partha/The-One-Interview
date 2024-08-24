@@ -324,7 +324,7 @@ const MainComponent = () => {
                           </span>
                         </div>
                         <div className="thread-comments">
-                          <i class="fa-solid fa-comments"></i>
+                          <i className="fa-solid fa-comments"></i>
                           <span>
                             {thread.commentscount || 0}{" "}
                             {thread.commentscount === 1
