@@ -285,7 +285,79 @@
   background-color: #8a4fc7;
 }
 
+.username-availability {
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-top: -0.4rem;
+  margin-bottom: 0.4rem;
+}
+
+.username-availability .available {
+  color: #4caf50;
+}
+
+.username-availability .unavailable {
+  color: #f44336;
+}
+
+.profile-save-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+select.profile-input {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 20px;
+}
+
+.profile-select {
+  width: 100%;
+}
+
+.profile-saving-bar {
+  height: 4px;
+  background-color: #9966cc;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  animation: saving-animation 0.5s infinite linear;
+}
+
+@keyframes saving-animation {
+  0% {
+    width: 0;
+  }
+  50% {
+    width: 50%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.profile-save-button:disabled,
+.profile-cancel-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.profile-card {
+  position: relative;
+  overflow: hidden;
+}
+
 /* Dark mode styles */
+
+.dark-mode select.profile-input {
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+}
+
 .dark-mode .profile-main-content {
   background-color: var(--dark-bg-color);
   color: var(--dark-text-color);

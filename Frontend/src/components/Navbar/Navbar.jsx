@@ -35,7 +35,7 @@ const NavBar = () => {
       setIsAuthenticated(false);
       setUser(null);
       setIsSidebarOpen(false);
-      navigate("/");
+      window.location.href = "/";
     } catch (error) {
       console.error("Error logging out:", error);
     }

@@ -3,6 +3,7 @@ import "./Profile.css";
 import { useTheme } from "../../ThemeContext";
 import NavBar from "../Navbar/Navbar";
 import axios from "axios";
+import { debounce } from "lodash";
 
 const Profile = () => {
   const { isDarkMode } = useTheme();
@@ -12,6 +13,10 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedUser, setEditedUser] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [usernameAvailable, setUsernameAvailable] = useState(true);
+  const [checkingUsername, setCheckingUsername] = useState(false);
+  const [validUsername, setValidUsername] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
 
   const fetchUserData = async () => {
     try {
@@ -37,9 +42,42 @@ const Profile = () => {
     fetchUserData();
   }, []);
 
+  const checkUsernameAvailability = useCallback(
+    debounce(async (username) => {
+      if (!username || username.length < 5) {
+        setUsernameAvailable(false);
+        setCheckingUsername(false);
+        setValidUsername(false);
+        return;
+      }
+
+      if (username === user.username) {
+        setUsernameAvailable(true);
+        setCheckingUsername(false);
+        setValidUsername(true);
+        return;
+      }
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/auth/check-username/${username}`
+        );
+        setUsernameAvailable(response.data.available);
+      } catch (error) {
+        console.error("Error checking username:", error);
+        setUsernameAvailable(false);
+      }
+      setCheckingUsername(false);
+    }, 1000),
+    [user]
+  );
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setEditedUser((prevUser) => ({ ...prevUser, [name]: value }));
+    if (name === "username") {
+      setCheckingUsername(true);
+      checkUsernameAvailability(value);
+    }
   };
 
   const handleFileChange = (e) => {
@@ -47,6 +85,7 @@ const Profile = () => {
   };
 
   const handleSaveChanges = async () => {
+    setIsSaving(true);
     try {
       const formData = new FormData();
       Object.keys(editedUser).forEach((key) => {
@@ -73,6 +112,8 @@ const Profile = () => {
     } catch (error) {
       console.error("Error updating profile:", error);
       setError("Error updating profile");
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -199,10 +240,29 @@ const Profile = () => {
               <label>Username</label>
               <input
                 type="text"
-                value={user.username}
-                disabled
+                name="username"
+                value={isEditing ? editedUser.username : user.username}
+                onChange={handleInputChange}
+                disabled={!isEditing}
                 className="profile-input"
               />
+              {isEditing && (
+                <div className="username-availability">
+                  {checkingUsername ? (
+                    <span>Checking username...</span>
+                  ) : usernameAvailable ? (
+                    <span className="available">Username is available</span>
+                  ) : validUsername ? (
+                    <span className="unavailable">
+                      Username is not available
+                    </span>
+                  ) : (
+                    <span className="unavailable">
+                      Username should be at least 5 characters
+                    </span>
+                  )}
+                </div>
+              )}
               <label>Email</label>
               <input
                 type="email"
@@ -211,14 +271,18 @@ const Profile = () => {
                 className="profile-input"
               />
               <label>Gender</label>
-              <input
-                type="text"
+              <select
                 name="gender"
                 value={isEditing ? editedUser.gender : user.gender}
                 onChange={handleInputChange}
                 disabled={!isEditing}
-                className="profile-input"
-              />
+                className="profile-input profile-select"
+              >
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
               <label>Date of Birth</label>
               <input
                 type="date"
@@ -241,12 +305,14 @@ const Profile = () => {
                   <button
                     className="profile-save-button"
                     onClick={handleSaveChanges}
+                    disabled={!usernameAvailable || isSaving}
                   >
                     Save changes
                   </button>
                   <button
                     className="profile-cancel-button"
                     onClick={() => setIsEditing(false)}
+                    disabled={isSaving}
                   >
                     Cancel
                   </button>
@@ -260,6 +326,7 @@ const Profile = () => {
                 </button>
               )}
             </div>
+            {isSaving && <div className="profile-saving-bar"></div>}
           </div>
         </section>
 
