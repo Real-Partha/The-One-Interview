@@ -2,6 +2,8 @@ require('dotenv').config();
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const User = require("../models/user");
+const { uploadObject } = require("../utils/amazonS3");
+const axios = require('axios');
 
 passport.use(
   new GoogleStrategy(
@@ -18,21 +20,42 @@ passport.use(
           return done(null, user);
         } else {
           const username = profile.displayName.replace(/\s/g, "").toLowerCase();
-          while (await User.findOne({ username: username })) {
-            username = username + Math.floor(Math.random() * 100);
+          let newUsername = username;
+          let counter = 1;
+          while (await User.findOne({ username: newUsername })) {
+            newUsername = username + counter;
+            counter++;
           }
+
+          // Download and upload profile picture to S3
+          let profile_pic_id = null;
+          if (profile.photos && profile.photos[0] && profile.photos[0].value) {
+            try {
+              const response = await axios.get(profile.photos[0].value, { responseType: 'arraybuffer' });
+              const buffer = Buffer.from(response.data, 'binary');
+              profile_pic_id = `${newUsername}_${Date.now()}.jpg`;
+              await uploadObject(profile_pic_id, buffer);
+            } catch (error) {
+              console.error('Error uploading profile picture to S3:', error);
+            }
+          }
+
           const newUser = new User({
-            username: username,
+            username: newUsername,
             email: profile.emails[0].value,
             first_name: profile.name.givenName,
             last_name: profile.name.familyName,
             type: "google",
             role: "user",
+            gender: "Not specified",
+            date_of_birth: null,
+            profile_pic: profile_pic_id,
           });
           await newUser.save();
           return done(null, newUser);
         }
       } catch (error) {
+        console.error('Error in Google Strategy:', error);
         return done(error, null);
       }
     }

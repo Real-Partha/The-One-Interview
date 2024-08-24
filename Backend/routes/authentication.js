@@ -9,7 +9,7 @@ const {getSignedUrlForObject} =require('../utils/amazonS3');
 // Local Signup
 router.post("/signup", async (req, res) => {
   try {
-    const { username, first_name, last_name, email, password } = req.body;
+    const { username, first_name, last_name, email, password, gender, date_of_birth } = req.body;
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "Email already exists" });
@@ -23,6 +23,8 @@ router.post("/signup", async (req, res) => {
       password: hashedPassword,
       type: "oneid",
       role: "user",
+      gender,
+      date_of_birth,
     });
     await newUser.save();
     req.login(newUser, (err) => {
@@ -95,10 +97,39 @@ router.get('/status', async (req, res) => {
   }
 });
 
-// Logout
 router.get("/logout", (req, res) => {
-  req.logout();
-  res.redirect(process.env.CLIENT_URL);
+  req.logout((err) => {
+    if (err) {
+      return res.status(500).json({ message: "Error logging out", error: err.message });
+    }
+    req.session.destroy((err) => {
+      if (err) {
+        return res.status(500).json({ message: "Error destroying session", error: err.message });
+      }
+      res.clearCookie('connect.sid');
+      return res.status(200).json({ message: "Logout successful" });
+    });
+  });
+});
+
+router.get("/check-username/:username", async (req, res) => {
+  try {
+    const { username } = req.params;
+    const existingUser = await User.findOne({ username });
+    res.json({ available: !existingUser });
+  } catch (error) {
+    res.status(500).json({ message: "Error checking username", error: error.message });
+  }
+});
+
+router.get("/check-email/:email", async (req, res) => {
+  try {
+    const { email } = req.params;
+    const existingUser = await User.findOne({ email });
+    res.json({ exists: !!existingUser });
+  } catch (error) {
+    res.status(500).json({ message: "Error checking email", error: error.message });
+  }
 });
 
 module.exports = router;

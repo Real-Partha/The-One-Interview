@@ -125,6 +125,10 @@ body {
   z-index: 1000;
 }
 
+.logout-profile{
+  cursor: pointer;
+}
+
 .profile-dropdown.open {
   opacity: 1;
   visibility: visible;
@@ -238,7 +242,7 @@ body {
   font-size: 14px;
   color: #777;
   margin: 5px 0;
-  color: #ff6f61 !important;
+  color: #9c79c8 !important;
   font-weight: bold;
 }
 

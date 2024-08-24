@@ -27,20 +27,38 @@ const NavBar = () => {
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      await axios.get(`${import.meta.env.VITE_API_URL}/auth/logout`, {
+        withCredentials: true,
+      });
+      setIsAuthenticated(false);
+      setUser(null);
+      setIsSidebarOpen(false);
+      navigate("/");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
+
   useEffect(() => {
     checkAuthStatus();
   }, []);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (isSidebarOpen && !event.target.closest('.profile-dropdown') && !event.target.closest('.profile')) {
+      if (
+        isSidebarOpen &&
+        !event.target.closest(".profile-dropdown") &&
+        !event.target.closest(".profile")
+      ) {
         setIsSidebarOpen(false);
       }
     };
-  
-    document.addEventListener('click', handleClickOutside);
+
+    document.addEventListener("click", handleClickOutside);
     return () => {
-      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, [isSidebarOpen]);
 
@@ -138,7 +156,7 @@ const NavBar = () => {
             >
               {user.type === "google"
                 ? "Logged in using Google"
-                : "Logged in using The One ID"}
+                : "Logged in using One ID"}
             </p>
           </div>
         )}
@@ -152,7 +170,7 @@ const NavBar = () => {
           <a href="#">
             <i className="fas fa-key"></i>Change Password
           </a>
-          <a href="#">
+          <a className="logout-profile" onClick={handleLogout}>
             <i className="fas fa-sign-out-alt"></i>Logout
           </a>
         </div>

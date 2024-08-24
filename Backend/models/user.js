@@ -34,13 +34,16 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, 'A role is required'],
     },
-    proflie_pic:{
+    profile_pic:{
         type:String,
         default: 'user.png'
     },
     gender:{
         type:String,
         required: [true, 'Please provide a gender'],
+    },
+    date_of_birth:{
+        type:Date,
     },
 });
 
