@@ -5,6 +5,10 @@ const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const User = require("../models/user");
 const {getSignedUrlForObject} =require('../utils/amazonS3');
+const { uploadObject } = require('../utils/amazonS3');
+const multer = require('multer');
+const upload = multer({ storage: multer.memoryStorage() });
+
 // OneID Signup
 // Local Signup
 router.post("/signup", async (req, res) => {
@@ -132,13 +136,20 @@ router.get("/check-email/:email", async (req, res) => {
   }
 });
 
-router.put("/update-profile", async (req, res) => {
+router.patch("/update-profile", upload.single('profile_pic'), async (req, res) => {
   if (!req.isAuthenticated()) {
     return res.status(401).json({ message: "Not authenticated" });
   }
 
   try {
     const updates = req.body;
+    console.log(req.file, req.body);
+    if (req.file) {
+      const filename = `${req.user._id}_${Date.now()}_${req.file.originalname}`;
+      await uploadObject(filename, req.file.buffer);
+      updates.profile_pic = filename;
+    }
+
     const user = await User.findByIdAndUpdate(req.user._id, updates, { new: true });
     
     if (!user) {
@@ -151,6 +162,27 @@ router.put("/update-profile", async (req, res) => {
     res.json({ message: "Profile updated successfully", user: updatedUser });
   } catch (error) {
     res.status(500).json({ message: "Error updating profile", error: error.message });
+  }
+});
+
+router.patch("/delete-profile-picture", async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.status(401).json({ message: "Not authenticated" });
+  }
+
+  try {
+    const user = await User.findByIdAndUpdate(req.user._id, { profile_pic: 'user.png' }, { new: true });
+    
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const updatedUser = user.toObject();
+    delete updatedUser.password;
+    
+    res.json({ message: "Profile picture deleted successfully", user: updatedUser });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting profile picture", error: error.message });
   }
 });
 

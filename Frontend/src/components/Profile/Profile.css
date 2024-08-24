@@ -1,352 +1,425 @@
 /* General Styles */
 .profile-main-content {
-    display: flex;
-    background-color: var(--bg-color);
-    padding: 20px;
-    color: var(--text-color);
-    /* border-radius: 10px; */
-    transition: background-color 0.3s, color 0.3s;
+  display: flex;
+  background-color: var(--bg-color);
+  padding: 20px;
+  color: var(--text-color);
+  /* border-radius: 10px; */
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .profile-sidebar {
-    width: 20%;
-    background-color: var(--bg-color);
-    padding: 15px;
-    border-radius: 15px;
-    box-shadow: var(--box-shadow);
-    transition: background-color 0.3s, box-shadow 0.3s;
+  width: 20%;
+  background-color: var(--bg-color);
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: var(--box-shadow);
+  transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 .profile-navigation {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .profile-sidebar-card {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    margin: 17px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;}
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  margin: 17px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
 .profile-sidebar-card:hover {
-    background-color: var(--input-bg-color);
-    transform: translateY(-10px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2)
+  background-color: var(--input-bg-color);
+  transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .profile-sidebar-card i {
-    margin-right: 10px;
-    font-size: 20px;
+  margin-right: 10px;
+  font-size: 20px;
 }
 
 .profile-content {
-    width: 60%;
-    margin: 0 20px;
-    border-radius: 10px;
-    transition: background-color 0.3s, box-shadow 0.3s;
+  width: 60%;
+  margin: 0 20px;
+  border-radius: 10px;
+  transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 .profile-card {
-    background-color: var(--bg-color);
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: var(--box-shadow);
-    transition: background-color 0.3s, box-shadow 0.3s;
+  background-color: var(--bg-color);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: var(--box-shadow);
+  transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 .profile-card-title {
-    font-size: 24px;
-    margin-bottom: 20px;
+  font-size: 24px;
+  margin-bottom: 20px;
 }
 
 .profile-picture-section {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.profile-picture-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 .profile-picture {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin-right: 20px;
-    transition: transform 0.3s;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  transition: transform 0.3s;
 }
 
 .profile-picture:hover {
-    transform: scale(1.1);
+  transform: scale(1.1);
+}
+
+.profile-picture-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
 }
 
 .profile-button {
-    background-color: var(--primary-color);
-    color: var(--text-color);
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-right: 10px;
-    transition: background-color 0.3s;
+  background-color: #9966cc;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 5px;
+  font-size: 14px;
+  transition: background-color 0.3s;
 }
 
 .profile-button:hover {
-    background-color: var(--primary-hover-color);
-}
-
-.profile-info label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-.profile-input,.profile-textarea{
-    width: 97%;
-    margin-top: 10px;
-}
-.profile-textarea{
-    resize: none;
-    height: 200px;
-}
-.profile-input, .profile-textarea {
-    
-    padding: 10px;
-    margin-bottom: 15px;
-    border-radius: 5px;
-    border: 1px solid var(--border-color);
-    background-color: var(--input-bg-color);
-    color: var(--text-color);
-    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
-}
-
-
-
-.profile-footer {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 20px;
-}
-
-.profile-save-button {
-    background-color: var(--primary-color);
-    color: var(--text-color);
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-}
-
-.profile-save-button:hover {
-    background-color: var(--primary-hover-color);
-}
-
-.profile-right-sidebar {
-    width: 20%;
-    padding: 15px;
-}
-
-.profile-right-sidebar-card {
-    background-color: var(--bg-color);
-    padding: 15px;
-    border-radius: 15px;
-    box-shadow: var(--box-shadow);
-    margin-bottom: 20px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;}
-
-.profile-right-sidebar-card:hover {
-    transform: translateY(-10px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2)
-}
-
-.profile-right-sidebar-card img {
-    width: 50px;
-    height: 50px;
-    margin-bottom: 10px;
-}
-
-.profile-card-details h4 {
-    margin-bottom: 5px;
-}
-
-.profile-card-details p {
-    font-size: 14px;
-    color: var(--text-color);
+  background-color: #8a4fc7;
 }
 
 .login-type-badge {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-  }
-  
-  .user-login-type {
-    font-size: 14px;
-    padding: 5px 10px;
-    border-radius: 15px;
-    font-weight: bold;
-  }
-  
-  .user-login-type.google {
-    background-color: #f1f3f4;
-    color: #4285F4;
-  }
-  
-  .user-login-type.oneid {
-    background-color: #fff0ee;
-    color: #ff6f61;
-  }
-  
-  .profile-edit-button,
-  .profile-save-button,
-  .profile-cancel-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-  }
-  
-  .profile-edit-button {
-    background-color: var(--primary-color);
-    color: white;
-  }
-  
-  .profile-save-button {
-    background-color: #4CAF50;
-    color: white;
-    margin-right: 10px;
-  }
-  
-  .profile-cancel-button {
-    background-color: #f44336;
-    color: white;
-  }
-  
-  .profile-edit-button:hover,
-  .profile-save-button:hover,
-  .profile-cancel-button:hover {
-    opacity: 0.9;
-  }
-  
-  .profile-input:disabled {
-    background-color: var(--input-bg-color);
-    color: var(--text-color);
-    opacity: 0.7;
-  }
+  margin-top: 10px;
+}
+
+.user-login-type {
+  font-size: 14px;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-weight: bold;
+}
+
+.user-login-type.google {
+  background-color: #f1f3f4;
+  color: #4285f4;
+}
+
+.user-login-type.oneid {
+  background-color: #fff0ee;
+  color: #ff6f61;
+}
+
+.profile-info label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.profile-input,
+.profile-textarea {
+  width: 97%;
+  margin-top: 10px;
+}
+.profile-textarea {
+  resize: none;
+  height: 200px;
+}
+.profile-input,
+.profile-textarea {
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid var(--border-color);
+  background-color: var(--input-bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}
+
+.profile-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.profile-save-button {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.profile-save-button:hover {
+  background-color: var(--primary-hover-color);
+}
+
+.profile-right-sidebar {
+  width: 20%;
+  padding: 15px;
+}
+
+.profile-right-sidebar-card {
+  background-color: var(--bg-color);
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: var(--box-shadow);
+  margin-bottom: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-right-sidebar-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.profile-right-sidebar-card img {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 10px;
+}
+
+.profile-card-details h4 {
+  margin-bottom: 5px;
+}
+
+.profile-card-details p {
+  font-size: 14px;
+  color: var(--text-color);
+}
+
+.login-type-badge {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.user-login-type {
+  font-size: 14px;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-weight: bold;
+}
+
+.user-login-type.google {
+  background-color: #f1f3f4;
+  color: #4285f4;
+}
+
+.user-login-type.oneid {
+  background-color: #fff0ee;
+  color: #ff6f61;
+}
+
+.profile-edit-button,
+.profile-save-button,
+.profile-cancel-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.profile-edit-button {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.profile-save-button {
+  background-color: #4caf50;
+  color: white;
+  margin-right: 10px;
+}
+
+.profile-cancel-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.profile-edit-button:hover,
+.profile-save-button:hover,
+.profile-cancel-button:hover {
+  opacity: 0.9;
+}
+
+.profile-input:disabled {
+  background-color: var(--input-bg-color);
+  color: var(--text-color);
+  opacity: 0.7;
+}
+
+.profile-edit-button,
+.profile-button {
+  background-color: #9966cc;
+  color: white;
+}
+
+.profile-edit-button:hover,
+.profile-button:hover {
+  background-color: #8a4fc7;
+}
 
 /* Dark mode styles */
 .dark-mode .profile-main-content {
-    background-color: var(--dark-bg-color);
-    color: var(--dark-text-color);
-    box-shadow: var(--dark-box-shadow);
+  background-color: var(--dark-bg-color);
+  color: var(--dark-text-color);
+  box-shadow: var(--dark-box-shadow);
 }
 
-
-.dark-mode .profile-right-sidebar-card{
-    background-color: var(--dark-sidebar-cards-bg-color);
-    box-shadow: var(--dark-box-shadow);
+.dark-mode .profile-right-sidebar-card {
+  background-color: var(--dark-sidebar-cards-bg-color);
+  box-shadow: var(--dark-box-shadow);
 }
 
-.dark-mode .profile-card{
-    background-color: var(--dark-sidebar-cards-bg-color);
-    box-shadow: var(--dark-box-shadow);
+.dark-mode .profile-card {
+  background-color: var(--dark-sidebar-cards-bg-color);
+  box-shadow: var(--dark-box-shadow);
 }
 
 .dark-mode .profile-sidebar,
-.dark-mode .profile-right-sidebar
-    {
-    background-color: var(--dark-sidebar-bg-color);
-    box-shadow: var(--dark-box-shadow);
+.dark-mode .profile-right-sidebar {
+  background-color: var(--dark-sidebar-bg-color);
+  box-shadow: var(--dark-box-shadow);
 }
 
-.dark-mode .profile-sidebar-card{
-    background-color: var(--dark-sidebar-cards-bg-color);
-    box-shadow: var(--dark-box-shadow);
+.dark-mode .profile-sidebar-card {
+  background-color: var(--dark-sidebar-cards-bg-color);
+  box-shadow: var(--dark-box-shadow);
 }
-
-
 
 .dark-mode .profile-sidebar-card:hover {
-    background-color: var(--dark-input-bg-color);
+  background-color: var(--dark-input-bg-color);
 }
 
 .dark-mode .profile-input,
 .dark-mode .profile-textarea {
-    background-color: var(--dark-input-bg-color);
-    border-color: var(--dark-border-color);
-    color: var(--dark-text-color);
+  background-color: var(--dark-input-bg-color);
+  border-color: var(--dark-border-color);
+  color: var(--dark-text-color);
 }
 
 .dark-mode .profile-button,
 .dark-mode .profile-save-button {
-    background-color: var(--dark-primary-color);
+  background-color: var(--dark-primary-color);
 }
 
 .dark-mode .profile-button:hover,
 .dark-mode .profile-save-button:hover {
-    background-color: var(--dark-primary-hover-color);
+  background-color: var(--dark-primary-hover-color);
 }
 
 .dark-mode .user-login-type.google {
-    background-color: #303134;
-    color: #8ab4f8;
-  }
-  
-  .dark-mode .user-login-type.oneid {
-    background-color: #3d2d2b;
-    color: #ff8f85;
-  }
-  
-  .dark-mode .profile-edit-button,
-  .dark-mode .profile-save-button,
-  .dark-mode .profile-cancel-button {
-    color: var(--dark-text-color);
-  }
-  
-  .dark-mode .profile-edit-button {
-    background-color: var(--dark-primary-color);
-  }
-  
-  .dark-mode .profile-save-button {
-    background-color: #2e7d32;
-  }
-  
-  .dark-mode .profile-cancel-button {
-    background-color: #c62828;
-  }
-  
-  .dark-mode .profile-input:disabled {
-    background-color: var(--dark-input-bg-color);
-    color: var(--dark-text-color);
-  }
+  background-color: #303134;
+  color: #8ab4f8;
+}
+
+.dark-mode .user-login-type.oneid {
+  background-color: #3d2d2b;
+  color: #ff8f85;
+}
+
+.dark-mode .profile-edit-button,
+.dark-mode .profile-save-button,
+.dark-mode .profile-cancel-button {
+  color: var(--dark-text-color);
+}
+
+.dark-mode .profile-edit-button {
+  background-color: var(--dark-primary-color);
+}
+
+.dark-mode .profile-save-button {
+  background-color: #2e7d32;
+}
+
+.dark-mode .profile-cancel-button {
+  background-color: #c62828;
+}
+
+.dark-mode .profile-input:disabled {
+  background-color: var(--dark-input-bg-color);
+  color: var(--dark-text-color);
+}
+
+.dark-mode .profile-edit-button,
+.dark-mode .profile-button {
+  background-color: #9966cc;
+  color: white;
+}
+
+.dark-mode .profile-edit-button:hover,
+.dark-mode .profile-button:hover {
+  background-color: #8a4fc7;
+}
+
+.dark-mode .profile-button {
+  background-color: #9966cc;
+  color: white;
+}
+
+.dark-mode .profile-button:hover {
+  background-color: #8a4fc7;
+}
+
+.dark-mode .user-login-type.google {
+  background-color: #303134;
+  color: #8ab4f8;
+}
+
+.dark-mode .user-login-type.oneid {
+  background-color: #3d2d2b;
+  color: #ff8f85;
+}
 
 /* Variables to match MainComponent.css */
 :root {
-    --bg-color: #ffffff;
-    --text-color: black;
-    --border-color: #dddddd;
-    --input-bg-color: #f5f5f5;
-    --primary-color: #008CBA;
-    --primary-hover-color: #005f73;
-    --box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  --bg-color: #ffffff;
+  --text-color: black;
+  --border-color: #dddddd;
+  --input-bg-color: #f5f5f5;
+  --primary-color: #008cba;
+  --primary-hover-color: #005f73;
+  --box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.dark-mode .profile-main-content p{
-    color: var(--dark-para-color);
+.dark-mode .profile-main-content p {
+  color: var(--dark-para-color);
 }
 .dark-mode {
-    --dark-bg-color: #1e1e1e;
-    --dark-sidebar-bg-color: #252525;
-    --dark-sidebar-cards-bg-color: #3b3b3b;
-    --dark-text-color: white;
-    --dark-para-color:#cccccc;
-    --dark-border-color: #444444;
-    --dark-input-bg-color: #2a2a2a;
-    --dark-primary-color: #0099cc;
-    --dark-primary-hover-color: #007399;
-    --dark-box-shadow: 0px 4px 6px rgba(255, 255, 255, 0.1);
+  --dark-bg-color: #1e1e1e;
+  --dark-sidebar-bg-color: #252525;
+  --dark-sidebar-cards-bg-color: #3b3b3b;
+  --dark-text-color: white;
+  --dark-para-color: #cccccc;
+  --dark-border-color: #444444;
+  --dark-input-bg-color: #2a2a2a;
+  --dark-primary-color: #0099cc;
+  --dark-primary-hover-color: #007399;
+  --dark-box-shadow: 0px 4px 6px rgba(255, 255, 255, 0.1);
 }
