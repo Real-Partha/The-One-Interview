@@ -1,98 +1,158 @@
 .user-activity {
-    padding: 20px;
-    margin-bottom: 20px;
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: var(--bg-color);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.activity-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.activity-logo {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.activity-header h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.activity-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.activity-icon {
+  margin-right: 15px;
+  font-size: 1.2rem;
+  color: var(--primary-color);
+}
+
+.activity-content {
+  flex-grow: 1;
+}
+
+.activity-content p {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.activity-content a {
+  display: inline-block;
+  margin-top: 0.25rem;
+  color: var(--primary-color);
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.activity-content a:hover {
+  text-decoration: underline;
+}
+
+.activity-timestamp {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-color);
+  opacity: 0.7;
+  margin-top: 0.5rem;
+}
+
+.view-more-button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-top: 1rem;
+}
+
+.view-more-button:hover {
+  background-color: var(--primary-hover-color);
+}
+
+.view-more-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.activity-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  transition: max-height 0.5s ease, opacity 0.5s ease;
+  max-height: 1000px;
+  opacity: 1;
+}
+
+.activity-item{
+    animation: activitySlideDown 2s ease forwards;
+}
+
+.new-activity {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  animation: activitySlideDown 10s ease forwards;
+}
+
+@keyframes activitySlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
   }
-  
-  .activity-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1rem;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .activity-logo {
-    width: 30px;
-    height: 30px;
-    margin-right: 10px;
-  }
-  
-  .activity-list {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .activity-item {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--border-color);
-  }
-  
-  .activity-icon {
-    margin-right: 10px;
-    font-size: 1rem;
-    color: var(--primary-color);
-  }
-  
-  .activity-content {
-    flex-grow: 1;
-  }
-  
-  .activity-content p {
-    margin: 0 0 0.25rem 0;
-    font-size: 0.9rem;
-  }
-  
-  .activity-timestamp {
-    font-size: 0.8rem;
-    color: var(--text-color);
-    opacity: 0.7;
-  }
-  
-  .view-more-button {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    font-size: 0.9rem;
-  }
-  
-  .view-more-button:hover {
-    background-color: var(--primary-hover-color);
-  }
-  
-  .view-more-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  
-  /* Dark mode styles */
-  .dark-mode .user-activity {
-    color: var(--dark-text-color);
-  }
-  
-  .dark-mode .activity-item {
-    border-bottom-color: var(--dark-border-color);
-  }
-  
-  .dark-mode .activity-icon {
-    color: var(--dark-primary-color);
-  }
-  
-  .dark-mode .activity-timestamp {
-    color: var(--dark-text-color);
-  }
-  
-  .dark-mode .view-more-button {
-    background-color: var(--dark-primary-color);
-  }
-  
-  .dark-mode .view-more-button:hover {
-    background-color: var(--dark-primary-hover-color);
-  }
-  
+}
+
+/* Dark mode styles */
+.dark-mode .user-activity {
+  background-color: var(--dark-bg-color);
+  box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .activity-header h3 {
+  color: var(--dark-primary-color);
+}
+
+.dark-mode .activity-item {
+  border-bottom-color: var(--dark-border-color);
+}
+
+.dark-mode .activity-icon {
+  color: var(--dark-primary-color);
+}
+
+.dark-mode .activity-content a {
+  color: var(--dark-primary-color);
+}
+
+.dark-mode .activity-timestamp {
+  color: var(--dark-text-color);
+}
+
+.dark-mode .view-more-button {
+  background-color: var(--dark-primary-color);
+}
+
+.dark-mode .view-more-button:hover {
+  background-color: var(--dark-primary-hover-color);
+}

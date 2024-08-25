@@ -7,6 +7,7 @@ const UserActivity = ({ refreshTrigger }) => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [newActivities, setNewActivities] = useState([]);
 
   const fetchActivities = async (pageNum = 1) => {
     setLoading(true);
@@ -18,10 +19,7 @@ const UserActivity = ({ refreshTrigger }) => {
       if (pageNum === 1) {
         setActivities(response.data.activities);
       } else {
-        setActivities((prevActivities) => [
-          ...prevActivities,
-          ...response.data.activities,
-        ]);
+        setNewActivities(response.data.activities);
       }
       setHasMore(response.data.hasMore);
     } catch (error) {
@@ -29,6 +27,19 @@ const UserActivity = ({ refreshTrigger }) => {
     }
     setLoading(false);
   };
+
+  useEffect(() => {
+    if (newActivities.length > 0) {
+      const timer = setTimeout(() => {
+        setActivities((prevActivities) => [
+          ...prevActivities,
+          ...newActivities,
+        ]);
+        setNewActivities([]);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [newActivities]);
 
   useEffect(() => {
     fetchActivities(1);
@@ -59,8 +70,21 @@ const UserActivity = ({ refreshTrigger }) => {
         return "fa-question";
       case "search":
         return "fa-search";
-      case "vote":
+      default:
+        return "fa-circle";
+    }
+  };
+
+  const getActivityIconForVote = (action) => {
+    switch (action) {
+      case "upvote":
         return "fa-thumbs-up";
+      case "remove_upvote":
+        return "fa-regular fa-thumbs-up";
+      case "downvote":
+        return "fa-thumbs-down";
+      case "remove_downvote":
+        return "fa-regular fa-thumbs-down";
       default:
         return "fa-circle";
     }
@@ -69,23 +93,79 @@ const UserActivity = ({ refreshTrigger }) => {
   const getActivityDescription = (activity) => {
     switch (activity.type) {
       case "comment":
-        return "Commented on a post";
+        return (
+          <div>
+            <p>Commented on a post</p>
+            {activity.details && activity.details.comment_id && (
+              <a
+                href={`/question/${activity.target_id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View Question
+              </a>
+            )}
+          </div>
+        );
       case "profile_update":
-        return "Updated profile information";
+        return (
+          <div>
+            <p>Updated profile information:</p>
+            {activity.details &&
+              Object.entries(activity.details).map(([key, value]) => (
+                <p key={key}>
+                  {key}: from "{value.old}" to "{value.new}"
+                </p>
+              ))}
+          </div>
+        );
       case "profile_photo":
         return `${
           activity.action === "updated" ? "Updated" : "Deleted"
         } profile photo`;
       case "username":
-        return "Changed username";
+        return `Changed username from "${activity.details.old}" to "${activity.details.new}"`;
       case "question":
-        return "Posted a question";
+        return (
+          <div>
+            <p>Posted a question</p>
+            {activity.target_id && (
+              <a
+                href={`/question/${activity.target_id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View Question
+              </a>
+            )}
+          </div>
+        );
       case "search":
         return `Searched for "${activity.details.query}"`;
       case "vote":
-        return `${
-          activity.action === "upvote" ? "Upvoted" : "Downvoted"
-        } a question`;
+        return (
+          <div>
+            <p>
+              {activity.action === "upvote"
+                ? "Upvoted"
+                : activity.action === "remove_upvote"
+                ? "Removed Upvote from"
+                : activity.action === "downvote"
+                ? "Downvoted"
+                : "Removed Downvote from"}{" "}
+              a question
+            </p>
+            {activity.target_id && (
+              <a
+                href={`/question/${activity.target_id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View Question
+              </a>
+            )}
+          </div>
+        );
       default:
         return "Performed an action";
     }
@@ -137,13 +217,21 @@ const UserActivity = ({ refreshTrigger }) => {
         <h3>Recent Activity</h3>
       </div>
       <ul className="activity-list">
-        {activities.map((activity, index) => (
+        {activities.map((activity) => (
           <li key={activity._id} className="activity-item">
-            <i
-              className={`fa ${getActivityIcon(activity.type)} activity-icon`}
-            ></i>
+            {activity.type !== "vote" ? (
+              <i
+                className={`fa ${getActivityIcon(activity.type)} activity-icon`}
+              ></i>
+            ) : (
+              <i
+                className={`fa ${getActivityIconForVote(
+                  activity.action
+                )} activity-icon`}
+              ></i>
+            )}
             <div className="activity-content">
-              <p>{getActivityDescription(activity)}</p>
+              {getActivityDescription(activity)}
               <span className="activity-timestamp">
                 {formatTimeAgo(activity.timestamp)}
               </span>

@@ -331,18 +331,10 @@ const Profile = () => {
             </div>
             {isSaving && <div className="profile-saving-bar"></div>}
           </div>
-        </section>
-
-        <aside className="profile-right-sidebar">
-          <UserActivity refreshTrigger={refreshActivityTrigger} />
-          <div className="profile-right-sidebar-card">
-            <img src="stats.png" alt="Profile Stats" />
-            <div className="profile-card-details">
-              <h4>Profile Stats</h4>
-              <p>See your profile statistics</p>
-            </div>
+          <div className="profile-main-userActivity">
+            <UserActivity refreshTrigger={refreshActivityTrigger} />
           </div>
-        </aside>
+        </section>
       </div>
     </div>
   );
