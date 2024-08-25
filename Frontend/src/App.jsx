@@ -8,6 +8,7 @@ import { ThemeProvider } from "./ThemeContext";
 import Post from "./components/Posts/Post";
 import Profile from "./components/Profile/Profile";
 import NavBar from "./components/Navbar/Navbar";
+import { Toaster } from 'react-hot-toast';
 
 function AppContent() {
   const location = useLocation();
@@ -16,6 +17,7 @@ function AppContent() {
 
   return (
     <>
+      <Toaster position="top-center" reverseOrder={false}/>
       {shouldShowNavBar && <NavBar />}
       <Routes>
         <Route path="/" element={<MainContent />} />

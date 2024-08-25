@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Signup.css";
+import useNotification from '../Notifications';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +15,7 @@ const Signup = () => {
     gender: "",
     date_of_birth: "",
   });
+  const { ErrorNotification ,SuccessNotification} = useNotification();
   const [showPassword, setShowPassword] = useState(false);
   const [usernameAvailable, setUsernameAvailable] = useState(null);
   const [checkingUsername, setCheckingUsername] = useState(false);
@@ -134,11 +136,13 @@ const Signup = () => {
         { withCredentials: true }
       );
       if (response.data.user) {
+        SuccessNotification(response.data.message);
         navigate("/");
       }
     } catch (error) {
       console.error("Signup error:", error);
-      alert(error.response?.data?.message || "Error signing up");
+      ErrorNotification(error.response?.data?.message || "Error signing up");
+      // alert(error.response?.data?.message || "Error signing up");
     }
   };
 

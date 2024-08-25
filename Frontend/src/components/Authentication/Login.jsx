@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Login.css';
+import useNotification from '../Notifications';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const { ErrorNotification ,SuccessNotification} = useNotification();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -14,9 +16,11 @@ const Login = () => {
     try {
       const response = await axios.post(`${import.meta.env.VITE_API_URL}/auth/login`, { email, password }, { withCredentials: true });
       if (response.data.user) {
+        SuccessNotification(response.data.message);
         navigate('/');
       }
     } catch (error) {
+      ErrorNotification(error.response.data.message);
       console.error('Login error:', error);
     }
   };
