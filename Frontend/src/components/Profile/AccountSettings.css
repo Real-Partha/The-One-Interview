@@ -1,0 +1,83 @@
+.account-settings-container {
+    padding: 20px;
+    background-color: var(--bg-color);
+    border-radius: 8px;
+    box-shadow: var(--box-shadow);
+  }
+  
+  .account-settings-title {
+    margin-bottom: 20px;
+  }
+  
+  .account-settings-email-section,
+  .account-settings-password-section {
+    margin-bottom: 30px;
+  }
+  
+  .account-settings-email-note {
+    font-style: italic;
+    color: #666;
+  }
+  
+  .account-settings-form-group {
+    margin-bottom: 15px;
+  }
+  
+  .account-settings-label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .account-settings-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+  }
+  
+  .account-settings-button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .account-settings-button:hover {
+    background-color: var(--primary-hover-color);
+  }
+  
+  .account-settings-error-message {
+    color: #f44336;
+    margin-top: 10px;
+  }
+  
+  .account-settings-success-message {
+    color: #4caf50;
+    margin-top: 10px;
+  }
+  
+  .dark-mode .account-settings-container {
+    background-color: var(--dark-sidebar-cards-bg-color);
+    color: var(--dark-text-color);
+  }
+  
+  .dark-mode .account-settings-email-note {
+    color: #aaa;
+  }
+  
+  .dark-mode .account-settings-input {
+    background-color: var(--dark-input-bg-color);
+    color: var(--dark-text-color);
+    border-color: var(--dark-border-color);
+  }
+  
+  .dark-mode .account-settings-button {
+    background-color: var(--dark-primary-color);
+  }
+  
+  .dark-mode .account-settings-button:hover {
+    background-color: var(--dark-primary-hover-color);
+  }
+  

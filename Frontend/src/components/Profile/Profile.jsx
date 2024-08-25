@@ -5,6 +5,7 @@ import NavBar from "../Navbar/Navbar";
 import axios from "axios";
 import { debounce } from "lodash";
 import UserActivity from "./UserActivity";
+import AccountSettings from "./AccountSettings";
 
 const Profile = () => {
   const { isDarkMode } = useTheme();
@@ -388,6 +389,9 @@ const Profile = () => {
                 </div>
               </div>
             </>
+          )}
+          {activeSection === "account" && (
+            <AccountSettings user={user} />
           )}
           {activeSection === "activity" && (
             <div className="profile-main-userActivity">
