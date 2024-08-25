@@ -4,16 +4,26 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const User = require("../models/user");
-const {getSignedUrlForObject} =require('../utils/amazonS3');
-const { uploadObject } = require('../utils/amazonS3');
-const multer = require('multer');
+const Activity = require("../models/activity");
+const { getSignedUrlForObject } = require("../utils/amazonS3");
+const { uploadObject } = require("../utils/amazonS3");
+const multer = require("multer");
 const upload = multer({ storage: multer.memoryStorage() });
+const sharp = require("sharp");
 
 // OneID Signup
 // Local Signup
 router.post("/signup", async (req, res) => {
   try {
-    const { username, first_name, last_name, email, password, gender, date_of_birth } = req.body;
+    const {
+      username,
+      first_name,
+      last_name,
+      email,
+      password,
+      gender,
+      date_of_birth,
+    } = req.body;
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "Email already exists" });
@@ -86,7 +96,7 @@ router.get(
   }
 );
 
-router.get('/status', async (req, res) => {
+router.get("/status", async (req, res) => {
   if (req.isAuthenticated()) {
     req.user = req.user.toObject();
     delete req.user.password;
@@ -104,13 +114,17 @@ router.get('/status', async (req, res) => {
 router.get("/logout", (req, res) => {
   req.logout((err) => {
     if (err) {
-      return res.status(500).json({ message: "Error logging out", error: err.message });
+      return res
+        .status(500)
+        .json({ message: "Error logging out", error: err.message });
     }
     req.session.destroy((err) => {
       if (err) {
-        return res.status(500).json({ message: "Error destroying session", error: err.message });
+        return res
+          .status(500)
+          .json({ message: "Error destroying session", error: err.message });
       }
-      res.clearCookie('connect.sid');
+      res.clearCookie("connect.sid");
       return res.status(200).json({ message: "Logout successful" });
     });
   });
@@ -122,7 +136,9 @@ router.get("/check-username/:username", async (req, res) => {
     const existingUser = await User.findOne({ username });
     res.json({ available: !existingUser });
   } catch (error) {
-    res.status(500).json({ message: "Error checking username", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error checking username", error: error.message });
   }
 });
 
@@ -132,38 +148,102 @@ router.get("/check-email/:email", async (req, res) => {
     const existingUser = await User.findOne({ email });
     res.json({ exists: !!existingUser });
   } catch (error) {
-    res.status(500).json({ message: "Error checking email", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error checking email", error: error.message });
   }
 });
 
-router.patch("/update-profile", upload.single('profile_pic'), async (req, res) => {
-  if (!req.isAuthenticated()) {
-    return res.status(401).json({ message: "Not authenticated" });
-  }
-
-  try {
-    const updates = req.body;
-    console.log(req.file, req.body);
-    if (req.file) {
-      const filename = `${req.user._id}_${Date.now()}_${req.file.originalname}`;
-      await uploadObject(filename, req.file.buffer);
-      updates.profile_pic = filename;
+router.patch(
+  "/update-profile",
+  upload.single("profile_pic"),
+  async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Not authenticated" });
     }
 
-    const user = await User.findByIdAndUpdate(req.user._id, updates, { new: true });
-    
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
+    try {
+      const updates = req.body;
+      const oldUser = await User.findById(req.user._id);
 
-    const updatedUser = user.toObject();
-    delete updatedUser.password;
-    
-    res.json({ message: "Profile updated successfully", user: updatedUser });
-  } catch (error) {
-    res.status(500).json({ message: "Error updating profile", error: error.message });
+      // Handle profile picture update
+      if (req.file) {
+        let buffer = req.file.buffer;
+        const maxSizeInBytes = 500 * 1024; // 500KB
+
+        // Check if the image size is over 500KB
+        if (buffer.length > maxSizeInBytes) {
+          // Reduce the image size
+          buffer = await sharp(buffer)
+            .resize({ width: 800, height: 800, fit: "inside" })
+            .toBuffer();
+
+          // If it's still over 500KB, reduce quality
+          if (buffer.length > maxSizeInBytes) {
+            buffer = await sharp(buffer).png({ quality: 80 }).toBuffer();
+          }
+        }
+        const filename = `${req.user._id}_${Date.now()}_${
+          req.file.originalname
+        }`;
+        await uploadObject(filename, buffer);
+        updates.profile_pic = filename;
+
+        // Record profile photo update activity
+        await Activity.create({
+          user_id: req.user._id,
+          type: "profile_photo",
+          action: "updated"
+        });
+      }
+
+      // Handle username update
+      if (updates.username && updates.username !== oldUser.username) {
+        await Activity.create({
+          user_id: req.user._id,
+          type: "username",
+          details: { old: oldUser.username, new: updates.username },
+        });
+      }
+
+      const user = await User.findByIdAndUpdate(req.user._id, updates, {
+        new: true,
+      });
+
+      // Record other profile updates
+      const changedFields = Object.keys(updates).filter(
+        (key) =>
+          updates[key] !== oldUser[key] &&
+          key !== "username" &&
+          key !== "profile_pic"
+      );
+
+      if (changedFields.length > 0) {
+        await Activity.create({
+          user_id: req.user._id,
+          type: "profile_update",
+          details: changedFields.reduce((acc, field) => {
+            acc[field] = { old: oldUser[field], new: updates[field] };
+            return acc;
+          }, {}),
+        });
+      }
+
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      const updatedUser = user.toObject();
+      delete updatedUser.password;
+
+      res.json({ message: "Profile updated successfully", user: updatedUser });
+    } catch (error) {
+      res
+        .status(500)
+        .json({ message: "Error updating profile", error: error.message });
+    }
   }
-});
+);
 
 router.patch("/delete-profile-picture", async (req, res) => {
   if (!req.isAuthenticated()) {
@@ -171,20 +251,38 @@ router.patch("/delete-profile-picture", async (req, res) => {
   }
 
   try {
-    const user = await User.findByIdAndUpdate(req.user._id, { profile_pic: 'user.png' }, { new: true });
-    
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      { profile_pic: "user.png" },
+      { new: true }
+    );
+
+    // Record activity
+    await Activity.create({
+      user_id: req.user._id,
+      type: "profile_photo",
+      action: "deleted",
+    });
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
     const updatedUser = user.toObject();
     delete updatedUser.password;
-    
-    res.json({ message: "Profile picture deleted successfully", user: updatedUser });
+
+    res.json({
+      message: "Profile picture deleted successfully",
+      user: updatedUser,
+    });
   } catch (error) {
-    res.status(500).json({ message: "Error deleting profile picture", error: error.message });
+    res
+      .status(500)
+      .json({
+        message: "Error deleting profile picture",
+        error: error.message,
+      });
   }
 });
-
 
 module.exports = router;

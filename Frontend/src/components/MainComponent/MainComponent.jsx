@@ -170,6 +170,7 @@ const MainComponent = () => {
         `${import.meta.env.VITE_API_URL}/questionsearch`,
         {
           params: { query: searchQuery },
+          withCredentials: true,
         }
       );
       setThreads(response.data.questions);
@@ -312,9 +313,18 @@ const MainComponent = () => {
                       </div>
                     </div>
                     <div className="thread-footer">
-                      <p className="view-message">
-                        Click to view detailed answer and information
-                      </p>
+                      <div className="thread-votes">
+                        <span className="upvotes">
+                          <i className="fas fa-arrow-alt-circle-up"></i>{" "}
+                          {thread.upvotes || 0}{" "}
+                          {thread.upvotes === 1 ? "upvote" : "upvotes"}
+                        </span>
+                        <span className="downvotes">
+                          <i className="fas fa-arrow-alt-circle-down"></i>{" "}
+                          {thread.downvotes || 0}{" "}
+                          {thread.downvotes === 1 ? "downvote" : "downvotes"}
+                        </span>
+                      </div>
                       <div className="thread-stats">
                         <div className="thread-views">
                           <i className="fa-solid fa-eye"></i>

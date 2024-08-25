@@ -73,7 +73,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: auto;
+  margin-top: 1rem;
 }
 
 .view-message {
@@ -94,6 +94,14 @@
   font-size: 1vw;
   color: #666;
   margin-left: 15px;
+}
+
+.thread-views i{
+  color: #7770ed;
+}
+
+.thread-comments i{
+  color: #efbd33;
 }
 
 .thread-views i,
@@ -481,6 +489,39 @@
   margin-bottom: 5%;
 }
 
+.thread-votes .upvotes i,
+.thread-votes .downvotes i {
+  font-size: 1.2vw;
+  margin-right: 5px;
+}
+
+.thread-votes {
+  display: flex;
+  align-items: center;
+}
+
+.thread-votes .upvotes,
+.thread-votes .downvotes {
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+  font-size: 0.9vw;
+  color: #666;
+  font-weight: bold;
+}
+
+.thread-votes i {
+  margin-right: 5px;
+}
+
+.thread-votes .upvotes i {
+  color: #4CAF50;
+}
+
+.thread-votes .downvotes i {
+  color: #F44336;
+}
+
 
 
 
@@ -666,4 +707,9 @@
 
 .dark-mode .pagination span {
   color: #d3d3d3;
+}
+
+.dark-mode .thread-votes .upvotes,
+.dark-mode .thread-votes .downvotes {
+  color: #aaaaaa;
 }
