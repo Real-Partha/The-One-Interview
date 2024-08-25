@@ -95,7 +95,7 @@ const UserActivity = ({ refreshTrigger }) => {
       case "comment":
         return (
           <div>
-            <p>Commented on a post</p>
+            <div className="user-activity-title">Commented on a post</div>
             {activity.details && activity.details.comment_id && (
               <a
                 href={`/question/${activity.target_id}`}
@@ -110,25 +110,35 @@ const UserActivity = ({ refreshTrigger }) => {
       case "profile_update":
         return (
           <div>
-            <p>Updated profile information:</p>
+            <div className="user-activity-title">
+              Updated profile information
+            </div>
             {activity.details &&
               Object.entries(activity.details).map(([key, value]) => (
                 <p key={key}>
-                  {key}: from "{value.old}" to "{value.new}"
+                  Changed {key} from "{value.old}" to "{value.new}"
                 </p>
               ))}
           </div>
         );
       case "profile_photo":
-        return `${
-          activity.action === "updated" ? "Updated" : "Deleted"
-        } profile photo`;
+        return (
+          <div className="user-activity-title">
+            {`${
+              activity.action === "updated" ? "Updated" : "Deleted"
+            } profile photo`}
+          </div>
+        );
       case "username":
-        return `Changed username from "${activity.details.old}" to "${activity.details.new}"`;
+        return (
+          <div className="user-activity-title">
+            {`Changed username from "${activity.details.old}" to "${activity.details.new}"`}
+          </div>
+        );
       case "question":
         return (
           <div>
-            <p>Posted a question</p>
+            <div className="user-activity-title">Posted a question</div>
             {activity.target_id && (
               <a
                 href={`/question/${activity.target_id}`}
@@ -141,11 +151,15 @@ const UserActivity = ({ refreshTrigger }) => {
           </div>
         );
       case "search":
-        return `Searched for "${activity.details.query}"`;
+        return (
+          <div className="user-activity-title">
+            {`Searched for "${activity.details.query}"`}
+          </div>
+        );
       case "vote":
         return (
           <div>
-            <p>
+            <div className="user-activity-title">
               {activity.action === "upvote"
                 ? "Upvoted"
                 : activity.action === "remove_upvote"
@@ -154,7 +168,7 @@ const UserActivity = ({ refreshTrigger }) => {
                 ? "Downvoted"
                 : "Removed Downvote from"}{" "}
               a question
-            </p>
+            </div>
             {activity.target_id && (
               <a
                 href={`/question/${activity.target_id}`}
@@ -209,12 +223,15 @@ const UserActivity = ({ refreshTrigger }) => {
   return (
     <div className="user-activity">
       <div className="activity-header">
-        <img
-          src="/img/recentLogo.png"
-          alt="Recent Activity"
-          className="activity-logo"
-        />
-        <h3>Recent Activity</h3>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 32 32"
+          id="order-history"
+          className="user-activity-icon"
+        >
+          <path d="M9,9a1,1,0,0,1,1-1h4a1,1,0,0,1,0,2H10A1,1,0,0,1,9,9Zm8,3H10a1,1,0,0,0,0,2h7a1,1,0,0,0,0-2Zm0,4H10a1,1,0,0,0,0,2h7a1,1,0,0,0,0-2ZM30,8a5.984,5.984,0,0,1-8,5.65V27a3,3,0,0,1-3,3H6a3,3,0,0,1-3-3V25a1,1,0,0,1,1-1H5V6A4,4,0,0,1,9,2H21a.983.983,0,0,1,.8.425A5.988,5.988,0,0,1,30,8ZM6,28H16.184A2.966,2.966,0,0,1,16,27V26H5v1A1,1,0,0,0,6,28ZM20,12.46A5.969,5.969,0,0,1,19.54,4H9A2,2,0,0,0,7,6V24H17a1,1,0,0,1,1,1v2a1,1,0,0,0,2,0ZM28,8a4,4,0,1,0-4,4A4,4,0,0,0,28,8ZM26,7H25a1,1,0,0,0-2,0V8a1,1,0,0,0,1,1h2a1,1,0,0,0,0-2Z"></path>
+        </svg>
+        <div className="user-activity-heading">Recent Activity</div>
       </div>
       <ul className="activity-list">
         {activities.map((activity) => (

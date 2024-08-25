@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import "./NavBar.css";
 import { useTheme } from "../../ThemeContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 import { SearchContext } from "../context/SearchContext";
 import axios from "axios";
 
@@ -93,15 +93,17 @@ const NavBar = () => {
   return (
     <div className={isDarkMode ? "dark-mode" : "light-mode"}>
       <nav className="navbar">
-        <div className="navbar-left">
-          <img
-            style={{ width: "60px", height: "60px", margin: "-15px 10px" }}
-            className="logo"
-            src="/img/logo_final_transparent.png"
-            alt="logo"
-          />
-          <span className="university-name">The One Interview</span>
-        </div>
+        <Link to="/" className="navbar-homepage-link">
+          <div className="navbar-left">
+            <img
+              style={{ width: "60px", height: "60px", margin: "-15px 10px" }}
+              className="logo"
+              src="/img/logo_final_transparent.png"
+              alt="logo"
+            />
+            <span className="university-name">The One Interview</span>
+          </div>
+        </Link>
         <div className="navbar-center">
           <input
             type="text"

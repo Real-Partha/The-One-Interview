@@ -19,6 +19,7 @@ const Profile = () => {
   const [validUsername, setValidUsername] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [refreshActivityTrigger, setRefreshActivityTrigger] = useState(0);
+  const [activeSection, setActiveSection] = useState("profile");
 
   const fetchUserData = async () => {
     try {
@@ -146,34 +147,49 @@ const Profile = () => {
       <div className="profile-main-content">
         <aside className="profile-sidebar">
           <nav className="profile-navigation">
-            <div className="profile-sidebar-card">
+            <div
+              className={`profile-sidebar-card ${
+                activeSection === "profile" ? "active" : ""
+              }`}
+              onClick={() => setActiveSection("profile")}
+            >
               <i className="fa fa-user" />
               <div className="profile-card-details">
-                <h4>Profile</h4>
+                <div className="profile-sidebar-menu-title">Profile</div>
               </div>
             </div>
-            <div className="profile-sidebar-card">
+            <div
+              className={`profile-sidebar-card ${
+                activeSection === "account" ? "active" : ""
+              }`}
+              onClick={() => setActiveSection("account")}
+            >
               <i className="fa fa-cog" />
               <div className="profile-card-details">
-                <h4>Account</h4>
+                <div className="profile-sidebar-menu-title">Account</div>
               </div>
             </div>
-            <div className="profile-sidebar-card">
-              <i className="fa fa-bookmark" />
+            <div
+              className={`profile-sidebar-card ${
+                activeSection === "activity" ? "active" : ""
+              }`}
+              onClick={() => setActiveSection("activity")}
+            >
+              <i className="fa fa-clock" />
               <div className="profile-card-details">
-                <h4>Bookmarks</h4>
+                <div className="profile-sidebar-menu-title">Recent Activity</div>
               </div>
             </div>
             <div className="profile-sidebar-card">
               <i className="fa fa-paint-brush" />
               <div className="profile-card-details">
-                <h4>Appearance</h4>
+                <div className="profile-sidebar-menu-title">Appearance</div>
               </div>
             </div>
             <div className="profile-sidebar-card">
               <i className="fa fa-bell" />
               <div className="profile-card-details">
-                <h4>Notifications</h4>
+                <div className="profile-sidebar-menu-title">Notifications</div>
               </div>
             </div>
           </nav>
@@ -181,193 +197,203 @@ const Profile = () => {
 
         <section className="profile-content">
           {/* Upper Profile Card */}
-
-          <div className="profile-upper-card-container">
-            <div className="profile-upper-card">
-              <h2 className="profile-upper-card-title">Profile Card</h2>
-              <div className="profile-upper-card-content">
-                <div className="profile-upper-picture-section">
-                  <img
-                    src={user.profile_pic || "/img/default-profile.png"}
-                    alt="Profile"
-                    className="profile-upper-picture"
-                  />
-                  <div className="profile-upper-info-section">
-                    <div className="profile-upper-email">{user.email}</div>
-                    <span
-                      className={`profile-upper-login-type ${
-                        user.type === "google" ? "google" : "oneid"
-                      }`}
-                    >
-                      {user.type === "google"
-                        ? "Google ID Account"
-                        : "One ID Account"}
-                    </span>
-                  </div>
-                </div>
-                <h3 className="profile-upper-full-name">{`${user.first_name} ${user.last_name}`}</h3>
-                <p className="profile-upper-username">@{user.username}</p>
-                <div className="profile-upper-details">
-                  <div className="profile-upper-gender">
-                    <div>Gender: {user.gender || "Not specified"} </div>
-                  </div>
-                  <div>
-                    <div className="profile-upper-dob">
-                      DOB:{" "}
-                      {user.date_of_birth
-                        ? new Date(user.date_of_birth).toLocaleDateString()
-                        : "Not specified"}
+          {activeSection === "profile" && (
+            <>
+              <div className="profile-upper-card-container">
+                <div className="profile-upper-card">
+                  <h2 className="profile-upper-card-title">Profile Card</h2>
+                  <div className="profile-upper-card-content">
+                    <div className="profile-upper-picture-section">
+                      <img
+                        src={user.profile_pic || "/img/default-profile.png"}
+                        alt="Profile"
+                        className="profile-upper-picture"
+                      />
+                      <div className="profile-upper-info-section">
+                        <div className="profile-upper-email">{user.email}</div>
+                        <span
+                          className={`profile-upper-login-type ${
+                            user.type === "google" ? "google" : "oneid"
+                          }`}
+                        >
+                          {user.type === "google"
+                            ? "Google ID Account"
+                            : "One ID Account"}
+                        </span>
+                      </div>
+                    </div>
+                    <h3 className="profile-upper-full-name">{`${user.first_name} ${user.last_name}`}</h3>
+                    <p className="profile-upper-username">@{user.username}</p>
+                    <div className="profile-upper-details">
+                      <div className="profile-upper-gender">
+                        <div>Gender: {user.gender || "Not specified"} </div>
+                      </div>
+                      <div>
+                        <div className="profile-upper-dob">
+                          DOB:{" "}
+                          {user.date_of_birth
+                            ? new Date(user.date_of_birth).toLocaleDateString()
+                            : "Not specified"}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
 
-          <div className="profile-card">
-            <div className="profile-card-title">Profile Settings</div>
-            <div className="profile-picture-section">
-              <div className="profile-picture-container">
-                <img
-                  src={user.profile_pic || "/img/default-profile.png"}
-                  alt="Profile"
-                  className="profile-picture"
-                />
-                {isEditing && (
-                  <div className="profile-picture-buttons">
-                    <input
-                      type="file"
-                      onChange={handleFileChange}
-                      style={{ display: "none" }}
-                      id="fileInput"
+              <div className="profile-card">
+                <div className="profile-card-title">Profile Settings</div>
+                <div className="profile-picture-section">
+                  <div className="profile-picture-container">
+                    <img
+                      src={user.profile_pic || "/img/default-profile.png"}
+                      alt="Profile"
+                      className="profile-picture"
                     />
-                    <label htmlFor="fileInput" className="profile-button">
-                      Change picture
-                    </label>
-                    <button
-                      className="profile-button"
-                      onClick={handleDeletePicture}
-                    >
-                      Delete picture
-                    </button>
+                    {isEditing && (
+                      <div className="profile-picture-buttons">
+                        <input
+                          type="file"
+                          onChange={handleFileChange}
+                          style={{ display: "none" }}
+                          id="fileInput"
+                        />
+                        <label htmlFor="fileInput" className="profile-button">
+                          Change picture
+                        </label>
+                        <button
+                          className="profile-button"
+                          onClick={handleDeletePicture}
+                        >
+                          Delete picture
+                        </button>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-            </div>
-            <div className="profile-info">
-              <label>First Name</label>
-              <input
-                type="text"
-                name="first_name"
-                value={isEditing ? editedUser.first_name : user.first_name}
-                onChange={handleInputChange}
-                disabled={!isEditing}
-                className="profile-input"
-              />
-              <label>Last Name</label>
-              <input
-                type="text"
-                name="last_name"
-                value={isEditing ? editedUser.last_name : user.last_name}
-                onChange={handleInputChange}
-                disabled={!isEditing}
-                className="profile-input"
-              />
-              <label>Username</label>
-              <input
-                type="text"
-                name="username"
-                value={isEditing ? editedUser.username : user.username}
-                onChange={handleInputChange}
-                disabled={!isEditing}
-                className="profile-input"
-              />
-              {isEditing && (
-                <div className="username-availability">
-                  {checkingUsername ? (
-                    <span>Checking username...</span>
-                  ) : usernameAvailable ? (
-                    <span className="available">Username is available</span>
-                  ) : validUsername ? (
-                    <span className="unavailable">
-                      Username is not available
-                    </span>
-                  ) : (
-                    <span className="unavailable">
-                      Username should be at least 5 characters
-                    </span>
+                </div>
+                <div className="profile-info">
+                  <label>First Name</label>
+                  <input
+                    type="text"
+                    name="first_name"
+                    value={isEditing ? editedUser.first_name : user.first_name}
+                    onChange={handleInputChange}
+                    disabled={!isEditing}
+                    className="profile-input"
+                  />
+                  <label>Last Name</label>
+                  <input
+                    type="text"
+                    name="last_name"
+                    value={isEditing ? editedUser.last_name : user.last_name}
+                    onChange={handleInputChange}
+                    disabled={!isEditing}
+                    className="profile-input"
+                  />
+                  <label>Username</label>
+                  <input
+                    type="text"
+                    name="username"
+                    value={isEditing ? editedUser.username : user.username}
+                    onChange={handleInputChange}
+                    disabled={!isEditing}
+                    className="profile-input"
+                  />
+                  {isEditing && (
+                    <div className="username-availability">
+                      {checkingUsername ? (
+                        <span>Checking username...</span>
+                      ) : usernameAvailable ? (
+                        <span className="available">Username is available</span>
+                      ) : validUsername ? (
+                        <span className="unavailable">
+                          Username is not available
+                        </span>
+                      ) : (
+                        <span className="unavailable">
+                          Username should be at least 5 characters
+                        </span>
+                      )}
+                    </div>
+                  )}
+                  <label>Email</label>
+                  <input
+                    type="email"
+                    value={user.email}
+                    disabled
+                    className="profile-input"
+                  />
+                  <label>Gender</label>
+                  <select
+                    name="gender"
+                    value={isEditing ? editedUser.gender : user.gender}
+                    onChange={handleInputChange}
+                    disabled={!isEditing}
+                    className="profile-input profile-select"
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                  <label>Date of Birth</label>
+                  <input
+                    type="date"
+                    name="date_of_birth"
+                    value={
+                      isEditing
+                        ? editedUser.date_of_birth
+                        : user.date_of_birth
+                        ? new Date(user.date_of_birth)
+                            .toISOString()
+                            .split("T")[0]
+                        : ""
+                    }
+                    onChange={handleInputChange}
+                    disabled={!isEditing}
+                    className="profile-input"
+                  />
+                </div>
+                <div className="profile-footer">
+                  {isEditing && (
+                    <>
+                      <button
+                        className="profile-save-button"
+                        onClick={handleSaveChanges}
+                        disabled={!usernameAvailable || isSaving}
+                      >
+                        Save changes
+                      </button>
+                      <button
+                        className="profile-cancel-button"
+                        onClick={() => setIsEditing(false)}
+                        disabled={isSaving}
+                      >
+                        Cancel
+                      </button>
+                    </>
                   )}
                 </div>
-              )}
-              <label>Email</label>
-              <input
-                type="email"
-                value={user.email}
-                disabled
-                className="profile-input"
-              />
-              <label>Gender</label>
-              <select
-                name="gender"
-                value={isEditing ? editedUser.gender : user.gender}
-                onChange={handleInputChange}
-                disabled={!isEditing}
-                className="profile-input profile-select"
-              >
-                <option value="">Select Gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-              </select>
-              <label>Date of Birth</label>
-              <input
-                type="date"
-                name="date_of_birth"
-                value={
-                  isEditing
-                    ? editedUser.date_of_birth
-                    : user.date_of_birth
-                    ? new Date(user.date_of_birth).toISOString().split("T")[0]
-                    : ""
-                }
-                onChange={handleInputChange}
-                disabled={!isEditing}
-                className="profile-input"
-              />
-            </div>
-            <div className="profile-footer">
-              {isEditing && (
-                <>
+                {isSaving && <div className="profile-saving-bar"></div>}
+                {!isEditing && (
                   <button
-                    className="profile-save-button"
-                    onClick={handleSaveChanges}
-                    disabled={!usernameAvailable || isSaving}
+                    className="profile-edit-button"
+                    onClick={() => setIsEditing(true)}
                   >
-                    Save changes
+                    Edit Profile
                   </button>
-                  <button
-                    className="profile-cancel-button"
-                    onClick={() => setIsEditing(false)}
-                    disabled={isSaving}
-                  >
-                    Cancel
-                  </button>
-                </>
-              )}
-            </div>
-            {isSaving && <div className="profile-saving-bar"></div>}
-            {!isEditing && (
-              <button
-                className="profile-edit-button"
-                onClick={() => setIsEditing(true)}
-              >
-                Edit Profile
-              </button>
-            )}
-          </div>
-          {/* <div className="profile-main-userActivity">
+                )}
+                <div className="profile-footer-message">
+                  **for sensitive account changes, visit the Account Section.
+                </div>
+              </div>
+            </>
+          )}
+          {activeSection === "activity" && (
+            <div className="profile-main-userActivity">
               <UserActivity refreshTrigger={refreshActivityTrigger} />
-            </div> */}
+            </div>
+          )}
         </section>
       </div>
     </div>
