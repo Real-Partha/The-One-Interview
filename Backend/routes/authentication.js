@@ -154,6 +154,30 @@ router.get("/check-email/:email", async (req, res) => {
   }
 });
 
+router.get("/user-activities", async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.status(401).json({ message: "Not authenticated" });
+  }
+
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = 5;
+    const skip = (page - 1) * limit;
+
+    const activities = await Activity.find({ user_id: req.user._id })
+      .sort({ timestamp: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    const totalActivities = await Activity.countDocuments({ user_id: req.user._id });
+    const hasMore = totalActivities > page * limit;
+
+    res.json({ activities, hasMore });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching user activities", error: error.message });
+  }
+});
+
 router.patch(
   "/update-profile",
   upload.single("profile_pic"),
@@ -183,6 +207,8 @@ router.patch(
             buffer = await sharp(buffer).png({ quality: 80 }).toBuffer();
           }
         }
+
+        console.log("Buffer length:", (buffer.length / 1024).toFixed(2), "KB");
         const filename = `${req.user._id}_${Date.now()}_${
           req.file.originalname
         }`;

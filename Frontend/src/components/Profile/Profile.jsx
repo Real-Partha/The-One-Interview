@@ -4,6 +4,7 @@ import { useTheme } from "../../ThemeContext";
 import NavBar from "../Navbar/Navbar";
 import axios from "axios";
 import { debounce } from "lodash";
+import UserActivity from "./UserActivity";
 
 const Profile = () => {
   const { isDarkMode } = useTheme();
@@ -17,6 +18,7 @@ const Profile = () => {
   const [checkingUsername, setCheckingUsername] = useState(false);
   const [validUsername, setValidUsername] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [refreshActivityTrigger, setRefreshActivityTrigger] = useState(0);
 
   const fetchUserData = async () => {
     try {
@@ -109,6 +111,7 @@ const Profile = () => {
       setIsEditing(false);
       setSelectedFile(null);
       fetchUserData();
+      setRefreshActivityTrigger((prev) => prev + 1);
     } catch (error) {
       console.error("Error updating profile:", error);
       setError("Error updating profile");
@@ -331,13 +334,7 @@ const Profile = () => {
         </section>
 
         <aside className="profile-right-sidebar">
-          <div className="profile-right-sidebar-card">
-            <img src="activity.png" alt="Recent Activity" />
-            <div className="profile-card-details">
-              <h4>Recent Activity</h4>
-              <p>View your recent actions</p>
-            </div>
-          </div>
+          <UserActivity refreshTrigger={refreshActivityTrigger} />
           <div className="profile-right-sidebar-card">
             <img src="stats.png" alt="Profile Stats" />
             <div className="profile-card-details">

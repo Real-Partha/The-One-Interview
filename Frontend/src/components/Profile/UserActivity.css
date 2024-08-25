@@ -1,0 +1,98 @@
+.user-activity {
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .activity-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+  
+  .activity-logo {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+  }
+  
+  .activity-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .activity-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .activity-icon {
+    margin-right: 10px;
+    font-size: 1rem;
+    color: var(--primary-color);
+  }
+  
+  .activity-content {
+    flex-grow: 1;
+  }
+  
+  .activity-content p {
+    margin: 0 0 0.25rem 0;
+    font-size: 0.9rem;
+  }
+  
+  .activity-timestamp {
+    font-size: 0.8rem;
+    color: var(--text-color);
+    opacity: 0.7;
+  }
+  
+  .view-more-button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 0.9rem;
+  }
+  
+  .view-more-button:hover {
+    background-color: var(--primary-hover-color);
+  }
+  
+  .view-more-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  /* Dark mode styles */
+  .dark-mode .user-activity {
+    color: var(--dark-text-color);
+  }
+  
+  .dark-mode .activity-item {
+    border-bottom-color: var(--dark-border-color);
+  }
+  
+  .dark-mode .activity-icon {
+    color: var(--dark-primary-color);
+  }
+  
+  .dark-mode .activity-timestamp {
+    color: var(--dark-text-color);
+  }
+  
+  .dark-mode .view-more-button {
+    background-color: var(--dark-primary-color);
+  }
+  
+  .dark-mode .view-more-button:hover {
+    background-color: var(--dark-primary-hover-color);
+  }
+  
