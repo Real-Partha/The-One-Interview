@@ -180,8 +180,52 @@ const Profile = () => {
         </aside>
 
         <section className="profile-content">
+          {/* Upper Profile Card */}
+
+          <div className="profile-upper-card-container">
+            <div className="profile-upper-card">
+              <h2 className="profile-upper-card-title">Profile Card</h2>
+              <div className="profile-upper-card-content">
+                <div className="profile-upper-picture-section">
+                  <img
+                    src={user.profile_pic || "/img/default-profile.png"}
+                    alt="Profile"
+                    className="profile-upper-picture"
+                  />
+                  <div className="profile-upper-info-section">
+                    <div className="profile-upper-email">{user.email}</div>
+                    <span
+                      className={`profile-upper-login-type ${
+                        user.type === "google" ? "google" : "oneid"
+                      }`}
+                    >
+                      {user.type === "google"
+                        ? "Google ID Account"
+                        : "One ID Account"}
+                    </span>
+                  </div>
+                </div>
+                <h3 className="profile-upper-full-name">{`${user.first_name} ${user.last_name}`}</h3>
+                <p className="profile-upper-username">@{user.username}</p>
+                <div className="profile-upper-details">
+                  <div className="profile-upper-gender">
+                    <div>Gender: {user.gender || "Not specified"} </div>
+                  </div>
+                  <div>
+                    <div className="profile-upper-dob">
+                      DOB:{" "}
+                      {user.date_of_birth
+                        ? new Date(user.date_of_birth).toLocaleDateString()
+                        : "Not specified"}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="profile-card">
-            <h2 className="profile-card-title">Profile Settings</h2>
+            <div className="profile-card-title">Profile Settings</div>
             <div className="profile-picture-section">
               <div className="profile-picture-container">
                 <img
@@ -208,17 +252,6 @@ const Profile = () => {
                     </button>
                   </div>
                 )}
-              </div>
-              <div className="login-type-badge">
-                <span
-                  className={`user-login-type ${
-                    user.type === "google" ? "google" : "oneid"
-                  }`}
-                >
-                  {user.type === "google"
-                    ? "Google ID Account"
-                    : "One ID Account"}
-                </span>
               </div>
             </div>
             <div className="profile-info">
@@ -282,9 +315,9 @@ const Profile = () => {
                 className="profile-input profile-select"
               >
                 <option value="">Select Gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
               </select>
               <label>Date of Birth</label>
               <input
@@ -303,7 +336,7 @@ const Profile = () => {
               />
             </div>
             <div className="profile-footer">
-              {isEditing ? (
+              {isEditing && (
                 <>
                   <button
                     className="profile-save-button"
@@ -320,20 +353,21 @@ const Profile = () => {
                     Cancel
                   </button>
                 </>
-              ) : (
-                <button
-                  className="profile-edit-button"
-                  onClick={() => setIsEditing(true)}
-                >
-                  Edit Profile
-                </button>
               )}
             </div>
             {isSaving && <div className="profile-saving-bar"></div>}
+            {!isEditing && (
+              <button
+                className="profile-edit-button"
+                onClick={() => setIsEditing(true)}
+              >
+                Edit Profile
+              </button>
+            )}
           </div>
-          <div className="profile-main-userActivity">
-            <UserActivity refreshTrigger={refreshActivityTrigger} />
-          </div>
+          {/* <div className="profile-main-userActivity">
+              <UserActivity refreshTrigger={refreshActivityTrigger} />
+            </div> */}
         </section>
       </div>
     </div>

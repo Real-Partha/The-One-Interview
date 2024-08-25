@@ -217,6 +217,10 @@ body {
   transform: scale(1.1);
 }
 
+.navbar-account-settings{
+  cursor: pointer;
+}
+
 .profile-dropdown .user-info {
   padding: 20px;
   text-align: center;

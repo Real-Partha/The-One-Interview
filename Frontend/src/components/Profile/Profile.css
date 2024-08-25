@@ -1,16 +1,113 @@
 /* General Styles */
 .profile-main-content {
   display: flex;
-  /* flex-direction: column; */
   background-color: var(--bg-color);
   padding: 20px;
   color: var(--text-color);
   transition: background-color 0.3s, color 0.3s;
 }
 
-.profile-content {
-  width: 100%;
+/* Css of Upper Profile Card (Non Editable) */
+.profile-upper-card-container {
+  width: 30vw;
   margin: 0 2rem;
+}
+
+.profile-upper-card {
+  background-color: var(--bg-color);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: var(--box-shadow);
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.profile-upper-card-title {
+  font-size: 20px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.profile-upper-card-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-upper-picture-section {
+  display: flex;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+
+.profile-upper-picture {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-right: 2rem;
+  box-shadow: 0 0 15px rgba(154, 89, 207, 0.723);
+}
+
+.profile-upper-info-section {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+
+.profile-upper-email {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.profile-upper-login-type {
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-weight: bold;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.profile-upper-login-type.google{
+  background-color: #f1f3f4;
+  color: #4285f4;
+}
+
+.profile-upper-login-type.oneid{
+  background-color: #fff0ee;
+  color: #ff6f61;
+}
+
+.profile-upper-full-name {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 3px;
+}
+
+.profile-upper-username {
+  margin: 0;
+  font-size: 14px;
+  color: #9c79c8 !important;
+  font-weight: bold;
+}
+
+.profile-upper-details {
+  width: 100%;
+  display: flex;
+  font-size: 14px;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.profile-upper-dob {
+  margin-left: 2rem;
+}
+
+
+/* Css for Profile Edit */
+.profile-content {
+  display: flex;
+  width: 100%;
+  margin: 0;
   border-radius: 10px;
   transition: background-color 0.3s, box-shadow 0.3s;
 }
@@ -55,6 +152,9 @@
 }
 
 .profile-card {
+  width: 40vw;
+  position: relative;
+  overflow: hidden;
   background-color: var(--bg-color);
   padding: 20px;
   border-radius: 15px;
@@ -63,27 +163,26 @@
 }
 
 .profile-card-title {
-  font-size: 24px;
-  margin-bottom: 20px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 0.3rem;
 }
 
 .profile-picture-section {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 20px;
 }
 
 .profile-picture-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 10px;
 }
 
 .profile-picture {
-  width: 100px;
-  height: 100px;
+  width: 6vw;
+  height: 6vw;
   border-radius: 50%;
   transition: transform 0.3s;
 }
@@ -114,46 +213,23 @@
   background-color: #8a4fc7;
 }
 
-.login-type-badge {
-  margin-top: 10px;
-}
-
-.user-login-type {
-  font-size: 14px;
-  padding: 5px 10px;
-  border-radius: 15px;
-  font-weight: bold;
-}
-
-.user-login-type.google {
-  background-color: #f1f3f4;
-  color: #4285f4;
-}
-
-.user-login-type.oneid {
-  background-color: #fff0ee;
-  color: #ff6f61;
-}
-
 .profile-info label {
   display: block;
-  margin-bottom: 5px;
   font-weight: bold;
 }
 
 .profile-input,
 .profile-textarea {
   width: 97%;
-  margin-top: 10px;
+  margin-top: 0.4rem;
 }
 .profile-textarea {
   resize: none;
-  height: 200px;
 }
 .profile-input,
 .profile-textarea {
   padding: 10px;
-  margin-bottom: 15px;
+  margin-bottom: 0.3rem;
   border-radius: 5px;
   border: 1px solid var(--border-color);
   background-color: var(--input-bg-color);
@@ -164,7 +240,7 @@
 .profile-footer {
   display: flex;
   justify-content: flex-end;
-  margin-top: 20px;
+  margin-top: 0.6rem;
 }
 
 .profile-save-button {
@@ -182,31 +258,6 @@
   background-color: var(--primary-hover-color);
 }
 
-.profile-right-sidebar {
-  width: 20%;
-  padding: 15px;
-}
-
-.profile-right-sidebar-card {
-  background-color: var(--bg-color);
-  padding: 15px;
-  border-radius: 15px;
-  box-shadow: var(--box-shadow);
-  margin-bottom: 20px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.profile-right-sidebar-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-
-.profile-right-sidebar-card img {
-  width: 50px;
-  height: 50px;
-  margin-bottom: 10px;
-}
-
 .profile-card-details h4 {
   margin-bottom: 5px;
 }
@@ -219,7 +270,6 @@
 .login-type-badge {
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
 }
 
 .user-login-type {
@@ -251,6 +301,9 @@
 }
 
 .profile-edit-button {
+  position: absolute;
+  top: 1.6rem;
+  right: 1.6rem;
   background-color: var(--primary-color);
   color: white;
 }
@@ -292,7 +345,6 @@
 .username-availability {
   font-size: 0.8rem;
   font-weight: bold;
-  margin-top: -0.4rem;
   margin-bottom: 0.4rem;
 }
 
@@ -351,13 +403,37 @@ select.profile-input {
   cursor: not-allowed;
 }
 
-.profile-card {
-  position: relative;
-  overflow: hidden;
-}
-
 /* Dark mode styles */
 
+/* Dark CSS for upper profile card */
+.dark-mode .profile-upper-card {
+  background-color: var(--dark-sidebar-cards-bg-color);
+}
+
+.dark-mode .profile-upper-username {
+  color: var(--dark-primary-color);
+}
+
+.dark-mode .profile-upper-edit-button {
+  background-color: var(--dark-primary-color);
+}
+
+.dark-mode .profile-upper-edit-button:hover {
+  background-color: var(--dark-primary-hover-color);
+}
+
+.dark-mode .profile-upper-login-type.google {
+  background-color: #303134;
+  color: #8ab4f8;
+}
+
+.dark-mode .profile-upper-login-type.oneid {
+  background-color: #3d2d2b;
+  color: #ff8f85;
+}
+
+
+/* Dark Mode Css for Prodile Edit and Sidebar */
 .dark-mode select.profile-input {
   background-image: url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
 }
@@ -368,9 +444,8 @@ select.profile-input {
   box-shadow: var(--dark-box-shadow);
 }
 
-.dark-mode .profile-right-sidebar-card {
-  background-color: var(--dark-sidebar-cards-bg-color);
-  box-shadow: var(--dark-box-shadow);
+.dark-mode .profile-main-content p {
+  color: var(--dark-para-color);
 }
 
 .dark-mode .profile-card {
@@ -378,8 +453,7 @@ select.profile-input {
   box-shadow: var(--dark-box-shadow);
 }
 
-.dark-mode .profile-sidebar,
-.dark-mode .profile-right-sidebar {
+.dark-mode .profile-sidebar {
   background-color: var(--dark-sidebar-bg-color);
   box-shadow: var(--dark-box-shadow);
 }
@@ -484,9 +558,6 @@ select.profile-input {
   --box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.dark-mode .profile-main-content p {
-  color: var(--dark-para-color);
-}
 .dark-mode {
   --dark-bg-color: #1e1e1e;
   --dark-sidebar-bg-color: #252525;

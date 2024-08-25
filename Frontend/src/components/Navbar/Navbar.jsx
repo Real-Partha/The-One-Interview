@@ -161,7 +161,7 @@ const NavBar = () => {
           </div>
         )}
         <div className="profile-settings">
-          <a onClick={navigateToProfile}>
+          <a onClick={navigateToProfile} className="navbar-account-settings">
             <i className="fas fa-user-cog"></i>Account Settings
           </a>
           <a href="#">
