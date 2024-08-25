@@ -364,4 +364,34 @@ router.get("/has-password", async (req, res) => {
   }
 });
 
+router.post("/set-password", async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.status(401).json({ message: "Not authenticated" });
+  }
+
+  try {
+    const { newPassword } = req.body;
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    // Record password set activity
+    await Activity.create({
+      user_id: req.user._id,
+      type: "password",
+      action: "set",
+    });
+
+    res.json({ message: "Password set successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error setting password", error: error.message });
+  }
+});
+
 module.exports = router;

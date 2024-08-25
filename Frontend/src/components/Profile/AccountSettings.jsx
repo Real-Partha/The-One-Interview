@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./AccountSettings.css";
+import useNotification from '../Notifications';
 
 const AccountSettings = ({ user }) => {
   const [email, setEmail] = useState(user.email);
@@ -10,6 +11,8 @@ const AccountSettings = ({ user }) => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [hasPassword, setHasPassword] = useState(null);
+  const [showPasswordFields, setShowPasswordFields] = useState(false);
+  const { ErrorNotification, SuccessNotification } = useNotification();
 
   useEffect(() => {
     const fetchHasPassword = async () => {
@@ -22,6 +25,7 @@ const AccountSettings = ({ user }) => {
         );
         setHasPassword(response.data.hasPassword);
       } catch (error) {
+        ErrorNotification(error.response.data.message);
         setError(error.response.data.message || "An error occurred");
       }
     };
@@ -35,24 +39,26 @@ const AccountSettings = ({ user }) => {
     setSuccess("");
 
     if (newPassword !== confirmPassword) {
+      ErrorNotification("New passwords don't match");
       setError("New passwords don't match");
       return;
     }
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/auth/change-password`,
-        {
-          currentPassword,
-          newPassword,
-        },
+        `${import.meta.env.VITE_API_URL}/auth/${hasPassword ? 'change-password' : 'set-password'}`,
+        hasPassword ? { currentPassword, newPassword } : { newPassword },
         { withCredentials: true }
       );
+      SuccessNotification(response.data.message);
       setSuccess(response.data.message);
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
+      setShowPasswordFields(false);
+      setHasPassword(true);
     } catch (error) {
+      ErrorNotification(error.response.data.message);
       setError(error.response.data.message || "An error occurred");
     }
   };
@@ -69,27 +75,36 @@ const AccountSettings = ({ user }) => {
       </div>
       <div className="account-settings-password-section">
         <h3 className="account-settings-subtitle">Password</h3>
-        {hasPassword ? (
+        {!showPasswordFields ? (
+          <button
+            onClick={() => setShowPasswordFields(true)}
+            className="account-settings-button"
+          >
+            {hasPassword ? "Reset Password" : "Set Password"}
+          </button>
+        ) : (
           <form
             onSubmit={handlePasswordChange}
             className="account-settings-form"
           >
-            <div className="account-settings-form-group">
-              <label
-                htmlFor="currentPassword"
-                className="account-settings-label"
-              >
-                Current Password
-              </label>
-              <input
-                type="password"
-                id="currentPassword"
-                className="account-settings-input"
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                required
-              />
-            </div>
+            {hasPassword && (
+              <div className="account-settings-form-group">
+                <label
+                  htmlFor="currentPassword"
+                  className="account-settings-label"
+                >
+                  Current Password
+                </label>
+                <input
+                  type="password"
+                  id="currentPassword"
+                  className="account-settings-input"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  required
+                />
+              </div>
+            )}
             <div className="account-settings-form-group">
               <label htmlFor="newPassword" className="account-settings-label">
                 New Password
@@ -120,23 +135,16 @@ const AccountSettings = ({ user }) => {
               />
             </div>
             <button type="submit" className="account-settings-button">
-              Change Password
+              {hasPassword ? "Change Password" : "Set Password"}
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowPasswordFields(false)}
+              className="account-settings-button account-settings-cancel-button"
+            >
+              Cancel
             </button>
           </form>
-        ) : (
-          <div className="account-settings-no-password">
-            <p className="account-settings-message">
-              Password is not currently set.
-            </p>
-            <button
-              onClick={() =>
-                setError("Set password functionality not implemented yet")
-              }
-              className="account-settings-button"
-            >
-              Set Password
-            </button>
-          </div>
         )}
       </div>
       {error && <p className="account-settings-error-message">{error}</p>}
