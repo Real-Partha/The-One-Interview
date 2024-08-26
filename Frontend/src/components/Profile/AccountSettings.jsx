@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./AccountSettings.css";
 import useNotification from "../Notifications";
@@ -20,7 +20,41 @@ const AccountSettings = ({ user }) => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const [otpValues, setOtpValues] = useState(["", "", "", "", "", ""]);
   const { ErrorNotification, SuccessNotification } = useNotification();
+
+  const otpRefs = [
+    useRef(null),
+    useRef(null),
+    useRef(null),
+    useRef(null),
+    useRef(null),
+    useRef(null),
+  ];
+
+  const handleOtpChange = (index, value) => {
+    // Only allow numeric input
+    if (/^\d*$/.test(value) && value.length <= 1) {
+      const newOtpValues = [...otpValues];
+      newOtpValues[index] = value;
+      setOtpValues(newOtpValues);
+      setOtp(newOtpValues.join(""));
+
+      if (value.length === 1 && index < 5) {
+        otpRefs[index + 1].current.focus();
+      }
+    }
+  };
+
+  const handleOtpKeyDown = (index, e) => {
+    if (e.key === "Backspace" && index > 0 && otpValues[index] === "") {
+      const newOtpValues = [...otpValues];
+      newOtpValues[index - 1] = "";
+      setOtpValues(newOtpValues);
+      setOtp(newOtpValues.join(""));
+      otpRefs[index - 1].current.focus();
+    }
+  };
 
   useEffect(() => {
     const fetchHasPassword = async () => {
@@ -111,16 +145,18 @@ const AccountSettings = ({ user }) => {
     e.preventDefault();
     setIsLoading(true);
 
+    const enteredOtp = otpValues.join("");
+
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/auth/verify-email-otp`,
-        { otp, newEmail },
+        { otp: enteredOtp, newEmail },
         { withCredentials: true }
       );
       SuccessNotification(response.data.message);
       setEmail(newEmail);
       setNewEmail("");
-      setOtp("");
+      setOtpValues(["", "", "", "", "", ""]);
       setShowEmailFields(false);
       setOtpSent(false);
     } catch (error) {
@@ -161,7 +197,10 @@ const AccountSettings = ({ user }) => {
             Change Email
           </button>
         ) : (
-          <form onSubmit={handleSendOtp} className={`account-settings-form ${isClosing ? 'closing' : ''}`}>
+          <form
+            onSubmit={handleSendOtp}
+            className={`account-settings-form ${isClosing ? "closing" : ""}`}
+          >
             <div className="account-settings-form-group">
               <label htmlFor="newEmail" className="account-settings-label">
                 New Email
@@ -208,14 +247,22 @@ const AccountSettings = ({ user }) => {
               <label htmlFor="otp" className="account-settings-label">
                 Enter OTP
               </label>
-              <input
-                type="text"
-                id="otp"
-                className="account-settings-input"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-                required
-              />
+              <div className="otp-input-container">
+                {otpValues.map((value, index) => (
+                  <input
+                    key={index}
+                    ref={otpRefs[index]}
+                    type="text"
+                    inputMode="numeric"
+                    pattern="\d*"
+                    maxLength="1"
+                    value={value}
+                    onChange={(e) => handleOtpChange(index, e.target.value)}
+                    onKeyDown={(e) => handleOtpKeyDown(index, e)}
+                    className="otp-input"
+                  />
+                ))}
+              </div>
             </div>
             <button
               type="submit"
@@ -247,7 +294,7 @@ const AccountSettings = ({ user }) => {
         ) : (
           <form
             onSubmit={handlePasswordChange}
-            className={`account-settings-form ${isClosing ? 'closing' : ''}`}
+            className={`account-settings-form ${isClosing ? "closing" : ""}`}
           >
             {hasPassword && (
               <div className="account-settings-form-group">

@@ -171,6 +171,39 @@
   .account-settings-input {
     padding-right: 40px;
   }
+
+  .otp-input-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  
+  .otp-input {
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    margin-right: 5px;
+  }
+  
+  .otp-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  }
+  
+  .dark-mode .otp-input {
+    background-color: var(--dark-input-bg-color);
+    color: var(--dark-text-color);
+    border-color: var(--dark-border-color);
+  }
+  
+  .dark-mode .otp-input:focus {
+    border-color: var(--dark-primary-color);
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  }
   
   .dark-mode .account-settings-password-toggle {
     color: var(--dark-text-color);

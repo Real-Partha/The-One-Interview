@@ -61,7 +61,10 @@ const sendEmail = async (to, subject, templateName, replacements) => {
     }
 
     const result = await transporter.sendMail({
-      from: process.env.EMAIL_ADDRESS,
+      from: {
+        name: "The One Interview",
+        address: process.env.EMAIL_ADDRESS
+      },
       to,
       subject,
       html: htmlContent
