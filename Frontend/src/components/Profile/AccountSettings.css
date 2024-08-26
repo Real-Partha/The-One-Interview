@@ -1,243 +1,284 @@
 .account-settings-container {
-    padding: 20px;
-    background-color: var(--bg-color);
-    border-radius: 8px;
-    box-shadow: var(--box-shadow);
-    width: 50%;
-    margin: 0 auto;
-  }
-  
-  .account-settings-title {
-    margin-bottom: 20px;
-  }
-  
-  .account-settings-email-section,
-  .account-settings-password-section {
-    margin-bottom: 30px;
-  }
-  
-  .account-settings-email-note {
-    font-style: italic;
-    color: #666;
-  }
-  
-  .account-settings-form {
-    max-width: 400px;
-    margin: 0 auto;
-    animation: accountSectionSlideDown 0.7s ease forwards;
-  }
-  
-  .account-settings-form.closing {
-    animation: accountSectionSlideUp 0.7s ease forwards;
-  }
+  padding: 20px;
+  background-color: var(--bg-color);
+  border-radius: 8px;
+  box-shadow: var(--box-shadow);
+  width: 50%;
+  margin: 0 auto;
+}
 
-  .account-settings-form-group {
-    margin-bottom: 15px;
-  }
-  
-  .account-settings-label {
-    display: block;
-    margin-bottom: 5px;
-  }
-  
-  .account-settings-input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
-  
-  .account-settings-button {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-right: 10px;
-    min-width: 120px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
+.account-settings-title {
+  margin-bottom: 20px;
+}
 
-  .account-settings-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  
-  .account-settings-submit-button:hover {
-    background-color: #45a049;
-  }
-  
-  .account-settings-button-group {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    margin-top: 15px;
-    /* animation: accountSectionSlideDown 1s ease forwards; */
-  }
-  
-  .account-settings-cancel-button {
-    background-color: #f44336;
-    color: white;
-  }
-  
-  .account-settings-cancel-button:hover {
-    background-color: #d32f2f;
-  }
-  
-  .account-settings-button-loading {
-    opacity: 0.7;
-    cursor: not-allowed;
-  }
-  
-  .account-settings-loader {
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    border: 2px solid #ffffff;
-    border-radius: 50%;
-    border-top: 2px solid transparent;
-    animation: account-seeting-spin 1s linear infinite;
-    margin-right: 5px;
-  }
-  
-  .account-settings-button-text {
-    display: inline-block;
-  }
-  
-  @keyframes account-seeting-spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
+.account-settings-email-section,
+.account-settings-password-section {
+  margin-bottom: 30px;
+}
 
-  @keyframes accountSectionSlideDown {
-    from {
-      opacity: 0;
-      transform: translateY(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+.account-settings-email-note {
+  font-style: italic;
+  color: #666;
+}
 
-  @keyframes accountSectionSlideDown {
-    from {
-      opacity: 0;
-      transform: translateY(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  @keyframes accountSectionSlideUp {
-    from {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    to {
-      opacity: 0;
-      transform: translateY(-20px);
-    }
-  }
+.account-settings-form {
+  max-width: 400px;
+  margin: 0 auto;
+  animation: accountSectionSlideDown 0.7s ease forwards;
+}
 
-  .account-settings-password-input-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-  }
-  
-  .account-settings-password-toggle {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 18px;
-    color: var(--text-color);
-  }
-  
-  .account-settings-password-toggle:focus {
-    outline: none;
-  }
-  
-  .account-settings-input {
-    padding-right: 40px;
-  }
+.account-settings-form.closing {
+  animation: accountSectionSlideUp 0.7s ease forwards;
+}
 
-  .otp-input-container {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
-  }
-  
-  .otp-input {
-    width: 40px;
-    height: 40px;
-    font-size: 24px;
-    text-align: center;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    margin-right: 5px;
-  }
-  
-  .otp-input:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
-  }
-  
-  .dark-mode .otp-input {
-    background-color: var(--dark-input-bg-color);
-    color: var(--dark-text-color);
-    border-color: var(--dark-border-color);
-  }
-  
-  .dark-mode .otp-input:focus {
-    border-color: var(--dark-primary-color);
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
-  }
-  
-  .dark-mode .account-settings-password-toggle {
-    color: var(--dark-text-color);
-  }
-  
-  .dark-mode .account-settings-container {
-    background-color: var(--dark-sidebar-cards-bg-color);
-    color: var(--dark-text-color);
-  }
-  
-  .dark-mode .account-settings-email-note {
-    color: #aaa;
-  }
-  
-  .dark-mode .account-settings-input {
-    background-color: var(--dark-input-bg-color);
-    color: var(--dark-text-color);
-    border-color: var(--dark-border-color);
-  }
-  
-  .dark-mode .account-settings-button {
-    background-color: var(--dark-primary-color);
-  }
-  
-  .dark-mode .account-settings-submit-button:hover:enabled {
-    background-color: #45a049;
-  }
+.account-settings-form-group {
+  margin-bottom: 15px;
+}
 
-  .dark-mode .account-settings-cancel-button {
-    background-color: #d32f2f;
-    color: #fff;
+.account-settings-label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.account-settings-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.account-settings-button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+  min-width: 120px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.account-settings-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.account-settings-submit-button:hover {
+  background-color: #45a049;
+}
+
+.account-settings-button-group {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 15px;
+  /* animation: accountSectionSlideDown 1s ease forwards; */
+}
+
+.account-settings-cancel-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.account-settings-cancel-button:hover {
+  background-color: #d32f2f;
+}
+
+.account-settings-button-loading {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.account-settings-loader {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  border-top: 2px solid transparent;
+  animation: account-seeting-spin 1s linear infinite;
+  margin-right: 5px;
+}
+
+/* .account-settings-2fa-section {
+  margin-top: 20px;
+} */
+
+.account-settings-2fa-section img {
+  max-width: 200px;
+  margin: 10px 0;
+}
+
+.account-settings-2fa-section input {
+  margin-right: 10px;
+}
+
+.account-settings-button-text {
+  display: inline-block;
+}
+
+.account-settings-2fa-section {
+  margin-top: 30px;
+}
+
+.two-factor-setup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.two-factor-qr {
+  max-width: 200px;
+  margin-bottom: 15px;
+}
+
+.two-factor-input {
+  max-width: 200px;
+  margin-bottom: 15px;
+}
+
+.account-settings-2fa-section p {
+  margin-bottom: 15px;
+}
+
+@keyframes account-seeting-spin {
+  0% {
+    transform: rotate(0deg);
   }
-  
-  .dark-mode .account-settings-cancel-button:hover {
-    background-color: #b71c1c;
+  100% {
+    transform: rotate(360deg);
   }
-  
+}
+
+@keyframes accountSectionSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes accountSectionSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes accountSectionSlideUp {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+.account-settings-password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.account-settings-password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: var(--text-color);
+}
+
+.account-settings-password-toggle:focus {
+  outline: none;
+}
+
+.account-settings-input {
+  padding-right: 40px;
+}
+
+.otp-input-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.otp-input {
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  text-align: center;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  margin-right: 5px;
+}
+
+.otp-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.dark-mode .otp-input {
+  background-color: var(--dark-input-bg-color);
+  color: var(--dark-text-color);
+  border-color: var(--dark-border-color);
+}
+
+.dark-mode .otp-input:focus {
+  border-color: var(--dark-primary-color);
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.dark-mode .account-settings-password-toggle {
+  color: var(--dark-text-color);
+}
+
+.dark-mode .account-settings-container {
+  background-color: var(--dark-sidebar-cards-bg-color);
+  color: var(--dark-text-color);
+}
+
+.dark-mode .account-settings-email-note {
+  color: #aaa;
+}
+
+.dark-mode .account-settings-input {
+  background-color: var(--dark-input-bg-color);
+  color: var(--dark-text-color);
+  border-color: var(--dark-border-color);
+}
+
+.dark-mode .account-settings-button {
+  background-color: var(--dark-primary-color);
+}
+
+.dark-mode .account-settings-submit-button:hover:enabled {
+  background-color: #45a049;
+}
+
+.dark-mode .account-settings-cancel-button {
+  background-color: #d32f2f;
+  color: #fff;
+}
+
+.dark-mode .account-settings-cancel-button:hover {
+  background-color: #b71c1c;
+}

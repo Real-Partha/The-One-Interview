@@ -44,6 +44,13 @@ const userSchema = new mongoose.Schema({
     date_of_birth:{
         type:Date,
     },
+    two_factor_auth :{
+        type:Boolean,
+        default:false
+    },
+    two_factor_secret: {
+        type: String
+      }
 });
 
 

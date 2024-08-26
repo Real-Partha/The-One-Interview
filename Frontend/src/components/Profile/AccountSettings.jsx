@@ -21,6 +21,9 @@ const AccountSettings = ({ user }) => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [otpValues, setOtpValues] = useState(["", "", "", "", "", ""]);
+  const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
+  const [qrCode, setQrCode] = useState("");
+  const [twoFactorToken, setTwoFactorToken] = useState("");
   const { ErrorNotification, SuccessNotification } = useNotification();
 
   const otpRefs = [
@@ -44,6 +47,26 @@ const AccountSettings = ({ user }) => {
         otpRefs[index + 1].current.focus();
       }
     }
+  };
+
+  const handleOtpPaste = (e) => {
+    e.preventDefault();
+    const pastedData = e.clipboardData.getData("text").slice(0, 6);
+    const newOtpValues = [...otpValues];
+
+    for (let i = 0; i < pastedData.length; i++) {
+      if (/^\d$/.test(pastedData[i])) {
+        newOtpValues[i] = pastedData[i];
+      }
+    }
+
+    setOtpValues(newOtpValues);
+    setOtp(newOtpValues.join(""));
+
+    // Focus on the next empty input or the last input
+    const nextEmptyIndex = newOtpValues.findIndex((value) => value === "");
+    const focusIndex = nextEmptyIndex === -1 ? 5 : nextEmptyIndex;
+    otpRefs[focusIndex].current.focus();
   };
 
   const handleOtpKeyDown = (index, e) => {
@@ -73,6 +96,52 @@ const AccountSettings = ({ user }) => {
 
     fetchHasPassword();
   }, []);
+
+  useEffect(() => {
+    setTwoFactorEnabled(user.two_factor_auth);
+  }, [user]);
+
+  const handleEnable2FA = async () => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/account/enable-2fa`,
+        {},
+        { withCredentials: true }
+      );
+      setQrCode(response.data.qr_code);
+    } catch (error) {
+      ErrorNotification(error.response.data.message);
+    }
+  };
+
+  const handleVerify2FA = async () => {
+    try {
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/account/verify-2fa`,
+        { token: twoFactorToken.trim() },
+        { withCredentials: true }
+      );
+      setTwoFactorEnabled(true);
+      setQrCode(""); // Clear the QR code after successful verification
+      SuccessNotification("2FA enabled successfully");
+    } catch (error) {
+      ErrorNotification(error.response?.data?.message || "Error verifying 2FA");
+    }
+  };
+
+  const handleDisable2FA = async () => {
+    try {
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/account/disable-2fa`,
+        {},
+        { withCredentials: true }
+      );
+      setTwoFactorEnabled(false);
+      SuccessNotification("2FA disabled successfully");
+    } catch (error) {
+      ErrorNotification(error.response.data.message);
+    }
+  };
 
   const handleCloseEmailFields = () => {
     setIsClosing(true);
@@ -259,6 +328,7 @@ const AccountSettings = ({ user }) => {
                     value={value}
                     onChange={(e) => handleOtpChange(index, e.target.value)}
                     onKeyDown={(e) => handleOtpKeyDown(index, e)}
+                    onPaste={handleOtpPaste}
                     className="otp-input"
                   />
                 ))}
@@ -394,6 +464,52 @@ const AccountSettings = ({ user }) => {
               </button>
             </div>
           </form>
+        )}
+      </div>
+      <div className="account-settings-2fa-section">
+        <h3 className="account-settings-subtitle">Two-Factor Authentication</h3>
+        {!twoFactorEnabled ? (
+          <div>
+            <p>Two-factor authentication is not enabled.</p>
+            <button
+              onClick={handleEnable2FA}
+              className="account-settings-button"
+            >
+              Enable 2FA
+            </button>
+          </div>
+        ) : (
+          <div>
+            <p>Two-factor authentication is enabled for your account.</p>
+            <button
+              onClick={handleDisable2FA}
+              className="account-settings-button"
+            >
+              Disable 2FA
+            </button>
+          </div>
+        )}
+        {qrCode && !twoFactorEnabled && (
+          <div className="two-factor-setup">
+            <img src={qrCode} alt="2FA QR Code" className="two-factor-qr" />
+            <p>
+              Scan the QR code with your authenticator app, then enter the code
+              below:
+            </p>
+            <input
+              type="text"
+              value={twoFactorToken}
+              onChange={(e) => setTwoFactorToken(e.target.value)}
+              placeholder="Enter 2FA token"
+              className="account-settings-input two-factor-input"
+            />
+            <button
+              onClick={handleVerify2FA}
+              className="account-settings-button"
+            >
+              Verify and Enable 2FA
+            </button>
+          </div>
         )}
       </div>
     </div>

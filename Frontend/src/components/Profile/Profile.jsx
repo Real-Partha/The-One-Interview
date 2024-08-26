@@ -62,6 +62,7 @@ const Profile = () => {
         return;
       }
       try {
+        setValidUsername(true);
         const response = await axios.get(
           `${import.meta.env.VITE_API_URL}/user/check-username/${username}`
         );
