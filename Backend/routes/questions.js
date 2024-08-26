@@ -15,10 +15,58 @@ router.get("/questions", async (req, res) => {
     const limit = 10;
     const skip = (page - 1) * limit;
 
-    const totalQuestions = await Question.countDocuments();
+    // Extract query parameters
+    const companyNames = req.query.company_name ? JSON.parse(req.query.company_name) : null;
+    const tags = req.query.tag ? JSON.parse(req.query.tag) : null;
+    const category = req.query.category || null;
+    const dateRange = req.query.date_range || null;
+
+    // Build the filter object
+    const filter = {};
+    if (companyNames && companyNames.length > 0) {
+      filter.company_name = { $in: companyNames };
+    }
+    if (tags && tags.length > 0) {
+      filter.tags = { $in: tags };
+    }
+    if (category) {
+      filter.category = category;
+    }
+
+    // Fetch total questions count
+    const totalQuestions = await Question.countDocuments(filter);
     const totalPages = Math.ceil(totalQuestions / limit);
 
-    const questions = await Question.find().skip(skip).limit(limit).lean();
+    // Apply date range filter if specified
+    let questions;
+    if (dateRange) {
+      const now = new Date();
+      let dateLimit;
+
+      switch (dateRange) {
+        case 'year':
+          dateLimit = new Date(now.setFullYear(now.getFullYear() - 1));
+          break;
+        case 'month':
+          dateLimit = new Date(now.setMonth(now.getMonth() - 1));
+          break;
+        case 'week':
+          dateLimit = new Date(now.setDate(now.getDate() - 7));
+          break;
+        case 'day':
+          dateLimit = new Date(now.setDate(now.getDate() - 1));
+          break;
+        default:
+          dateLimit = null;
+      }
+
+      if (dateLimit) {
+        filter.created_at = { $gte: dateLimit };
+      }
+    }
+
+    // Fetch questions with applied filters
+    questions = await Question.find(filter).skip(skip).limit(limit).lean();
 
     const userIds = questions.map((q) => q.user_id);
     const users = await User.find(
@@ -140,7 +188,6 @@ router.get("/question/:id", async (req, res) => {
 router.get("/questionsearch", async (req, res) => {
   try {
     const search = req.query.query || "";
-
     // Record activity (only for authenticated users)
     if (req.isAuthenticated()) {
       await Activity.create({
