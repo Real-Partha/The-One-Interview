@@ -15,7 +15,7 @@ passport.use(
 
         // Check if user has a password (in case of Google login)
         if (!user.password) {
-          return res.status(400).json({ msg: "Please login with Google" });
+          return done(null, false, { message: "Pasword is not set.\nPlease login with Google." });
         }
         
         const isMatch = await bcrypt.compare(password, user.password);

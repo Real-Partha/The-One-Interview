@@ -9,12 +9,12 @@ const AccountSettings = ({ user }) => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
   const [hasPassword, setHasPassword] = useState(null);
   const [showPasswordFields, setShowPasswordFields] = useState(false);
   const [showEmailFields, setShowEmailFields] = useState(false);
   const [otp, setOtp] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { ErrorNotification, SuccessNotification } = useNotification();
 
   useEffect(() => {
@@ -29,7 +29,6 @@ const AccountSettings = ({ user }) => {
         setHasPassword(response.data.hasPassword);
       } catch (error) {
         ErrorNotification(error.response.data.message);
-        setError(error.response.data.message || "An error occurred");
       }
     };
 
@@ -38,12 +37,11 @@ const AccountSettings = ({ user }) => {
 
   const handlePasswordChange = async (e) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
+    setIsLoading(true);
 
     if (newPassword !== confirmPassword) {
       ErrorNotification("New passwords don't match");
-      setError("New passwords don't match");
+      setIsLoading(false);
       return;
     }
 
@@ -54,7 +52,6 @@ const AccountSettings = ({ user }) => {
         { withCredentials: true }
       );
       SuccessNotification(response.data.message);
-      setSuccess(response.data.message);
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
@@ -62,14 +59,14 @@ const AccountSettings = ({ user }) => {
       setHasPassword(true);
     } catch (error) {
       ErrorNotification(error.response.data.message);
-      setError(error.response.data.message || "An error occurred");
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleEmailChange = async (e) => {
+  const handleSendOtp = async (e) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
+    setIsLoading(true);
 
     try {
       const response = await axios.post(
@@ -78,18 +75,17 @@ const AccountSettings = ({ user }) => {
         { withCredentials: true }
       );
       SuccessNotification(response.data.message);
-      setSuccess(response.data.message);
-      setShowEmailFields(true);
+      setOtpSent(true);
     } catch (error) {
       ErrorNotification(error.response.data.message);
-      setError(error.response.data.message || "An error occurred");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
+    setIsLoading(true);
 
     try {
       const response = await axios.post(
@@ -98,14 +94,15 @@ const AccountSettings = ({ user }) => {
         { withCredentials: true }
       );
       SuccessNotification(response.data.message);
-      setSuccess(response.data.message);
       setEmail(newEmail);
       setNewEmail("");
       setOtp("");
       setShowEmailFields(false);
+      setOtpSent(false);
     } catch (error) {
       ErrorNotification(error.response.data.message);
-      setError(error.response.data.message || "An error occurred");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -119,11 +116,12 @@ const AccountSettings = ({ user }) => {
           <button
             onClick={() => setShowEmailFields(true)}
             className="account-settings-button"
+            disabled={showPasswordFields}
           >
             Change Email
           </button>
         ) : (
-          <form onSubmit={handleEmailChange} className="account-settings-form">
+          <form onSubmit={handleSendOtp} className="account-settings-form">
             <div className="account-settings-form-group">
               <label htmlFor="newEmail" className="account-settings-label">
                 New Email
@@ -137,19 +135,27 @@ const AccountSettings = ({ user }) => {
                 required
               />
             </div>
-            <button type="submit" className="account-settings-button">
-              Send OTP
-            </button>
-            <button
-              type="button"
-              onClick={() => setShowEmailFields(false)}
-              className="account-settings-button account-settings-cancel-button"
-            >
-              Cancel
-            </button>
+            {!otpSent && (
+              <div className="account-settings-button-group">
+                <button type="submit" className={`account-settings-button account-settings-submit-button ${isLoading ? 'account-settings-button-loading' : ''}`} disabled={isLoading}>
+                  {isLoading ? <span className="account-settings-loader"></span> : null}
+                  <span className="account-settings-button-text">{isLoading ? 'Sending OTP' : 'Send OTP'}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowEmailFields(false);
+                    setOtpSent(false);
+                  }}
+                  className="account-settings-button account-settings-cancel-button"
+                >
+                  Cancel
+                </button>
+              </div>
+            )}
           </form>
         )}
-        {showEmailFields && (
+        {otpSent && (
           <form onSubmit={handleVerifyOtp} className="account-settings-form">
             <div className="account-settings-form-group">
               <label htmlFor="otp" className="account-settings-label">
@@ -164,8 +170,9 @@ const AccountSettings = ({ user }) => {
                 required
               />
             </div>
-            <button type="submit" className="account-settings-button">
-              Verify OTP
+            <button type="submit" className={`account-settings-button account-settings-submit-button ${isLoading ? 'account-settings-button-loading' : ''}`} disabled={isLoading}>
+              {isLoading ? <span className="account-settings-loader"></span> : null}
+              <span className="account-settings-button-text">{isLoading ? 'Verifying OTP' : 'Verify OTP'}</span>
             </button>
           </form>
         )}
@@ -176,6 +183,7 @@ const AccountSettings = ({ user }) => {
           <button
             onClick={() => setShowPasswordFields(true)}
             className="account-settings-button"
+            disabled={showEmailFields}
           >
             {hasPassword ? "Reset Password" : "Set Password"}
           </button>
@@ -231,24 +239,24 @@ const AccountSettings = ({ user }) => {
                 required
               />
             </div>
-            <button type="submit" className="account-settings-button">
-              {hasPassword ? "Change Password" : "Set Password"}
-            </button>
-            <button
-              type="button"
-              onClick={() => setShowPasswordFields(false)}
-              className="account-settings-button account-settings-cancel-button"
-            >
-              Cancel
-            </button>
+            <div className="account-settings-button-group">
+              <button type="submit" className={`account-settings-button account-settings-submit-button ${isLoading ? 'account-settings-button-loading' : ''}`} disabled={isLoading}>
+                {isLoading ? <span className="account-settings-loader"></span> : null}
+                <span className="account-settings-button-text">{isLoading ? 'Updating' : "Submit"}</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowPasswordFields(false)}
+                className="account-settings-button account-settings-cancel-button"
+              >
+                Cancel
+              </button>
+            </div>
           </form>
         )}
       </div>
-      {error && <p className="account-settings-error-message">{error}</p>}
-      {success && <p className="account-settings-success-message">{success}</p>}
     </div>
   );
 };
-
 
 export default AccountSettings;

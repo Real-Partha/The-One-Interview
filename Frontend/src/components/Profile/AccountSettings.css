@@ -3,6 +3,8 @@
     background-color: var(--bg-color);
     border-radius: 8px;
     box-shadow: var(--box-shadow);
+    width: 50%;
+    margin: 0 auto;
   }
   
   .account-settings-title {
@@ -19,6 +21,11 @@
     color: #666;
   }
   
+  .account-settings-form {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
   .account-settings-form-group {
     margin-bottom: 15px;
   }
@@ -33,6 +40,7 @@
     padding: 8px;
     border: 1px solid var(--border-color);
     border-radius: 4px;
+    box-sizing: border-box;
   }
   
   .account-settings-button {
@@ -42,20 +50,61 @@
     padding: 10px 15px;
     border-radius: 4px;
     cursor: pointer;
+    margin-right: 10px;
+    min-width: 120px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .account-settings-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
   
-  .account-settings-button:hover {
-    background-color: var(--primary-hover-color);
+  .account-settings-submit-button:hover {
+    background-color: #45a049;
   }
   
-  .account-settings-error-message {
-    color: #f44336;
-    margin-top: 10px;
+  .account-settings-button-group {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 15px;
   }
   
-  .account-settings-success-message {
-    color: #4caf50;
-    margin-top: 10px;
+  .account-settings-cancel-button {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .account-settings-cancel-button:hover {
+    background-color: #d32f2f;
+  }
+  
+  .account-settings-button-loading {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  
+  .account-settings-loader {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    border-top: 2px solid transparent;
+    animation: account-seeting-spin 1s linear infinite;
+    margin-right: 5px;
+  }
+  
+  .account-settings-button-text {
+    display: inline-block;
+  }
+  
+  @keyframes account-seeting-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
   
   .dark-mode .account-settings-container {
@@ -77,7 +126,16 @@
     background-color: var(--dark-primary-color);
   }
   
-  .dark-mode .account-settings-button:hover {
-    background-color: var(--dark-primary-hover-color);
+  .dark-mode .account-settings-submit-button:hover:enabled {
+    background-color: #45a049;
+  }
+
+  .dark-mode .account-settings-cancel-button {
+    background-color: #d32f2f;
+    color: #fff;
+  }
+  
+  .dark-mode .account-settings-cancel-button:hover {
+    background-color: #b71c1c;
   }
   

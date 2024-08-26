@@ -458,9 +458,10 @@ router.post("/set-password", async (req, res) => {
   }
 });
 
-const otps = new Map();
-
 router.post("/change-email", async (req, res) => {
+
+  await new Promise((resolve) => setTimeout(resolve, 5000));
+
   if (!req.isAuthenticated()) {
     return res.status(401).json({ message: "Not authenticated" });
   }
@@ -477,10 +478,11 @@ router.post("/change-email", async (req, res) => {
     // Generate OTP
     const otp = crypto.randomInt(100000, 999999).toString();
 
-    // Store OTP with expiry (5 minutes)
-    otps.set(newEmail, {
-      otp,
-      expiry: Date.now() + 5 * 60 * 1000,
+    // Store OTP in the database with expiry (5 minutes)
+    await OTP.create({
+      email: newEmail,
+      otp: otp,
+      expiresAt: new Date(Date.now() + 5 * 60 * 1000), // 5 minutes from now
     });
 
     // Send OTP to new email
@@ -503,9 +505,15 @@ router.post("/verify-email-otp", async (req, res) => {
 
   try {
     const { otp, newEmail } = req.body;
-    const storedOtp = otps.get(newEmail);
 
-    if (!storedOtp || storedOtp.otp !== otp || Date.now() > storedOtp.expiry) {
+    // Find the OTP in the database
+    const storedOtp = await OTP.findOne({
+      email: newEmail,
+      otp: otp,
+      expiresAt: { $gt: new Date() },
+    });
+
+    if (!storedOtp) {
       return res.status(400).json({ message: "Invalid or expired OTP" });
     }
 
@@ -523,8 +531,8 @@ router.post("/verify-email-otp", async (req, res) => {
       `Your email has been successfully changed to ${newEmail}`
     );
 
-    // Clear OTP
-    otps.delete(newEmail);
+    // Delete the used OTP
+    await OTP.deleteOne({ _id: storedOtp._id });
 
     // Record email change activity
     await Activity.create({
