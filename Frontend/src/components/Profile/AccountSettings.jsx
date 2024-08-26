@@ -19,6 +19,7 @@ const AccountSettings = ({ user }) => {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
   const { ErrorNotification, SuccessNotification } = useNotification();
 
   useEffect(() => {
@@ -38,6 +39,23 @@ const AccountSettings = ({ user }) => {
 
     fetchHasPassword();
   }, []);
+
+  const handleCloseEmailFields = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setShowEmailFields(false);
+      setOtpSent(false);
+      setIsClosing(false);
+    }, 700); // This should match the animation duration in CSS
+  };
+
+  const handleClosePasswordFields = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setShowPasswordFields(false);
+      setIsClosing(false);
+    }, 700); // This should match the animation duration in CSS
+  };
 
   const handlePasswordChange = async (e) => {
     e.preventDefault();
@@ -143,7 +161,7 @@ const AccountSettings = ({ user }) => {
             Change Email
           </button>
         ) : (
-          <form onSubmit={handleSendOtp} className="account-settings-form">
+          <form onSubmit={handleSendOtp} className={`account-settings-form ${isClosing ? 'closing' : ''}`}>
             <div className="account-settings-form-group">
               <label htmlFor="newEmail" className="account-settings-label">
                 New Email
@@ -175,10 +193,7 @@ const AccountSettings = ({ user }) => {
                 </button>
                 <button
                   type="button"
-                  onClick={() => {
-                    setShowEmailFields(false);
-                    setOtpSent(false);
-                  }}
+                  onClick={handleCloseEmailFields}
                   className="account-settings-button account-settings-cancel-button"
                 >
                   Cancel
@@ -232,7 +247,7 @@ const AccountSettings = ({ user }) => {
         ) : (
           <form
             onSubmit={handlePasswordChange}
-            className="account-settings-form"
+            className={`account-settings-form ${isClosing ? 'closing' : ''}`}
           >
             {hasPassword && (
               <div className="account-settings-form-group">
@@ -325,7 +340,7 @@ const AccountSettings = ({ user }) => {
               </button>
               <button
                 type="button"
-                onClick={() => setShowPasswordFields(false)}
+                onClick={handleClosePasswordFields}
                 className="account-settings-button account-settings-cancel-button"
               >
                 Cancel

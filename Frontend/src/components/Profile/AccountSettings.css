@@ -24,8 +24,13 @@
   .account-settings-form {
     max-width: 400px;
     margin: 0 auto;
+    animation: accountSectionSlideDown 0.7s ease forwards;
   }
   
+  .account-settings-form.closing {
+    animation: accountSectionSlideUp 0.7s ease forwards;
+  }
+
   .account-settings-form-group {
     margin-bottom: 15px;
   }
@@ -71,6 +76,7 @@
     justify-content: flex-start;
     align-items: center;
     margin-top: 15px;
+    /* animation: accountSectionSlideDown 1s ease forwards; */
   }
   
   .account-settings-cancel-button {
@@ -105,6 +111,39 @@
   @keyframes account-seeting-spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+  }
+
+  @keyframes accountSectionSlideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes accountSectionSlideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes accountSectionSlideUp {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
   }
 
   .account-settings-password-input-wrapper {

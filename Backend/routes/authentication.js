@@ -13,6 +13,8 @@ const OTP = require("../models/otp");
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
 const { google } = require('googleapis');
+const fs = require('fs').promises;
+const path = require('path');
 
 const OAuth2 = google.auth.OAuth2;
 
@@ -47,14 +49,22 @@ const createTransporter = async () => {
 };
 
 // Use this function to send emails
-const sendEmail = async (to, subject, text) => {
+const sendEmail = async (to, subject, templateName, replacements) => {
   try {
     const transporter = await createTransporter();
+    const templatePath = path.join(__dirname, '..', 'templates', templateName);
+    let htmlContent = await fs.readFile(templatePath, 'utf-8');
+    
+    // Replace placeholders in the template
+    for (const [key, value] of Object.entries(replacements)) {
+      htmlContent = htmlContent.replace(new RegExp(`{{${key}}}`, 'g'), value);
+    }
+
     const result = await transporter.sendMail({
       from: process.env.EMAIL_ADDRESS,
       to,
       subject,
-      text
+      html: htmlContent
     });
     console.log("Email sent successfully");
     return result;
@@ -459,7 +469,6 @@ router.post("/set-password", async (req, res) => {
 });
 
 router.post("/change-email", async (req, res) => {
-
   if (!req.isAuthenticated()) {
     return res.status(401).json({ message: "Not authenticated" });
   }
@@ -484,10 +493,11 @@ router.post("/change-email", async (req, res) => {
     });
 
     // Send OTP to new email
-    const result = await sendEmail(
+    await sendEmail(
       newEmail,
       "Email Change Verification",
-      `Your OTP for email change is: ${otp}\n\nThis OTP will expire in 5 minutes`
+      'otp-email-template.html',
+      { OTP: otp }
     );
     res.json({ message: "OTP sent to new email" });
   } catch (error) {
@@ -525,7 +535,8 @@ router.post("/verify-email-otp", async (req, res) => {
     await sendEmail(
       req.user.email,
       "Email Change Confirmation",
-      `Your email has been successfully changed to ${newEmail}`
+      'email-change-notification-template.html',
+      { NEW_EMAIL: newEmail }
     );
 
     // Delete the used OTP
