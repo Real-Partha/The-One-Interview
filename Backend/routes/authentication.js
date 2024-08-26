@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const User = require("../models/user");
 const Activity = require("../models/activity");
@@ -10,6 +9,60 @@ const { uploadObject } = require("../utils/amazonS3");
 const multer = require("multer");
 const upload = multer({ storage: multer.memoryStorage() });
 const sharp = require("sharp");
+const OTP = require("../models/otp");
+const nodemailer = require("nodemailer");
+const crypto = require("crypto");
+const { google } = require('googleapis');
+
+const OAuth2 = google.auth.OAuth2;
+
+const createTransporter = async () => {
+  try {
+    const oauth2Client = new OAuth2(
+      process.env.GOOGLE_CLIENT_ID,
+      process.env.GOOGLE_CLIENT_SECRET,
+      "https://developers.google.com/oauthplayground"
+    );
+    oauth2Client.setCredentials({
+      refresh_token: process.env.GMAIL_REFRESH_TOKEN
+    });
+    const accessToken = await oauth2Client.getAccessToken();
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        type: "OAuth2",
+        user: process.env.EMAIL_ADDRESS,
+        clientId: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        refreshToken: process.env.GMAIL_REFRESH_TOKEN,
+        accessToken: accessToken
+      }
+    });
+
+    return transporter;
+  } catch (error) {
+    console.error("Error creating transporter:", error);
+    throw error;
+  }
+};
+
+// Use this function to send emails
+const sendEmail = async (to, subject, text) => {
+  try {
+    const transporter = await createTransporter();
+    const result = await transporter.sendMail({
+      from: process.env.EMAIL_ADDRESS,
+      to,
+      subject,
+      text
+    });
+    console.log("Email sent successfully");
+    return result;
+  } catch (error) {
+    console.error("Error sending email:", error);
+    throw error;
+  }
+};
 
 // OneID Signup
 // Local Signup
@@ -169,12 +222,19 @@ router.get("/user-activities", async (req, res) => {
       .skip(skip)
       .limit(limit);
 
-    const totalActivities = await Activity.countDocuments({ user_id: req.user._id });
+    const totalActivities = await Activity.countDocuments({
+      user_id: req.user._id,
+    });
     const hasMore = totalActivities > page * limit;
 
     res.json({ activities, hasMore });
   } catch (error) {
-    res.status(500).json({ message: "Error fetching user activities", error: error.message });
+    res
+      .status(500)
+      .json({
+        message: "Error fetching user activities",
+        error: error.message,
+      });
   }
 });
 
@@ -219,7 +279,7 @@ router.patch(
         await Activity.create({
           user_id: req.user._id,
           type: "profile_photo",
-          action: "updated"
+          action: "updated",
         });
       }
 
@@ -302,12 +362,10 @@ router.patch("/delete-profile-picture", async (req, res) => {
       user: updatedUser,
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        message: "Error deleting profile picture",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "Error deleting profile picture",
+      error: error.message,
+    });
   }
 });
 
@@ -342,7 +400,9 @@ router.post("/change-password", async (req, res) => {
 
     res.json({ message: "Password changed successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Error changing password", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error changing password", error: error.message });
   }
 });
 
@@ -360,7 +420,9 @@ router.get("/has-password", async (req, res) => {
 
     res.json({ hasPassword: !!user.password });
   } catch (error) {
-    res.status(500).json({ message: "Error checking password", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error checking password", error: error.message });
   }
 });
 
@@ -390,7 +452,93 @@ router.post("/set-password", async (req, res) => {
 
     res.json({ message: "Password set successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Error setting password", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error setting password", error: error.message });
+  }
+});
+
+const otps = new Map();
+
+router.post("/change-email", async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.status(401).json({ message: "Not authenticated" });
+  }
+
+  try {
+    const { newEmail } = req.body;
+
+    // Check if the new email already exists in the database
+    const existingUser = await User.findOne({ email: newEmail });
+    if (existingUser) {
+      return res.status(400).json({ message: "Email already in use" });
+    }
+
+    // Generate OTP
+    const otp = crypto.randomInt(100000, 999999).toString();
+
+    // Store OTP with expiry (5 minutes)
+    otps.set(newEmail, {
+      otp,
+      expiry: Date.now() + 5 * 60 * 1000,
+    });
+
+    // Send OTP to new email
+    await sendEmail(
+      newEmail,
+      "Email Change Verification",
+      `Your OTP for email change is: ${otp}\n\nThis OTP will expire in 5 minutes`
+    );
+
+    res.json({ message: "OTP sent to new email" });
+  } catch (error) {
+    res.status(500).json({ message: error.message, error: error.message });
+  }
+});
+
+router.post("/verify-email-otp", async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.status(401).json({ message: "Not authenticated" });
+  }
+
+  try {
+    const { otp, newEmail } = req.body;
+    const storedOtp = otps.get(newEmail);
+
+    if (!storedOtp || storedOtp.otp !== otp || Date.now() > storedOtp.expiry) {
+      return res.status(400).json({ message: "Invalid or expired OTP" });
+    }
+
+    // Update user's email
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      { email: newEmail },
+      { new: true }
+    );
+
+    // Send confirmation email to old email
+    await sendEmail(
+      req.user.email,
+      "Email Change Confirmation",
+      `Your email has been successfully changed to ${newEmail}`
+    );
+
+    // Clear OTP
+    otps.delete(newEmail);
+
+    // Record email change activity
+    await Activity.create({
+      user_id: req.user._id,
+      type: "email",
+      action: "changed",
+      details: { old: req.user.email, new: newEmail },
+    });
+
+    res.json({ message: "Email changed successfully", user });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error verifying OTP", error: error.message });
   }
 });
 

@@ -5,6 +5,7 @@ import useNotification from '../Notifications';
 
 const AccountSettings = ({ user }) => {
   const [email, setEmail] = useState(user.email);
+  const [newEmail, setNewEmail] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -12,6 +13,8 @@ const AccountSettings = ({ user }) => {
   const [success, setSuccess] = useState("");
   const [hasPassword, setHasPassword] = useState(null);
   const [showPasswordFields, setShowPasswordFields] = useState(false);
+  const [showEmailFields, setShowEmailFields] = useState(false);
+  const [otp, setOtp] = useState("");
   const { ErrorNotification, SuccessNotification } = useNotification();
 
   useEffect(() => {
@@ -63,15 +66,109 @@ const AccountSettings = ({ user }) => {
     }
   };
 
+  const handleEmailChange = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/auth/change-email`,
+        { newEmail },
+        { withCredentials: true }
+      );
+      SuccessNotification(response.data.message);
+      setSuccess(response.data.message);
+      setShowEmailFields(true);
+    } catch (error) {
+      ErrorNotification(error.response.data.message);
+      setError(error.response.data.message || "An error occurred");
+    }
+  };
+
+  const handleVerifyOtp = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/auth/verify-email-otp`,
+        { otp, newEmail },
+        { withCredentials: true }
+      );
+      SuccessNotification(response.data.message);
+      setSuccess(response.data.message);
+      setEmail(newEmail);
+      setNewEmail("");
+      setOtp("");
+      setShowEmailFields(false);
+    } catch (error) {
+      ErrorNotification(error.response.data.message);
+      setError(error.response.data.message || "An error occurred");
+    }
+  };
+
   return (
     <div className="account-settings-container">
       <h2 className="account-settings-title">Account Settings</h2>
       <div className="account-settings-email-section">
         <h3 className="account-settings-subtitle">Email</h3>
         <p className="account-settings-email">{email}</p>
-        <p className="account-settings-email-note">
-          Email cannot be changed at this time.
-        </p>
+        {!showEmailFields ? (
+          <button
+            onClick={() => setShowEmailFields(true)}
+            className="account-settings-button"
+          >
+            Change Email
+          </button>
+        ) : (
+          <form onSubmit={handleEmailChange} className="account-settings-form">
+            <div className="account-settings-form-group">
+              <label htmlFor="newEmail" className="account-settings-label">
+                New Email
+              </label>
+              <input
+                type="email"
+                id="newEmail"
+                className="account-settings-input"
+                value={newEmail}
+                onChange={(e) => setNewEmail(e.target.value)}
+                required
+              />
+            </div>
+            <button type="submit" className="account-settings-button">
+              Send OTP
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowEmailFields(false)}
+              className="account-settings-button account-settings-cancel-button"
+            >
+              Cancel
+            </button>
+          </form>
+        )}
+        {showEmailFields && (
+          <form onSubmit={handleVerifyOtp} className="account-settings-form">
+            <div className="account-settings-form-group">
+              <label htmlFor="otp" className="account-settings-label">
+                Enter OTP
+              </label>
+              <input
+                type="text"
+                id="otp"
+                className="account-settings-input"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                required
+              />
+            </div>
+            <button type="submit" className="account-settings-button">
+              Verify OTP
+            </button>
+          </form>
+        )}
       </div>
       <div className="account-settings-password-section">
         <h3 className="account-settings-subtitle">Password</h3>
@@ -152,5 +249,6 @@ const AccountSettings = ({ user }) => {
     </div>
   );
 };
+
 
 export default AccountSettings;
