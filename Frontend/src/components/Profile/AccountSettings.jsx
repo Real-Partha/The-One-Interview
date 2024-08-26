@@ -60,7 +60,7 @@ const AccountSettings = ({ user }) => {
     const fetchHasPassword = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/auth/has-password`,
+          `${import.meta.env.VITE_API_URL}/account/has-password`,
           {
             withCredentials: true,
           }
@@ -103,7 +103,7 @@ const AccountSettings = ({ user }) => {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/auth/${
+        `${import.meta.env.VITE_API_URL}/account/${
           hasPassword ? "change-password" : "set-password"
         }`,
         hasPassword ? { currentPassword, newPassword } : { newPassword },
@@ -128,7 +128,7 @@ const AccountSettings = ({ user }) => {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/auth/change-email`,
+        `${import.meta.env.VITE_API_URL}/account/change-email`,
         { newEmail },
         { withCredentials: true }
       );
@@ -149,7 +149,7 @@ const AccountSettings = ({ user }) => {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/auth/verify-email-otp`,
+        `${import.meta.env.VITE_API_URL}/account/verify-email-otp`,
         { otp: enteredOtp, newEmail },
         { withCredentials: true }
       );

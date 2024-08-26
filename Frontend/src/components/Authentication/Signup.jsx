@@ -78,7 +78,7 @@ const Signup = () => {
       if (formData.username && formData.username.length > 2) {
         try {
           const response = await axios.get(
-            `${import.meta.env.VITE_API_URL}/auth/check-username/${
+            `${import.meta.env.VITE_API_URL}/user/check-username/${
               formData.username
             }`
           );
@@ -105,7 +105,7 @@ const Signup = () => {
       if (validateEmail(formData.email)) {
         try {
           const response = await axios.get(
-            `${import.meta.env.VITE_API_URL}/auth/check-email/${formData.email}`
+            `${import.meta.env.VITE_API_URL}/user/check-email/${formData.email}`
           );
           setEmailExists(response.data.exists);
         } catch (error) {

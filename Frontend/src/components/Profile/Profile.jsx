@@ -63,7 +63,7 @@ const Profile = () => {
       }
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/auth/check-username/${username}`
+          `${import.meta.env.VITE_API_URL}/user/check-username/${username}`
         );
         setUsernameAvailable(response.data.available);
       } catch (error) {
@@ -102,7 +102,7 @@ const Profile = () => {
       }
 
       const response = await axios.patch(
-        `${import.meta.env.VITE_API_URL}/auth/update-profile`,
+        `${import.meta.env.VITE_API_URL}/account/update-profile`,
         formData,
         {
           withCredentials: true,
@@ -125,7 +125,7 @@ const Profile = () => {
   const handleDeletePicture = async () => {
     try {
       const response = await axios.patch(
-        `${import.meta.env.VITE_API_URL}/auth/delete-profile-picture`,
+        `${import.meta.env.VITE_API_URL}/account/delete-profile-picture`,
         {},
         { withCredentials: true }
       );

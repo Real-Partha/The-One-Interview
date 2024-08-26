@@ -51,7 +51,8 @@ require('./utils/passport');
 //routes
 const authRoutes = require('./routes/authentication');
 const questionRoutes = require('./routes/questions');
-
+const userRoutes = require('./routes/user');
+const accountRoutes = require('./routes/account');
 
 
 connectDB().then(() => {
@@ -90,3 +91,5 @@ app.use(passport.session());
 //routes middleware
 app.use("/auth", authRoutes);
 app.use("/", questionRoutes);
+app.use("/user", userRoutes);
+app.use("/account", accountRoutes);

@@ -13,7 +13,7 @@ const UserActivity = ({ refreshTrigger }) => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/auth/user-activities?page=${pageNum}`,
+        `${import.meta.env.VITE_API_URL}/account/user-activities?page=${pageNum}`,
         { withCredentials: true }
       );
       if (pageNum === 1) {
