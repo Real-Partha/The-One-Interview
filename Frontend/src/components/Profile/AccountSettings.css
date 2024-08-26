@@ -106,6 +106,36 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
+
+  .account-settings-password-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .account-settings-password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: var(--text-color);
+  }
+  
+  .account-settings-password-toggle:focus {
+    outline: none;
+  }
+  
+  .account-settings-input {
+    padding-right: 40px;
+  }
+  
+  .dark-mode .account-settings-password-toggle {
+    color: var(--dark-text-color);
+  }
   
   .dark-mode .account-settings-container {
     background-color: var(--dark-sidebar-cards-bg-color);

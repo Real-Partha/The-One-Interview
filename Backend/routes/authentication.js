@@ -460,8 +460,6 @@ router.post("/set-password", async (req, res) => {
 
 router.post("/change-email", async (req, res) => {
 
-  await new Promise((resolve) => setTimeout(resolve, 5000));
-
   if (!req.isAuthenticated()) {
     return res.status(401).json({ message: "Not authenticated" });
   }
@@ -486,12 +484,11 @@ router.post("/change-email", async (req, res) => {
     });
 
     // Send OTP to new email
-    await sendEmail(
+    const result = await sendEmail(
       newEmail,
       "Email Change Verification",
       `Your OTP for email change is: ${otp}\n\nThis OTP will expire in 5 minutes`
     );
-
     res.json({ message: "OTP sent to new email" });
   } catch (error) {
     res.status(500).json({ message: error.message, error: error.message });

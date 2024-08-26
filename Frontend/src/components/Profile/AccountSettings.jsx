@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./AccountSettings.css";
-import useNotification from '../Notifications';
+import useNotification from "../Notifications";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const AccountSettings = ({ user }) => {
   const [email, setEmail] = useState(user.email);
@@ -15,6 +16,9 @@ const AccountSettings = ({ user }) => {
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { ErrorNotification, SuccessNotification } = useNotification();
 
   useEffect(() => {
@@ -47,7 +51,9 @@ const AccountSettings = ({ user }) => {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/auth/${hasPassword ? 'change-password' : 'set-password'}`,
+        `${import.meta.env.VITE_API_URL}/auth/${
+          hasPassword ? "change-password" : "set-password"
+        }`,
         hasPassword ? { currentPassword, newPassword } : { newPassword },
         { withCredentials: true }
       );
@@ -106,6 +112,22 @@ const AccountSettings = ({ user }) => {
     }
   };
 
+  const togglePasswordVisibility = (field) => {
+    switch (field) {
+      case "current":
+        setShowCurrentPassword(!showCurrentPassword);
+        break;
+      case "new":
+        setShowNewPassword(!showNewPassword);
+        break;
+      case "confirm":
+        setShowConfirmPassword(!showConfirmPassword);
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <div className="account-settings-container">
       <h2 className="account-settings-title">Account Settings</h2>
@@ -137,9 +159,19 @@ const AccountSettings = ({ user }) => {
             </div>
             {!otpSent && (
               <div className="account-settings-button-group">
-                <button type="submit" className={`account-settings-button account-settings-submit-button ${isLoading ? 'account-settings-button-loading' : ''}`} disabled={isLoading}>
-                  {isLoading ? <span className="account-settings-loader"></span> : null}
-                  <span className="account-settings-button-text">{isLoading ? 'Sending OTP' : 'Send OTP'}</span>
+                <button
+                  type="submit"
+                  className={`account-settings-button account-settings-submit-button ${
+                    isLoading ? "account-settings-button-loading" : ""
+                  }`}
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <span className="account-settings-loader"></span>
+                  ) : null}
+                  <span className="account-settings-button-text">
+                    {isLoading ? "Sending OTP" : "Send OTP"}
+                  </span>
                 </button>
                 <button
                   type="button"
@@ -170,9 +202,19 @@ const AccountSettings = ({ user }) => {
                 required
               />
             </div>
-            <button type="submit" className={`account-settings-button account-settings-submit-button ${isLoading ? 'account-settings-button-loading' : ''}`} disabled={isLoading}>
-              {isLoading ? <span className="account-settings-loader"></span> : null}
-              <span className="account-settings-button-text">{isLoading ? 'Verifying OTP' : 'Verify OTP'}</span>
+            <button
+              type="submit"
+              className={`account-settings-button account-settings-submit-button ${
+                isLoading ? "account-settings-button-loading" : ""
+              }`}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <span className="account-settings-loader"></span>
+              ) : null}
+              <span className="account-settings-button-text">
+                {isLoading ? "Verifying OTP" : "Verify OTP"}
+              </span>
             </button>
           </form>
         )}
@@ -200,28 +242,46 @@ const AccountSettings = ({ user }) => {
                 >
                   Current Password
                 </label>
-                <input
-                  type="password"
-                  id="currentPassword"
-                  className="account-settings-input"
-                  value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
-                  required
-                />
+                <div className="account-settings-password-input-wrapper">
+                  <input
+                    type={showCurrentPassword ? "text" : "password"}
+                    id="currentPassword"
+                    className="account-settings-input"
+                    value={currentPassword}
+                    onChange={(e) => setCurrentPassword(e.target.value)}
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="account-settings-password-toggle"
+                    onClick={() => togglePasswordVisibility("current")}
+                  >
+                    {showCurrentPassword ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+                </div>
               </div>
             )}
             <div className="account-settings-form-group">
               <label htmlFor="newPassword" className="account-settings-label">
                 New Password
               </label>
-              <input
-                type="password"
-                id="newPassword"
-                className="account-settings-input"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                required
-              />
+              <div className="account-settings-password-input-wrapper">
+                <input
+                  type={showNewPassword ? "text" : "password"}
+                  id="newPassword"
+                  className="account-settings-input"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  required
+                />
+                <button
+                  type="button"
+                  className="account-settings-password-toggle"
+                  onClick={() => togglePasswordVisibility("new")}
+                >
+                  {showNewPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
             </div>
             <div className="account-settings-form-group">
               <label
@@ -230,19 +290,38 @@ const AccountSettings = ({ user }) => {
               >
                 Confirm New Password
               </label>
-              <input
-                type="password"
-                id="confirmPassword"
-                className="account-settings-input"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-              />
+              <div className="account-settings-password-input-wrapper">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  id="confirmPassword"
+                  className="account-settings-input"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                />
+                <button
+                  type="button"
+                  className="account-settings-password-toggle"
+                  onClick={() => togglePasswordVisibility("confirm")}
+                >
+                  {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
             </div>
             <div className="account-settings-button-group">
-              <button type="submit" className={`account-settings-button account-settings-submit-button ${isLoading ? 'account-settings-button-loading' : ''}`} disabled={isLoading}>
-                {isLoading ? <span className="account-settings-loader"></span> : null}
-                <span className="account-settings-button-text">{isLoading ? 'Updating' : "Submit"}</span>
+              <button
+                type="submit"
+                className={`account-settings-button account-settings-submit-button ${
+                  isLoading ? "account-settings-button-loading" : ""
+                }`}
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <span className="account-settings-loader"></span>
+                ) : null}
+                <span className="account-settings-button-text">
+                  {isLoading ? "Updating" : "Submit"}
+                </span>
               </button>
               <button
                 type="button"
