@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const User = require("../models/user");
 const { getSignedUrlForObject } = require("../utils/amazonS3");
-
+const { authenticator } = require("otplib");
 
 // OneID Signup
 // Local Signup
@@ -52,8 +52,8 @@ router.post("/signup", async (req, res) => {
 });
 
 // Local Login
-router.post("/login", (req, res, next) => {
-  passport.authenticate("local", (err, user, info) => {
+router.post("/login", async (req, res, next) => {
+  passport.authenticate("local", async (err, user, info) => {
     if (err) {
       return res
         .status(500)
@@ -62,6 +62,17 @@ router.post("/login", (req, res, next) => {
     if (!user) {
       return res.status(401).json({ message: info.message });
     }
+
+    if (user.two_factor_auth) {
+      // If 2FA is enabled, don't log in yet, but send a flag indicating 2FA is required
+      return res.json({
+        message: "2FA required",
+        requireTwoFactor: true,
+        userId: user._id,
+      });
+    }
+
+    // If 2FA is not enabled, proceed with normal login
     req.login(user, (err) => {
       if (err) {
         return res
@@ -77,6 +88,43 @@ router.post("/login", (req, res, next) => {
       });
     });
   })(req, res, next);
+});
+
+router.post("/verify-2fa", async (req, res) => {
+  const { userId, token } = req.body;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const verified = authenticator.verify({
+      token: token.toString().trim(),
+      secret: user.two_factor_secret
+    });
+
+    if (verified) {
+      req.login(user, (err) => {
+        if (err) {
+          return res
+            .status(500)
+            .json({ message: "Error logging in", error: err.message });
+        }
+        const userObj = user.toObject();
+        delete userObj.password;
+        return res.json({
+          message: "Login successful",
+          user : userObj,
+          sessionRestored: req.session.sessionRestored,
+        });
+      });
+    } else {
+      res.status(400).json({ message: "Invalid 2FA token" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error verifying 2FA", error: error.message });
+  }
 });
 
 // Google Auth
@@ -124,6 +172,5 @@ router.get("/logout", (req, res) => {
     });
   });
 });
-
 
 module.exports = router;

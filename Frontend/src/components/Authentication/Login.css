@@ -112,6 +112,50 @@
     padding: 0 0.5rem;
     color: #757575;
   }
+
+  .two-factor-message {
+    background-color: #f0f8ff;
+    border: 1px solid #b0d4ff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .two-factor-icon {
+    font-size: 2.5rem;
+    color: #4a90e2;
+    margin-bottom: 10px;
+  }
+  
+  .two-factor-message h3 {
+    color: #4a90e2;
+    margin-bottom: 10px;
+  }
+  
+  .two-factor-message p {
+    color: #6d5107;
+    margin-bottom: 5px;
+  }
+  
+  /* Dark mode styles */
+  .dark-mode .two-factor-message {
+    background-color: #2c3e50;
+    border-color: #34495e;
+  }
+  
+  .dark-mode .two-factor-icon {
+    color: #3498db;
+  }
+  
+  .dark-mode .two-factor-message h3 {
+    color: #3498db;
+  }
+  
+  .dark-mode .two-factor-message p {
+    color: #e09c26;
+  }
   
   /* Dark mode styles */
   .dark-mode .login-container {
