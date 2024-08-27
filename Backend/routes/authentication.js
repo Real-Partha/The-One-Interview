@@ -81,6 +81,9 @@ router.post("/login", async (req, res, next) => {
       }
       user = user.toObject();
       delete user.password;
+      if (user.two_factor_secret) {
+        delete user.two_factor_secret;
+      };
       return res.json({
         message: "Login successful",
         user,
@@ -109,6 +112,7 @@ router.post("/verify-2fa", async (req, res) => {
       req.session.user = user;
       const userObj = user.toObject();
       delete userObj.password;
+      delete userObj.two_factor_secret;
       return res.json({
         message: "Login successful",
         user: userObj,
@@ -133,7 +137,7 @@ router.get(
       // If 2FA is enabled, set a session flag and redirect to the login page
       req.session.requireTwoFactor = true;
       req.session.userId = req.user._id;
-      res.redirect(`${process.env.CLIENT_URL}/login?requireTwoFactor=true&userId=${req.user._id}`);
+      res.redirect(`${process.env.CLIENT_URL}/login`);
     } else {
       // If 2FA is not enabled, complete the login process
       req.session.user = req.user;
@@ -146,6 +150,7 @@ router.get("/status", async (req, res) => {
   if (req.isAuthenticated() && !req.session.requireTwoFactor) {
     req.user = req.user.toObject();
     delete req.user.password;
+    delete req.user.two_factor_secret;
     const profilePicUrl = await getSignedUrlForObject(req.user.profile_pic);
     req.user.profile_pic = profilePicUrl;
     res.json({

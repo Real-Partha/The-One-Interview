@@ -478,8 +478,18 @@ router.post("/verify-2fa", async (req, res) => {
     console.log("Verified:", verified);
 
     if (verified) {
+
+      // Record 2FA enabled activity
+      
       user.two_factor_auth = true;
       await user.save();
+
+      await Activity.create({
+        user_id: req.user._id,
+        type: "2fa",
+        action: "enabled",
+      });
+
       res.json({ message: "2FA enabled successfully" });
     } else {
       res.status(400).json({ message: "Invalid token" });
@@ -502,6 +512,14 @@ router.post("/disable-2fa", async (req, res) => {
     user.two_factor_auth = false;
     user.two_factor_secret = undefined;
     await user.save();
+
+    // Record 2FA disabled activity
+    await Activity.create({
+      user_id: req.user._id,
+      type: "2fa",
+      action: "disabled",
+    });
+
     res.json({ message: "2FA disabled successfully" });
   } catch (error) {
     res

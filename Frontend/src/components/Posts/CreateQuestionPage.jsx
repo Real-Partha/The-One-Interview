@@ -3,20 +3,21 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "./CreateQuestionPage.css";
 import { useTheme } from "../../ThemeContext";
+import axios from "axios";
 
 const CreateQuestionPage = () => {
   const [formData, setFormData] = useState({
     companyName: "",
-    rounds: "",
-    location: "",
-    role: "",
+    category: "",
+    level: "beginner",
     question: "",
-    experience: "",
-    tags: [], // Add tags to the formData state
+    answer: "",
+    tags: [],
   });
 
+  const [tagInput, setTagInput] = useState("");
+  const [submitMessage, setSubmitMessage] = useState("");
   const { isDarkMode } = useTheme();
-  const [tagInput, setTagInput] = useState(""); // State to manage tag input
 
   const handleChange = (value, field) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -65,13 +66,32 @@ const CreateQuestionPage = () => {
         ...prev,
         tags: newTags,
       }));
-      setTagInput(removedTag.slice(1)); // Remove the '#' from the beginning
+      setTagInput(removedTag.slice(1));
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formData);
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/question`,
+        formData,
+        { withCredentials: true }
+      );
+      setSubmitMessage(response.data.message);
+      // Clear form data
+      setFormData({
+        companyName: "",
+        category: "",
+        level: "beginner",
+        question: "",
+        answer: "",
+        tags: [],
+      });
+    } catch (error) {
+      console.error("Error submitting question:", error);
+      setSubmitMessage("An error occurred while submitting the question. Please try again.");
+    }
   };
 
   return (
@@ -88,34 +108,37 @@ const CreateQuestionPage = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="location">
+          <label htmlFor="category">
             In which Round can the Question be Expected?{" "}
           </label>
           <select
-            id="location"
+            id="category"
             className="form-control special-form-control"
-            value={formData.location}
-            onChange={(e) => handleChange(e.target.value, "location")}
+            value={formData.category}
+            onChange={(e) => handleChange(e.target.value, "category")}
           >
             <option value="techinterview">Technical Interviews</option>
             <option value="hrinterview">HR Interviews</option>
-            <option value="aptitide">Aptitude</option>
+            <option value="aptitude">Aptitude</option>
             <option value="onlinecoding">Online Coding Round</option>
             <option value="general">General</option>
           </select>
         </div>
         <div className="form-group">
-          <label htmlFor="role">Role:</label>
-          <input
-            type="text"
-            id="role"
-            className="form-control"
-            value={formData.role}
-            onChange={(e) => handleChange(e.target.value, "role")}
-          />
+          <label htmlFor="level">Level:</label>
+          <select
+            id="level"
+            className="form-control special-form-control"
+            value={formData.level}
+            onChange={(e) => handleChange(e.target.value, "level")}
+          >
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
+          </select>
         </div>
         <div className="form-group">
-          <label htmlFor="Question">What was the Question asked?</label>
+          <label htmlFor="question">What was the Question asked?</label>
           <input
             type="text"
             id="question"
@@ -125,13 +148,13 @@ const CreateQuestionPage = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="experience">
+          <label htmlFor="answer">
             What should be the Perfect Answer?{" "}
           </label>
           <ReactQuill
             theme="snow"
-            value={formData.experience}
-            onChange={(value) => handleChange(value, "experience")}
+            value={formData.answer}
+            onChange={(value) => handleChange(value, "answer")}
             modules={CreateQuestionPage.modules}
             formats={CreateQuestionPage.formats}
           />
@@ -165,6 +188,11 @@ const CreateQuestionPage = () => {
             Submit
           </button>
         </div>
+        {submitMessage && (
+          <div className="submit-message">
+            {submitMessage}
+          </div>
+        )}
       </form>
     </div>
   );

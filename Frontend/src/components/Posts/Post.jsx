@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useTheme } from "../../ThemeContext";
 import "./Post.css";
+import './QuillContent.css';
+import DOMPurify from 'dompurify';
 
 const Post = () => {
   const { questionId } = useParams();
@@ -200,7 +202,12 @@ const Post = () => {
             </div>
           </div>
           <div className="post-content">
-            <p>{question.answer}</p>
+            <div
+              className="quill-content"
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(question.answer),
+              }}
+            />
           </div>
           <div className="post-tags">
             {question.tags.map((tag, index) => (
@@ -252,7 +259,9 @@ const Post = () => {
             </span>
           </div>
           <div className="comments-section">
-            <h3>{comments.length} {comments.length==1?"Comment":"Comments"}</h3>
+            <h3>
+              {comments.length} {comments.length == 1 ? "Comment" : "Comments"}
+            </h3>
             <form onSubmit={handleCommentSubmit} className="comment-form">
               <input
                 type="text"

@@ -44,7 +44,7 @@ const Profile = () => {
 
   useEffect(() => {
     fetchUserData();
-  }, []);
+  }, [activeSection]);
 
   const checkUsernameAvailability = useCallback(
     debounce(async (username) => {

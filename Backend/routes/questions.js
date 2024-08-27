@@ -296,7 +296,13 @@ router.get("/questionsearch", async (req, res) => {
 
 router.post("/question", async (req, res) => {
   try {
-    const question = await Question.create(req.body);
+    const questionData = {
+      ...req.body,
+      status: 'unverified',
+      user_id: req.user._id,
+      tags: req.body.tags.map(tag => tag.startsWith('#') ? tag.slice(1) : tag) // Remove '#' from tags
+    };
+    const question = await Question.create(questionData);
 
     // Record activity
     await Activity.create({
@@ -305,7 +311,10 @@ router.post("/question", async (req, res) => {
       target_id: question._id,
     });
 
-    return res.status(201).send(question);
+    return res.status(201).send({
+      message: "Question submitted successfully and is pending approval.",
+      question: question
+    });
   } catch (err) {
     console.error(err);
     return res.status(500).send({
@@ -314,7 +323,6 @@ router.post("/question", async (req, res) => {
     });
   }
 });
-
 router.delete("/question", async (req, res) => {
   try {
     const question = await Question.findById(req.body.id);

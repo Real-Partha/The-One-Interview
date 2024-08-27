@@ -14,6 +14,11 @@ const questionSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please provide a category'],
     },
+    level: {
+        //Beginner, Intermediate, Senior
+        type: String,
+        required: [true, 'Please provide a level'],
+    },
     company_name: {
         //this is optional field
         type: String,
@@ -53,6 +58,11 @@ const questionSchema = new mongoose.Schema({
     commentscount: {
         type: Number,
         default: 0,
+    },
+    status: {
+        type: String,
+        enum: ['unverified', 'approved', 'rejected'],
+        default: 'unverified'
     }
 });
 

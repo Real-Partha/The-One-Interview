@@ -13,7 +13,6 @@ const AccountSettings = ({ user }) => {
   const [hasPassword, setHasPassword] = useState(null);
   const [showPasswordFields, setShowPasswordFields] = useState(false);
   const [showEmailFields, setShowEmailFields] = useState(false);
-  const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);

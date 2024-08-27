@@ -13,7 +13,9 @@ const UserActivity = ({ refreshTrigger }) => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/account/user-activities?page=${pageNum}`,
+        `${
+          import.meta.env.VITE_API_URL
+        }/account/user-activities?page=${pageNum}`,
         { withCredentials: true }
       );
       if (pageNum === 1) {
@@ -56,7 +58,7 @@ const UserActivity = ({ refreshTrigger }) => {
     setPage((prevPage) => prevPage + 1);
   };
 
-  const getActivityIcon = (type) => {
+  const getActivityIcon = (type, action) => {
     switch (type) {
       case "comment":
         return "fa-comment";
@@ -70,6 +72,16 @@ const UserActivity = ({ refreshTrigger }) => {
         return "fa-question";
       case "search":
         return "fa-search";
+      case "vote":
+        return action === "upvote" || action === "remove_upvote"
+          ? "fa-thumbs-up"
+          : "fa-thumbs-down";
+      case "password":
+        return "fa-key";
+      case "email":
+        return "fa-envelope";
+      case "2fa":
+        return "fa-shield-alt";
       default:
         return "fa-circle";
     }
@@ -116,7 +128,11 @@ const UserActivity = ({ refreshTrigger }) => {
             {activity.details &&
               Object.entries(activity.details).map(([key, value]) => (
                 <p key={key}>
-                  Changed {key} from "{value.old}" to "{value.new}"
+                  {value.old === null || value.old === ""
+                    ? `Set ${key} to "${value.new}"`
+                    : value.new === null || value.new === ""
+                    ? `Removed value for ${key}`
+                    : `Changed ${key} from "${value.old}" to "${value.new}"`}
                 </p>
               ))}
           </div>
@@ -178,6 +194,28 @@ const UserActivity = ({ refreshTrigger }) => {
                 View Question
               </a>
             )}
+          </div>
+        );
+      case "password":
+        return (
+          <div className="user-activity-title">
+            {activity.action === "changed"
+              ? "Changed password"
+              : "Set password"}
+          </div>
+        );
+      case "email":
+        return (
+          <div className="user-activity-title">
+            {`Changed email from "${activity.details.old}" to "${activity.details.new}"`}
+          </div>
+        );
+      case "2fa":
+        return (
+          <div className="user-activity-title">
+            {activity.action === "enabled"
+              ? "Enabled Two-factor authentication"
+              : "Disabled Two-factor authentication"}
           </div>
         );
       default:

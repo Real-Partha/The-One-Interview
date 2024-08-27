@@ -10,6 +10,7 @@ import { Typewriter } from "react-simple-typewriter";
 import { debounce } from "lodash";
 import { SearchContext } from "../context/SearchContext";
 import ThreadSkeleton from "./threadskeleton";
+import DOMPurify from "dompurify";
 
 const MainComponent = () => {
   const navigate = useNavigate();
@@ -55,6 +56,13 @@ const MainComponent = () => {
   useEffect(() => {
     fetchThreads(currentPage);
   }, [currentPage, fetchThreads]);
+
+  const truncateHTML = (html, maxLength) => {
+    const div = document.createElement("div");
+    div.innerHTML = DOMPurify.sanitize(html);
+    const text = div.textContent || div.innerText || "";
+    return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
+  };
 
   function timeAgo(date) {
     const seconds = Math.floor((new Date() - new Date(date)) / 1000);
@@ -284,8 +292,7 @@ const MainComponent = () => {
                   <div className="thread-card">
                     <h3 className="thread-title">{thread.question}</h3>
                     <p className="thread-answer-preview">
-                      {thread.answer.slice(0, 150)}
-                      {thread.answer.length > 100 ? "..." : ""}
+                      {truncateHTML(thread.answer, 150)}
                     </p>
                     <div className="thread-info">
                       <img
