@@ -10,21 +10,38 @@
 }
 
 
-
 /* MainContent.css */
-.main-content {
+.light-mode .main-content {
   display: flex;
-  background-color: #f5f7fb;
+  background-color: #eaf7f9;
+  /* background-color: #5bafba; */
+  /* background:linear-gradient(-135deg, #e7dbd0 0%, #f7f8fa 50%, #baa899 100%); */
+
+  background: linear-gradient(-101deg, #e7dbd0 0%, #f7f8fa 50%, #baa899 100%);
+
   padding: 1.5%;
   margin-top: 1.5%;
 }
 
-.sidebar {
+.light-mode .sidebar {
+  /* background:  linear-gradient(90deg, #eff0f3 0%, #f5f5f5 50%, #edf3ff 100%);  #new addition; */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  background-color: #ededf3;
   width: 20%;
-  background-color: #ffffff;
   padding: 1.3%;
   border-radius: 15px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.light-mode .card {
+  background: linear-gradient(90deg, #eff0f3 0%, #f5f5f5 50%, #edf3ff 100%);
+
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.light-mode .right-sidebar {
+  /* background:  linear-gradient(90deg, #eff0f3 0%, #f5f5f5 50%, #edf3ff 100%);  #new addition; */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0.4, 0.2);
+  background-color: #ededf3;
 }
 
 .course-navigation {
@@ -52,14 +69,15 @@
   border-radius: 30px;
 }
 
-.thread-card {
-  background-color: #ffffff;
-  padding: 10px 20px 20px 20px;
+.light-mode .thread-card {
+  padding: 20px;
   border-radius: 15px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   margin-bottom: 3%;
   display: flex;
   flex-direction: column;
+  /* background: linear-gradient(135deg, #ffefe2 0%, #f7f8fa 50%, #d5e4ff 100%); */
+  background: #f2f5fb;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .thread-answer-preview {
@@ -96,11 +114,11 @@
   margin-left: 15px;
 }
 
-.thread-views i{
+.thread-views i {
   color: #7770ed;
 }
 
-.thread-comments i{
+.thread-comments i {
   color: #efbd33;
 }
 
@@ -172,12 +190,12 @@
 .tag {
   display: inline-block;
   background-color: rgba(107, 99, 255, 0.733);
-  color: #3c3c3c;
-  padding: 5px 10px;
-  border-radius: 15px;
-  /* font-size: 1vw; */
-  margin-right: 5px;
-  margin-bottom: 5px;
+  padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 1vw;
+    margin-right: 10px;
+    color: blanchedalmond;
+    background-color: #3498db;
 }
 
 .thread-company,
@@ -242,7 +260,8 @@
   align-items: flex-start;
   padding: 1.2%;
   border-radius: 12px;
-  background-color: white;
+  /* background-color: white; */
+  background-color: aliceblue;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -476,7 +495,8 @@
 /* MainComponent.css */
 .create-question-animation {
   overflow: hidden;
-  transition: max-height 0.5s ease-out, opacity 0.5s ease-out, margin-bottom 0.5s ease-out;
+  transition: max-height 0.5s ease-out, opacity 0.5s ease-out,
+    margin-bottom 0.5s ease-out;
   max-height: 0;
   opacity: 0;
   margin-bottom: 0;
@@ -515,23 +535,21 @@
 }
 
 .thread-votes .upvotes i {
-  color: #4CAF50;
+  color: #4caf50;
 }
 
 .thread-votes .downvotes i {
-  color: #F44336;
+  color: #f44336;
 }
-
-
-
-
-
 
 /* MainComponent.css - Dark Mode Styles */
 .dark-mode .main-content {
+  display: flex;
   background-color: #1e1e1e;
   /* Darker Charcoal */
   color: #d3d3d3;
+  padding: 1.5%;
+  margin-top: 1.5%;
   /* Light Gray */
 }
 
@@ -539,6 +557,9 @@
   background-color: #252525;
   /* Dark Gray */
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  width: 20%;
+  padding: 1.3%;
+  border-radius: 15px;
 }
 
 .dark-mode .join-class {
@@ -550,13 +571,19 @@
 
 .dark-mode .threads {
   background-color: #1e1e1e;
+
   /* Darker Charcoal */
 }
 
 .dark-mode .thread-card {
+  
   background-color: #2e2e2e;
-  /* Slightly Lighter Charcoal */
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 3%;
+  display: flex;
+  flex-direction: column;
 }
 
 .dark-mode .thread-answer-preview {
@@ -624,12 +651,10 @@
   /* Bright Coral */
 }
 
-
 .dark-mode .right-sidebar {
   background-color: #252525;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
 }
-
 
 .dark-mode .card {
   background-color: #3b3b3b;
@@ -713,3 +738,86 @@
 .dark-mode .thread-votes .downvotes {
   color: #aaaaaa;
 }
+
+:root {
+  --background-color: #f3f3f9;
+  /* background-color: #DCD6F7; */
+  /* --main-content-bg: #F4EEFF; */
+  /* --main-content-bg: #f8f6f3;  okok */
+  --main-content-bg: #fff7f2;
+
+  --accent-color: #3498db;
+  --text-color: #2c3e50;
+  --secondary-text-color: #7f8c8d;
+  --highlight-color: #e74c3c;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.main-content {
+  background-color: var(--background-color);
+}
+
+.join-class,
+.add-response,
+.pagination button,
+.add-thread-button {
+  background-color: var(--accent-color);
+  color: var(--main-content-bg);
+}
+
+.thread-title,
+.card-details h4 {
+  color: var(--text-color);
+}
+
+.thread-meta,
+.thread-views,
+.thread-comments,
+.card-details p {
+  color: var(--secondary-text-color);
+}
+
+.tag {
+  background-color: rgba(52, 152, 219, 0.1);
+  color: var(--accent-color);
+}
+
+.thread-company span,
+.thread-category span {
+  background-color: rgba(52, 152, 219, 0.1);
+  color: var(--accent-color);
+}
+
+.add-thread-input {
+  color: var(--accent-color);
+}
+
+.add-thread-input::placeholder {
+  color: var(--secondary-text-color);
+}
+
+.thread-card-link:hover .thread-card {
+  background-color: #c4ebf5;
+  box-shadow: 0 4px 6px #515457;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: #2980b9;
+}
+
+.pagination button:disabled {
+  background-color: #bdc3c7;
+}
+
+.thread-votes .upvotes i {
+  color: #2ecc71;
+}
+
+.thread-votes .downvotes i {
+  color: var(--highlight-color);
+}
+
