@@ -246,6 +246,17 @@ const MainComponent = () => {
                 </div>
               </div>
             </div>
+
+            <div className="Left-Side-bar-cards">
+              <div className="questions_section">
+                <div className="card">
+                  <i className="fa-solid fa-layer-group" />
+                  <div className="card-details">
+                    <h4>Interview Blogs</h4>
+                  </div>
+                </div>
+              </div>
+            </div>
           </nav>
           <button className="join-class">Join a new Community</button>
         </aside>
