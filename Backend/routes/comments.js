@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const mongoose = require('mongoose');
+
 const Question = require("../models/question");
 const Comment = require("../models/comment");
 const Activity = require("../models/activity");
@@ -88,6 +90,82 @@ router.delete("/comments", async (req, res) => {
         status: false,
         error: "An error occurred while deleting comment",
       });
+  }
+});
+
+// Like a comment
+router.patch("/comments/:commentId/like", async (req, res) => {
+  try {
+    const { commentId } = req.params;
+
+    console.log("Received commentId:", commentId);
+    console.log("Requesting user:", req.user);
+
+    if (!mongoose.Types.ObjectId.isValid(commentId)) {
+      console.log("Invalid comment ID format");
+      return res.status(400).send({ error: "Invalid comment ID" });
+    }
+
+    const comment = await Comment.findById(commentId);
+    if (!comment) {
+      console.log("Comment not found in database");
+      return res.status(404).send({ error: "Comment not found" });
+    }
+
+    console.log("Comment found:", comment);
+
+    // For testing purposes, use a dummy user ID if req.user is undefined
+    const userId = req.user ? req.user._id : '000000000000000000000000';
+
+    const userIndex = comment.likes.indexOf(userId);
+    if (userIndex === -1) {
+      comment.likes.push(userId);
+      const dislikeIndex = comment.dislikes.indexOf(userId);
+      if (dislikeIndex > -1) {
+        comment.dislikes.splice(dislikeIndex, 1);
+      }
+    } else {
+      comment.likes.splice(userIndex, 1);
+    }
+
+    await comment.save();
+    console.log("Updated comment likes and dislikes:", comment.likes.length, comment.dislikes.length);
+
+    res.status(200).send({
+      likes: comment.likes.length,
+      dislikes: comment.dislikes.length,
+    });
+  } catch (err) {
+    console.error("Error in liking comment:", err);
+    res.status(500).send({ error: "An error occurred while liking the comment" });
+  }
+});
+
+// Dislike a comment
+router.patch("/comments/:commentId/dislike", async (req, res) => {
+  try {
+    const comment = await Comment.findById(req.params.commentId);
+    if (!comment) {
+      return res.status(404).send({ error: "Comment not found" });
+    }
+
+    const userIndex = comment.dislikes.indexOf(req.user._id);
+    if (userIndex === -1) {
+      comment.dislikes.push(req.user._id);
+      // Remove user from likes if they previously liked
+      const likeIndex = comment.likes.indexOf(req.user._id);
+      if (likeIndex > -1) {
+        comment.likes.splice(likeIndex, 1);
+      }
+    } else {
+      comment.dislikes.splice(userIndex, 1);
+    }
+
+    await comment.save();
+    res.status(200).send({ likes: comment.likes.length, dislikes: comment.dislikes.length });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ error: "An error occurred while disliking the comment" });
   }
 });
 

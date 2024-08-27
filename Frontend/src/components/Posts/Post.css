@@ -384,3 +384,24 @@
 .dark-mode .comments-list {
   scrollbar-color: #555 transparent;
 }
+
+
+.comment-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.comment-like,
+.comment-dislike {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9em;
+  color: #666;
+}
+
+.comment-like.active,
+.comment-dislike.active {
+  color: #007bff;
+}

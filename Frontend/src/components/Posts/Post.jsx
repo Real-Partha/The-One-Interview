@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useTheme } from "../../ThemeContext";
 import "./Post.css";
+
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faThumbsUp, faThumbsDown } from '@fortawesome/free-solid-svg-icons';
 
 const Post = () => {
   const { questionId } = useParams();
@@ -15,6 +18,12 @@ const Post = () => {
   const [downvotes, setDownvotes] = useState(0);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
+
+
+  const [commentLikes, setCommentLikes] = useState({});
+  const [commentDislikes, setCommentDislikes] = useState({});
+
+
 
   const debounce = (func, buttonId) => {
     return async (...args) => {
@@ -99,10 +108,50 @@ const Post = () => {
       setUpvotes(response.data.upvotes);
       setDownvotes(response.data.downvotes);
       setComments(response.data.comments);
+
+      // Initialize comment likes and dislikes
+      const likesObj = {};
+      const dislikesObj = {};
+      response.data.comments.forEach(comment => {
+        likesObj[comment._id] = comment.likes ? comment.likes.length : 0;
+        dislikesObj[comment._id] = comment.dislikes ? comment.dislikes.length : 0;
+      });
+      setCommentLikes(likesObj);
+      setCommentDislikes(dislikesObj);
     } catch (error) {
       console.error("Error fetching question:", error);
     }
   };
+
+  const handleCommentLike = async (commentId) => {
+    try {
+      const response = await axios.patch(
+        `${import.meta.env.VITE_API_URL}/comment/comments/${commentId}/like`,
+        {},
+        { withCredentials: true }
+      );
+      setCommentLikes(prev => ({ ...prev, [commentId]: response.data.likes }));
+      setCommentDislikes(prev => ({ ...prev, [commentId]: response.data.dislikes }));
+    } catch (error) {
+      console.error("Error liking comment:", error);
+    }
+  };
+
+  const handleCommentDislike = async (commentId) => {
+    try {
+      const response = await axios.patch(
+        `${import.meta.env.VITE_API_URL}/comment/comments/${commentId}/dislike`,
+        {},
+        { withCredentials: true }
+      );
+      setCommentLikes(prev => ({ ...prev, [commentId]: response.data.likes }));
+      setCommentDislikes(prev => ({ ...prev, [commentId]: response.data.dislikes }));
+    } catch (error) {
+      console.error("Error disliking comment:", error);
+    }
+  };
+
+
 
   useEffect(() => {
     fetchQuestion();
@@ -219,9 +268,8 @@ const Post = () => {
           </div>
           <div className="post-actions">
             <button
-              className={`upvote ${userVote === "upvote" ? "active" : ""} ${
-                debouncingButton === "upvote" ? "debouncing" : ""
-              }`}
+              className={`upvote ${userVote === "upvote" ? "active" : ""} ${debouncingButton === "upvote" ? "debouncing" : ""
+                }`}
               onClick={handleUpvote}
               disabled={isDebouncing}
             >
@@ -232,9 +280,8 @@ const Post = () => {
               )}
             </button>
             <button
-              className={`downvote ${userVote === "downvote" ? "active" : ""} ${
-                debouncingButton === "downvote" ? "debouncing" : ""
-              }`}
+              className={`downvote ${userVote === "downvote" ? "active" : ""} ${debouncingButton === "downvote" ? "debouncing" : ""
+                }`}
               onClick={handleDownvote}
               disabled={isDebouncing}
             >
@@ -252,7 +299,7 @@ const Post = () => {
             </span>
           </div>
           <div className="comments-section">
-            <h3>{comments.length} {comments.length==1?"Comment":"Comments"}</h3>
+            <h3>{comments.length} {comments.length == 1 ? "Comment" : "Comments"}</h3>
             <form onSubmit={handleCommentSubmit} className="comment-form">
               <input
                 type="text"
@@ -277,17 +324,22 @@ const Post = () => {
                           alt={comment.username}
                           className="comment-profile-pic"
                         />
-                        <span className="comment-username">
-                          {comment.username}
-                        </span>
+                        <span className="comment-username">{comment.username}</span>
                       </div>
-                      <span className="comment-time">
-                        {formatTimeAgo(comment.created_at)}
-                      </span>
+                      <span className="comment-time">{formatTimeAgo(comment.created_at)}</span>
                     </div>
                     <p className="comment-content">{comment.comment}</p>
+                    <div className="comment-actions">
+                      <button onClick={() => handleCommentLike(comment._id)}>
+                        Like ({commentLikes[comment._id] || 0})
+                      </button>
+                      <button onClick={() => handleCommentDislike(comment._id)}>
+                        Dislike ({commentDislikes[comment._id] || 0})
+                      </button>
+                    </div>
                   </div>
-                ))}
+                ))
+              }
             </div>
           </div>
         </div>

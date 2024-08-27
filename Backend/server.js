@@ -53,6 +53,8 @@ const authRoutes = require('./routes/authentication');
 const questionRoutes = require('./routes/questions');
 const userRoutes = require('./routes/user');
 const accountRoutes = require('./routes/account');
+const commentsRouter = require('./routes/comments');
+
 
 
 connectDB().then(() => {
@@ -88,6 +90,17 @@ app.use((req, res, next) => {
 app.use(passport.initialize());
 app.use(passport.session());
 
+
+app.use('/comment', (req, res, next) => {
+    if (req.isAuthenticated()) {
+      return next();
+    }
+    res.status(401).json({ error: 'Unauthorized' });
+  });
+  
+  app.use('/comment', commentsRouter);
+
+  
 //routes middleware
 app.use("/auth", authRoutes);
 app.use("/", questionRoutes);
