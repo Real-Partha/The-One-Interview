@@ -6,8 +6,6 @@ import "./Post.css";
 import './QuillContent.css';
 import DOMPurify from 'dompurify';
 
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faThumbsUp, faThumbsDown } from '@fortawesome/free-solid-svg-icons';
 
 const Post = () => {
   const { questionId } = useParams();
@@ -339,11 +337,19 @@ const Post = () => {
                     </div>
                     <p className="comment-content">{comment.comment}</p>
                     <div className="comment-actions">
-                      <button onClick={() => handleCommentLike(comment._id)}>
-                        Like ({commentLikes[comment._id] || 0})
+                      <button
+                        className={`like-button ${commentLikes[comment._id] > 0 ? "liked" : ""}`}
+                        onClick={() => handleCommentLike(comment._id)}
+                      >
+                        <i className="fa-solid fa-thumbs-up"></i>
+                        <span>{commentLikes[comment._id] || 0}</span>
                       </button>
-                      <button onClick={() => handleCommentDislike(comment._id)}>
-                        Dislike ({commentDislikes[comment._id] || 0})
+                      <button
+                        className={`dislike-button ${commentDislikes[comment._id] > 0 ? "disliked" : ""}`}
+                        onClick={() => handleCommentDislike(comment._id)}
+                      >
+                        <i className="fa-solid fa-thumbs-down"></i>
+                        <span>{commentDislikes[comment._id] || 0}</span>
                       </button>
                     </div>
                   </div>
