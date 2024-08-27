@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState,useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import "./Login.css";
 import useNotification from "../Notifications";
@@ -22,8 +22,38 @@ const Login = () => {
   const [twoFactorToken, setTwoFactorToken] = useState("");
   const [requireTwoFactor, setRequireTwoFactor] = useState(false);
   const [userId, setUserId] = useState(null);
+  const location = useLocation();
   const { ErrorNotification, SuccessNotification } = useNotification();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const requireTwoFactor = params.get("requireTwoFactor");
+    const userId = params.get("userId");
+
+    if (requireTwoFactor === "true" && userId) {
+      setRequireTwoFactor(true);
+      setUserId(userId);
+    }
+  }, [location]);
+
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/auth/status`, { withCredentials: true });
+        if (response.data.requireTwoFactor) {
+          setRequireTwoFactor(true);
+          setUserId(response.data.userId);
+        } else if (response.data.isAuthenticated) {
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Error checking auth status:", error);
+      }
+    };
+
+    checkAuthStatus();
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -136,12 +166,16 @@ const Login = () => {
             </button>
           </form>
         )}
-        <div className="login-divider">
-          <span>or</span>
-        </div>
-        <button onClick={handleGoogleClick} className="login-google-button">
-          <i className="fab fa-google"></i> Sign in with Google
-        </button>
+        {!requireTwoFactor && (
+          <>
+            <div className="login-divider">
+              <span>or</span>
+            </div>
+            <button onClick={handleGoogleClick} className="login-google-button">
+              <i className="fab fa-google"></i> Sign in with Google
+            </button>
+          </>
+        )}
       </div>
     </div>
   );

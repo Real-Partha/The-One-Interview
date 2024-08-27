@@ -105,19 +105,14 @@ router.post("/verify-2fa", async (req, res) => {
     });
 
     if (verified) {
-      req.login(user, (err) => {
-        if (err) {
-          return res
-            .status(500)
-            .json({ message: "Error logging in", error: err.message });
-        }
-        const userObj = user.toObject();
-        delete userObj.password;
-        return res.json({
-          message: "Login successful",
-          user : userObj,
-          sessionRestored: req.session.sessionRestored,
-        });
+      req.session.requireTwoFactor = false;
+      req.session.user = user;
+      const userObj = user.toObject();
+      delete userObj.password;
+      return res.json({
+        message: "Login successful",
+        user: userObj,
+        sessionRestored: req.session.sessionRestored,
       });
     } else {
       res.status(400).json({ message: "Invalid 2FA token" });
@@ -133,14 +128,22 @@ router.get("/google", passport.authenticate("google"));
 router.get(
   "/google/callback",
   passport.authenticate("google", { failureRedirect: "/login" }),
-  (req, res) => {
-    // Successful authentication, redirect home.
-    res.redirect(process.env.CLIENT_URL);
+  async (req, res) => {
+    if (req.user.two_factor_auth) {
+      // If 2FA is enabled, set a session flag and redirect to the login page
+      req.session.requireTwoFactor = true;
+      req.session.userId = req.user._id;
+      res.redirect(`${process.env.CLIENT_URL}/login?requireTwoFactor=true&userId=${req.user._id}`);
+    } else {
+      // If 2FA is not enabled, complete the login process
+      req.session.user = req.user;
+      res.redirect(process.env.CLIENT_URL);
+    }
   }
 );
 
 router.get("/status", async (req, res) => {
-  if (req.isAuthenticated()) {
+  if (req.isAuthenticated() && !req.session.requireTwoFactor) {
     req.user = req.user.toObject();
     delete req.user.password;
     const profilePicUrl = await getSignedUrlForObject(req.user.profile_pic);
@@ -148,6 +151,12 @@ router.get("/status", async (req, res) => {
     res.json({
       isAuthenticated: true,
       user: req.user,
+    });
+  } else if (req.session.requireTwoFactor) {
+    res.json({
+      isAuthenticated: false,
+      requireTwoFactor: true,
+      userId: req.session.userId,
     });
   } else {
     res.json({ isAuthenticated: false });
