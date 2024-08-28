@@ -1,0 +1,109 @@
+/* PayloadSizeExceededPopup.css */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes slideIn {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  
+  .payloadsizeexceededpopup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-out;
+  }
+  
+  .payloadsizeexceededpopup-content {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 12px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    animation: slideIn 0.3s ease-out;
+  }
+  
+  .payloadsizeexceededpopup-icon {
+    font-size: 3rem;
+    color: #ff6b6b;
+    margin-bottom: 1rem;
+  }
+  
+  .payloadsizeexceededpopup-title {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  
+  .payloadsizeexceededpopup-message {
+    margin-bottom: 1.5rem;
+    color: #555;
+    text-align: left;
+  }
+  
+  .payloadsizeexceededpopup-message p {
+    margin-bottom: 0.5rem;
+  }
+  
+  .payloadsizeexceededpopup-message ul {
+    padding-left: 1.5rem;
+    margin-top: 0.5rem;
+  }
+  
+  .icon-inline {
+    vertical-align: middle;
+    margin-right: 0.5rem;
+  }
+  
+  .payloadsizeexceededpopup-close-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.1s;
+  }
+  
+  .payloadsizeexceededpopup-close-btn:hover {
+    background-color: #45a049;
+  }
+  
+  .payloadsizeexceededpopup-close-btn:active {
+    transform: scale(0.98);
+  }
+  
+  /* Dark mode styles */
+  .payloadsizeexceededpopup-dark .payloadsizeexceededpopup-content {
+    background-color: #2e2e2e;
+    color: #d3d3d3;
+  }
+  
+  .payloadsizeexceededpopup-dark .payloadsizeexceededpopup-title {
+    color: #ff8c8c;
+  }
+  
+  .payloadsizeexceededpopup-dark .payloadsizeexceededpopup-message {
+    color: #b0b0b0;
+  }
+  
+  .payloadsizeexceededpopup-dark .payloadsizeexceededpopup-close-btn {
+    background-color: #5a48cc;
+  }
+  
+  .payloadsizeexceededpopup-dark .payloadsizeexceededpopup-close-btn:hover {
+    background-color: #4a3aa6;
+  }
+  

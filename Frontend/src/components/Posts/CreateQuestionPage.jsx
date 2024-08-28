@@ -4,6 +4,8 @@ import "react-quill/dist/quill.snow.css";
 import "./CreateQuestionPage.css";
 import { useTheme } from "../../ThemeContext";
 import axios from "axios";
+import PayloadSizeExceededPopup from "./PayloadSizeExceededPopup";
+import useNotification from "../Notifications";
 
 const CreateQuestionPage = ({ onClose }) => {
   const [formData, setFormData] = useState({
@@ -19,6 +21,8 @@ const CreateQuestionPage = ({ onClose }) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { isDarkMode } = useTheme();
   const successMessageRef = useRef(null);
+  const [showPayloadSizePopup, setShowPayloadSizePopup] = useState(false);
+  const { ErrorNotification, SuccessNotification } = useNotification();
 
   const handleChange = (value, field) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -74,6 +78,13 @@ const CreateQuestionPage = ({ onClose }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+      // Check payload size
+      const payloadSize = new Blob([JSON.stringify(formData)]).size;
+      if (payloadSize > 5 * 1024 * 1024) { // 5 MB in bytes
+        setShowPayloadSizePopup(true);
+        return;
+      }
+
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/question`,
         formData,
@@ -92,8 +103,7 @@ const CreateQuestionPage = ({ onClose }) => {
 
       setTimeout(scrollToSuccessMessage, 100);
     } catch (error) {
-      console.error("Error submitting question:", error);
-      alert("An error occurred while submitting the question. Please try again.");
+      ErrorNotification(error.response.data.message);
     }
   };
 
@@ -126,6 +136,9 @@ const CreateQuestionPage = ({ onClose }) => {
 
   return (
     <div className={`${isDarkMode ? "dark" : ""}`}>
+      {showPayloadSizePopup && (
+        <PayloadSizeExceededPopup onClose={() => setShowPayloadSizePopup(false)} />
+      )}
       <form className="interview-experience-container" onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="companyName">Company Name:</label>
