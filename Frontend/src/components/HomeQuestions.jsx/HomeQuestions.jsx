@@ -1,5 +1,5 @@
 // import React from "react";
-import "./MainComponent.css";
+import "./HomeQuestions.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState, useCallback, useContext } from "react";
@@ -220,25 +220,26 @@ const MainComponent = () => {
         <aside className="sidebar">
           <nav className="course-navigation">
             <div className="Left-Side-bar-cards">
-              <div className="home_Section">
+              <Link to="/" className="home_Section">
                 <div className="card">
                   <i className="fa fa-home" />
                   <div className="card-details">
+                     
                     <h4>Home</h4>
                   </div>
                 </div>
-              </div>
+              </Link>
             </div>
 
             <div className="Left-Side-bar-cards">
-              <div className="questions_section">
+              <Link to="/questions" className="questions_section">
                 <div className="card">
                   <i className="fa-solid fa-layer-group" />
                   <div className="card-details">
                     <h4>Questions</h4>
                   </div>
                 </div>
-              </div>
+              </Link>
             </div>
 
             <div className="Left-Side-bar-cards">
