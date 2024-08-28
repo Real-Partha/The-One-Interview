@@ -1,3 +1,4 @@
+// App.jsx
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { ThemeProvider } from "./ThemeContext";
@@ -13,6 +14,7 @@ import NavBar from "./components/Navbar/Navbar";
 import HomeComponent from "./components/HomeComponent/HomeComponent";
 import AdminPage from './components/Admin/AdminPage';
 import Footer from './components/Footer/Footer';
+import NotFound from './components/commonPages/NotFound';
 
 function AppContent() {
   const location = useLocation();
@@ -31,6 +33,7 @@ function AppContent() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/admin" element={<AdminPage />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       {shouldShowNavBarAndFooter && <Footer />}
     </>
