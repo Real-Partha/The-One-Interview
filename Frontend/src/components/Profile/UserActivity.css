@@ -86,7 +86,7 @@
   margin-top: 0.5rem;
 }
 
-.view-more-button {
+/* .view-more-button {
   background-color: var(--primary-color);
   color: white;
   border: none;
@@ -106,7 +106,7 @@
 .view-more-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-}
+} */
 
 .activity-item {
   display: flex;
@@ -173,10 +173,10 @@
   color: var(--dark-text-color);
 }
 
-.dark-mode .view-more-button {
+/* .dark-mode .view-more-button {
   background-color: var(--dark-primary-color);
 }
 
 .dark-mode .view-more-button:hover {
   background-color: var(--dark-primary-hover-color);
-}
+} */

@@ -9,11 +9,12 @@
 
 /* Css of Upper Profile Card (Non Editable) */
 .profile-upper-card-container {
-  width: 30vw;
-  margin: 0 2rem;
+  /* width: 30vw; */
+  margin: 0 1.25rem;
 }
 
 .profile-upper-card {
+  min-width: 400px;
   background-color: var(--bg-color);
   padding: 20px;
   border-radius: 15px;
@@ -169,15 +170,26 @@
 }
 
 .profile-card {
-  width: 40vw;
+  width: 60%;
   position: relative;
-  overflow: hidden;
+  /* overflow: hidden; */
   background-color: var(--bg-color);
   padding: 20px;
   border-radius: 15px;
   box-shadow: var(--box-shadow);
   transition: background-color 0.3s, box-shadow 0.3s;
 }
+@media (max-width: 1100px) {
+  .profile-content {
+    flex-direction: column;
+  }
+
+  .profile-card {
+    width: calc(100% - 2.4rem - 40px);
+    margin: 1.2rem 1.2rem; 
+  }
+}
+
 
 .profile-card-title {
   font-size: 1.5rem;
@@ -237,7 +249,7 @@
 
 .profile-input,
 .profile-textarea {
-  width: 97%;
+  width: calc(100% - 20px);
   margin-top: 0.4rem;
 }
 .profile-textarea {
