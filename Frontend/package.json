@@ -27,7 +27,9 @@
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.26.1",
     "react-simple-typewriter": "^5.0.1",
-    "react-typed": "^2.0.12"
+    "react-tilt": "^1.0.2",
+    "react-typed": "^2.0.12",
+    "swiper": "^11.1.11"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",

@@ -1,14 +1,16 @@
-
 import { useState, useEffect } from 'react';
 import NavBar from '../Navbar/Navbar';
 import './HomeComponent.css';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
+import { FaQuestionCircle, FaClipboardCheck, FaUserGraduate, FaBuilding, FaLightbulb, FaChartLine, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 
 const HomeComponent = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [darkMode, setDarkMode] = useState(false);
+  const [activeFeature, setActiveFeature] = useState(null);
+  const [currentInsight, setCurrentInsight] = useState(0);
 
   const [ref, inView] = useInView({
     triggerOnce: true,
@@ -29,7 +31,6 @@ const HomeComponent = () => {
     return () => clearInterval(interval);
   }, []);
 
-
   useEffect(() => {
     document.body.classList.toggle('dark-mode', darkMode);
   }, [darkMode]);
@@ -45,21 +46,63 @@ const HomeComponent = () => {
   };
 
   const features = [
-    { title: "All Questions Answered", description: "Access a comprehensive database of interview questions and answers" },
-    { title: "Quality Interview Questions", description: "Curated questions to help you prepare for any interview scenario" },
-    { title: "Interview Experiences from Seniors", description: "Learn from the experiences of successful candidates" },
-    { title: "Company-wise Filtered Questions", description: "Tailored questions and answers for various companies and exam rounds" },
+    { 
+      title: "All Questions Answered", 
+      description: "Access a comprehensive database of interview questions and answers",
+      icon: <FaQuestionCircle />,
+      color: "#FF6B6B"
+    },
+    { 
+      title: "Quality Interview Questions", 
+      description: "Curated questions to help you prepare for any interview scenario",
+      icon: <FaClipboardCheck />,
+      color: "#4ECDC4"
+    },
+    { 
+      title: "Interview Experiences", 
+      description: "Learn from the experiences of successful candidates",
+      icon: <FaUserGraduate />,
+      color: "#45B7D1"
+    },
+    { 
+      title: "Company-wise Filters", 
+      description: "Tailored questions for various companies and exam rounds",
+      icon: <FaBuilding />,
+      color: "#F7B731"
+    },
   ];
 
-
-  const companies = [
-    { name: 'Google', logo: '/img/google-logo.png' },
-    { name: 'Amazon', logo: '/img/amazon-logo.png' },
-    { name: 'Microsoft', logo: '/img/microsoft-logo.png' },
-    { name: 'Apple', logo: '/img/apple-logo.png' },
-    { name: 'Facebook', logo: '/img/facebook-logo.png' },
+  const interviewInsights = [
+    {
+      company: "Google",
+      logo: "/img/google-logo.png",
+      experience: "Challenging but rewarding process focusing on problem-solving skills.",
+      topQuestion: "Design a system that can handle millions of concurrent users.",
+      icon: <FaLightbulb />
+    },
+    {
+      company: "Facebook",
+      logo: "/img/facebook-logo.png",
+      experience: "Emphasis on cultural fit and ability to work in a fast-paced environment.",
+      topQuestion: "How would you improve Facebook's news feed algorithm?",
+      icon: <FaChartLine />
+    },
+    {
+      company: "Amazon",
+      logo: "/img/amazon-logo.png",
+      experience: "Strong focus on leadership principles and behavioral questions.",
+      topQuestion: "Describe a time when you had to make a difficult decision.",
+      icon: <FaUserGraduate />
+    },
   ];
 
+  const nextInsight = () => {
+    setCurrentInsight((prev) => (prev + 1) % interviewInsights.length);
+  };
+
+  const prevInsight = () => {
+    setCurrentInsight((prev) => (prev - 1 + interviewInsights.length) % interviewInsights.length);
+  };
 
   return (
     <div className="homepage">
@@ -85,13 +128,13 @@ const HomeComponent = () => {
                   <h1>Welcome to The One Interview</h1>
                   <p>Your ultimate platform for interview preparation</p>
                   <Link to="/questions">
-                  <motion.button
-                    className="cta-button"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    Get Started
-                  </motion.button>
+                    <motion.button
+                      className="cta-button"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      Get Started
+                    </motion.button>
                   </Link>
                 </div>
               </motion.div>
@@ -107,41 +150,74 @@ const HomeComponent = () => {
           animate={inView ? "visible" : "hidden"}
         >
           <motion.h2 variants={itemVariants}>Our Features</motion.h2>
-          <div className="feature-timeline">
+          <div className="feature-grid">
             {features.map((feature, index) => (
               <motion.div
                 key={index}
-                className={`feature-item ${index % 2 === 0 ? 'left' : 'right'}`}
+                className="feature-card"
                 variants={itemVariants}
+                whileHover={{ scale: 1.05, boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.1)" }}
+                onClick={() => setActiveFeature(feature)}
               >
-                <div className="feature-content">
-                  <h3>{feature.title}</h3>
-                  <p>{feature.description}</p>
-                </div>
+                <div className="feature-icon" style={{ color: feature.color }}>{feature.icon}</div>
+                <h3>{feature.title}</h3>
+                <p>{feature.description}</p>
               </motion.div>
             ))}
           </div>
+          <AnimatePresence>
+            {activeFeature && (
+              <motion.div
+                className="feature-modal"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+              >
+                <h3>{activeFeature.title}</h3>
+                <p>{activeFeature.description}</p>
+                <button onClick={() => setActiveFeature(null)}>Close</button>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.section>
 
         <motion.section
-          className="company-carousel"
+          className="interview-insights"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
         >
-          <h2>Featured Companies</h2>
-          <div className="company-list">
-            {companies.map((company, index) => (
-              <motion.div
-                key={index}
-                className="company-item"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.2 }}
+          <h2>Interview Insights from Top Companies</h2>
+          <div className="insights-carousel">
+            <button className="carousel-button prev" onClick={prevInsight}>
+              <FaArrowLeft />
+            </button>
+            <AnimatePresence mode="wait">
+              <motion.div 
+                key={currentInsight}
+                className="insight-card"
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.3 }}
               >
-                <img src={company.logo} alt={`${company.name} logo`} />
+                <img src={interviewInsights[currentInsight].logo} alt={`${interviewInsights[currentInsight].company} logo`} className="company-logo" />
+                <h3>{interviewInsights[currentInsight].company}</h3>
+                <div className="insight-content">
+                  <div className="insight-item">
+                    <FaUserGraduate className="insight-icon" />
+                    <p>{interviewInsights[currentInsight].experience}</p>
+                  </div>
+                  <div className="insight-item">
+                    <FaQuestionCircle className="insight-icon" />
+                    <p>{interviewInsights[currentInsight].topQuestion}</p>
+                  </div>
+                </div>
               </motion.div>
-            ))}
+            </AnimatePresence>
+            <button className="carousel-button next" onClick={nextInsight}>
+              <FaArrowRight />
+            </button>
           </div>
         </motion.section>
 
@@ -164,36 +240,6 @@ const HomeComponent = () => {
           </Link>
         </motion.section>
       </main>
-
-      <footer>
-        <div className="footer-content">
-          <div className="footer-section">
-            <h3>About Us</h3>
-            <p>The One Interview is your ultimate platform for interview preparation.</p>
-          </div>
-          <div className="footer-section">
-            <h3>Quick Links</h3>
-            <ul>
-              <li><Link to="/">Home</Link></li>
-              <li><Link to="/questions">Questions</Link></li>
-              <li><Link to="/about">About</Link></li>
-              <li><Link to="/contact">Contact</Link></li>
-            </ul>
-          </div>
-          <div className="footer-section">
-            <h3>Connect With Us</h3>
-            <ul>
-              <li><a href="#">Facebook</a></li>
-              <li><a href="#">Twitter</a></li>
-              <li><a href="#">LinkedIn</a></li>
-            </ul>
-          </div>
-        </div>
-        <div className="footer-bottom">
-          <p>&copy; 2024 The One Interview. All rights reserved.</p>
-        </div>
-      </footer>
-
     </div>
   );
 };

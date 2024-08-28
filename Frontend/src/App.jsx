@@ -1,26 +1,29 @@
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import MainContent from "./components/HomeQuestions/HomeQuestions";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { ThemeProvider } from "./ThemeContext";
+import { Toaster } from 'react-hot-toast';
+
+// Component imports
+import MainContent from "./components/HomeQuestions/HomeQuestions";
 import GetUid from "./components/getuid";
 import Login from "./components/Authentication/Login";
 import Signup from "./components/Authentication/Signup";
-import { ThemeProvider } from "./ThemeContext";
 import Post from "./components/Posts/Post";
 import Profile from "./components/Profile/Profile";
 import NavBar from "./components/Navbar/Navbar";
-import { Toaster } from 'react-hot-toast';
 import HomeComponent from "./components/HomeComponent/HomeComponent";
 import AdminPage from './components/Admin/AdminPage';
+import Footer from './components/Footer/Footer';
 
 function AppContent() {
   const location = useLocation();
-  const hideNavBarRoutes = ['/login', '/signup'];
-  const shouldShowNavBar = !hideNavBarRoutes.includes(location.pathname);
+  const hideNavBarAndFooterRoutes = ['/login', '/signup'];
+  const shouldShowNavBarAndFooter = !hideNavBarAndFooterRoutes.includes(location.pathname);
 
   return (
     <>
       <Toaster position="top-center" reverseOrder={false}/>
-      {shouldShowNavBar && <NavBar />}
+      {shouldShowNavBarAndFooter && <NavBar />}
       <Routes>
         <Route path="/" element={<HomeComponent />} />
         <Route path="/questions" element={<MainContent />} />
@@ -31,6 +34,7 @@ function AppContent() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/admin" element={<AdminPage />} />
       </Routes>
+      {shouldShowNavBarAndFooter && <Footer />}
     </>
   );
 }
