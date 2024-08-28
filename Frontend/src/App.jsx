@@ -9,6 +9,7 @@ import Post from "./components/Posts/Post";
 import Profile from "./components/Profile/Profile";
 import NavBar from "./components/Navbar/Navbar";
 import { Toaster } from 'react-hot-toast';
+import AdminPage from './components/Admin/AdminPage';
 
 function AppContent() {
   const location = useLocation();
@@ -26,6 +27,7 @@ function AppContent() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/admin" element={<AdminPage />} />
       </Routes>
     </>
   );

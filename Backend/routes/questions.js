@@ -113,6 +113,20 @@ router.get("/questions", async (req, res) => {
   }
 });
 
+router.get("/questions/unapproved", async (req, res) => {
+  try {
+    const unapprovedQuestions = await Question.find({
+      status: "unverified",
+    }).sort({ created_at: -1 });
+    res.json(unapprovedQuestions);
+  } catch (error) {
+    console.error("Error fetching unapproved questions:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching unapproved questions" });
+  }
+});
+
 router.get("/question/:id", async (req, res) => {
   try {
     if (!req.isAuthenticated()) {

@@ -1,0 +1,130 @@
+.admin-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .unapproved-questions {
+    margin-top: 20px;
+  }
+  
+  .question-card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .question-card h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .question-content {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 15px;
+  }
+  
+  .question-meta {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 10px;
+  }
+  
+  .question-tags {
+    margin-bottom: 15px;
+  }
+  
+  .tag {
+    display: inline-block;
+    background-color: #f0f0f0;
+    color: #333;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+  }
+  
+  .admin-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+  
+  .approve-btn, .reject-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+  }
+  
+  .approve-btn {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .reject-btn {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .approve-btn:hover {
+    background-color: #45a049;
+  }
+  
+  .reject-btn:hover {
+    background-color: #d32f2f;
+  }
+  
+  /* Dark mode styles */
+  .dark-mode .admin-page {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+  }
+  
+  .dark-mode .question-card {
+    background-color: #252525;
+    border-color: #444;
+  }
+  
+  .dark-mode .question-card h3 {
+    color: #fff;
+  }
+  
+  .dark-mode .question-content {
+    color: #ccc;
+  }
+  
+  .dark-mode .question-meta {
+    color: #aaa;
+  }
+  
+  .dark-mode .tag {
+    background-color: #333;
+    color: #e0e0e0;
+  }
+  
+  .dark-mode .approve-btn {
+    background-color: #388e3c;
+  }
+  
+  .dark-mode .reject-btn {
+    background-color: #d32f2f;
+  }
+  
+  .dark-mode .approve-btn:hover {
+    background-color: #2e7d32;
+  }
+  
+  .dark-mode .reject-btn:hover {
+    background-color: #c62828;
+  }
+  

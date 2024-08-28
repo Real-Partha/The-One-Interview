@@ -7,6 +7,7 @@ const passport = require('passport');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const mongoose = require('mongoose');
+const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -106,3 +107,4 @@ app.use("/auth", authRoutes);
 app.use("/", questionRoutes);
 app.use("/user", userRoutes);
 app.use("/account", accountRoutes);
+app.use('/admin', adminRoutes);
