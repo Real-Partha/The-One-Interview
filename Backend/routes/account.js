@@ -84,7 +84,7 @@ router.get("/user-activities", async (req, res) => {
 
   try {
     const page = parseInt(req.query.page) || 1;
-    const limit = 5;
+    const limit = 10;
     const skip = (page - 1) * limit;
 
     const activities = await Activity.find({ user_id: req.user._id })

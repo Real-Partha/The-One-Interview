@@ -228,10 +228,15 @@ router.get("/questionsearch", async (req, res) => {
 
     const searchQueries = [];
 
+    // Add status: "approved" to all search queries
     if (mainSearchTerm && hashtagKeyword) {
       searchQueries.push(
         Question.find(
-          { $text: { $search: mainSearchTerm }, tags: hashtagKeyword },
+          {
+            $text: { $search: mainSearchTerm },
+            tags: hashtagKeyword,
+            status: "approved",
+          },
           { score: { $meta: "textScore" } }
         )
           .sort({ score: { $meta: "textScore" } })
@@ -242,7 +247,7 @@ router.get("/questionsearch", async (req, res) => {
     if (mainSearchTerm) {
       searchQueries.push(
         Question.find(
-          { $text: { $search: mainSearchTerm } },
+          { $text: { $search: mainSearchTerm }, status: "approved" },
           { score: { $meta: "textScore" } }
         )
           .sort({ score: { $meta: "textScore" } })
@@ -251,7 +256,9 @@ router.get("/questionsearch", async (req, res) => {
     }
 
     if (hashtagKeyword) {
-      searchQueries.push(Question.find({ tags: hashtagKeyword }).lean());
+      searchQueries.push(
+        Question.find({ tags: hashtagKeyword, status: "approved" }).lean()
+      );
     }
 
     const [mainAndTagResults, mainResults, tagResults] = await Promise.all(

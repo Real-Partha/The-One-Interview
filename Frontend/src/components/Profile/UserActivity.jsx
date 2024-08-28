@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef,useCallback } from "react";
 import axios from "axios";
 import "./UserActivity.css";
 
@@ -8,22 +8,40 @@ const UserActivity = ({ refreshTrigger }) => {
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
   const [newActivities, setNewActivities] = useState([]);
+  const observer = useRef();
+
+  const lastActivityElementRef = useCallback(
+    (node) => {
+      if (loading) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          // Fetch activities directly instead of setting page
+          fetchActivities(page + 1);
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [loading, hasMore, page]
+  );
 
   const fetchActivities = async (pageNum = 1) => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `${
-          import.meta.env.VITE_API_URL
-        }/account/user-activities?page=${pageNum}`,
+        `${import.meta.env.VITE_API_URL}/account/user-activities?page=${pageNum}`,
         { withCredentials: true }
       );
       if (pageNum === 1) {
         setActivities(response.data.activities);
       } else {
-        setNewActivities(response.data.activities);
+        setActivities((prevActivities) => [
+          ...prevActivities,
+          ...response.data.activities,
+        ]);
       }
       setHasMore(response.data.hasMore);
+      setPage(pageNum); // Update page number here
     } catch (error) {
       console.error("Error fetching user activities:", error);
     }
@@ -47,16 +65,6 @@ const UserActivity = ({ refreshTrigger }) => {
     fetchActivities(1);
     setPage(1);
   }, [refreshTrigger]);
-
-  useEffect(() => {
-    if (page > 1) {
-      fetchActivities(page);
-    }
-  }, [page]);
-
-  const handleViewMore = () => {
-    setPage((prevPage) => prevPage + 1);
-  };
 
   const getActivityIcon = (type, action) => {
     switch (type) {
@@ -259,7 +267,8 @@ const UserActivity = ({ refreshTrigger }) => {
   };
 
   return (
-    <div className="user-activity">
+    <>
+    {/* <div className="user-activity"> */}
       <div className="activity-header">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -272,8 +281,8 @@ const UserActivity = ({ refreshTrigger }) => {
         <div className="user-activity-heading">Recent Activity</div>
       </div>
       <ul className="activity-list">
-        {activities.map((activity) => (
-          <li key={activity._id} className="activity-item">
+        {activities.map((activity,index) => (
+          <li key={activity._id} className="activity-item" ref={index === activities.length - 1 ? lastActivityElementRef : null}>
             {activity.type !== "vote" ? (
               <i
                 className={`fa ${getActivityIcon(activity.type)} activity-icon`}
@@ -294,16 +303,7 @@ const UserActivity = ({ refreshTrigger }) => {
           </li>
         ))}
       </ul>
-      {hasMore && (
-        <button
-          onClick={handleViewMore}
-          className="view-more-button"
-          disabled={loading}
-        >
-          {loading ? "Loading..." : "View More"}
-        </button>
-      )}
-    </div>
+    </>
   );
 };
 
