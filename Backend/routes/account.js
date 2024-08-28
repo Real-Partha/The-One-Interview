@@ -81,6 +81,9 @@ router.get("/user-activities", async (req, res) => {
   if (!req.isAuthenticated()) {
     return res.status(401).json({ message: "Not authenticated" });
   }
+  if (req.query.page != 1) {
+  await new Promise(resolve => setTimeout(resolve, 1500));
+  }
 
   try {
     const page = parseInt(req.query.page) || 1;

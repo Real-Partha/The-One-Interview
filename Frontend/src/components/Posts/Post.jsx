@@ -5,7 +5,7 @@ import { useTheme } from "../../ThemeContext";
 import "./Post.css";
 import './QuillContent.css';
 import DOMPurify from 'dompurify';
-
+import UnverifiedPost from './UnverifiedPost';
 
 const Post = () => {
   const { questionId } = useParams();
@@ -230,6 +230,10 @@ const Post = () => {
 
   if (!question) return <div>Loading...</div>;
 
+  if (question.status !== "approved") {
+    return <UnverifiedPost />;
+  }
+
   return (
     <div className={`${isDarkMode ? `dark-mode` : ``}`}>
       <div className="post-main">
@@ -265,7 +269,7 @@ const Post = () => {
           </div>
           <div className="post-details">
             <p className="company">
-              Company: <span>{question.company_name || "Not specified"}</span>
+              Company: <span>{question.companyName || "Not specified"}</span>
             </p>
             <p className="category">
               Category: <span>{question.category || "Not specified"}</span>

@@ -19,7 +19,7 @@ const questionSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please provide a level'],
     },
-    company_name: {
+    companyName: {
         //this is optional field
         type: String,
     },

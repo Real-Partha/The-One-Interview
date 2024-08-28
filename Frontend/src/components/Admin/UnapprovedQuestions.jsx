@@ -50,7 +50,7 @@ const UnapprovedQuestions = () => {
           <div className="unapproved-questions__meta">
             <p>Category: {question.category}</p>
             <p>Level: {question.level}</p>
-            <p>Company: {question.company_name || 'Not specified'}</p>
+            <p>Company: {question.companyName || 'Not specified'}</p>
           </div>
           <div className="unapproved-questions__tags">
             {question.tags.map((tag, index) => (

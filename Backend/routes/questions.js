@@ -16,8 +16,8 @@ router.get("/questions", async (req, res) => {
     const skip = (page - 1) * limit;
 
     // Extract query parameters
-    const companyNames = req.query.company_name
-      ? JSON.parse(req.query.company_name)
+    const companyNames = req.query.companyName
+      ? JSON.parse(req.query.companyName)
       : null;
     const tags = req.query.tag ? JSON.parse(req.query.tag) : null;
     const category = req.query.category || null;
@@ -26,7 +26,7 @@ router.get("/questions", async (req, res) => {
     // Build the filter object
     const filter = { status: "approved" };
     if (companyNames && companyNames.length > 0) {
-      filter.company_name = { $in: companyNames };
+      filter.companyName = { $in: companyNames };
     }
     if (tags && tags.length > 0) {
       filter.tags = { $in: tags };
