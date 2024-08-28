@@ -1,14 +1,14 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "./CreateQuestionPage.css";
 import { useTheme } from "../../ThemeContext";
 import axios from "axios";
 
-const CreateQuestionPage = () => {
+const CreateQuestionPage = ({ onClose }) => {
   const [formData, setFormData] = useState({
     companyName: "",
-    category: "",
+    category: "general",
     level: "beginner",
     question: "",
     answer: "",
@@ -16,8 +16,9 @@ const CreateQuestionPage = () => {
   });
 
   const [tagInput, setTagInput] = useState("");
-  const [submitMessage, setSubmitMessage] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const { isDarkMode } = useTheme();
+  const successMessageRef = useRef(null);
 
   const handleChange = (value, field) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -78,7 +79,7 @@ const CreateQuestionPage = () => {
         formData,
         { withCredentials: true }
       );
-      setSubmitMessage(response.data.message);
+      setIsSubmitted(true);
       // Clear form data
       setFormData({
         companyName: "",
@@ -88,11 +89,40 @@ const CreateQuestionPage = () => {
         answer: "",
         tags: [],
       });
+
+      setTimeout(scrollToSuccessMessage, 100);
     } catch (error) {
       console.error("Error submitting question:", error);
-      setSubmitMessage("An error occurred while submitting the question. Please try again.");
+      alert("An error occurred while submitting the question. Please try again.");
     }
   };
+
+  const scrollToSuccessMessage = () => {
+    if (successMessageRef.current) {
+      const yOffset = -130; // Adjust this value to control how much above the message to scroll
+      const y = successMessageRef.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  };
+
+  const handleDone = () => {
+    setIsSubmitted(false);
+    setTagInput("");
+    onClose();
+  };
+
+  if (isSubmitted) {
+    return (
+      <div ref={successMessageRef} className={`create-question-submission-success ${isDarkMode ? "create-question-dark" : ""}`}>
+        <div className="create-question-success-content">
+          <i className="fas fa-check-circle create-question-success-icon"></i>
+          <h2 className="create-question-success-title">Question Submitted Successfully!</h2>
+          <p className="create-question-success-message">Your question has been sent for approval. Thank you for your contribution!</p>
+          <button onClick={handleDone} className="create-question-btn-done">Done</button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={`${isDarkMode ? "dark" : ""}`}>
@@ -117,11 +147,11 @@ const CreateQuestionPage = () => {
             value={formData.category}
             onChange={(e) => handleChange(e.target.value, "category")}
           >
+            <option value="general">General</option>
             <option value="techinterview">Technical Interviews</option>
             <option value="hrinterview">HR Interviews</option>
             <option value="aptitude">Aptitude</option>
             <option value="onlinecoding">Online Coding Round</option>
-            <option value="general">General</option>
           </select>
         </div>
         <div className="form-group">
@@ -188,11 +218,6 @@ const CreateQuestionPage = () => {
             Submit
           </button>
         </div>
-        {submitMessage && (
-          <div className="submit-message">
-            {submitMessage}
-          </div>
-        )}
       </form>
     </div>
   );

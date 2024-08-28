@@ -75,9 +75,7 @@ router.delete("/comments", async (req, res) => {
     if (comment === null) {
       return res.status(400).send({ error: "Invalid comment_id" });
     }
-    // if(comment.user_id !== req.user._id) {
-    //     return res.status(400).send({ error: 'Invalid user_id' });
-    // }
+    
     await Comment.findByIdAndDelete(req.body._id);
     return res
       .status(200)
@@ -98,9 +96,6 @@ router.patch("/comments/:commentId/like", async (req, res) => {
   try {
     const { commentId } = req.params;
 
-    console.log("Received commentId:", commentId);
-    console.log("Requesting user:", req.user);
-
     if (!mongoose.Types.ObjectId.isValid(commentId)) {
       console.log("Invalid comment ID format");
       return res.status(400).send({ error: "Invalid comment ID" });
@@ -108,11 +103,8 @@ router.patch("/comments/:commentId/like", async (req, res) => {
 
     const comment = await Comment.findById(commentId);
     if (!comment) {
-      console.log("Comment not found in database");
       return res.status(404).send({ error: "Comment not found" });
     }
-
-    console.log("Comment found:", comment);
 
     // For testing purposes, use a dummy user ID if req.user is undefined
     const userId = req.user ? req.user._id : '000000000000000000000000';
@@ -129,7 +121,6 @@ router.patch("/comments/:commentId/like", async (req, res) => {
     }
 
     await comment.save();
-    console.log("Updated comment likes and dislikes:", comment.likes.length, comment.dislikes.length);
 
     res.status(200).send({
       likes: comment.likes.length,

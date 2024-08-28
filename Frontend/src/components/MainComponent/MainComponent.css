@@ -492,6 +492,47 @@
   color: #333;
 }
 
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.page-input-form {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.page-input-form label {
+  margin-right: 5px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.page-input {
+  width: 50px;
+  height: 30px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.dark-mode .page-input {
+  background-color: #333;
+  color: #fff;
+  border-color: #555;
+}
+
+.light-mode .page-input {
+  box-shadow: 0 2px 10px rgba(73, 70, 70, 0.767);
+  color: #333;
+  border: 1px solid #ccc;
+}
+
 /* MainComponent.css */
 .create-question-animation {
   overflow: hidden;

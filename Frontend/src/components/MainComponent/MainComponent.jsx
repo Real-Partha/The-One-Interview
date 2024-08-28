@@ -22,6 +22,22 @@ const MainComponent = () => {
   const [hasPrevPage, setHasPrevPage] = useState(false);
   const { isDarkMode } = useTheme();
   const [showCreateQuestion, setShowCreateQuestion] = useState(false);
+  const [inputPage, setInputPage] = useState("");
+
+  const handlePageInputChange = (e) => {
+    setInputPage(e.target.value);
+  };
+
+  const handlePageInputSubmit = (e) => {
+    e.preventDefault();
+    const pageNumber = parseInt(inputPage, 10);
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+      setPageWithExpiration(pageNumber.toString());
+      debouncedScrollToTop();
+      setInputPage("");
+    }
+  };
 
   const fetchThreads = useCallback(async (page) => {
     if (page) {
@@ -285,7 +301,7 @@ const MainComponent = () => {
               showCreateQuestion ? "show" : ""
             }`}
           >
-            <CreateQuestionPage />
+            <CreateQuestionPage onClose={toggleCreateQuestion}/>
           </div>
 
           {isquestionloading
@@ -375,6 +391,18 @@ const MainComponent = () => {
             <button onClick={handleNextPage} disabled={!hasNextPage}>
               Next
             </button>
+            <form onSubmit={handlePageInputSubmit} className="page-input-form">
+              <label htmlFor="pageInput">Jump to :</label>
+              <input
+                type="number"
+                id="pageInput"
+                value={inputPage}
+                onChange={handlePageInputChange}
+                min="1"
+                max={totalPages}
+                className="page-input"
+              />
+            </form>
           </div>
         </section>
         <section className="right-sidebar">

@@ -2,7 +2,7 @@ const express = require("express");
 const User = require("../models/user");
 const Comment = require("../models/comment");
 const Question = require("../models/question");
-const Activity = require('../models/activity');
+const Activity = require("../models/activity");
 const { getSignedUrlForObject } = require("../utils/amazonS3");
 const router = express.Router();
 
@@ -16,13 +16,15 @@ router.get("/questions", async (req, res) => {
     const skip = (page - 1) * limit;
 
     // Extract query parameters
-    const companyNames = req.query.company_name ? JSON.parse(req.query.company_name) : null;
+    const companyNames = req.query.company_name
+      ? JSON.parse(req.query.company_name)
+      : null;
     const tags = req.query.tag ? JSON.parse(req.query.tag) : null;
     const category = req.query.category || null;
     const dateRange = req.query.date_range || null;
 
     // Build the filter object
-    const filter = {};
+    const filter = { status: "approved" };
     if (companyNames && companyNames.length > 0) {
       filter.company_name = { $in: companyNames };
     }
@@ -44,16 +46,16 @@ router.get("/questions", async (req, res) => {
       let dateLimit;
 
       switch (dateRange) {
-        case 'year':
+        case "year":
           dateLimit = new Date(now.setFullYear(now.getFullYear() - 1));
           break;
-        case 'month':
+        case "month":
           dateLimit = new Date(now.setMonth(now.getMonth() - 1));
           break;
-        case 'week':
+        case "week":
           dateLimit = new Date(now.setDate(now.getDate() - 7));
           break;
-        case 'day':
+        case "day":
           dateLimit = new Date(now.setDate(now.getDate() - 1));
           break;
         default:
@@ -298,9 +300,11 @@ router.post("/question", async (req, res) => {
   try {
     const questionData = {
       ...req.body,
-      status: 'unverified',
+      status: "unverified",
       user_id: req.user._id,
-      tags: req.body.tags.map(tag => tag.startsWith('#') ? tag.slice(1) : tag) // Remove '#' from tags
+      tags: req.body.tags.map((tag) =>
+        tag.startsWith("#") ? tag.slice(1) : tag
+      ), // Remove '#' from tags
     };
     const question = await Question.create(questionData);
 
@@ -313,7 +317,7 @@ router.post("/question", async (req, res) => {
 
     return res.status(201).send({
       message: "Question submitted successfully and is pending approval.",
-      question: question
+      question: question,
     });
   } catch (err) {
     console.error(err);
@@ -323,6 +327,7 @@ router.post("/question", async (req, res) => {
     });
   }
 });
+
 router.delete("/question", async (req, res) => {
   try {
     const question = await Question.findById(req.body.id);
