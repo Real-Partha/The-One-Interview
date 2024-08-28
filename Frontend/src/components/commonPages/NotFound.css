@@ -37,11 +37,11 @@
     rgba(255, 255, 255, 0.3) 20%,
     transparent 40%
   );
-  animation: rotate 4s linear infinite;
+  animation: notFoundrotate 4s linear infinite;
   z-index: -1;
 }
 
-@keyframes rotate {
+@keyframes notFoundrotate {
   100% {
     transform: rotate(1turn);
   }
@@ -75,17 +75,17 @@
   left: 2px;
   text-shadow: -2px 0 #00ffff;
   clip: rect(44px, 450px, 56px, 0);
-  animation: glitch-anim 5s infinite linear alternate-reverse;
+  animation: notFoundglitch-anim 5s infinite linear alternate-reverse;
 }
 
 .notfound-glitch::after {
   left: -2px;
   text-shadow: -2px 0 #ff00ff;
   clip: rect(44px, 450px, 56px, 0);
-  animation: glitch-anim 2s infinite linear alternate-reverse;
+  animation: notFoundglitch-anim 2s infinite linear alternate-reverse;
 }
 
-@keyframes glitch-anim {
+@keyframes notFoundglitch-anim {
   0% {
     clip: rect(31px, 9999px, 94px, 0);
   }
@@ -101,16 +101,16 @@
 }
 
 .notfound-icon-wrapper {
-  margin: 2rem 0;
+  margin: 0 0;
 }
 
 .notfound-icon {
   font-size: 4rem;
   color: #ffc107;
-  animation: bounce 2s infinite;
+  animation: notFoundbounce 2s infinite;
 }
 
-@keyframes bounce {
+@keyframes notFoundbounce {
   0%,
   20%,
   50%,
@@ -130,7 +130,7 @@
   font-size: 2.5rem;
   color: #343a40;
   margin-bottom: 1rem;
-  animation: fadeInUp 1s ease-out;
+  animation: notFoundfadeInUp 1s ease-out;
 }
 
 .notfound-message {
@@ -138,10 +138,10 @@
   color: #6c757d;
   margin-bottom: 2rem;
   line-height: 1.6;
-  animation: fadeInUp 1s ease-out 0.2s both;
+  animation: notFoundfadeInUp 1s ease-out 0.2s both;
 }
 
-@keyframes fadeInUp {
+@keyframes notFoundfadeInUp {
   from {
     opacity: 0;
     transform: translateY(20px);
@@ -156,7 +156,7 @@
   display: flex;
   justify-content: center;
   gap: 1rem;
-  animation: fadeInUp 1s ease-out 0.4s both;
+  animation: notFoundfadeInUp 1s ease-out 0.4s both;
 }
 
 .notfound-home-button,
@@ -191,54 +191,63 @@
 }
 
 .notfound-particles {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.notfound-particle {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  background-color: rgba(0, 123, 255, 0.5);
-  border-radius: 50%;
-  animation: float 15s infinite;
-}
-
-@keyframes float {
-  0% {
-    transform: translateY(0) rotate(0deg);
-    opacity: 1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100;
   }
-  100% {
-    transform: translateY(-1000px) rotate(720deg);
+  
+  .notfound-particle {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    background-color: rgba(0, 123, 255, 0.7);
+    border-radius: 50%;
     opacity: 0;
+    animation: notFoundfloat 15s infinite;
   }
-}
-
-/* Distribute particles randomly */
-.notfound-particle:nth-child(1) {
-  left: 10%;
-  animation-delay: 0s;
-}
-.notfound-particle:nth-child(2) {
-  left: 20%;
-  animation-delay: 2s;
-}
-.notfound-particle:nth-child(3) {
-  left: 30%;
-  animation-delay: 4s;
-}
-.notfound-particle:nth-child(4) {
-  left: 40%;
-  animation-delay: 6s;
-}
-.notfound-particle:nth-child(5) {
-  left: 50%;
-  animation-delay: 8s;
-}
+  
+  @keyframes notFoundfloat {
+    0% {
+      transform: translateY(100vh) rotate(0deg);
+      opacity: 0;
+    }
+    1% {
+      opacity: 1;
+    }
+    99% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-100vh) rotate(720deg);
+      opacity: 0;
+    }
+  }
+  
+  /* Distribute particles randomly */
+  .notfound-particle:nth-child(1) { left: 10%; animation-delay: 0s; }
+  .notfound-particle:nth-child(2) { left: 20%; animation-delay: 1s; }
+  .notfound-particle:nth-child(3) { left: 30%; animation-delay: 2s; }
+  .notfound-particle:nth-child(4) { left: 40%; animation-delay: 3s; }
+  .notfound-particle:nth-child(5) { left: 50%; animation-delay: 4s; }
+  .notfound-particle:nth-child(6) { left: 60%; animation-delay: 5s; }
+  .notfound-particle:nth-child(7) { left: 70%; animation-delay: 6s; }
+  .notfound-particle:nth-child(8) { left: 80%; animation-delay: 7s; }
+  .notfound-particle:nth-child(9) { left: 90%; animation-delay: 8s; }
+  .notfound-particle:nth-child(10) { left: 5%; animation-delay: 9s; }
+  .notfound-particle:nth-child(11) { left: 15%; animation-delay: 10s; }
+  .notfound-particle:nth-child(12) { left: 25%; animation-delay: 11s; }
+  .notfound-particle:nth-child(13) { left: 35%; animation-delay: 12s; }
+  .notfound-particle:nth-child(14) { left: 45%; animation-delay: 13s; }
+  .notfound-particle:nth-child(15) { left: 55%; animation-delay: 14s; }
+  .notfound-particle:nth-child(16) { left: 65%; animation-delay: 15s; }
+  .notfound-particle:nth-child(17) { left: 75%; animation-delay: 16s; }
+  .notfound-particle:nth-child(18) { left: 85%; animation-delay: 17s; }
+  .notfound-particle:nth-child(19) { left: 95%; animation-delay: 18s; }
+  .notfound-particle:nth-child(20) { left: 2%; animation-delay: 19s; }
 
 /* Dark mode styles */
 .notfound-dark {
@@ -274,5 +283,5 @@
 }
 
 .notfound-dark .notfound-particle {
-  background-color: rgba(90, 72, 204, 0.5);
+  background-color: rgba(90, 72, 204, 0.7);
 }
