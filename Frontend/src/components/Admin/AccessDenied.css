@@ -1,0 +1,25 @@
+.access-denied {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+  }
+  
+  .access-denied__icon {
+    font-size: 64px;
+    color: #f44336;
+    margin-bottom: 20px;
+  }
+  
+  .access-denied__title {
+    font-size: 36px;
+    margin-bottom: 10px;
+  }
+  
+  .access-denied__message {
+    font-size: 18px;
+    color: #666;
+  }
+  
