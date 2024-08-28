@@ -1,5 +1,5 @@
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import MainContent from "./components/HomeQuestions.jsx/HomeQuestions";
+import MainContent from "./components/HomeQuestions/HomeQuestions";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import GetUid from "./components/getuid";
 import Login from "./components/Authentication/Login";

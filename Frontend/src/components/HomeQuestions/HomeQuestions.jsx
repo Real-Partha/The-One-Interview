@@ -11,6 +11,7 @@ import { debounce } from "lodash";
 import { SearchContext } from "../context/SearchContext";
 import ThreadSkeleton from "./threadskeleton";
 import DOMPurify from "dompurify";
+import Sidebar from "../Left Sidebar/Sidebar";
 
 const MainComponent = () => {
   const navigate = useNavigate();
@@ -217,66 +218,7 @@ const MainComponent = () => {
   return (
     <div className={`${isDarkMode ? "dark-mode" : "light-mode"}`}>
       <div className={`main-content`}>
-        <aside className="sidebar">
-          <nav className="course-navigation">
-            <div className="Left-Side-bar-cards">
-              <Link to="/" className="home_Section">
-                <div className="card">
-                  <i className="fa fa-home" />
-                  <div className="card-details">
-                     
-                    <h4>Home</h4>
-                  </div>
-                </div>
-              </Link>
-            </div>
-
-            <div className="Left-Side-bar-cards">
-              <Link to="/questions" className="questions_section">
-                <div className="card">
-                  <i className="fa-solid fa-layer-group" />
-                  <div className="card-details">
-                    <h4>Questions</h4>
-                  </div>
-                </div>
-              </Link>
-            </div>
-
-            <div className="Left-Side-bar-cards">
-              <div className="tags_section">
-                <div className="card">
-                  <i className="fa-solid fa-hashtag"></i>
-                  <div className="card-details">
-                    <h4>Tags</h4>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="Left-Side-bar-cards">
-              <div className="company_names">
-                <div className="card">
-                  <i className="fa-regular fa-building"></i>
-                  <div className="card-details">
-                    <h4>Corporate </h4>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="Left-Side-bar-cards">
-              <div className="questions_section">
-                <div className="card">
-                  <i className="fa-solid fa-layer-group" />
-                  <div className="card-details">
-                    <h4>Interview Blogs</h4>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </nav>
-          <button className="join-class">Join a new Community</button>
-        </aside>
+      <Sidebar />
         <section className="threads">
           <div className="add-thread-container">
             <div className="add-thread-input">
