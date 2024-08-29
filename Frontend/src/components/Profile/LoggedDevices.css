@@ -1,0 +1,87 @@
+/* Components/Profile/LoggedDevices.css */
+
+.loggeddevices-container {
+    background-color: var(--bg-color);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: var(--box-shadow);
+    transition: background-color 0.3s, box-shadow 0.3s;
+    margin-bottom: 20px;
+  }
+  
+  .loggeddevices-title {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+  }
+  
+  .loggeddevices-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .loggeddevices-item {
+    background-color: var(--input-bg-color);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .loggeddevices-current {
+    border: 2px solid var(--primary-color);
+  }
+  
+  .loggeddevices-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .loggeddevices-device {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .loggeddevices-ip,
+  .loggeddevices-location,
+  .loggeddevices-lastactive {
+    font-size: 0.9rem;
+    color: var(--text-color);
+    opacity: 0.8;
+  }
+  
+  .loggeddevices-current-tag {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+  }
+  
+  .loggeddevices-loading,
+  .loggeddevices-error {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  /* Dark mode styles */
+  .dark-mode .loggeddevices-container {
+    background-color: var(--dark-sidebar-cards-bg-color);
+    box-shadow: var(--dark-box-shadow);
+  }
+  
+  .dark-mode .loggeddevices-item {
+    background-color: var(--dark-input-bg-color);
+  }
+  
+  .dark-mode .loggeddevices-ip,
+  .dark-mode .loggeddevices-location,
+  .dark-mode .loggeddevices-lastactive {
+    color: var(--dark-text-color);
+  }
+  
+  .dark-mode .loggeddevices-current-tag {
+    background-color: var(--dark-primary-color);
+  }
+  
