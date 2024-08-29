@@ -29,6 +29,7 @@
     position: relative;
     transform: scale(0.9);
     transition: transform 0.3s ease-in-out;
+    overflow: hidden;
   }
   
   .loginsignuppopup-visible .loginsignuppopup-container {
@@ -37,43 +38,89 @@
   
   .loginsignuppopup-content {
     text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .loginsignuppopup-icon-wrapper {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
   }
   
   .loginsignuppopup-icon {
     font-size: 48px;
     color: #6c63ff;
-    margin-bottom: 20px;
-    animation: loginSignupPopuppulse 2s infinite;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: loginSignupPopupPulse 2s infinite;
   }
   
-  @keyframes loginSignupPopuppulse {
-    0% {
+  .loginsignuppopup-icon-ring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 3px solid #6c63ff;
+    border-radius: 50%;
+    animation: loginSignupPopupRing 2s infinite;
+  }
+  
+  @keyframes loginSignupPopupPulse {
+    0%, 100% {
+      transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+  }
+  
+  @keyframes loginSignupPopupRing {
+    0%, 100% {
       transform: scale(1);
+      opacity: 0.3;
     }
     50% {
       transform: scale(1.2);
-    }
-    100% {
-      transform: scale(1);
+      opacity: 0;
     }
   }
   
   .loginsignuppopup-title {
-    font-size: 24px;
+    font-size: 28px;
     color: #333;
     margin-bottom: 15px;
+    animation: loginSignupPopupFadeIn 0.5s ease-out 0.2s both;
   }
   
   .loginsignuppopup-message {
-    font-size: 16px;
+    font-size: 18px;
     color: #666;
     margin-bottom: 30px;
+    animation: loginSignupPopupFadeIn 0.5s ease-out 0.4s both;
+    line-height: 1.5;
+  }
+  
+  @keyframes loginSignupPopupFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
   
   .loginsignuppopup-buttons {
     display: flex;
     justify-content: center;
     gap: 20px;
+    animation: loginSignupPopupFadeIn 0.5s ease-out 0.6s both;
   }
   
   .loginsignuppopup-button {
@@ -86,21 +133,31 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+    overflow: hidden;
   }
   
   .loginsignuppopup-button i {
     margin-right: 8px;
+    transition: transform 0.3s ease;
+  }
+  
+  .loginsignuppopup-button-highlight {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(45deg);
+    transition: all 0.3s ease;
+    visibility: hidden;
+    z-index: -1;
   }
   
   .loginsignuppopup-login {
     background-color: #6c63ff;
     color: #ffffff;
-  }
-  
-  .loginsignuppopup-login:hover {
-    background-color: #5a52d5;
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(108, 99, 255, 0.3);
   }
   
   .loginsignuppopup-signup {
@@ -109,11 +166,83 @@
     border: 2px solid #6c63ff;
   }
   
-  .loginsignuppopup-signup:hover {
-    background-color: #6c63ff;
-    color: #ffffff;
+  .loginsignuppopup-button:hover,
+  .loginsignuppopup-button.active {
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(108, 99, 255, 0.3);
+  }
+  
+  .loginsignuppopup-login:hover,
+  .loginsignuppopup-login.active {
+    background-color: #5a52d5;
+  }
+  
+  .loginsignuppopup-signup:hover,
+  .loginsignuppopup-signup.active {
+    background-color: #6c63ff;
+    color: #ffffff;
+  }
+  
+  .loginsignuppopup-button:hover i,
+  .loginsignuppopup-button.active i {
+    transform: rotate(360deg);
+  }
+  
+  .loginsignuppopup-button:hover .loginsignuppopup-button-highlight,
+  .loginsignuppopup-button.active .loginsignuppopup-button-highlight {
+    top: -100%;
+    left: -100%;
+    visibility: visible;
+    z-index: 100;
+  }
+  
+  .loginsignuppopup-decoration {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.1;
+    z-index: 1;
+  }
+  
+  .loginsignuppopup-decoration-1 {
+    width: 100px;
+    height: 100px;
+    background-color: #6c63ff;
+    top: -50px;
+    left: -50px;
+    animation: loginSignupPopupFloat 8s infinite;
+  }
+  
+  .loginsignuppopup-decoration-2 {
+    width: 80px;
+    height: 80px;
+    background-color: #ff6b6b;
+    bottom: -40px;
+    right: -40px;
+    animation: loginSignupPopupFloat 10s infinite reverse;
+  }
+  
+  .loginsignuppopup-decoration-3 {
+    width: 60px;
+    height: 60px;
+    background-color: #feca57;
+    top: 50%;
+    right: -30px;
+    animation: loginSignupPopupFloat 12s infinite;
+  }
+  
+  @keyframes loginSignupPopupFloat {
+    0%, 100% {
+      transform: translate(0, 0);
+    }
+    25% {
+      transform: translate(10px, -10px);
+    }
+    50% {
+      transform: translate(0, -20px);
+    }
+    75% {
+      transform: translate(-10px, -10px);
+    }
   }
   
   /* Dark mode styles */
@@ -133,26 +262,43 @@
     color: #cccccc;
   }
   
-  .loginsignuppopup-overlay.dark-mode .loginsignuppopup-icon {
-    color: #9966cc;
-  }
-  
-  .loginsignuppopup-overlay.dark-mode .loginsignuppopup-login {
-    background-color: #9966cc;
-  }
-  
-  .loginsignuppopup-overlay.dark-mode .loginsignuppopup-login:hover {
-    background-color: #8a5bbf;
-  }
-  
-  .loginsignuppopup-overlay.dark-mode .loginsignuppopup-signup {
-    background-color: #252525;
+  .loginsignuppopup-overlay.dark-mode .loginsignuppopup-icon,
+  .loginsignuppopup-overlay.dark-mode .loginsignuppopup-icon-ring {
     color: #9966cc;
     border-color: #9966cc;
   }
   
-  .loginsignuppopup-overlay.dark-mode .loginsignuppopup-signup:hover {
+  .loginsignuppopup-overlay.dark-mode .loginsignuppopup-login {
     background-color: #9966cc;
-    color: #252525;
+    color: #ffffff;
+  }
+  
+  .loginsignuppopup-overlay.dark-mode .loginsignuppopup-login:hover,
+  .loginsignuppopup-overlay.dark-mode .loginsignuppopup-login.active {
+    background-color: #8a5bbf;
+  }
+  
+  .loginsignuppopup-overlay.dark-mode .loginsignuppopup-signup {
+    background-color: transparent;
+    color: #9966cc;
+    border-color: #9966cc;
+  }
+  
+  .loginsignuppopup-overlay.dark-mode .loginsignuppopup-signup:hover,
+  .loginsignuppopup-overlay.dark-mode .loginsignuppopup-signup.active {
+    background-color: #9966cc;
+    color: #f6f6f6;
+  }
+  
+  .loginsignuppopup-overlay.dark-mode .loginsignuppopup-decoration-1 {
+    background-color: #9966cc;
+  }
+  
+  .loginsignuppopup-overlay.dark-mode .loginsignuppopup-decoration-2 {
+    background-color: #ff6b6b;
+  }
+  
+  .loginsignuppopup-overlay.dark-mode .loginsignuppopup-decoration-3 {
+    background-color: #feca57;
   }
   
