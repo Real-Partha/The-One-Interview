@@ -3,25 +3,70 @@ const User = require("../models/user");
 const Comment = require("../models/comment");
 const Question = require("../models/question");
 const Activity = require("../models/activity");
-const { getSignedUrlForObject } = require("../utils/amazonS3");
+const { getSignedUrlForObject, uploadObject, deleteObject } = require("../utils/amazonS3");
 const router = express.Router();
+const { v4: uuidv4 } = require("uuid");
 
 const commentsRouter = require("./comments");
 router.use("/questions", commentsRouter);
 
+// Helper function to extract and upload images from HTML content
+const processImagesInHtml = async (html) => {
+  const imgRegex = /<img[^>]+src="([^">]+)"/g;
+  let match;
+  let processedHtml = html;
+
+  while ((match = imgRegex.exec(html)) !== null) {
+    const imgSrc = match[1];
+    if (imgSrc.startsWith("data:image")) {
+      // Extract base64 data
+      const base64Data = imgSrc.split(",")[1];
+      const buffer = Buffer.from(base64Data, "base64");
+
+      // Generate a unique filename
+      const filename = `question_images/${uuidv4()}.png`;
+
+      // Upload to S3
+      await uploadObject(filename, buffer);
+
+      // Replace the src in HTML with the S3 filename
+      processedHtml = processedHtml.replace(imgSrc, filename);
+    }
+  }
+
+  return processedHtml;
+};
+
+// Helper function to replace image filenames with signed URLs
+const replaceImageUrlsWithSignedUrls = async (html) => {
+  const imgRegex = /<img[^>]+src="([^">]+)"/g;
+  let match;
+  let processedHtml = html;
+
+  while ((match = imgRegex.exec(html)) !== null) {
+    const imgSrc = match[1];
+    if (!imgSrc.startsWith("http")) {
+      const signedUrl = await getSignedUrlForObject(imgSrc);
+      processedHtml = processedHtml.replace(imgSrc, signedUrl);
+    }
+  }
+
+  return processedHtml;
+};
+
 const sliceHtml = (html, maxLength) => {
   // Remove HTML tags
-  const text = html.replace(/<[^>]*>/g, '');
-  
+  const text = html.replace(/<[^>]*>/g, "");
+
   if (text.length <= maxLength) return html;
-  
+
   let slicedText = text.slice(0, maxLength);
-  const lastSpaceIndex = slicedText.lastIndexOf(' ');
+  const lastSpaceIndex = slicedText.lastIndexOf(" ");
   if (lastSpaceIndex > 0) {
     slicedText = slicedText.slice(0, lastSpaceIndex);
   }
-  
-  return slicedText + '...';
+
+  return slicedText + "...";
 };
 
 router.get("/questions", async (req, res) => {
@@ -105,9 +150,14 @@ router.get("/questions", async (req, res) => {
           profilepic.toObject().profile_pic
         );
 
-        // Slice the answer
-        const slicedAnswer = sliceHtml(question.answer, 150);
-        const fullAnswerAvailable = question.answer.length > 150;
+        // Replace image URLs with signed URLs in the answer
+        const processedAnswer = await replaceImageUrlsWithSignedUrls(
+          question.answer
+        );
+
+        // Slice the processed answer
+        const slicedAnswer = sliceHtml(processedAnswer, 150);
+        const fullAnswerAvailable = processedAnswer.length > 150;
 
         return {
           ...question,
@@ -118,7 +168,6 @@ router.get("/questions", async (req, res) => {
         };
       })
     );
-
     return res.status(200).send({
       questions: questionsWithUsernames,
       currentPage: page,
@@ -140,7 +189,20 @@ router.get("/questions/unapproved", async (req, res) => {
     const unapprovedQuestions = await Question.find({
       status: "unverified",
     }).sort({ created_at: -1 });
-    res.json(unapprovedQuestions);
+
+    const processedQuestions = await Promise.all(
+      unapprovedQuestions.map(async (question) => {
+        const processedAnswer = await replaceImageUrlsWithSignedUrls(
+          question.answer
+        );
+        return {
+          ...question.toObject(),
+          answer: processedAnswer,
+        };
+      })
+    );
+
+    res.json(processedQuestions);
   } catch (error) {
     console.error("Error fetching unapproved questions:", error);
     res
@@ -216,6 +278,11 @@ router.get("/question/:id", async (req, res) => {
       : question.downvotedBy.includes(currentUserId)
       ? "downvote"
       : null;
+
+    if (question.status === "approved") {
+      // Replace image URLs with signed URLs in the answer
+      question.answer = await replaceImageUrlsWithSignedUrls(question.answer);
+    }
 
     return res.status(200).send({
       isVerified: true,
@@ -350,18 +417,31 @@ router.get("/questionsearch", async (req, res) => {
 });
 
 router.post("/question", async (req, res) => {
+  const uploadedImages = [];
   try {
+    const processedAnswer = await processImagesInHtml(req.body.answer);
+
+    // Keep track of uploaded images
+    const imgRegex = /<img[^>]+src="([^">]+)"/g;
+    let match;
+    while ((match = imgRegex.exec(processedAnswer)) !== null) {
+      const imgSrc = match[1];
+      if (!imgSrc.startsWith("http")) {
+        uploadedImages.push(imgSrc);
+      }
+    }
+
     const questionData = {
       ...req.body,
+      answer: processedAnswer,
       status: "unverified",
       user_id: req.user._id,
       tags: req.body.tags.map((tag) =>
         tag.startsWith("#") ? tag.slice(1) : tag
-      ), // Remove '#' from tags
+      ),
     };
     const question = await Question.create(questionData);
 
-    // Record activity
     await Activity.create({
       user_id: req.user._id,
       type: "question",
@@ -374,6 +454,14 @@ router.post("/question", async (req, res) => {
     });
   } catch (err) {
     console.error(err);
+    // Delete uploaded images if there was an error
+    for (const imagePath of uploadedImages) {
+      try {
+        await deleteObject(imagePath);
+      } catch (deleteErr) {
+        console.error(`Failed to delete image ${imagePath}:`, deleteErr);
+      }
+    }
     return res.status(500).send({
       status: false,
       error: "An error occurred while creating question",
@@ -499,16 +587,4 @@ router.patch("/downvote", async (req, res) => {
   }
 });
 
-router.get("/checkusername", async (req, res) => {
-  console.log("i m here");
-  const username = req.query.username;
-  try {
-    const user = await User.findOne({ username: username });
-    console.log(user);
-    return res.status(200).send({ status: user === null ? true : false });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).send({ status: false });
-  }
-});
 module.exports = router;
