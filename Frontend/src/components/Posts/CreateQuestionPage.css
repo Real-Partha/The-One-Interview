@@ -1,5 +1,5 @@
 .interview-experience-container {
-  max-width: 800px;
+  /* max-width: 800px; */
   margin: auto;
   padding: 20px;
   font-weight: 600;
@@ -128,7 +128,7 @@
 
 .create-question-success-icon {
   font-size: 4rem;
-  color: #4CAF50;
+  color: #4caf50;
   margin-bottom: 1rem;
 }
 
@@ -147,7 +147,7 @@
 }
 
 .create-question-btn-done {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -161,6 +161,96 @@
   background-color: #45a049;
 }
 
+.btn-submit.disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.submit-group {
+  position: relative;
+  display: inline-block;
+}
+
+.form-tooltip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: calc(155%);
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  width: 250px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  font-size: 14px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+  pointer-events: none;
+}
+
+.form-tooltip::before {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 15%;
+  transform: translateX(-50%);
+  border-width: 10px 10px 0;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
+
+.btn-submit:hover + .form-tooltip,
+.btn-submit:focus + .form-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(-5px);
+}
+
+.form-tooltip h3 {
+  margin: 0 0 10px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.form-tooltip ul {
+  margin: 0;
+  padding-left: 0;
+  list-style-type: none;
+}
+
+.form-tooltip li {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.tooltip-icon {
+  margin-right: 8px;
+  font-size: 16px;
+  color: #f1c40f;
+}
+
+@keyframes createQuestioniconPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.tooltip-icon {
+  animation: createQuestioniconPulse 1.5s infinite;
+}
+
+/* Dark mode styles */
+.dark-mode .form-tooltip {
+  background-color: #555;
+  color: #fff;
+}
+
+.dark-mode .form-tooltip::before {
+  border-color: #555 transparent transparent transparent;
+}
 .dark-mode .create-question-btn-done {
   background-color: #45a049;
 }
@@ -169,7 +259,6 @@
   background-color: #3d8b3d;
 }
 
-/* Dark MODE Theme */
 .dark-mode .interview-experience-container {
   background-color: #282828;
   color: #e0e0e0;

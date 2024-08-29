@@ -63,7 +63,7 @@
 }
 
 .threads {
-  width: 60%;
+  /* width: 60%; */
   margin: 0 1.5%;
   /* margin-right: -8px; */
   border-radius: 30px;
@@ -191,11 +191,11 @@
   display: inline-block;
   background-color: rgba(107, 99, 255, 0.733);
   padding: 6px 10px;
-    border-radius: 20px;
-    font-size: 1vw;
-    margin-right: 10px;
-    color: blanchedalmond;
-    background-color: #3498db;
+  border-radius: 20px;
+  font-size: 1vw;
+  margin-right: 10px;
+  color: blanchedalmond;
+  background-color: #3498db;
 }
 
 .thread-company,
@@ -253,10 +253,12 @@
 }
 
 .right-sidebar {
-  width: 20%;
+  /* width: 20%; */
+  min-width: 15%;
   border-radius: 15px;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap;
   justify-content: center;
+  justify-content: space-between; */
   align-items: flex-start;
   padding: 1.2%;
   border-radius: 12px;
@@ -267,6 +269,25 @@
   align-items: center;
   justify-content: flex-start;
 }
+
+@media (max-width: 768px) {
+  .main-content{
+    flex-direction: column;
+  }
+  .right-sidebar {
+    flex-direction: row;
+    width: 97%;
+    margin-top: 10px;
+  }
+  .Side-bar-cards{
+    margin:0;
+  }
+  .card{
+    margin:5%;
+  }
+}
+
+
 
 .lecturer-info {
   text-align: center;
@@ -282,13 +303,14 @@
 .attendees-list {
   margin-top: 20px;
 }
-
+/* 
 .Side-bar-cards {
   margin-bottom: 7%;
-}
+} */
 
 .card {
-  /* width: 100%; */
+  /* width: 92%; */
+  margin-bottom: 7%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -385,7 +407,7 @@
 .Left-Side-bar-cards .card {
   display: flex;
   flex-direction: row;
-  margin-bottom: 7%;
+  /* margin-bottom: 7%; */
 }
 
 .giving_responses {
@@ -461,7 +483,7 @@
 }
 
 .pagination button {
-  margin: 0 10px;
+  /* margin: 0 10px; */
   padding: 10px 20px;
   background-color: #6c63ff;
   color: #ffffff;
@@ -486,7 +508,7 @@
 }
 
 .pagination span {
-  margin: 0 15px;
+  margin: 0 .8rem;
   font-size: 16px;
   font-weight: bold;
   color: #333;
@@ -617,7 +639,7 @@
 }
 
 .dark-mode .thread-card {
-  
+
   background-color: #2e2e2e;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
   padding: 20px;
@@ -861,4 +883,3 @@ body {
 .thread-votes .downvotes i {
   color: var(--highlight-color);
 }
-

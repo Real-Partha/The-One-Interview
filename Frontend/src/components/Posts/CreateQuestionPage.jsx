@@ -6,6 +6,37 @@ import { useTheme } from "../../ThemeContext";
 import axios from "axios";
 import PayloadSizeExceededPopup from "./PayloadSizeExceededPopup";
 import useNotification from "../Notifications";
+import { FaExclamationTriangle, FaQuestionCircle, FaTag } from "react-icons/fa";
+
+const FormTooltip = ({ isVisible, formData }) => {
+  if (!isVisible) return null;
+
+  return (
+    <div className="form-tooltip">
+      <h3>Please complete the following:</h3>
+      <ul>
+        {formData.question.trim() === "" && (
+          <li>
+            <FaQuestionCircle className="tooltip-icon" />
+            <span>Enter a question</span>
+          </li>
+        )}
+        {formData.answer.trim() === "" && (
+          <li>
+            <FaExclamationTriangle className="tooltip-icon" />
+            <span>Provide an answer</span>
+          </li>
+        )}
+        {formData.tags.length < 2 && (
+          <li>
+            <FaTag className="tooltip-icon" />
+            <span>{`Add at least ${2-formData.tags.length} more ${(2-formData.tags.length)===1?"tag":"tags"}`}</span>
+          </li>
+        )}
+      </ul>
+    </div>
+  );
+};
 
 const CreateQuestionPage = ({ onClose }) => {
   const [formData, setFormData] = useState({
@@ -22,7 +53,16 @@ const CreateQuestionPage = ({ onClose }) => {
   const { isDarkMode } = useTheme();
   const successMessageRef = useRef(null);
   const [showPayloadSizePopup, setShowPayloadSizePopup] = useState(false);
+  const [isFormValid, setIsFormValid] = useState(false);
   const { ErrorNotification, SuccessNotification } = useNotification();
+
+  const checkFormValidity = () => {
+    const isValid =
+      formData.question.trim() !== "" &&
+      formData.answer.trim() !== "" &&
+      formData.tags.length >= 2;
+    setIsFormValid(isValid);
+  };
 
   const handleChange = (value, field) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -80,7 +120,8 @@ const CreateQuestionPage = ({ onClose }) => {
     try {
       // Check payload size
       const payloadSize = new Blob([JSON.stringify(formData)]).size;
-      if (payloadSize > 5 * 1024 * 1024) { // 5 MB in bytes
+      if (payloadSize > 5 * 1024 * 1024) {
+        // 5 MB in bytes
         setShowPayloadSizePopup(true);
         return;
       }
@@ -110,8 +151,11 @@ const CreateQuestionPage = ({ onClose }) => {
   const scrollToSuccessMessage = () => {
     if (successMessageRef.current) {
       const yOffset = -130; // Adjust this value to control how much above the message to scroll
-      const y = successMessageRef.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
-      window.scrollTo({ top: y, behavior: 'smooth' });
+      const y =
+        successMessageRef.current.getBoundingClientRect().top +
+        window.pageYOffset +
+        yOffset;
+      window.scrollTo({ top: y, behavior: "smooth" });
     }
   };
 
@@ -121,14 +165,30 @@ const CreateQuestionPage = ({ onClose }) => {
     onClose();
   };
 
+  useEffect(() => {
+    checkFormValidity();
+  }, [formData]);
+
   if (isSubmitted) {
     return (
-      <div ref={successMessageRef} className={`create-question-submission-success ${isDarkMode ? "create-question-dark" : ""}`}>
+      <div
+        ref={successMessageRef}
+        className={`create-question-submission-success ${
+          isDarkMode ? "create-question-dark" : ""
+        }`}
+      >
         <div className="create-question-success-content">
           <i className="fas fa-check-circle create-question-success-icon"></i>
-          <h2 className="create-question-success-title">Question Submitted Successfully!</h2>
-          <p className="create-question-success-message">Your question has been sent for approval. Thank you for your contribution!</p>
-          <button onClick={handleDone} className="create-question-btn-done">Done</button>
+          <h2 className="create-question-success-title">
+            Question Submitted Successfully!
+          </h2>
+          <p className="create-question-success-message">
+            Your question has been sent for approval. Thank you for your
+            contribution!
+          </p>
+          <button onClick={handleDone} className="create-question-btn-done">
+            Done
+          </button>
         </div>
       </div>
     );
@@ -137,7 +197,9 @@ const CreateQuestionPage = ({ onClose }) => {
   return (
     <div className={`${isDarkMode ? "dark" : ""}`}>
       {showPayloadSizePopup && (
-        <PayloadSizeExceededPopup onClose={() => setShowPayloadSizePopup(false)} />
+        <PayloadSizeExceededPopup
+          onClose={() => setShowPayloadSizePopup(false)}
+        />
       )}
       <form className="interview-experience-container" onSubmit={handleSubmit}>
         <div className="form-group">
@@ -191,9 +253,7 @@ const CreateQuestionPage = ({ onClose }) => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="answer">
-            What should be the Perfect Answer?{" "}
-          </label>
+          <label htmlFor="answer">What should be the Perfect Answer? </label>
           <ReactQuill
             theme="snow"
             value={formData.answer}
@@ -226,10 +286,15 @@ const CreateQuestionPage = ({ onClose }) => {
             />
           </div>
         </div>
-        <div className="form-group">
-          <button type="submit" className="btn-submit">
+        <div className="form-group submit-group">
+          <button
+            type="submit"
+            className={`btn-submit ${!isFormValid ? "disabled" : ""}`}
+            disabled={!isFormValid}
+          >
             Submit
           </button>
+          <FormTooltip isVisible={!isFormValid} formData={formData} />
         </div>
       </form>
     </div>
