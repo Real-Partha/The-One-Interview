@@ -20,14 +20,14 @@ const Footer = () => {
   };
 
   return (
-  <div className="footerCTA">
+    <footer className={`footer ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
     <section className="cta-section">
           <h2>Ready to Ace Your Interview?</h2>
           <p>Join thousands of successful candidates who prepared with The One Interview</p>
           <Link to="/signup" className="cta-button primary">Sign Up Now</Link>
         </section>
 
-    <footer className={`footer ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
+    <div className={`footer ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
       <div className="footer-content">
         <div className="footer-section company-info">
           <h3>The One Interview</h3>
@@ -88,8 +88,9 @@ const Footer = () => {
         </div>
         <p>&copy; 2024 The One Interview. All rights reserved.</p>
       </div>
+    </div>
     </footer>
-  </div>
+
   );
 };
 
