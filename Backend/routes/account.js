@@ -77,6 +77,7 @@ const sendEmail = async (to, subject, templateName, replacements) => {
     throw error;
   }
 };
+
 router.get("/user-activities", async (req, res) => {
   if (!req.isAuthenticated()) {
     return res.status(401).json({ message: "Not authenticated" });
