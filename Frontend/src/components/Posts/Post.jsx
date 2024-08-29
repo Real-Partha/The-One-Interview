@@ -6,6 +6,7 @@ import "./Post.css";
 import "./QuillContent.css";
 import DOMPurify from "dompurify";
 import UnverifiedPost from "./UnverifiedPost";
+import LoginSignupPopup from "../commonPages/LoginSignupPopup";
 
 const Post = () => {
   const { questionId } = useParams();
@@ -18,6 +19,7 @@ const Post = () => {
   const [downvotes, setDownvotes] = useState(0);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
 
   const [commentLikes, setCommentLikes] = useState({});
   const [commentDislikes, setCommentDislikes] = useState({});
@@ -100,29 +102,37 @@ const Post = () => {
         `${import.meta.env.VITE_API_URL}/question/${questionId}`,
         { withCredentials: true }
       );
-      if (response.data.isVerified) {
-        setQuestion(response.data);
-        setUserVote(response.data.userVote);
-        setUpvotes(response.data.upvotes);
-        setDownvotes(response.data.downvotes);
-        setComments(response.data.comments);
 
-        // Initialize comment likes and dislikes
-        const likesObj = {};
-        const dislikesObj = {};
-        response.data.comments.forEach((comment) => {
-          likesObj[comment._id] = comment.likes ? comment.likes.length : 0;
-          dislikesObj[comment._id] = comment.dislikes
-            ? comment.dislikes.length
-            : 0;
-        });
-        setCommentLikes(likesObj);
-        setCommentDislikes(dislikesObj);
+      if (response.data.error === "User not authenticated") {
+        setShowLoginPopup(true);
       } else {
-        setQuestion({ isVerified: false });
+        if (response.data.isVerified) {
+          setQuestion(response.data);
+          setUserVote(response.data.userVote);
+          setUpvotes(response.data.upvotes);
+          setDownvotes(response.data.downvotes);
+          setComments(response.data.comments);
+
+          // Initialize comment likes and dislikes
+          const likesObj = {};
+          const dislikesObj = {};
+          response.data.comments.forEach((comment) => {
+            likesObj[comment._id] = comment.likes ? comment.likes.length : 0;
+            dislikesObj[comment._id] = comment.dislikes
+              ? comment.dislikes.length
+              : 0;
+          });
+          setCommentLikes(likesObj);
+          setCommentDislikes(dislikesObj);
+        } else {
+          setQuestion({ isVerified: false });
+        }
       }
     } catch (error) {
       console.error("Error fetching question:", error);
+      if (error.response && error.response.status === 401) {
+        setShowLoginPopup(true);
+      }
     }
   };
 
@@ -241,9 +251,17 @@ const Post = () => {
     return years + (years === 1 ? " year ago" : " years ago");
   };
 
-  if (!question) return <div>Loading...</div>;
+  if (!question && !showLoginPopup) return <div>Loading...</div>;
 
-  if (!question.isVerified) {
+  const handleCloseLoginPopup = () => {
+    setShowLoginPopup(false);
+  };
+
+  if (showLoginPopup) {
+    return <LoginSignupPopup onClose={handleCloseLoginPopup} />;
+  }
+
+  if (question && !question.isVerified) {
     return <UnverifiedPost />;
   }
 

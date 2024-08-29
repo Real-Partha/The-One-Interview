@@ -255,6 +255,7 @@ const Profile = () => {
                           onChange={handleFileChange}
                           style={{ display: "none" }}
                           id="fileInput"
+                          accept="image/*"
                         />
                         <label htmlFor="fileInput" className="profile-button">
                           Change picture
