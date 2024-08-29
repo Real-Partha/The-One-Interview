@@ -90,75 +90,48 @@ const HomeComponent = () => {
   const testimonials = [
     {
       name: "Priya Sharma",
-      company: "Flipkart",
-      image: "/img/testimonials/priya.jpg",
-      testimonial: "The One Interview's comprehensive question bank and expert-verified answers were instrumental in my success at Flipkart. The platform's focus on real interview experiences helped me understand what to expect and how to prepare effectively. I can't thank them enough for helping me land my dream job as a Senior Software Engineer!"
+      company: "Google",
+      logo: "/img/google.png",
+      testimonial: "During my time at the university, there wasn't a well-organized platform for interview preparation. After securing my position at Google, I realized the importance of guidance. That's why I'm committed to helping my juniors navigate the same process. I want to share my experiences and insights, so they are better prepared to face the challenges ahead."
     },
     {
       name: "Rahul Gupta",
-      company: "Swiggy",
-      image: "/img/testimonials/rahul.jpg",
-      testimonial: "As a product manager aspirant, I found The One Interview's company-specific preparation invaluable. Their insights into Swiggy's interview process and culture were spot-on. The mock interviews and performance analytics helped me identify my weak areas and improve rapidly. I'm now proudly working as a Product Manager at Swiggy, all thanks to this amazing platform!"
+      company: "Microsoft",
+      logo: "/img/company-logos/microsoft.png",
+      testimonial: "When I was preparing for campus placements, I had to piece together resources and advice from various places. Now, as a part of One University, I'm excited to help create a more structured path for those following in my footsteps. My journey to Microsoft wasn't easy, but with the right support, I believe our juniors can achieve even more."
     },
     {
       name: "Aisha Patel",
-      company: "Ola",
-      image: "/img/testimonials/aisha.jpg",
-      testimonial: "The career guidance feature of The One Interview was a game-changer for me. The mentorship I received helped me transition from a backend developer to a full-stack role at Ola. The platform's extensive resources and personalized advice made all the difference in my interview preparation and career growth."
+      company: "Amazon",
+      logo: "/img/company-logos/amazon.png",
+      testimonial: "Back in my day, we didn't have a platform like One University to streamline our preparation. Now that I'm with Amazon, I want to give back to the community by mentoring and guiding students through the same interview process I faced. It's all about making sure they don't make the same mistakes and are fully prepared to succeed."
     },
     {
       name: "Vikram Singh",
-      company: "Paytm",
-      image: "/img/testimonials/vikram.jpg",
-      testimonial: "I was struggling with system design interviews until I found The One Interview. Their in-depth explanations and real-world examples helped me grasp complex concepts quickly. The interactive coding challenges were particularly helpful. Now, I'm working as a Senior System Designer at Paytm, and I owe much of my success to this platform."
+      company: "Adobe",
+      logo: "/img/company-logos/adobe.png",
+      testimonial: "I remember the struggle of preparing for interviews with limited resources. Joining Adobe was a dream come true, and now I want to ensure that my juniors have a smoother journey. Through One University, I’m eager to share practical tips and provide the support system I wish I had."
     },
     {
       name: "Neha Reddy",
-      company: "Zomato",
-      image: "/img/testimonials/neha.jpg",
-      testimonial: "The One Interview's focus on behavioral interviews was exactly what I needed. Their extensive collection of real interview experiences from Zomato employees gave me valuable insights into the company culture. The mock interviews boosted my confidence, and I sailed through my actual interview. I'm now a proud member of Zomato's marketing team!"
+      company: "Uber",
+      logo: "/img/company-logos/uber.png",
+      testimonial: "The lack of a dedicated platform made my preparation for Uber's interviews challenging. Now, as part of One University, I'm excited to contribute to a community where students can find all the guidance they need. I want to help them develop the skills and confidence required to excel in their placements."
     },
-    {
-      name: "Arjun Nair",
-      company: "BYJU'S",
-      image: "/img/testimonials/arjun.jpg",
-      testimonial: "As an edtech enthusiast, I always dreamed of working at BYJU'S. The One Interview's company-specific resources were incredibly detailed and up-to-date. Their tips on showcasing my passion for education technology during the interview were spot-on. Thanks to their guidance, I'm now part of BYJU'S product innovation team!"
-    },
-    {
-      name: "Sneha Desai",
-      company: "Razorpay",
-      image: "/img/testimonials/sneha.jpg",
-      testimonial: "The technical interview preparation on The One Interview is second to none. Their coverage of payment systems and fintech was extensive, which was crucial for my Razorpay interview. The platform's community forum also provided great peer support. I'm now working as a Software Engineer at Razorpay, living my fintech dream!"
-    },
-    {
-      name: "Karthik Menon",
-      company: "Freshworks",
-      image: "/img/testimonials/karthik.jpg",
-      testimonial: "The One Interview's emphasis on soft skills alongside technical preparation was a blessing. Their resources on client interaction and SaaS business models were particularly helpful for my Freshworks interview. The mock interviews improved my communication skills significantly. Now, I'm thriving as a Customer Success Manager at Freshworks!"
-    },
-    {
-      name: "Ananya Choudhury",
-      company: "Cred",
-      image: "/img/testimonials/ananya.jpg",
-      testimonial: "Preparing for a startup like Cred was challenging, but The One Interview made it manageable. Their insights into Cred's unique culture and interview style were spot-on. The platform's tips on showcasing creativity and innovation during interviews were invaluable. I'm now part of Cred's design team, creating delightful user experiences!"
-    },
-    {
-      name: "Rohan Kapoor",
-      company: "PhonePe",
-      image: "/img/testimonials/rohan.jpg",
-      testimonial: "The One Interview's section on fintech and mobile payments was a goldmine for my PhonePe interview preparation. Their practice questions on security and scalability were particularly relevant. The platform's mentorship program connected me with a PhonePe employee, providing insider tips. I'm now working as a Security Engineer at PhonePe, all thanks to this fantastic platform!"
-    }
+    // Add more testimonials as needed
   ];
-
+  
+  
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const testimonialRef = useRef(null);
-
-
+  
   useEffect(() => {
-    if (testimonialRef.current) {
-      testimonialRef.current.style.transform = `translateX(-${activeTestimonial * 100}%)`;
-    }
-  }, [activeTestimonial]);
+    const interval = setInterval(() => {
+      setActiveTestimonial((prev) => (prev + 1) % testimonials.length);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const nextSlide = () => {
     setCurrentSlide((prevSlide) => (prevSlide + 1) % carouselContent.length);
@@ -227,29 +200,32 @@ const HomeComponent = () => {
 
 
         <section className="testimonials">
-          <h2>Success Stories</h2>
-          <div className="testimonial-carousel">
-            <div className="testimonial-track" ref={testimonialRef}>
-              {testimonials.map((testimonial, index) => (
-                <div key={index} className="testimonial-card">
-                  <img src={testimonial.image} alt={testimonial.name} className="testimonial-image" />
-                  <h3>{testimonial.name}</h3>
-                  <h4>{testimonial.company}</h4>
-                  <p>{testimonial.testimonial}</p>
-                </div>
-              ))}
-            </div>
+  <h2>Take help from the Experienced Ones</h2>
+  <div className="testimonial-carousel">
+    <div className="testimonial-track" ref={testimonialRef} style={{ transform: `translateX(-${activeTestimonial * 50}%)` }}>
+      {testimonials.map((testimonial, index) => (
+        <div key={index} className="testimonial-card">
+          <div className="testimonial-background" style={{ backgroundImage: `url(${testimonial.logo})` }}></div>
+          <div className="testimonial-content">
+            <h3>{testimonial.name}</h3>
+            <h4>{testimonial.company}</h4>
+            <p>{testimonial.testimonial}</p>
           </div>
-          <div className="testimonial-indicators">
-            {testimonials.map((_, index) => (
-              <button
-                key={index}
-                className={`indicator ${index === activeTestimonial ? 'active' : ''}`}
-                onClick={() => setActiveTestimonial(index)}
-              />
-            ))}
-          </div>
-        </section>
+        </div>
+      ))}
+    </div>
+  </div>
+    <div className="testimonial-indicators">
+      {testimonials.map((_, index) => (
+        <button
+          key={index}
+          className={`indicator ${index === activeTestimonial ? 'active' : ''}`}
+          onClick={() => setActiveTestimonial(index)}
+        />
+      ))}
+    </div>
+  </section>
+
 
         <section className="cta-section">
           <h2>Ready to Ace Your Interview?</h2>
