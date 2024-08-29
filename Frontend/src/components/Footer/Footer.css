@@ -18,7 +18,7 @@
 
 .footer-section {
   flex: 1;
-  margin: 0 20px 30px;
+  /* margin: 0 20px 30px; */
   min-width: 200px;
 }
 
@@ -185,7 +185,7 @@
 
   .newsletter input,
   .newsletter button {
-    width: 100%;
+    /* width: 100%; */
     border-radius: 4px;
     margin-bottom: 10px;
   }
