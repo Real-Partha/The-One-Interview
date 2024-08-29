@@ -4,7 +4,7 @@ import "./AccountSettings.css";
 import useNotification from "../Notifications";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-const AccountSettings = ({ user }) => {
+const AccountSettings = ({ user,fetchUserData }) => {
   const [email, setEmail] = useState(user.email);
   const [newEmail, setNewEmail] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
@@ -23,6 +23,7 @@ const AccountSettings = ({ user }) => {
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
   const [qrCode, setQrCode] = useState("");
   const [twoFactorToken, setTwoFactorToken] = useState("");
+  const [isPasswordLoading, setIsPasswordLoading] = useState(true);
   const { ErrorNotification, SuccessNotification } = useNotification();
 
   const otpRefs = [
@@ -81,6 +82,7 @@ const AccountSettings = ({ user }) => {
   useEffect(() => {
     const fetchHasPassword = async () => {
       try {
+        setIsPasswordLoading(true);
         const response = await axios.get(
           `${import.meta.env.VITE_API_URL}/account/has-password`,
           {
@@ -88,6 +90,7 @@ const AccountSettings = ({ user }) => {
           }
         );
         setHasPassword(response.data.hasPassword);
+        setIsPasswordLoading(false);
       } catch (error) {
         ErrorNotification(error.response.data.message);
       }
@@ -123,6 +126,7 @@ const AccountSettings = ({ user }) => {
       setTwoFactorEnabled(true);
       setQrCode(""); // Clear the QR code after successful verification
       SuccessNotification("2FA enabled successfully");
+      fetchUserData();
     } catch (error) {
       ErrorNotification(error.response?.data?.message || "Error verifying 2FA");
     }
@@ -137,6 +141,7 @@ const AccountSettings = ({ user }) => {
       );
       setTwoFactorEnabled(false);
       SuccessNotification("2FA disabled successfully");
+      fetchUserData();
     } catch (error) {
       ErrorNotification(error.response.data.message);
     }
@@ -183,6 +188,7 @@ const AccountSettings = ({ user }) => {
       setConfirmPassword("");
       setShowPasswordFields(false);
       setHasPassword(true);
+      fetchUserData();
     } catch (error) {
       ErrorNotification(error.response.data.message);
     } finally {
@@ -227,6 +233,7 @@ const AccountSettings = ({ user }) => {
       setOtpValues(["", "", "", "", "", ""]);
       setShowEmailFields(false);
       setOtpSent(false);
+      fetchUserData();
     } catch (error) {
       ErrorNotification(error.response.data.message);
     } finally {
@@ -356,9 +363,9 @@ const AccountSettings = ({ user }) => {
           <button
             onClick={() => setShowPasswordFields(true)}
             className="account-settings-button"
-            disabled={showEmailFields}
+            disabled={showEmailFields || isPasswordLoading}
           >
-            {hasPassword ? "Reset Password" : "Set Password"}
+            {isPasswordLoading? "Loading...":hasPassword ? "Reset Password" : "Set Password"}
           </button>
         ) : (
           <form

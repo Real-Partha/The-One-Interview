@@ -9,6 +9,21 @@ const router = express.Router();
 const commentsRouter = require("./comments");
 router.use("/questions", commentsRouter);
 
+const sliceHtml = (html, maxLength) => {
+  // Remove HTML tags
+  const text = html.replace(/<[^>]*>/g, '');
+  
+  if (text.length <= maxLength) return html;
+  
+  let slicedText = text.slice(0, maxLength);
+  const lastSpaceIndex = slicedText.lastIndexOf(' ');
+  if (lastSpaceIndex > 0) {
+    slicedText = slicedText.slice(0, lastSpaceIndex);
+  }
+  
+  return slicedText + '...';
+};
+
 router.get("/questions", async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -89,10 +104,17 @@ router.get("/questions", async (req, res) => {
         const profilePicUrl = await getSignedUrlForObject(
           profilepic.toObject().profile_pic
         );
+
+        // Slice the answer
+        const slicedAnswer = sliceHtml(question.answer, 150);
+        const fullAnswerAvailable = question.answer.length > 150;
+
         return {
           ...question,
           username: userMap[question.user_id.toString()] || "Unknown User",
           profile_pic: profilePicUrl,
+          answer: slicedAnswer,
+          fullAnswerAvailable: fullAnswerAvailable,
         };
       })
     );
@@ -137,6 +159,15 @@ router.get("/question/:id", async (req, res) => {
     if (!question) {
       return res.status(400).send({ error: "Invalid question_id" });
     }
+
+    // Check if the question is approved
+    if (question.status !== "approved") {
+      return res.status(200).send({
+        isVerified: false,
+        message: "This question is not yet approved.",
+      });
+    }
+
     await Question.updateOne(
       { _id: req.params.id },
       { $inc: { impressions: 1 } }
@@ -187,6 +218,7 @@ router.get("/question/:id", async (req, res) => {
       : null;
 
     return res.status(200).send({
+      isVerified: true,
       ...question.toObject(),
       username: user.username,
       profile_pic: profilePicUrl,

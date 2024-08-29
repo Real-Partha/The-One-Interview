@@ -3,9 +3,9 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useTheme } from "../../ThemeContext";
 import "./Post.css";
-import './QuillContent.css';
-import DOMPurify from 'dompurify';
-import UnverifiedPost from './UnverifiedPost';
+import "./QuillContent.css";
+import DOMPurify from "dompurify";
+import UnverifiedPost from "./UnverifiedPost";
 
 const Post = () => {
   const { questionId } = useParams();
@@ -19,11 +19,8 @@ const Post = () => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
 
-
   const [commentLikes, setCommentLikes] = useState({});
   const [commentDislikes, setCommentDislikes] = useState({});
-
-
 
   const debounce = (func, buttonId) => {
     return async (...args) => {
@@ -103,21 +100,27 @@ const Post = () => {
         `${import.meta.env.VITE_API_URL}/question/${questionId}`,
         { withCredentials: true }
       );
-      setQuestion(response.data);
-      setUserVote(response.data.userVote);
-      setUpvotes(response.data.upvotes);
-      setDownvotes(response.data.downvotes);
-      setComments(response.data.comments);
+      if (response.data.isVerified) {
+        setQuestion(response.data);
+        setUserVote(response.data.userVote);
+        setUpvotes(response.data.upvotes);
+        setDownvotes(response.data.downvotes);
+        setComments(response.data.comments);
 
-      // Initialize comment likes and dislikes
-      const likesObj = {};
-      const dislikesObj = {};
-      response.data.comments.forEach(comment => {
-        likesObj[comment._id] = comment.likes ? comment.likes.length : 0;
-        dislikesObj[comment._id] = comment.dislikes ? comment.dislikes.length : 0;
-      });
-      setCommentLikes(likesObj);
-      setCommentDislikes(dislikesObj);
+        // Initialize comment likes and dislikes
+        const likesObj = {};
+        const dislikesObj = {};
+        response.data.comments.forEach((comment) => {
+          likesObj[comment._id] = comment.likes ? comment.likes.length : 0;
+          dislikesObj[comment._id] = comment.dislikes
+            ? comment.dislikes.length
+            : 0;
+        });
+        setCommentLikes(likesObj);
+        setCommentDislikes(dislikesObj);
+      } else {
+        setQuestion({ isVerified: false });
+      }
     } catch (error) {
       console.error("Error fetching question:", error);
     }
@@ -130,8 +133,14 @@ const Post = () => {
         {},
         { withCredentials: true }
       );
-      setCommentLikes(prev => ({ ...prev, [commentId]: response.data.likes }));
-      setCommentDislikes(prev => ({ ...prev, [commentId]: response.data.dislikes }));
+      setCommentLikes((prev) => ({
+        ...prev,
+        [commentId]: response.data.likes,
+      }));
+      setCommentDislikes((prev) => ({
+        ...prev,
+        [commentId]: response.data.dislikes,
+      }));
     } catch (error) {
       console.error("Error liking comment:", error);
     }
@@ -144,14 +153,18 @@ const Post = () => {
         {},
         { withCredentials: true }
       );
-      setCommentLikes(prev => ({ ...prev, [commentId]: response.data.likes }));
-      setCommentDislikes(prev => ({ ...prev, [commentId]: response.data.dislikes }));
+      setCommentLikes((prev) => ({
+        ...prev,
+        [commentId]: response.data.likes,
+      }));
+      setCommentDislikes((prev) => ({
+        ...prev,
+        [commentId]: response.data.dislikes,
+      }));
     } catch (error) {
       console.error("Error disliking comment:", error);
     }
   };
-
-
 
   useEffect(() => {
     fetchQuestion();
@@ -230,7 +243,7 @@ const Post = () => {
 
   if (!question) return <div>Loading...</div>;
 
-  if (question.status !== "approved") {
+  if (!question.isVerified) {
     return <UnverifiedPost />;
   }
 
@@ -277,8 +290,9 @@ const Post = () => {
           </div>
           <div className="post-actions">
             <button
-              className={`upvote ${userVote === "upvote" ? "active" : ""} ${debouncingButton === "upvote" ? "debouncing" : ""
-                }`}
+              className={`upvote ${userVote === "upvote" ? "active" : ""} ${
+                debouncingButton === "upvote" ? "debouncing" : ""
+              }`}
               onClick={handleUpvote}
               disabled={isDebouncing}
             >
@@ -289,8 +303,9 @@ const Post = () => {
               )}
             </button>
             <button
-              className={`downvote ${userVote === "downvote" ? "active" : ""} ${debouncingButton === "downvote" ? "debouncing" : ""
-                }`}
+              className={`downvote ${userVote === "downvote" ? "active" : ""} ${
+                debouncingButton === "downvote" ? "debouncing" : ""
+              }`}
               onClick={handleDownvote}
               disabled={isDebouncing}
             >
@@ -335,21 +350,29 @@ const Post = () => {
                           alt={comment.username}
                           className="comment-profile-pic"
                         />
-                        <span className="comment-username">{comment.username}</span>
+                        <span className="comment-username">
+                          {comment.username}
+                        </span>
                       </div>
-                      <span className="comment-time">{formatTimeAgo(comment.created_at)}</span>
+                      <span className="comment-time">
+                        {formatTimeAgo(comment.created_at)}
+                      </span>
                     </div>
                     <p className="comment-content">{comment.comment}</p>
                     <div className="comment-actions">
                       <button
-                        className={`like-button ${commentLikes[comment._id] > 0 ? "liked" : ""}`}
+                        className={`like-button ${
+                          commentLikes[comment._id] > 0 ? "liked" : ""
+                        }`}
                         onClick={() => handleCommentLike(comment._id)}
                       >
                         <i className="fa-solid fa-thumbs-up"></i>
                         <span>{commentLikes[comment._id] || 0}</span>
                       </button>
                       <button
-                        className={`dislike-button ${commentDislikes[comment._id] > 0 ? "disliked" : ""}`}
+                        className={`dislike-button ${
+                          commentDislikes[comment._id] > 0 ? "disliked" : ""
+                        }`}
                         onClick={() => handleCommentDislike(comment._id)}
                       >
                         <i className="fa-solid fa-thumbs-down"></i>
@@ -357,8 +380,7 @@ const Post = () => {
                       </button>
                     </div>
                   </div>
-                ))
-              }
+                ))}
             </div>
           </div>
         </div>

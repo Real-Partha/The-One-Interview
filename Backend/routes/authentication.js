@@ -151,6 +151,7 @@ router.get("/status", async (req, res) => {
     req.user = req.user.toObject();
     delete req.user.password;
     delete req.user.two_factor_secret;
+    delete req.user.rotu;
     const profilePicUrl = await getSignedUrlForObject(req.user.profile_pic);
     req.user.profile_pic = profilePicUrl;
     res.json({

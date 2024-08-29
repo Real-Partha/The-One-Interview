@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef,useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import axios from "axios";
 import "./UserActivity.css";
 
@@ -29,7 +29,9 @@ const UserActivity = ({ refreshTrigger }) => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/account/user-activities?page=${pageNum}`,
+        `${
+          import.meta.env.VITE_API_URL
+        }/account/user-activities?page=${pageNum}`,
         { withCredentials: true }
       );
       if (pageNum === 1) {
@@ -266,9 +268,17 @@ const UserActivity = ({ refreshTrigger }) => {
     return years + (years === 1 ? " year ago" : " years ago");
   };
 
+  const LoaderAnimation = () => (
+    <div className="useractivity-loader">
+      <div className="useractivity-loader-dot"></div>
+      <div className="useractivity-loader-dot"></div>
+      <div className="useractivity-loader-dot"></div>
+    </div>
+  );
+
   return (
     <>
-    {/* <div className="user-activity"> */}
+      {/* <div className="user-activity"> */}
       <div className="activity-header">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -281,8 +291,14 @@ const UserActivity = ({ refreshTrigger }) => {
         <div className="user-activity-heading">Recent Activity</div>
       </div>
       <ul className="activity-list">
-        {activities.map((activity,index) => (
-          <li key={activity._id} className="activity-item" ref={index === activities.length - 1 ? lastActivityElementRef : null}>
+        {activities.map((activity, index) => (
+          <li
+            key={activity._id}
+            className="activity-item"
+            ref={
+              index === activities.length - 1 ? lastActivityElementRef : null
+            }
+          >
             {activity.type !== "vote" ? (
               <i
                 className={`fa ${getActivityIcon(activity.type)} activity-icon`}
@@ -303,6 +319,7 @@ const UserActivity = ({ refreshTrigger }) => {
           </li>
         ))}
       </ul>
+      {loading && <LoaderAnimation />}
     </>
   );
 };
