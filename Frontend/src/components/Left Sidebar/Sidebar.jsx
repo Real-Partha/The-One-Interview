@@ -42,9 +42,9 @@ const Sidebar = () => {
           <div className="company_names">
             <div className="card">
               <i className="fa-regular fa-building"></i>
-              <div className="card-details">
+              <Link to="/company-questions" className="card-details">
                 <h4>Corporate </h4>
-              </div>
+              </Link>
             </div>
           </div>
         </div>

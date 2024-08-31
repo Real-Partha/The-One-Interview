@@ -16,6 +16,11 @@ import AdminPage from './components/Admin/AdminPage';
 import Footer from './components/Footer/Footer';
 import NotFound from './components/commonPages/NotFound';
 
+import CompanyPage from './components/CompanyPage/CompanyPage';
+
+
+
+
 function AppContent() {
   const location = useLocation();
   const hideNavBarAndFooterRoutes = ['/login', '/signup'];
@@ -32,6 +37,7 @@ function AppContent() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/company-questions" element={<CompanyPage />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
