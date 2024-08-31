@@ -532,4 +532,7 @@ router.post("/disable-2fa", async (req, res) => {
   }
 });
 
-module.exports = router;
+module.exports = {
+  router,
+  sendEmail,
+};

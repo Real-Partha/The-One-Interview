@@ -1,10 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
+const OTP = require("../models/otp");
+const crypto = require("crypto");
 const passport = require("passport");
 const User = require("../models/user");
 const { getSignedUrlForObject } = require("../utils/amazonS3");
 const { authenticator } = require("otplib");
+const {sendEmail} = require("../routes/account"); // Import sendEmail function
 
 // OneID Signup
 // Local Signup
@@ -187,5 +190,69 @@ router.get("/logout", (req, res) => {
     });
   });
 });
+
+router.post("/forgot-password", async (req, res) => {
+  try {
+    const Email = req.body.email;
+    const user = await User.findOne({ email: Email })
+    if (!user) {
+      return res.status(400).json({ message: "User with this email does not exist" })
+    }
+    const otp = crypto.randomInt(100000, 999999).toString();
+    await OTP.create({
+      email: Email,
+      otp: otp,
+      expiresAt: new Date(Date.now() + 5 * 60 * 1000), // 5 minutes from now
+    });
+    await sendEmail(
+      Email,
+      "Password Reset OTP",
+      "otp-email-template.html",
+      { OTP: otp }
+    );
+    console.log(user.email);
+    const is2FAEnabled = user.two_factor_auth || false;
+    res.json({ message: "OTP sent to new email", is2FAEnabled:is2FAEnabled});
+  } catch (error) {
+    res.status(500).json({ message: "Error sending OTP"});
+  }
+});
+
+router.post("/reset-password", async (req, res) => {
+  try {
+    const email = req.body.email;
+    const otp = req.body.otp;
+    const password = req.body.password
+    const twoFAotp = req.body.twoFAotp||null;
+    const otpRecord = await OTP.findOne
+      ({ email, otp, expiresAt: { $gt: new Date() } });
+    if (!otpRecord) {
+      return res.status(400).json({ message: "Invalid or expired OTP" });
+    }
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    if(user.two_factor_auth){
+      if(twoFAotp==null){
+        return res.status(400).json({ message: "2FA OTP required" });
+      }
+      const verified = authenticator.verify({
+        token: twoFAotp.toString().trim(),
+        secret: user.two_factor_secret
+      });
+      if (!verified) {
+        return res.status(400).json({ message: "Invalid 2FA OTP" });
+      }
+    }
+    user.password = await bcrypt.hash(password, 10);
+    await user.save();
+    await OTP.deleteMany({ email });
+    res.json({ message: "Password reset successful" });
+  } catch (error) {
+    res.status(500).json({ message: "Error resetting password"});
+  }
+});
+
 
 module.exports = router;

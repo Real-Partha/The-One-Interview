@@ -55,7 +55,7 @@ require('./utils/passport');
 const authRoutes = require('./routes/authentication');
 const questionRoutes = require('./routes/questions');
 const userRoutes = require('./routes/user');
-const accountRoutes = require('./routes/account');
+const {router:accountRoutes} = require('./routes/account');
 const commentsRouter = require('./routes/comments');
 
 
