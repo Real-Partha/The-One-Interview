@@ -5,6 +5,8 @@ import { useNavigate,Link } from "react-router-dom";
 import { SearchContext } from "../context/SearchContext";
 import axios from "axios";
 
+import { useLocation } from 'react-router-dom';
+
 const NavBar = () => {
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -13,6 +15,7 @@ const NavBar = () => {
   const { setSearchQuery } = useContext(SearchContext);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
+  const location = useLocation();
 
   const checkAuthStatus = async () => {
     try {
@@ -25,6 +28,15 @@ const NavBar = () => {
     } catch (error) {
       console.error("Error checking auth status:", error);
     }
+  };
+
+  const shouldShowSearchBar = () => {
+    const { pathname } = location;
+    return !(
+      pathname === '/login' ||
+      pathname === '/signup' ||
+      pathname === '/profile'
+    );
   };
 
   const handleLogout = async () => {
@@ -66,6 +78,9 @@ const NavBar = () => {
     if (e.key === "Enter") {
       setSearchQuery(e.target.value);
       e.target.value = "";
+      if (location.pathname === '/question') {
+        navigate('/questions', { state: { searchQuery: e.target.value } });
+      }
     }
   };
 
@@ -104,17 +119,19 @@ const NavBar = () => {
             <span className="university-name">The One Interview</span>
           </div>
         </Link>
-        <div className="navbar-center">
-          <input
-            type="text"
-            placeholder="Type to search"
-            className="search-input"
-            onKeyDown={handleSearchChange}
-          />
-          <button className="search-button">
-            <i className="fas fa-search"></i>
-          </button>
-        </div>
+        {shouldShowSearchBar() && (
+          <div className="navbar-center">
+            <input
+              type="text"
+              placeholder="Type to search"
+              className="search-input"
+              onKeyDown={handleSearchChange}
+            />
+            <button className="search-button">
+              <i className="fas fa-search"></i>
+            </button>
+          </div>
+        )}
         <div className="navbar-right">
           <button onClick={handleToggleTheme} className="theme-toggle">
             {icon}
