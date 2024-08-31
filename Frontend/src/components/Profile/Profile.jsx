@@ -6,6 +6,7 @@ import axios from "axios";
 import { debounce } from "lodash";
 import UserActivity from "./UserActivity";
 import AccountSettings from "./AccountSettings";
+import LoginSignupPopup from "../commonPages/LoginSignupPopup";
 
 const Profile = () => {
   const { isDarkMode } = useTheme();
@@ -31,8 +32,6 @@ const Profile = () => {
       if (response.data.isAuthenticated) {
         setUser(response.data.user);
         setEditedUser(response.data.user);
-      } else {
-        setError("User not authenticated");
       }
     } catch (err) {
       console.error("Error fetching user data:", err);
@@ -141,7 +140,7 @@ const Profile = () => {
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
-  if (!user) return <div>No user data available</div>;
+  if (!user) return <div><LoginSignupPopup /></div>;
 
   return (
     <div className={`profile-page ${isDarkMode ? "dark-mode" : "light-mode"}`}>

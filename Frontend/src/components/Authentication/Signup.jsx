@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Signup.css";
-import useNotification from '../Notifications';
+import useNotification from "../Notifications";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -15,7 +15,7 @@ const Signup = () => {
     gender: "",
     date_of_birth: "",
   });
-  const { ErrorNotification ,SuccessNotification} = useNotification();
+  const { ErrorNotification, SuccessNotification } = useNotification();
   const [showPassword, setShowPassword] = useState(false);
   const [usernameAvailable, setUsernameAvailable] = useState(null);
   const [checkingUsername, setCheckingUsername] = useState(false);
@@ -25,6 +25,24 @@ const Signup = () => {
   const [emailError, setEmailError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/auth/status`,
+          { withCredentials: true }
+        );
+        if (response.data.isAuthenticated) {
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Error checking auth status:", error);
+      }
+    };
+
+    checkAuthStatus();
+  }, [navigate]);
 
   const handleChange = (e) => {
     let value = e.target.value;
