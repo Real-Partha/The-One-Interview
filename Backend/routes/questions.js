@@ -37,6 +37,10 @@ const processImagesInHtml = async (html) => {
   return processedHtml;
 };
 
+const capitalizeWords = (str) => {
+  return str.replace(/\b\w/g, (l) => l.toUpperCase());
+};
+
 // Helper function to replace image filenames with signed URLs
 const replaceImageUrlsWithSignedUrls = async (html) => {
   const imgRegex = /<img[^>]+src="([^">]+)"/g;
@@ -433,6 +437,7 @@ router.post("/question", async (req, res) => {
 
     const questionData = {
       ...req.body,
+      companyName: capitalizeWords(req.body.companyName),
       answer: processedAnswer,
       status: "unverified",
       user_id: req.user._id,

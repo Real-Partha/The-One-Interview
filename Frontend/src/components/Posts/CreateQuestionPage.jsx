@@ -64,7 +64,14 @@ const CreateQuestionPage = ({ onClose }) => {
     setIsFormValid(isValid);
   };
 
+  const capitalizeWords = (str) => {
+    return str.replace(/\b\w/g, (l) => l.toUpperCase());
+  };
+
   const handleChange = (value, field) => {
+    if (field === "companyName") {
+      value = capitalizeWords(value);
+    }
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -222,11 +229,11 @@ const CreateQuestionPage = ({ onClose }) => {
             value={formData.category}
             onChange={(e) => handleChange(e.target.value, "category")}
           >
-            <option value="general">General</option>
-            <option value="techinterview">Technical Interviews</option>
-            <option value="hrinterview">HR Interviews</option>
-            <option value="aptitude">Aptitude</option>
-            <option value="onlinecoding">Online Coding Round</option>
+            <option value="General">General</option>
+            <option value="Technical Round">Technical Round</option>
+            <option value="HR Round">HR Round</option>
+            <option value="Aptitude">Aptitude</option>
+            <option value="Online Coding Round">Online Coding Round</option>
           </select>
         </div>
         <div className="form-group">
@@ -237,9 +244,9 @@ const CreateQuestionPage = ({ onClose }) => {
             value={formData.level}
             onChange={(e) => handleChange(e.target.value, "level")}
           >
-            <option value="beginner">Beginner</option>
-            <option value="intermediate">Intermediate</option>
-            <option value="advanced">Advanced</option>
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
           </select>
         </div>
         <div className="form-group">

@@ -337,7 +337,7 @@ const Post = () => {
           </div>
           <div className="post-stats">
             <span className="view-count">
-              <i className="fas fa-eye"></i> {question.impressions || 0} Views
+              <i className="fas fa-eye"></i> {question.impressions || 0} {question.impressions===1?"View":"Views"}
             </span>
           </div>
           <div className="comments-section">
