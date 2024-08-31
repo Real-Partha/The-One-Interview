@@ -71,8 +71,8 @@
     outline: none;
   }
 
-  .fa-solid, .fas,
-.fa-regular, .far {
+  .card .fa-solid,
+.card .fa-regular{
     font-size: 24px;
     font-weight: 900;
 }

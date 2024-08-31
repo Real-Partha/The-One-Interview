@@ -24,6 +24,9 @@ const MainComponent = () => {
   const { isDarkMode } = useTheme();
   const [showCreateQuestion, setShowCreateQuestion] = useState(false);
   const [inputPage, setInputPage] = useState("");
+  const [searchMessage, setSearchMessage] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
+
 
   const handlePageInputChange = (e) => {
     setInputPage(e.target.value);
@@ -39,6 +42,17 @@ const MainComponent = () => {
       setInputPage("");
     }
   };
+
+  useEffect(() => {
+    if (location.state && location.state.searchQuery) {
+      const { searchQuery, fromPost } = location.state;
+      setSearchQuery(searchQuery);
+      handleUserSearch(searchQuery);
+      if (fromPost) {
+        setSearchMessage(`Your searched result response for "${searchQuery}"`);
+      }
+    }
+  }, [location]);
 
   const fetchThreads = useCallback(async (page) => {
     if (page) {
@@ -184,17 +198,20 @@ const MainComponent = () => {
   };
 
   const { searchQuery } = useContext(SearchContext);
-  const handleUserSearch = async (e) => {
-    if (!searchQuery) {
+  const handleUserSearch = async (query) => {
+    if (!query) {
+      setIsSearching(false);
+      fetchThreads(currentPage);
       return;
     }
-
+  
     try {
+      setIsSearching(true);
       resetPage();
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/questionsearch`,
         {
-          params: { query: searchQuery },
+          params: { query: query },
           withCredentials: true,
         }
       );
@@ -206,10 +223,16 @@ const MainComponent = () => {
       console.error("Error fetching threads:", error);
     }
   };
+  
 
   useEffect(() => {
-    handleUserSearch();
-  }, [searchQuery]);
+    if (searchQuery) {
+      handleUserSearch(searchQuery);
+    } else {
+      setIsSearching(false);
+      fetchThreads(currentPage);
+    }
+  }, [searchQuery, currentPage]);
 
   const toggleCreateQuestion = () => {
     setShowCreateQuestion((prev) => !prev);
@@ -219,26 +242,30 @@ const MainComponent = () => {
     <div className={`${isDarkMode ? "dark-mode" : "light-mode"}`}>
       <div className={`main-content`}>
       <Sidebar />
-        <section className="threads">
-          <div className="add-thread-container">
-            <div className="add-thread-input">
-              <Typewriter
-                words={["ADD A NEW QUESTION"]}
-                loop={true}
-                cursor
-                cursorStyle="|"
-                typeSpeed={70}
-                deleteSpeed={50}
-                delaySpeed={1000}
-              />
-            </div>
-            <button
-              className="add-thread-button"
-              onClick={toggleCreateQuestion}
-            >
-              <i className="fa-solid fa-plus"></i>
-            </button>
-          </div>
+      <section className="threads">
+  {isSearching ? (
+    <h2>{searchMessage || `Search Results for '${searchQuery}'`}</h2>
+  ) : (
+    <div className="add-thread-container">
+      <div className="add-thread-input">
+        <Typewriter
+          words={["ADD A NEW QUESTION"]}
+          loop={true}
+          cursor
+          cursorStyle="|"
+          typeSpeed={70}
+          deleteSpeed={50}
+          delaySpeed={1000}
+        />
+      </div>
+      <button
+        className="add-thread-button"
+        onClick={toggleCreateQuestion}
+      >
+        <i className="fa-solid fa-plus"></i>
+      </button>
+    </div>
+  )}
           <div
             className={`create-question-animation ${
               showCreateQuestion ? "show" : ""

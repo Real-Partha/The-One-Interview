@@ -8,6 +8,9 @@
   border-radius: 8px;
 }
 
+.post-main{
+  margin-top: 7rem;
+}
 .post-title {
   font-size: 28px;
   color: #333;

@@ -4,11 +4,10 @@ import { useTheme } from "../../ThemeContext";
 import { useNavigate,Link } from "react-router-dom";
 import { SearchContext } from "../context/SearchContext";
 import axios from "axios";
-
 import { useLocation } from 'react-router-dom';
 
+
 const NavBar = () => {
-  const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { isDarkMode, toggleTheme } = useTheme();
   const [icon, setIcon] = useState(isDarkMode ? "☀️" : "🌙");
@@ -16,6 +15,8 @@ const NavBar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const location = useLocation();
+  const navigate = useNavigate();
+  // const { setSearchQuery } = useContext(SearchContext);
 
   const checkAuthStatus = async () => {
     try {
@@ -76,13 +77,17 @@ const NavBar = () => {
 
   const handleSearchChange = (e) => {
     if (e.key === "Enter") {
-      setSearchQuery(e.target.value);
+      const searchQuery = e.target.value;
+      setSearchQuery(searchQuery);
       e.target.value = "";
-      if (location.pathname === '/question') {
-        navigate('/questions', { state: { searchQuery: e.target.value } });
+      if (location.pathname.startsWith('/question/')) {
+        navigate('/questions', { state: { searchQuery, fromPost: true } });
+      } else {
+        navigate('/questions', { state: { searchQuery } });
       }
     }
   };
+  
 
   useEffect(() => {
     const timer = setTimeout(() => {
