@@ -1,6 +1,6 @@
 .interview-experience-container {
-  max-width: 800px;
-  margin: auto;
+  width: calc(100%-40px);
+  /* margin: auto; */
   padding: 20px;
   font-weight: 600;
   font-family: "Montserrat", sans-serif;
@@ -8,6 +8,18 @@
 
 .form-group {
   margin-bottom: 20px;
+  white-space: pre-wrap;
+  overflow-wrap: break-word; 
+}
+.ql-toolbar {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  background-color: white;
+}
+.ql-container{
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background-color: white;
 }
 
 .form-control {
@@ -168,7 +180,10 @@
 
 .submit-group {
   position: relative;
-  display: inline-block;
+  /* display: inline-block; */
+  display: flex;
+  margin-bottom: 0;
+  justify-content: flex-end; /* Align items to the right */
 }
 
 .form-tooltip {
