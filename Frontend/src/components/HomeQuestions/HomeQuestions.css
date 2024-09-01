@@ -633,9 +633,9 @@
 
 }
 
-.sidebar, .right-sidebar{
+/* .sidebar, .right-sidebar{
   margin-bottom: 4rem;
-}
+} */
 
 .dark-mode .sidebar {
   background-color: #252525;

@@ -8,9 +8,9 @@
 
 .companypage-content {
   display: flex;
-  gap: 2rem;
   flex-grow: 1;
   padding: 0 2rem;
+  width: 100%;
 }
 
 .companypage-companies-list,
@@ -23,6 +23,7 @@
   border-radius: 10px;
   padding: 1.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
 }
 
 .companypage-title {
@@ -31,6 +32,27 @@
   color: #333;
   border-bottom: 2px solid #007bff;
   padding-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.companypage-title svg {
+  margin-right: 0.5rem;
+}
+
+.companypage-back-button {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-right: 1rem;
+  padding: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.companypage-back-button:hover {
+  color: #0056b3;
 }
 
 .companypage-company-card,
@@ -79,26 +101,44 @@
   margin-right: 0.3rem;
 }
 
-.companypage-question-preview {
-  font-size: 0.9rem;
-  color: #666;
-  margin-bottom: 0.5rem;
+.companypage-question-answer {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e0e0e0;
+  overflow: hidden;
 }
 
-.companypage-selected {
-  border: 2px solid #007bff;
-  background-color: #e6f2ff;
+.companypage-detailed-button {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
 }
 
-/* Animations */
+.companypage-detailed-button:hover {
+  background-color: #0056b3;
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.fade-out {
+  animation: fadeOut 0.5s ease-in-out;
+}
+
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
-.companypage-company-card,
-.companypage-question-card {
-  animation: fadeIn 0.5s ease-in-out;
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
 }
 
 /* Dark mode styles */
@@ -120,13 +160,24 @@
 }
 
 .dark-mode .companypage-company-stats,
-.dark-mode .companypage-question-meta,
-.dark-mode .companypage-question-preview {
+.dark-mode .companypage-question-meta {
   color: #bbb;
 }
 
-.dark-mode .companypage-selected {
-  background-color: #1e3a5f;
+.dark-mode .companypage-back-button {
+  color: #64b5f6;
+}
+
+.dark-mode .companypage-back-button:hover {
+  color: #90caf9;
+}
+
+.dark-mode .companypage-detailed-button {
+  background-color: #64b5f6;
+}
+
+.dark-mode .companypage-detailed-button:hover {
+  background-color: #90caf9;
 }
 
 /* Media query for responsiveness */
@@ -135,4 +186,43 @@
     flex-direction: column;
     margin-left: 0;
   }
+}
+
+/* Quill content styles */
+.quill-content {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+}
+
+.quill-content h1, .quill-content h2, .quill-content h3 {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
+
+.quill-content p {
+  margin-bottom: 1em;
+}
+
+.quill-content ul, .quill-content ol {
+  margin-bottom: 1em;
+  padding-left: 1.5em;
+}
+
+.quill-content pre {
+  background-color: #f4f4f4;
+  padding: 1em;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+.quill-content code {
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #f4f4f4;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+}
+
+.quill-content img {
+  max-width: 100%;
+  height: auto;
 }

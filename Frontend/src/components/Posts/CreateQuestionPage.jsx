@@ -41,8 +41,8 @@ const FormTooltip = ({ isVisible, formData }) => {
 const CreateQuestionPage = ({ onClose }) => {
   const [formData, setFormData] = useState({
     companyName: "",
-    category: "general",
-    level: "beginner",
+    category: "General",
+    level: "Beginner",
     question: "",
     answer: "",
     tags: [],
