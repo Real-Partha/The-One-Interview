@@ -15,7 +15,7 @@ import HomeComponent from "./components/HomeComponent/HomeComponent";
 import AdminPage from './components/Admin/AdminPage';
 import Footer from './components/Footer/Footer';
 import NotFound from './components/commonPages/NotFound';
-
+import UnderConstruction from "./components/commonPages/UnderConstruction";
 import CompanyPage from './components/CompanyPage/CompanyPage';
 
 
@@ -39,7 +39,7 @@ function AppContent() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/company-questions" element={<CompanyPage />} />
         <Route path="/admin" element={<AdminPage />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<UnderConstruction />} />
       </Routes>
       {shouldShowNavBarAndFooter && <Footer />}
     </>

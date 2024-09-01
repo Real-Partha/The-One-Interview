@@ -1,0 +1,903 @@
+[
+    {
+        "question": "Fix the bug in this function to return the sum of two numbers:",
+        "code": "function add(a, b) {\n  return a - b;\n}",
+        "solution": "function add(a, b) {\n  return a + b;\n}",
+        "testInputs": [
+            [
+                1,
+                2
+            ],
+            [
+                5,
+                3
+            ],
+            [
+                10,
+                -5
+            ]
+        ]
+    },
+    {
+        "question": "Complete the function to return the factorial of a number:",
+        "code": "function factorial(n) {\n  // Your code here\n}",
+        "solution": "function factorial(n) {\n  if (n <= 1) return 1;\n  return n * factorial(n - 1);\n}",
+        "testInputs": [
+            [
+                0
+            ],
+            [
+                1
+            ],
+            [
+                5
+            ]
+        ]
+    },
+    {
+        "question": "Fix the bug in this function to properly reverse a string:",
+        "code": "function reverseString(str) {\n  return str.split('').reverse();\n}",
+        "solution": "function reverseString(str) {\n  return str.split('').reverse().join('');\n}",
+        "testInputs": [
+            [
+                "hello"
+            ],
+            [
+                "javascript"
+            ],
+            [
+                "racecar"
+            ]
+        ]
+    },
+    {
+        "question": "Fix the bug in this function to properly check if a number is prime:",
+        "code": "function isPrime(n) {\n  for (let i = 2; i < n; i++) {\n    if (n % i === 0) return false;\n  }\n  return true;\n}",
+        "solution": "function isPrime(n) {\n  if (n <= 1) return false;\n  for (let i = 2; i <= Math.sqrt(n); i++) {\n    if (n % i === 0) return false;\n  }\n  return true;\n}",
+        "testInputs": [
+            [
+                1
+            ],
+            [
+                2
+            ],
+            [
+                5
+            ],
+            [
+                10
+            ]
+        ]
+    },
+    {
+        "question": "Complete the function to return the number of vowels in a string:",
+        "code": "function countVowels(str) {\n  // Your code here\n}",
+        "solution": "function countVowels(str) {\n  const vowels = 'aeiou';\n  return str.split('').filter(char => vowels.includes(char)).length;\n}",
+        "testInputs": [
+            [
+                "hello"
+            ],
+            [
+                "javascript"
+            ],
+            [
+                "racecar"
+            ]
+        ]
+    },
+    {
+        "question": "Fix the bug in this function to properly check if a string is a palindrome:",
+        "code": "function isPalindrome(str) {\n  return str === str.split('').reverse().join('');\n}",
+        "solution": "function isPalindrome(str) {\n  return str === str.split('').reverse().join('');\n}",
+        "testInputs": [
+            [
+                "hello"
+            ],
+            [
+                "racecar"
+            ],
+            [
+                "madam"
+            ]
+        ]
+    },
+    {
+        "question": "Complete the function to return the number of words in a string:",
+        "code": "function countWords(str) {\n  // Your code here\n}",
+        "solution": "function countWords(str) {\n  return str.split(' ').length;\n}",
+        "testInputs": [
+            [
+                "hello world"
+            ],
+            [
+                "javascript is fun"
+            ],
+            [
+                "racecar"
+            ]
+        ]
+    },
+    {
+        "question": "Fix the bug in this function to properly check if a string is an anagram:",
+        "code": "function isAnagram(str1, str2) {\n  return str1.split('').sort().join('') === str2.split('').sort().join('');\n}",
+        "solution": "function isAnagram(str1, str2) {\n  return str1.split('').sort().join('') === str2.split('').sort().join('');\n}",
+        "testInputs": [
+            [
+                "hello",
+                "world"
+            ],
+            [
+                "listen",
+                "silent"
+            ],
+            [
+                "racecar",
+                "carrace"
+            ]
+        ]
+    },
+    {
+        "question": "Complete the function to return the number of occurrences of each character in a string:",
+        "code": "function countCharacters(str) {\n  // Your code here\n}",
+        "solution": "function countCharacters(str) {\n  const counts = {};\n  for (const char of str) {\n    counts[char] = counts[char] ? counts[char] + 1 : 1;\n  }\n  return counts;\n}",
+        "testInputs": [
+            [
+                "hello"
+            ],
+            [
+                "javascript"
+            ],
+            [
+                "racecar"
+            ]
+        ]
+    },
+    {
+        "question": "Fix the bug in this function to properly check if a number is a power of two:",
+        "code": "function isPowerOfTwo(n) {\n  return n % 2 === 0;\n}",
+        "solution": "function isPowerOfTwo(n) {\n  return n > 0 && (n & (n - 1)) === 0;\n}",
+        "testInputs": [
+            [
+                2
+            ],
+            [
+                8
+            ],
+            [
+                10
+            ],
+            [
+                16
+            ],
+            [
+                32
+            ]
+        ]
+    },
+    {
+        "question": "Fix the bug in this function to properly find the minimum number in an array:",
+        "code": "function findMin(arr) {\n  return Math.max(...arr);\n}",
+        "solution": "function findMin(arr) {\n  return Math.min(...arr);\n}",
+        "testInputs": [
+            [
+                1,
+                2,
+                3
+            ],
+            [
+                10,
+                5,
+                8
+            ],
+            [
+                -1,
+                -5,
+                -3
+            ]
+        ]
+    },
+    {
+        "question": "Complete the function to reverse the words in a sentence:",
+        "code": "function reverseWords(str) {\n  // Your code here\n}",
+        "solution": "function reverseWords(str) {\n  return str.split(' ').reverse().join(' ');\n}",
+        "testInputs": [
+            [
+                "hello world"
+            ],
+            [
+                "javascript is fun"
+            ],
+            [
+                "open ai"
+            ]
+        ]
+    },
+    {
+        "question": "Fix the bug in this function to properly remove all occurrences of a specific value from an array:",
+        "code": "function removeOccurrences(arr, value) {\n  return arr.filter(val => val !== value);\n}",
+        "solution": "function removeOccurrences(arr, value) {\n  return arr.filter(val => val !== value);\n}",
+        "testInputs": [
+            [
+                [
+                    1,
+                    2,
+                    3,
+                    4,
+                    3
+                ],
+                3
+            ],
+            [
+                [
+                    5,
+                    6,
+                    7,
+                    7,
+                    8
+                ],
+                7
+            ],
+            [
+                [
+                    10,
+                    20,
+                    20,
+                    30
+                ],
+                20
+            ]
+        ]
+    },
+    {
+        "question": "Complete the function to calculate the factorial of a number iteratively:",
+        "code": "function factorialIterative(n) {\n  // Your code here\n}",
+        "solution": "function factorialIterative(n) {\n  let result = 1;\n  for (let i = 2; i <= n; i++) {\n    result *= i;\n  }\n  return result;\n}",
+        "testInputs": [
+            [
+                5
+            ],
+            [
+                0
+            ],
+            [
+                10
+            ]
+        ]
+    },
+    {
+        "question": "Fix the bug in this function to properly check if a string is an anagram of another (case-insensitive):",
+        "code": "function isAnagramCaseInsensitive(str1, str2) {\n  return str1.split('').sort().join('') === str2.split('').sort().join('');\n}",
+        "solution": "function isAnagramCaseInsensitive(str1, str2) {\n  return str1.toLowerCase().split('').sort().join('') === str2.toLowerCase().split('').sort().join('');\n}",
+        "testInputs": [
+            [
+                "Listen",
+                "Silent"
+            ],
+            [
+                "Hello",
+                "Olelh"
+            ],
+            [
+                "Dormitory",
+                "Dirty room"
+            ]
+        ]
+    },
+    {
+        "question": "Complete the function to return the square of a number:",
+        "code": "function square(num) {\n  // Your code here\n}",
+        "solution": "function square(num) {\n  return num * num;\n}",
+        "testInputs": [
+            [
+                2
+            ],
+            [
+                5
+            ],
+            [
+                10
+            ]
+        ]
+    },
+    {
+        "question": "Fix the bug in this function to properly convert Celsius to Fahrenheit:",
+        "code": "function celsiusToFahrenheit(celsius) {\n  return celsius * 9 / 5 + 32;\n}",
+        "solution": "function celsiusToFahrenheit(celsius) {\n  return (celsius * 9) / 5 + 32;\n}",
+        "testInputs": [
+            [
+                0
+            ],
+            [
+                100
+            ],
+            [
+                37
+            ]
+        ]
+    },
+    {
+        "question": "Complete the function to check if a number is even:",
+        "code": "function isEven(num) {\n  // Your code here\n}",
+        "solution": "function isEven(num) {\n  return num % 2 === 0;\n}",
+        "testInputs": [
+            [
+                2
+            ],
+            [
+                5
+            ],
+            [
+                10
+            ]
+        ]
+    },
+    {
+        "question": "Fix the bug in this function to properly check if a number is odd:",
+        "code": "function isOdd(num) {\n  return num % 2 === 0;\n}",
+        "solution": "function isOdd(num) {\n  return num % 2 !== 0;\n}",
+        "testInputs": [
+            [
+                1
+            ],
+            [
+                4
+            ],
+            [
+                7
+            ]
+        ]
+    },
+    {
+        "question": "Complete the function to convert an array of strings to uppercase:",
+        "code": "function toUpperCaseArray(arr) {\n  // Your code here\n}",
+        "solution": "function toUpperCaseArray(arr) {\n  return arr.map(str => str.toUpperCase());\n}",
+        "testInputs": [
+            [
+                "hello",
+                "world"
+            ],
+            [
+                "javascript",
+                "is",
+                "fun"
+            ],
+            [
+                "open",
+                "ai"
+            ]
+        ]
+    },
+    {
+        "question": "Fix the bug in this function to properly find the maximum number in an array:",
+        "code": "function findMax(arr) {\n  return Math.min(...arr);\n}",
+        "solution": "function findMax(arr) {\n  return Math.max(...arr);\n}",
+        "testInputs": [
+            [
+                1,
+                2,
+                3
+            ],
+            [
+                10,
+                5,
+                8
+            ],
+            [
+                -1,
+                -5,
+                -3
+            ]
+        ]
+    },
+    {
+        "question": "Complete the function to calculate the sum of the digits of a number:",
+        "code": "function sumDigits(num) {\n  // Your code here\n}",
+        "solution": "function sumDigits(num) {\n  let sum = 0;\n  while (num) {\n    sum += num % 10;\n    num = Math.floor(num / 10);\n  }\n  return sum;\n}",
+        "testInputs": [
+            [
+                123
+            ],
+            [
+                456
+            ],
+            [
+                789
+            ]
+        ]
+    },
+    {
+        "question": "Fix the bug in this function to properly check if a year is a leap year:",
+        "code": "function isLeapYear(year) {\n  return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);\n}",
+        "solution": "function isLeapYear(year) {\n  return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);\n}",
+        "testInputs": [
+            [
+                2000
+            ],
+            [
+                1900
+            ],
+            [
+                2024
+            ]
+        ]
+    },
+    {
+        "question": "Complete the function to count the number of digits in a number:",
+        "code": "function countDigits(num) {\n  // Your code here\n}",
+        "solution": "function countDigits(num) {\n  return num.toString().length;\n}",
+        "testInputs": [
+            [
+                123
+            ],
+            [
+                4567
+            ],
+            [
+                89012
+            ]
+        ]
+    },
+    {
+        "question": "Complete the function to convert an array of strings to lowercase:",
+        "code": "function toLowerCaseArray(arr) {\n  // Your code here\n}",
+        "solution": "function toLowerCaseArray(arr) {\n  return arr.map(str => str.toLowerCase());\n}",
+        "testInputs": [
+            [
+                "HELLO",
+                "WORLD"
+            ],
+            [
+                "JAVASCRIPT",
+                "IS",
+                "FUN"
+            ],
+            [
+                "OPEN",
+                "AI"
+            ]
+        ]
+    },
+    {
+        "question": "Complete the function to calculate the nth triangular number:",
+        "code": "function triangularNumber(n) {\n  // Your code here\n}",
+        "solution": "function triangularNumber(n) {\n  return (n * (n + 1)) / 2;\n}",
+        "testInputs": [
+            [
+                1
+            ],
+            [
+                5
+            ],
+            [
+                10
+            ]
+        ]
+    },
+    {
+        "question": "Complete the function to find the GCD (Greatest Common Divisor) of two numbers:",
+        "code": "function gcd(a, b) {\n  // Your code here\n}",
+        "solution": "function gcd(a, b) {\n  while (b !== 0) {\n    const temp = b;\n    b = a % b;\n    a = temp;\n  }\n  return a;\n}",
+        "testInputs": [
+            [
+                12,
+                15
+            ],
+            [
+                100,
+                75
+            ],
+            [
+                7,
+                3
+            ]
+        ]
+    },
+    {
+        "question": "Fix the bug in this function to properly find the LCM (Least Common Multiple) of two numbers:",
+        "code": "function lcm(a, b) {\n  return Math.abs(a * b) / gcd(a, b);\n}",
+        "solution": "function lcm(a, b) {\n  function gcd(a, b) {\n    while (b !== 0) {\n      const temp = b;\n      b = a % b;\n      a = temp;\n    }\n    return a;\n  }\n  return Math.abs(a * b) / gcd(a, b);\n}",
+        "testInputs": [
+            [
+                12,
+                15
+            ],
+            [
+                4,
+                6
+            ],
+            [
+                7,
+                3
+            ]
+        ]
+    },
+    {
+        "question": "Complete the function to calculate the sum of the digits of a number:",
+        "code": "function sumDigits(num) {\n  // Your code here\n}",
+        "solution": "function sumDigits(num) {\n  let sum = 0;\n  while (num) {\n    sum += num % 10;\n    num = Math.floor(num / 10);\n  }\n  return sum;\n}",
+        "testInputs": [
+            [
+                123
+            ],
+            [
+                456
+            ],
+            [
+                789
+            ]
+        ]
+    },
+    {
+        "question": "Fix the bug in this function to properly check if a year is a leap year:",
+        "code": "function isLeapYear(year) {\n  return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);\n}",
+        "solution": "function isLeapYear(year) {\n  return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);\n}",
+        "testInputs": [
+            [
+                2000
+            ],
+            [
+                1900
+            ],
+            [
+                2024
+            ]
+        ]
+    },
+    {
+        "question": "Complete the function to count the number of digits in a number:",
+        "code": "function countDigits(num) {\n  // Your code here\n}",
+        "solution": "function countDigits(num) {\n  return num.toString().length;\n}",
+        "testInputs": [
+            [
+                123
+            ],
+            [
+                4567
+            ],
+            [
+                89012
+            ]
+        ]
+    },
+    {
+        "question": "Complete the function to convert an array of strings to lowercase:",
+        "code": "function toLowerCaseArray(arr) {\n  // Your code here\n}",
+        "solution": "function toLowerCaseArray(arr) {\n  return arr.map(str => str.toLowerCase());\n}",
+        "testInputs": [
+            [
+                "HELLO",
+                "WORLD"
+            ],
+            [
+                "JAVASCRIPT",
+                "IS",
+                "FUN"
+            ],
+            [
+                "OPEN",
+                "AI"
+            ]
+        ]
+    },
+    {
+        "question": "Complete the function to calculate the nth triangular number:",
+        "code": "function triangularNumber(n) {\n  // Your code here\n}",
+        "solution": "function triangularNumber(n) {\n  return (n * (n + 1)) / 2;\n}",
+        "testInputs": [
+            [
+                1
+            ],
+            [
+                5
+            ],
+            [
+                10
+            ]
+        ]
+    },
+    {
+        "question": "Complete the function to find the length of the longest word in a string:",
+        "code": "function longestWordLength(str) {\n  // Your code here\n}",
+        "solution": "function longestWordLength(str) {\n  const words = str.split(' ');\n  let maxLength = 0;\n  for (const word of words) {\n    if (word.length > maxLength) {\n      maxLength = word.length;\n    }\n  }\n  return maxLength;\n}",
+        "testInputs": [
+            [
+                "hello world"
+            ],
+            [
+                "javascript is fun"
+            ],
+            [
+                "open ai is amazing"
+            ]
+        ]
+    },
+    {
+        "question": "Complete the function to return the sum of the squares of the elements in an array:",
+        "code": "function sumOfSquares(arr) {\n  // Your code here\n}",
+        "solution": "function sumOfSquares(arr) {\n  let sum = 0;\n  for (const num of arr) {\n    sum += num * num;\n  }\n  return sum;\n}",
+        "testInputs": [
+            [
+                1,
+                2,
+                3
+            ],
+            [
+                4,
+                5,
+                6
+            ],
+            [
+                7,
+                8,
+                9
+            ]
+        ]
+    },
+    {
+        "question": "Fix the bug in this function to properly find the index of the first occurrence of a character in a string:",
+        "code": "function firstOccurrence(str, char) {\n  return str.indexOf(char);\n}",
+        "solution": "function firstOccurrence(str, char) {\n  return str.indexOf(char);\n}",
+        "testInputs": [
+            [
+                "hello",
+                "l"
+            ],
+            [
+                "javascript",
+                "a"
+            ],
+            [
+                "racecar",
+                "c"
+            ]
+        ]
+    },
+    {
+        "question": "Complete the function to return the last element in an array:",
+        "code": "function lastElement(arr) {\n  // Your code here\n}",
+        "solution": "function lastElement(arr) {\n  return arr[arr.length - 1];\n}",
+        "testInputs": [
+            [
+                1,
+                2,
+                3
+            ],
+            [
+                10,
+                20,
+                30
+            ],
+            [
+                100,
+                200,
+                300
+            ]
+        ]
+    },
+    {
+        "question": "Fix the bug in this function to properly remove the first element from an array:",
+        "code": "function removeFirstElement(arr) {\n  arr.shift();\n  return arr;\n}",
+        "solution": "function removeFirstElement(arr) {\n  arr.shift();\n  return arr;\n}",
+        "testInputs": [
+            [
+                1,
+                2,
+                3
+            ],
+            [
+                10,
+                20,
+                30
+            ],
+            [
+                100,
+                200,
+                300
+            ]
+        ]
+    },
+    {
+        "question": "Complete the function to return a string with the first letter of each word capitalized:",
+        "code": "function capitalizeFirstLetter(str) {\n  // Your code here\n}",
+        "solution": "function capitalizeFirstLetter(str) {\n  return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');\n}",
+        "testInputs": [
+            [
+                "hello world"
+            ],
+            [
+                "javascript is fun"
+            ],
+            [
+                "capitalize each word"
+            ]
+        ]
+    },
+    {
+        "question": "Complete the function to reverse a number (e.g., 123 becomes 321):",
+        "code": "function reverseNumber(num) {\n  // Your code here\n}",
+        "solution": "function reverseNumber(num) {\n  let reversed = 0;\n  while (num !== 0) {\n    reversed = reversed * 10 + (num % 10);\n    num = Math.floor(num / 10);\n  }\n  return reversed;\n}",
+        "testInputs": [
+            [
+                123
+            ],
+            [
+                456
+            ],
+            [
+                789
+            ]
+        ]
+    },
+    {
+        "question": "Complete the function to calculate the sum of all even numbers in an array:",
+        "code": "function sumEvenNumbers(arr) {\n  // Your code here\n}",
+        "solution": "function sumEvenNumbers(arr) {\n  let sum = 0;\n  for (const num of arr) {\n    if (num % 2 === 0) {\n      sum += num;\n    }\n  }\n  return sum;\n}",
+        "testInputs": [
+            [
+                1,
+                2,
+                3,
+                4,
+                5
+            ],
+            [
+                10,
+                20,
+                30
+            ],
+            [
+                7,
+                8,
+                9
+            ]
+        ]
+    },
+    {
+        "question": "Complete the function to check if a number is a palindrome:",
+        "code": "function isPalindromeNumber(num) {\n  // Your code here\n}",
+        "solution": "function isPalindromeNumber(num) {\n  const str = num.toString();\n  return str === str.split('').reverse().join('');\n}",
+        "testInputs": [
+            [
+                121
+            ],
+            [
+                123
+            ],
+            [
+                989
+            ]
+        ]
+    },
+    {
+        "question": "Fix the bug in this function to properly find the smallest element in an array (without using Math.min):",
+        "code": "function findSmallest(arr) {\n  let smallest = arr[0];\n  for (const num of arr) {\n    if (num < smallest) {\n      smallest = num;\n    }\n  }\n  return smallest;\n}",
+        "solution": "function findSmallest(arr) {\n  let smallest = arr[0];\n  for (const num of arr) {\n    if (num < smallest) {\n      smallest = num;\n    }\n  }\n  return smallest;\n}",
+        "testInputs": [
+            [
+                1,
+                2,
+                3
+            ],
+            [
+                10,
+                5,
+                8
+            ],
+            [
+                -1,
+                -5,
+                -3
+            ]
+        ]
+    },
+    {
+        "question": "Complete the function to return the number of consonants in a string:",
+        "code": "function countConsonants(str) {\n  // Your code here\n}",
+        "solution": "function countConsonants(str) {\n  const vowels = 'aeiou';\n  return str.split('').filter(char => !vowels.includes(char) && /[a-z]/i.test(char)).length;\n}",
+        "testInputs": [
+            [
+                "hello"
+            ],
+            [
+                "javascript"
+            ],
+            [
+                "racecar"
+            ]
+        ]
+    },
+    {
+        "question": "Complete the function to calculate the sum of all odd numbers in an array:",
+        "code": "function sumOddNumbers(arr) {\n  // Your code here\n}",
+        "solution": "function sumOddNumbers(arr) {\n  let sum = 0;\n  for (const num of arr) {\n    if (num % 2 !== 0) {\n      sum += num;\n    }\n  }\n  return sum;\n}",
+        "testInputs": [
+            [
+                1,
+                2,
+                3,
+                4,
+                5
+            ],
+            [
+                11,
+                22,
+                33
+            ],
+            [
+                7,
+                9,
+                13
+            ]
+        ]
+    },
+    {
+        "question": "Complete the function to return the last digit of a number:",
+        "code": "function lastDigit(num) {\n  // Your code here\n}",
+        "solution": "function lastDigit(num) {\n  return num % 10;\n}",
+        "testInputs": [
+            [
+                123
+            ],
+            [
+                456
+            ],
+            [
+                789
+            ]
+        ]
+    },
+    {
+        "question": "Complete the function to calculate the product of all elements in an array:",
+        "code": "function productOfArray(arr) {\n  // Your code here\n}",
+        "solution": "function productOfArray(arr) {\n  let product = 1;\n  for (const num of arr) {\n    product *= num;\n  }\n  return product;\n}",
+        "testInputs": [
+            [
+                1,
+                2,
+                3
+            ],
+            [
+                4,
+                5,
+                6
+            ],
+            [
+                7,
+                8,
+                9
+            ]
+        ]
+    },
+    {
+        "question": "Complete the function to return the square root of a number:",
+        "code": "function squareRoot(num) {\n  // Your code here\n}",
+        "solution": "function squareRoot(num) {\n  return Math.sqrt(num);\n}",
+        "testInputs": [
+            [
+                4
+            ],
+            [
+                9
+            ],
+            [
+                16
+            ]
+        ]
+    },
+    {
+        "question": "Complete the function to return the absolute value of a number:",
+        "code": "function absoluteValue(num) {\n  // Your code here\n}",
+        "solution": "function absoluteValue(num) {\n  return Math.abs(num);\n}",
+        "testInputs": [
+            [
+                -5
+            ],
+            [
+                10
+            ],
+            [
+                -20
+            ]
+        ]
+    }
+]
