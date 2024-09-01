@@ -61,12 +61,13 @@ const AccountSettings = ({ user, fetchUserData }) => {
     }
 
     setOtpValues(newOtpValues);
-    setOtp(newOtpValues.join(""));
 
-    // Focus on the next empty input or the last input
-    const nextEmptyIndex = newOtpValues.findIndex((value) => value === "");
-    const focusIndex = nextEmptyIndex === -1 ? 5 : nextEmptyIndex;
-    otpRefs[focusIndex].current.focus();
+    // Focus on the last non-empty input or the last input if all are filled
+    const lastNonEmptyIndex = newOtpValues.reduce(
+      (lastIndex, value, index) => (value !== "" ? index : lastIndex),
+      5
+    );
+    otpRefs[lastNonEmptyIndex].current.focus();
   };
 
   const handleOtpKeyDown = (index, e) => {

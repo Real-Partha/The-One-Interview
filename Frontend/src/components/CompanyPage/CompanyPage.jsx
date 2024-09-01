@@ -14,6 +14,7 @@ import {
   faChevronLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import DOMPurify from "dompurify";
+import MainLoader from "../commonPages/MainLoader";
 
 const CompanyPage = () => {
   const [companies, setCompanies] = useState([]);
@@ -24,12 +25,14 @@ const CompanyPage = () => {
   const [closingQuestion, setClosingQuestion] = useState(null);
   const { isDarkMode } = useTheme();
   const questionRefs = useRef({});
+  const [isMainLoading, setIsMainLoading] = useState(true);
 
   useEffect(() => {
     fetchCompanies();
   }, []);
 
   const fetchCompanies = async () => {
+    setIsMainLoading(true);
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/companies`
@@ -39,9 +42,12 @@ const CompanyPage = () => {
       );
       setCompanies(companiesData);
       setIsLoading(false);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      setIsMainLoading(false);
     } catch (error) {
       console.error("Error fetching companies:", error);
       setIsLoading(false);
+      setIsMainLoading(false);
     }
   };
 
@@ -54,6 +60,7 @@ const CompanyPage = () => {
       setQuestions(response.data.questions);
       setSelectedCompany(company);
       setIsLoading(false);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (error) {
       console.error("Error fetching company questions:", error);
       setIsLoading(false);
@@ -87,9 +94,16 @@ const CompanyPage = () => {
   };
 
   const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString('en-US', options);
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return new Date(dateString).toLocaleDateString("en-US", options);
   };
+
+  if (isMainLoading)
+    return (
+      <div>
+        <MainLoader />
+      </div>
+    );
 
   return (
     <div
@@ -166,7 +180,8 @@ const CompanyPage = () => {
         ) : (
           <div className="companypage-companies-list">
             <h2 className="companypage-title">
-              <FontAwesomeIcon icon={faBuilding} /> <span>Companies</span>
+              <FontAwesomeIcon icon={faBuilding} />{" "}
+              <span className="companypage-title-company">Companies</span>
             </h2>
             {isLoading
               ? Array(7)

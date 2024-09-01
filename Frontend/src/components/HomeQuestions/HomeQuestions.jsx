@@ -12,9 +12,9 @@ import { SearchContext } from "../context/SearchContext";
 import ThreadSkeleton from "./threadskeleton";
 import DOMPurify from "dompurify";
 import Sidebar from "../Left Sidebar/Sidebar";
+import MainLoader from "../commonPages/MainLoader";
 
 const MainComponent = () => {
-  const navigate = useNavigate();
   const [threads, setThreads] = useState([]);
   const [currentPage, setCurrentPage] = useState(null);
   const [isquestionloading, setIsQuestionLoading] = useState(true);
@@ -24,9 +24,9 @@ const MainComponent = () => {
   const { isDarkMode } = useTheme();
   const [showCreateQuestion, setShowCreateQuestion] = useState(false);
   const [inputPage, setInputPage] = useState("");
-  const [searchMessage, setSearchMessage] = useState('');
+  const [searchMessage, setSearchMessage] = useState("");
   const [isSearching, setIsSearching] = useState(false);
-
+  const [isMainLoading, setIsMainLoading] = useState(true);
 
   const handlePageInputChange = (e) => {
     setInputPage(e.target.value);
@@ -76,14 +76,22 @@ const MainComponent = () => {
   }, []);
 
   useEffect(() => {
-    const savedPage = getPageWithExpiration();
-    if (savedPage) {
-      setCurrentPage(parseInt(savedPage, 10));
-    } else {
-      setCurrentPage(1);
-    }
-    fetchThreads(savedPage ? parseInt(savedPage, 10) : 1);
+    const loadFirstThreads = async () => {
+      setIsMainLoading(true);
+      const savedPage = getPageWithExpiration();
+      if (savedPage) {
+        setCurrentPage(parseInt(savedPage, 10));
+      } else {
+        setCurrentPage(1);
+      }
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      setIsMainLoading(false);
+      fetchThreads(savedPage ? parseInt(savedPage, 10) : 1);
+    };
+
+    loadFirstThreads();
   }, []);
+
   useEffect(() => {
     fetchThreads(currentPage);
   }, [currentPage, fetchThreads]);
@@ -129,21 +137,6 @@ const MainComponent = () => {
     const years = Math.floor(months / 12);
     return years + (years === 1 ? " year ago" : " years ago");
   }
-
-  const handleSubmit = () => {
-    setIsSubmitting(true);
-    // Simulating an API call
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsDropdownOpen(false);
-      // Here you would typically send the answers to your backend
-      console.log(answers);
-    }, 2000);
-  };
-
-  const handleRedirect = () => {
-    navigate("/create-question");
-  };
 
   const setPageWithExpiration = (page) => {
     const now = new Date().getTime();
@@ -204,7 +197,7 @@ const MainComponent = () => {
       fetchThreads(currentPage);
       return;
     }
-  
+
     try {
       setIsSearching(true);
       resetPage();
@@ -223,7 +216,6 @@ const MainComponent = () => {
       console.error("Error fetching threads:", error);
     }
   };
-  
 
   useEffect(() => {
     if (searchQuery) {
@@ -238,40 +230,47 @@ const MainComponent = () => {
     setShowCreateQuestion((prev) => !prev);
   };
 
+  if (isMainLoading)
+    return (
+      <div>
+        <MainLoader />
+      </div>
+    );
+
   return (
     <div className={`${isDarkMode ? "dark-mode" : "light-mode"}`}>
       <div className={`main-content`}>
-      <Sidebar />
-      <section className="threads">
-  {isSearching ? (
-    <h2>{searchMessage || `Search Results for '${searchQuery}'`}</h2>
-  ) : (
-    <div className="add-thread-container">
-      <div className="add-thread-input">
-        <Typewriter
-          words={["ADD A NEW QUESTION"]}
-          loop={true}
-          cursor
-          cursorStyle="|"
-          typeSpeed={70}
-          deleteSpeed={50}
-          delaySpeed={1000}
-        />
-      </div>
-      <button
-        className="add-thread-button"
-        onClick={toggleCreateQuestion}
-      >
-        <i className="fa-solid fa-plus"></i>
-      </button>
-    </div>
-  )}
+        <Sidebar />
+        <section className="threads">
+          {isSearching ? (
+            <h2>{searchMessage || `Search Results for '${searchQuery}'`}</h2>
+          ) : (
+            <div className="add-thread-container">
+              <div className="add-thread-input">
+                <Typewriter
+                  words={["ADD A NEW QUESTION"]}
+                  loop={true}
+                  cursor
+                  cursorStyle="|"
+                  typeSpeed={70}
+                  deleteSpeed={50}
+                  delaySpeed={1000}
+                />
+              </div>
+              <button
+                className="add-thread-button"
+                onClick={toggleCreateQuestion}
+              >
+                <i className="fa-solid fa-plus"></i>
+              </button>
+            </div>
+          )}
           <div
             className={`create-question-animation ${
               showCreateQuestion ? "show" : ""
             }`}
           >
-            <CreateQuestionPage onClose={toggleCreateQuestion}/>
+            <CreateQuestionPage onClose={toggleCreateQuestion} />
           </div>
 
           {isquestionloading
