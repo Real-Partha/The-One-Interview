@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./MainLoader.css";
 import { useTheme } from "../../ThemeContext";
 import tips from "./tips.json";
+import BoltLoader from "./BoltLoader";
 
 const MainLoader = () => {
   const { isDarkMode } = useTheme();
@@ -37,9 +38,10 @@ const MainLoader = () => {
           <i className="fas fa-lightbulb mainloader-icon"></i>
           <i className="fas fa-chart-line mainloader-icon"></i>
         </div>
-        <div className="mainloader-question-circle">
+        {/* <div className="mainloader-question-circle">
           <span className="mainloader-question">?</span>
-        </div>
+        </div> */}
+        <BoltLoader size="100rem" boltColor="#6366F1" />
       </div>
       <div className="mainloader-progress-bar">
         <div className="mainloader-progress" style={{ width: `${progress}%` }}></div>
