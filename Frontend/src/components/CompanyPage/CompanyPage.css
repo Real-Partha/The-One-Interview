@@ -1,15 +1,16 @@
 .companypage-main-content {
   display: flex;
-  padding: 2rem;
-  margin-top: 5rem;
-  margin-left: 1rem;
+  /* padding: 2rem; */
+  margin-top: 6.8rem;
+  /* margin-left: 1rem; */
   min-height: calc(100vh - 60px);
 }
 
 .companypage-content {
   display: flex;
   flex-grow: 1;
-  padding: 0 2rem;
+  padding: 0 1rem;
+  /* margin: 0 1rem; */
   width: 100%;
 }
 
@@ -21,9 +22,9 @@
   gap: 1rem;
   background-color: #f8f9fa;
   border-radius: 10px;
-  padding: 1.5rem;
+  padding: 1rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 100%;
+  /* width: 100%; */
 }
 
 .companypage-title {
@@ -82,7 +83,7 @@
 .companypage-question-meta {
   display: flex;
   justify-content: space-between;
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   color: #666;
 }
 
