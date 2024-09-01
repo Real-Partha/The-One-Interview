@@ -167,9 +167,8 @@ const Profile = () => {
         <aside className="profile-sidebar">
           <nav className="profile-navigation">
             <div
-              className={`profile-sidebar-card ${
-                activeSection === "profile" ? "active" : ""
-              }`}
+              className={`profile-sidebar-card ${activeSection === "profile" ? "active" : ""
+                }`}
               onClick={() => setActiveSection("profile")}
             >
               <i className="fa fa-user" />
@@ -178,9 +177,8 @@ const Profile = () => {
               </div>
             </div>
             <div
-              className={`profile-sidebar-card ${
-                activeSection === "account" ? "active" : ""
-              }`}
+              className={`profile-sidebar-card ${activeSection === "account" ? "active" : ""
+                }`}
               onClick={() => setActiveSection("account")}
             >
               <i className="fa fa-cog" />
@@ -189,9 +187,8 @@ const Profile = () => {
               </div>
             </div>
             <div
-              className={`profile-sidebar-card ${
-                activeSection === "activity" ? "active" : ""
-              }`}
+              className={`profile-sidebar-card ${activeSection === "activity" ? "active" : ""
+                }`}
               onClick={() => setActiveSection("activity")}
             >
               <i className="fa fa-clock" />
@@ -233,9 +230,8 @@ const Profile = () => {
                       <div className="profile-upper-info-section">
                         <div className="profile-upper-email">{user.email}</div>
                         <span
-                          className={`profile-upper-login-type ${
-                            user.type === "google" ? "google" : "oneid"
-                          }`}
+                          className={`profile-upper-login-type ${user.type === "google" ? "google" : "oneid"
+                            }`}
                         >
                           {user.type === "google"
                             ? "Google ID Account"
@@ -263,7 +259,18 @@ const Profile = () => {
               </div>
 
               <div className="profile-card">
-                <div className="profile-card-title">Profile Settings</div>
+                <div className="profile-header">
+
+                  <div className="profile-card-title">Profile Settings</div>
+                  {!isEditing && (
+                    <button
+                      className="profile-edit-button"
+                      onClick={() => setIsEditing(true)}
+                    >
+                      Edit Profile
+                    </button>
+                  )}
+                </div>
                 <div className="profile-picture-section">
                   <div className="profile-picture-container">
                     <img
@@ -366,10 +373,10 @@ const Profile = () => {
                       isEditing
                         ? editedUser.date_of_birth
                         : user.date_of_birth
-                        ? new Date(user.date_of_birth)
+                          ? new Date(user.date_of_birth)
                             .toISOString()
                             .split("T")[0]
-                        : ""
+                          : ""
                     }
                     onChange={handleInputChange}
                     disabled={!isEditing}
@@ -397,14 +404,6 @@ const Profile = () => {
                   )}
                 </div>
                 {isSaving && <div className="profile-saving-bar"></div>}
-                {!isEditing && (
-                  <button
-                    className="profile-edit-button"
-                    onClick={() => setIsEditing(true)}
-                  >
-                    Edit Profile
-                  </button>
-                )}
                 <div className="profile-footer-message">
                   **for sensitive account changes, visit the Account Section.
                 </div>

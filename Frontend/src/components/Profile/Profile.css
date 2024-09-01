@@ -2,7 +2,7 @@
 .profile-main-content {
   display: flex;
   background-color: var(--bg-color);
-  padding: 20px;
+  padding: 0 1.2rem 1.2rem 1.2rem;
   margin-top: 6rem;
   color: var(--text-color);
   transition: background-color 0.3s, color 0.3s;
@@ -10,12 +10,18 @@
 
 /* Css of Upper Profile Card (Non Editable) */
 .profile-upper-card-container {
-  /* width: 30vw; */
-  margin: 0 1.25rem;
+  /* width: ; */
+  /* margin-bottom: 1.2rem; */
+  /* display: flex; */
+  width: 40%;
+  margin: 0 1.2rem 1.2rem 1.2rem;
+  flex-shrink: 0;
+  min-width: 400px;
+
 }
 
 .profile-upper-card {
-  min-width: 400px;
+  /* min-width: 400px; */
   background-color: var(--bg-color);
   padding: 20px;
   border-radius: 15px;
@@ -69,12 +75,12 @@
   margin: 0 auto;
 }
 
-.profile-upper-login-type.google{
+.profile-upper-login-type.google {
   background-color: #f1f3f4;
   color: #4285f4;
 }
 
-.profile-upper-login-type.oneid{
+.profile-upper-login-type.oneid {
   background-color: #fff0ee;
   color: #ff6f61;
 }
@@ -114,14 +120,16 @@
   transition: background-color 0.3s, box-shadow 0.3s;
 }
 
-.profile-main-userActivity{
+.profile-main-userActivity {
   margin: 1rem 0;
 }
 
 .profile-sidebar {
-  width: 20%;
+  max-width: 235px;
+  width: 22%;
+  min-width: 190px;
   background-color: var(--bg-color);
-  padding: 15px;
+  padding: 1rem;
   border-radius: 15px;
   box-shadow: var(--box-shadow);
   transition: background-color 0.3s, box-shadow 0.3s;
@@ -145,6 +153,7 @@
 .dark-mode .profile-sidebar-card.active {
   background-color: var(--dark-primary-color);
 }
+
 .dark-mode .profile-sidebar-card.active:hover {
   background-color: var(--dark-primary-hover-color);
 }
@@ -153,7 +162,7 @@
   display: flex;
   align-items: center;
   padding: 1.3rem 1rem;
-  margin: 1rem 0.5rem;
+  margin-bottom: 1rem;
   border-radius: 8px;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -163,6 +172,10 @@
   background-color: var(--input-bg-color);
   transform: translateY(-10px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+.profile-header {
+  display: flex;
+  align-items: center;
 }
 
 .profile-sidebar-card i {
@@ -180,16 +193,52 @@
   box-shadow: var(--box-shadow);
   transition: background-color 0.3s, box-shadow 0.3s;
 }
+
 @media (max-width: 1100px) {
   .profile-content {
     flex-direction: column;
   }
+  .profile-upper-card-container {
+    width: calc(100% - 1.2rem);
+    box-sizing: border-box;
+    margin-right: 0;
+    min-width: 0;
+    /* margin-left: 0; */
+  }
 
   .profile-card {
-    width: calc(100% - 2.4rem - 40px);
-    margin: 1.2rem 1.2rem; 
+    width: calc(100% - 2.4rem - 1.2rem);
+    margin: 1.2rem 0 1.2rem 1.2rem;
   }
 }
+
+@media (max-width: 735px) {
+  .profile-sidebar {
+    display: none;
+  }
+  .profile-card-title{
+    font-size: 1.35rem !important;
+  }
+  .profile-upper-picture-section img{
+    margin-right: 1rem;
+  }
+
+
+  .profile-card {
+    margin: 0 !important;
+  }
+  .profile-upper-card-container{
+    margin-left: 0 ;
+  }
+  .profile-card,
+  .profile-upper-card-container {
+    width: 100%;
+    margin-bottom: 1.2rem;
+    box-sizing: border-box;
+  }
+
+}
+
 
 
 .profile-card-title {
@@ -211,8 +260,8 @@
 }
 
 .profile-picture {
-  width: 6vw;
-  height: 6vw;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   transition: transform 0.3s;
 }
@@ -253,9 +302,11 @@
   width: calc(100% - 20px);
   margin-top: 0.4rem;
 }
+
 .profile-textarea {
   resize: none;
 }
+
 .profile-input,
 .profile-textarea {
   padding: 10px;
@@ -419,9 +470,11 @@ select.profile-input {
   0% {
     width: 0;
   }
+
   50% {
     width: 50%;
   }
+
   100% {
     width: 100%;
   }
@@ -438,10 +491,11 @@ select.profile-input {
   font-weight: bold;
 }
 
-.profile-main-userActivity{
+.profile-main-userActivity {
   width: 95%;
   margin: 1rem auto;
 }
+
 /* Dark mode styles */
 
 /* Dark CSS for upper profile card */
@@ -498,7 +552,7 @@ select.profile-input {
 
 .dark-mode .profile-sidebar-card {
   background-color: var(--dark-sidebar-cards-bg-color);
-  box-shadow: var(--dark-box-shadow);
+  /* box-shadow: var(--dark-box-shadow); */
 }
 
 .dark-mode .profile-sidebar-card:hover {
@@ -609,7 +663,7 @@ select.profile-input {
   --dark-box-shadow: 0px 4px 6px rgba(255, 255, 255, 0.1);
 }
 
-.profile-footer-message{
+.profile-footer-message {
   font-size: 14px;
   color: #eb434b;
   margin-top: 10px;
