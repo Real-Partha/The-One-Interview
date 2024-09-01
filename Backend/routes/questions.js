@@ -74,6 +74,7 @@ const sliceHtml = (html, maxLength) => {
 };
 
 router.get("/questions", async (req, res) => {
+  console.log(req.ip);
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = 10;

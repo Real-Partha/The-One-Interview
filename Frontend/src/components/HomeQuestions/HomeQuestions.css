@@ -8,6 +8,13 @@
 .pagination button {
   transition: all 0.3s ease;
 }
+.thread-card{
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 3%;
+  display: flex;
+  flex-direction: column;
+}
 
 .main-content{
   margin-top: 6.8rem;
@@ -71,18 +78,13 @@
 }
 
 .light-mode .thread-card {
-  padding: 20px;
-  border-radius: 15px;
-  margin-bottom: 3%;
-  display: flex;
-  flex-direction: column;
   /* background: linear-gradient(135deg, #ffefe2 0%, #f7f8fa 50%, #d5e4ff 100%); */
   background: #f2f5fb;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .thread-answer-preview {
-  font-size: .9rem;
+  font-size: 1rem;
   color: #666;
   margin-bottom: 15px;
   line-height: 1.4;
@@ -92,7 +94,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 1rem;
 }
 
 .view-message {
@@ -110,7 +111,8 @@
 .thread-comments {
   display: flex;
   align-items: center;
-  font-size: 0.6rem;
+  font-size: 0.8rem;
+  font-weight: bold;
   color: #666;
   margin-left: 15px;
 }
@@ -126,17 +128,20 @@
 .thread-views i,
 .thread-comments i {
   margin-right: 5px;
+  font-size: 1.1rem;
 }
 
 .thread-title {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: bold;
-  margin-bottom: 15px;
+  /* margin-bottom: 15px; */
+  margin:0;
   color: #333;
 }
 
 .thread-info {
   display: flex;
+  margin :1rem 0;
   align-items: flex-start;
 }
 
@@ -152,6 +157,7 @@
 }
 
 .thread-meta {
+  margin-top: 0;
   font-size: 0.8rem;
   color: #666;
   margin-bottom: 10px;
@@ -168,9 +174,9 @@
   line-height: 1.6;
 }
 
-.thread-tags {
+/* .thread-tags {
   margin-bottom: 10px;
-}
+} */
 
 .thread-card-link {
   text-decoration: none;
@@ -193,7 +199,8 @@
   background-color: rgba(107, 99, 255, 0.733);
   padding: 6px 10px;
   border-radius: 20px;
-  font-size: 0.8rem;
+  font-size: 1rem;
+  margin-bottom: 10px;
   margin-right: 10px;
   color: blanchedalmond;
   background-color: #3498db;
@@ -269,6 +276,15 @@
 }
 
 @media (max-width: 768px) {
+  .thread-title {
+    font-size: 1.1rem;
+  }
+  .thread-answer-preview{
+    font-size: .8rem
+  }
+  .tag{
+    font-size: .7rem !important;
+  }
   .threads {
     width: 97%;
   }
@@ -297,6 +313,18 @@
   .card {
     margin-bottom: 0 !important;
     /* width: 100%; */
+  }
+  .thread-info{
+    margin: 0;
+  }
+  .thread-votes,.thread-stats{
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .upvotes,.downvotes, .thread-views,.thread-comments{
+    font-size: 0.7rem;
+    margin-bottom: 5px;
+    width: 100%;
   }
 }
 @media (max-width: 340px) {
@@ -592,7 +620,7 @@
 
 .thread-votes .upvotes i,
 .thread-votes .downvotes i {
-  font-size: .8rem;
+  font-size: 1.1rem;
   margin-right: 5px;
 }
 
@@ -606,7 +634,7 @@
   display: flex;
   align-items: center;
   margin-right: 15px;
-  font-size: 0.6rem;
+  font-size: 0.8rem;
   color: #666;
   font-weight: bold;
 }
@@ -662,11 +690,6 @@
 
   background-color: #2e2e2e;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-  padding: 20px;
-  border-radius: 15px;
-  margin-bottom: 3%;
-  display: flex;
-  flex-direction: column;
 }
 
 .dark-mode .thread-answer-preview {

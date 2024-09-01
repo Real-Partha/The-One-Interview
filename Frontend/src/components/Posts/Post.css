@@ -36,6 +36,7 @@
 
 .username {
   font-weight: bold;
+  font-size: .9rem;
   color: #333;
 }
 
@@ -60,7 +61,7 @@
   color: #3c3c3c;
   padding: 5px 10px;
   border-radius: 20px;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   margin-right: 10px;
 }
 

@@ -18,7 +18,7 @@ require('dotenv').config();
 
 //set cors policy
 app.use(cors({
-    origin: process.env.CLIENT_URL,
+    origin: "http://10.1.181.3:5173",
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     credentials: true,
 }));
@@ -62,8 +62,8 @@ const companyRoutes = require('./routes/company');
 
 
 connectDB().then(() => {
-    app.listen(port, () => {
-        console.log(`Server is running on http://localhost:${port}`);
+    app.listen(port,'0.0.0.0' ,() => {
+        console.log(`Server is running on http://0.0.0.0:${port}`);
     });
 }).catch(error => {
     console.error('Database connection failed:', error);
