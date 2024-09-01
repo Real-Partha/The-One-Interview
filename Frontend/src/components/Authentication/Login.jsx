@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import axios from "axios";
 import "./Login.css";
 import useNotification from "../Notifications";
@@ -22,20 +22,8 @@ const Login = () => {
   const [twoFactorToken, setTwoFactorToken] = useState("");
   const [requireTwoFactor, setRequireTwoFactor] = useState(false);
   const [userId, setUserId] = useState(null);
-  const location = useLocation();
   const { ErrorNotification, SuccessNotification } = useNotification();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const requireTwoFactor = params.get("requireTwoFactor");
-    const userId = params.get("userId");
-
-    if (requireTwoFactor === "true" && userId) {
-      setRequireTwoFactor(true);
-      setUserId(userId);
-    }
-  }, [location]);
 
   useEffect(() => {
     const checkAuthStatus = async () => {

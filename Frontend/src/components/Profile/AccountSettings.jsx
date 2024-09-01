@@ -4,7 +4,7 @@ import "./AccountSettings.css";
 import useNotification from "../Notifications";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-const AccountSettings = ({ user,fetchUserData }) => {
+const AccountSettings = ({ user, fetchUserData }) => {
   const [email, setEmail] = useState(user.email);
   const [newEmail, setNewEmail] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
@@ -41,8 +41,8 @@ const AccountSettings = ({ user,fetchUserData }) => {
       const newOtpValues = [...otpValues];
       newOtpValues[index] = value;
       setOtpValues(newOtpValues);
-      setOtp(newOtpValues.join(""));
 
+      // Move to the next input if a digit is entered and it's not the last input
       if (value.length === 1 && index < 5) {
         otpRefs[index + 1].current.focus();
       }
@@ -71,10 +71,6 @@ const AccountSettings = ({ user,fetchUserData }) => {
 
   const handleOtpKeyDown = (index, e) => {
     if (e.key === "Backspace" && index > 0 && otpValues[index] === "") {
-      const newOtpValues = [...otpValues];
-      newOtpValues[index - 1] = "";
-      setOtpValues(newOtpValues);
-      setOtp(newOtpValues.join(""));
       otpRefs[index - 1].current.focus();
     }
   };
@@ -365,7 +361,11 @@ const AccountSettings = ({ user,fetchUserData }) => {
             className="account-settings-button"
             disabled={showEmailFields || isPasswordLoading}
           >
-            {isPasswordLoading? "Loading...":hasPassword ? "Reset Password" : "Set Password"}
+            {isPasswordLoading
+              ? "Loading..."
+              : hasPassword
+              ? "Reset Password"
+              : "Set Password"}
           </button>
         ) : (
           <form
