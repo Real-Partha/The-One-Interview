@@ -1,8 +1,8 @@
 // import React from "react";
 import "./HomeQuestions.css";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState, useCallback, useContext } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "../../ThemeContext";
 import { Link } from "react-router-dom";
 import CreateQuestionPage from "../Posts/CreateQuestionPage";
@@ -13,6 +13,7 @@ import ThreadSkeleton from "./threadskeleton";
 import DOMPurify from "dompurify";
 import Sidebar from "../Left Sidebar/Sidebar";
 import MainLoader from "../commonPages/MainLoader";
+import QuestionSearchLoader from "./QuestionSearchLoader"
 
 const MainComponent = () => {
   const [threads, setThreads] = useState([]);
@@ -26,7 +27,11 @@ const MainComponent = () => {
   const [inputPage, setInputPage] = useState("");
   const [searchMessage, setSearchMessage] = useState("");
   const [isSearching, setIsSearching] = useState(false);
-  const [isMainLoading, setIsMainLoading] = useState(true);
+  const [isMainLoading, setIsMainLoading] = useState(false);
+  const location = useLocation();
+  const [isSearchResultsVisible, setIsSearchResultsVisible] = useState(false);
+  const { searchQuery, setSearchQuery } = useContext(SearchContext);
+  const navigate = useNavigate();
 
   const handlePageInputChange = (e) => {
     setInputPage(e.target.value);
@@ -44,17 +49,42 @@ const MainComponent = () => {
   };
 
   useEffect(() => {
-    if (location.state && location.state.searchQuery) {
-      const { searchQuery, fromPost } = location.state;
-      setSearchQuery(searchQuery);
-      handleUserSearch(searchQuery);
-      if (fromPost) {
-        setSearchMessage(`Your searched result response for "${searchQuery}"`);
+    const loadFirstThreads = async () => {
+      if (!searchQuery) {
+        setIsMainLoading(true);
+        const savedPage = getPageWithExpiration();
+        if (savedPage) {
+          setCurrentPage(parseInt(savedPage, 10));
+        } else {
+          setCurrentPage(1);
+        }
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        setIsMainLoading(false);
       }
-    }
-  }, [location]);
+
+      if (location.state && location.state.searchQuery) {
+        const { searchQuery: locationSearchQuery, fromPost } = location.state;
+        setSearchQuery(locationSearchQuery);
+        handleUserSearch(locationSearchQuery);
+        setIsSearchResultsVisible(true);
+        if (fromPost) {
+          setSearchMessage(
+            `Your searched result response for "${locationSearchQuery}"`
+          );
+        }
+      } else {
+        // Reset search query and fetch threads when there's no search query in location state
+        setSearchQuery("");
+        setIsSearchResultsVisible(false);
+        fetchThreads(savedPage ? parseInt(savedPage, 10) : 1);
+      }
+    };
+
+    loadFirstThreads();
+  }, [location, navigate, setSearchQuery]);
 
   const fetchThreads = useCallback(async (page) => {
+    setIsQuestionLoading(true);
     if (page) {
       try {
         const response = await axios.get(
@@ -73,23 +103,6 @@ const MainComponent = () => {
         console.error("Error fetching threads:", error);
       }
     }
-  }, []);
-
-  useEffect(() => {
-    const loadFirstThreads = async () => {
-      setIsMainLoading(true);
-      const savedPage = getPageWithExpiration();
-      if (savedPage) {
-        setCurrentPage(parseInt(savedPage, 10));
-      } else {
-        setCurrentPage(1);
-      }
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      setIsMainLoading(false);
-      fetchThreads(savedPage ? parseInt(savedPage, 10) : 1);
-    };
-
-    loadFirstThreads();
   }, []);
 
   useEffect(() => {
@@ -190,17 +203,18 @@ const MainComponent = () => {
     setPageWithExpiration("1");
   };
 
-  const { searchQuery } = useContext(SearchContext);
   const handleUserSearch = async (query) => {
     if (!query) {
       setIsSearching(false);
+      setIsSearchResultsVisible(false);
+      setSearchQuery(""); // Reset the search query in context
       fetchThreads(currentPage);
       return;
     }
 
     try {
       setIsSearching(true);
-      resetPage();
+      setIsSearchResultsVisible(true);
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/questionsearch`,
         {
@@ -212,23 +226,33 @@ const MainComponent = () => {
       setTotalPages(response.data.totalPages);
       setHasNextPage(response.data.hasNextPage);
       setHasPrevPage(response.data.hasPrevPage);
+      setCurrentPage(1); // Reset to first page of search results
     } catch (error) {
       console.error("Error fetching threads:", error);
+    } finally {
+      setIsSearching(false);
     }
   };
 
   useEffect(() => {
     if (searchQuery) {
       handleUserSearch(searchQuery);
-    } else {
+    } else if (!isMainLoading) {
       setIsSearching(false);
+      setIsSearchResultsVisible(false);
       fetchThreads(currentPage);
     }
-  }, [searchQuery, currentPage]);
+  }, [searchQuery, currentPage, isMainLoading]);
 
   const toggleCreateQuestion = () => {
     setShowCreateQuestion((prev) => !prev);
   };
+
+  useEffect(() => {
+    return () => {
+      setSearchQuery("");
+    };
+  }, [setSearchQuery]);
 
   if (isMainLoading)
     return (
@@ -243,6 +267,8 @@ const MainComponent = () => {
         <Sidebar />
         <section className="threads">
           {isSearching ? (
+            <div><QuestionSearchLoader /></div>
+          ) : isSearchResultsVisible && searchQuery ? (
             <h2>{searchMessage || `Search Results for '${searchQuery}'`}</h2>
           ) : (
             <div className="add-thread-container">

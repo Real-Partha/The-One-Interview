@@ -75,6 +75,7 @@ const sliceHtml = (html, maxLength) => {
 
 router.get("/questions", async (req, res) => {
   console.log(req.ip);
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = 10;
@@ -309,6 +310,7 @@ router.get("/question/:id", async (req, res) => {
 });
 
 router.get("/questionsearch", async (req, res) => {
+  await new Promise((resolve) => setTimeout(resolve, 5000));
   try {
     const search = req.query.query || "";
     // Record activity (only for authenticated users)

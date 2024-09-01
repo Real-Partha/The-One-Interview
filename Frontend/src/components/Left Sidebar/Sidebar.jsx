@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
-import './Sidebar.css';
+import { Link } from "react-router-dom";
+import "./Sidebar.css";
 
 const Sidebar = () => {
   return (
@@ -28,39 +28,41 @@ const Sidebar = () => {
         </div>
 
         <div className="Left-Side-bar-cards">
-          <div className="tags_section">
+          <Link to="/tags" className="tags_section">
             <div className="card">
               <i className="fa-solid fa-hashtag"></i>
               <div className="card-details">
                 <h4>Tags</h4>
               </div>
             </div>
-          </div>
+          </Link>
         </div>
 
         <div className="Left-Side-bar-cards">
-          <div className="company_names">
+          <Link to="/company-questions" className="company_names_section">
             <div className="card">
               <i className="fa-regular fa-building"></i>
-              <Link to="/company-questions" className="card-details">
+              <div className="card-details">
                 <h4>Corporate </h4>
-              </Link>
+              </div>
             </div>
-          </div>
+          </Link>
         </div>
 
         <div className="Left-Side-bar-cards">
-          <div className="questions_section">
+          <Link to="/interview-blogs" className="interview_blogs_section">
             <div className="card">
               <i className="fa-solid fa-layer-group" />
               <div className="card-details">
                 <h4>Interview Blogs</h4>
               </div>
             </div>
-          </div>
+          </Link>
         </div>
       </nav>
-      <button className="join-class">Join a new Community</button>
+      <Link to="/communities" className="commnties_button">
+        <button className="join-class">Join a Community</button>
+      </Link>
     </aside>
   );
 };

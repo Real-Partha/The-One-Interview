@@ -39,7 +39,10 @@ function AppContent() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/company-questions" element={<CompanyPage />} />
         <Route path="/admin" element={<AdminPage />} />
-        <Route path="*" element={<UnderConstruction />} />
+        <Route path="/tags" element={<UnderConstruction />} />
+        <Route path="/interview-blogs" element={<UnderConstruction />} />
+        <Route path="/communities" element={<UnderConstruction />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       {shouldShowNavBarAndFooter && <Footer />}
     </>
