@@ -453,19 +453,34 @@ body.dark-mode .footer-bottom {
 /* Media queries */
 @media screen and (max-width: 768px) {
   .hero {
-    height: auto;
+    /* height: auto; */
     clip-path: none;
     flex-direction: column;
     padding: 50px 25px;
   }
 
+  
+
+
+
   .hero-content {
     max-width: 100%;
     text-align: center;
   }
+  .features{
+    height: auto;
+  }
+
+  .features h2 {
+    font-size: 2rem;
+  }
 
   .cta-buttons {
     justify-content: center;
+  }
+
+  .testimonials h2{
+    font-size: 2rem;
   }
 
   .features,
@@ -489,6 +504,24 @@ body.dark-mode .footer-bottom {
   .testimonial-card {
     flex: 0 0 100%;
   }
+
+  @media screen and (max-width: 768px) {
+    .testimonial-card {
+      flex: 0 0 100%;
+      width: 100%;
+      margin-right: 0;
+      padding: 0%;
+    }
+
+    
+    .testimonial-track {
+      width: 100%;
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+  }
+  
+  
 }
 
 

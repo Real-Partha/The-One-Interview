@@ -29,22 +29,19 @@ const HomeComponent = () => {
       tagline: "Ace Your Next Interview",
       description: "Get access to expert-curated questions and answers. Start your journey to success today!",
       image: "/img/banner1.png",
-      ctaPrimary: "Start Practicing",
-      ctaSecondary: "View Plans",
+      ctaPrimary: "Start Practicing"
     },
     {
       tagline: "Master Your Skills",
       description: "Learn from industry experts and boost your confidence. Your dream job is within reach!",
       image: "/img/banner2.png",
-      ctaPrimary: "Explore Courses",
-      ctaSecondary: "Free Trial",
+      ctaPrimary: "Explore Companies"
     },
     {
       tagline: "Land Your Dream Job",
       description: "Join thousands of successful candidates who prepared with us. Your future starts here!",
       image: "/img/carousel-3.jpg",
-      ctaPrimary: "Sign Up Now",
-      ctaSecondary: "Learn More",
+      ctaPrimary: "Start Exploring"
     },
   ];
   const features = [
@@ -124,6 +121,7 @@ const HomeComponent = () => {
   
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const testimonialRef = useRef(null);
+
   
   useEffect(() => {
     const interval = setInterval(() => {
@@ -140,6 +138,8 @@ const HomeComponent = () => {
   const prevSlide = () => {
     setCurrentSlide((prevSlide) => (prevSlide - 1 + carouselContent.length) % carouselContent.length);
   };
+
+
 
   return (
     <div className="homepage">
@@ -163,7 +163,6 @@ const HomeComponent = () => {
                   <p>{slide.description}</p>
                   <div className="cta-buttons">
                     <Link to="/questions" className="cta-button primary">{slide.ctaPrimary}</Link>
-                    <Link to="/about" className="cta-button secondary">{slide.ctaSecondary}</Link>
                   </div>
                 </div>
               </motion.div>
@@ -202,7 +201,8 @@ const HomeComponent = () => {
         <section className="testimonials">
   <h2>Take help from the Experienced Ones</h2>
   <div className="testimonial-carousel">
-    <div className="testimonial-track" ref={testimonialRef} style={{ transform: `translateX(-${activeTestimonial * 50}%)` }}>
+    <div className="testimonial-track" ref={testimonialRef}         style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+    >
       {testimonials.map((testimonial, index) => (
         <div key={index} className="testimonial-card">
           <div className="testimonial-background" style={{ backgroundImage: `url(${testimonial.logo})` }}></div>

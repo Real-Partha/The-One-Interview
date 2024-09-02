@@ -1,0 +1,70 @@
+{
+    "sections": [
+      {
+        "title": "Data Collection",
+        "icon": "FaUserSecret",
+        "content": "We collect personal information such as your name, email address, and usage data to provide and improve our services."
+      },
+      {
+        "title": "Profile Information",
+        "icon": "FaIdBadge",
+        "content": "We collect and display profile information such as your name, professional background, and skills to enhance your visibility in the forum."
+      },
+      {
+        "title": "Data Usage",
+        "icon": "FaLock",
+        "content": "Your data is used to personalize your experience, improve our platform, and provide customer support."
+      },
+      {
+        "title": "Cookies",
+        "icon": "FaCookie",
+        "content": "We use cookies to enhance your browsing experience, analyze site traffic, and personalize content."
+      },
+      {
+        "title": "Data Sharing",
+        "icon": "FaUserFriends",
+        "content": "We do not sell your personal information. We may share data with trusted partners to provide our services."
+      },
+      {
+        "title": "Your Rights",
+        "icon": "FaShieldAlt",
+        "content": "You have the right to access, correct, or delete your personal information at any time."
+      },
+      {
+        "title": "Contact Us",
+        "icon": "FaEnvelope",
+        "content": "If you have any questions about our privacy practices, please contact us at privacy@oneuniversity.com"
+      },
+      {
+        "title": "Data Storage",
+        "icon": "FaServer",
+        "content": "Your data is securely stored on encrypted servers with industry-standard protection measures."
+      },
+      {
+        "title": "International Data Transfers",
+        "icon": "FaGlobe",
+        "content": "We may transfer your data internationally. We ensure appropriate safeguards are in place to protect your information."
+      },
+      {
+        "title": "Data Protection Officer",
+        "icon": "FaUserShield",
+        "content": "We have appointed a Data Protection Officer to oversee our data protection strategy and implementation."
+      },
+      {
+        "title": "Data Breach Notification",
+        "icon": "FaExclamationTriangle",
+        "content": "In the event of a data breach, we will notify affected users and relevant authorities as required by law."
+      },
+      {
+        "title": "Compliance",
+        "icon": "FaClipboardCheck",
+        "content": "We comply with applicable data protection laws, including GDPR and CCPA where relevant."
+      },
+      {
+        "title": "User Controls",
+        "icon": "FaUserCog",
+        "content": "We provide tools for you to control your privacy settings and manage your data preferences."
+      }
+    ]
+  }
+  
