@@ -51,7 +51,7 @@
     margin: 0 auto;
   }
   
-  h2 {
+  .about-us-container h2 {
     font-size: 4rem;
     margin-bottom: 4rem;
     text-align: center;
@@ -187,7 +187,7 @@
       font-size: 1.4rem;
     }
   
-    h2 {
+    .about-us-container h2 {
       font-size: 3rem;
     }
   
