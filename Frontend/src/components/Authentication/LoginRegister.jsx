@@ -404,18 +404,20 @@ const LoginRegister = () => {
           <form onSubmit={handleSignupSubmit}>
             <div
               className="SignUp-form-input-box animation"
-              style={{ "--i": 18, "--j": 1 }}
+              style={{ "--i": 18, "--j": 3 }}
             >
               <input
                 type="text"
                 name="first_name"
                 value={signupData.first_name}
                 onChange={handleSignupChange}
+                // placeholder="First Name"
                 required
               />
               <label>First Name</label>
               <i className="bx bxs-user"></i>
             </div>
+            
             <div
               className="SignUp-form-input-box animation"
               style={{ "--i": 19, "--j": 2 }}
@@ -425,10 +427,11 @@ const LoginRegister = () => {
                 name="last_name"
                 value={signupData.last_name}
                 onChange={handleSignupChange}
+                // placeholder="Last Name"
                 required
               />
-              <label>Last Name</label>
-              <i className="bx bxs-user"></i>
+             <label>Last Name</label> 
+              <i className="bx bxs-user"></i> 
             </div>
             <div
               className="SignUp-form-input-box animation"
@@ -439,9 +442,10 @@ const LoginRegister = () => {
                 name="username"
                 value={signupData.username}
                 onChange={handleSignupChange}
+                // placeholder="Username"
                 required
               />
-              <label>Username</label>
+              <label>Username</label> 
               <i className="bx bxs-user"></i>
             </div>
             {checkingUsername && (
@@ -463,10 +467,11 @@ const LoginRegister = () => {
                 name="email"
                 value={signupData.email}
                 onChange={handleSignupChange}
+                // placeholder="Email"
                 required
               />
-              <label>Email</label>
-              <i className="bx bxs-envelope"></i>
+              <label>Email</label> 
+               <i className="bx bxs-envelope"></i> 
             </div>
             {checkingEmail && (
               <span className="checking">Checking email...</span>
@@ -481,19 +486,23 @@ const LoginRegister = () => {
               className="SignUp-form-input-box animation"
               style={{ "--i": 22, "--j": 5 }}
             >
+              <div style={{display:"flex"}}>
+
               <input
                 type={showSignupPassword ? "text" : "password"}
                 name="password"
                 value={signupData.password}
                 onChange={handleSignupChange}
+                // placeholder="Password"
                 required
-              />
-              <label>Password</label>
+                />
+              <label>Password</label> 
               <i className="bx bxs-lock-alt"></i>
               <i
                 className={`bx ${showSignupPassword ? "bxs-hide" : "bxs-show"}`}
                 onClick={() => setShowSignupPassword(!showSignupPassword)}
-              ></i>
+                ></i>
+                </div>
             </div>
             {passwordError && <span className="error">{passwordError}</span>}
             <div
@@ -505,10 +514,11 @@ const LoginRegister = () => {
                 name="confirmPassword"
                 value={signupData.confirmPassword}
                 onChange={handleSignupChange}
+                // placeholder="Confirm Password"
                 required
               />
-              <label>Confirm Password</label>
-              <i className="bx bxs-lock-alt"></i>
+              <label>Confirm Password</label> 
+              <i className="bx bxs-lock-alt"></i> 
             </div>
             {confirmPasswordError && (
               <span className="error">{confirmPasswordError}</span>

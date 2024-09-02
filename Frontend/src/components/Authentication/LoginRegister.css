@@ -84,7 +84,7 @@
 }
 
 .LoginRegister-input-box input {
-    width: 100%;
+    width: 75%;
     height: 100%;
     background: transparent;
     color: #000;
@@ -111,6 +111,7 @@
     color: #000;
     pointer-events: none;
     transition: 0.5s;
+    justify-content: left;
 }
 
 .LoginRegister-input-box input:focus ~ label,
@@ -122,7 +123,7 @@
 .LoginRegister-input-box i {
     position: absolute;
     top: 50%;
-    right: 0;
+    right: 100px;
     transform: translateY(-50%);
     font-size: 18px;
     transition: 0.5s;
@@ -134,7 +135,7 @@
 }
 
 .LoginRegister-btn {
-    width: 100%;
+    width: 85%;
     height: 45px;
     background-color: #9966cc;
     color: #fff;
@@ -152,6 +153,7 @@
 }
 
 .LoginRegister-login-divider {
+    width: 85%;
     display: flex;
     align-items: center;
     text-align: center;
@@ -171,7 +173,7 @@
 }
 
 .LoginRegister-login-google-button {
-    width: 100%;
+    width: 85%;
     padding: 0.75rem;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -277,6 +279,8 @@
 
 .LoginRegister-wrapper.LoginRegister-active .LoginRegister-info-text.LoginRegister-register {
     pointer-events: auto;
+    margin-top: 69px;
+    margin-left: -33px;
 }
 
 .LoginRegister-wrapper .LoginRegister-rotate-bg2 {
@@ -326,6 +330,7 @@
 .LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register .LoginRegister-btn {
     height: 30px;
     font-size: 14px;
+    margin-top: 10px;
 }
 
 .LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register .LoginRegister-linkTxt {
@@ -342,16 +347,8 @@
     margin-bottom: 5px;
 }
 
-.LoginRegister-two-factor-message {
-    text-align: center;
-    margin-bottom: 20px;
-}
 
-.LoginRegister-two-factor-icon {
-    font-size: 48px;
-    color: #9966cc;
-    margin-bottom: 10px;
-}
+
 
 /* Continuing the updated CSS */
 
@@ -401,6 +398,7 @@
 
 /* Info text for Login */
 .LoginRegister-wrapper .LoginRegister-info-text.LoginRegister-login .LoginRegister-animation {
+    font-size: 30px;
     transform: translateX(0);
     opacity: 1;
     filter: blur(0);
@@ -514,14 +512,33 @@
 
 /* Two-factor authentication message */
 .LoginRegister-two-factor-message {
-    text-align: center;
+    background-color: #3d4a57;
+    border: 1px solid #b0d4ff;
+    border-radius: 8px;
+    padding: 20px;
     margin-bottom: 20px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 2rem;
+    width:70%
 }
 
+
+
 .LoginRegister-two-factor-icon {
-    font-size: 48px;
-    color: #9966cc;
+    font-size: 2.5rem;
+    color: #4a90e2;
+    margin-bottom: 10px;
+}
+
+.LoginRegister-two-factor-message h3 {
+    color: #4a90e2;
     margin-bottom: 10px;
+}
+
+.LoginRegister-two-factor-message p {
+    color: #ecb82a;
+    margin-bottom: 5px;
 }
 
 
@@ -529,7 +546,7 @@
 
 
 .SignUp-form-input-box input {
-    width: 100%;
+    width: 85%;
     height: 100%;
     background: transparent;
     color: #000;
@@ -545,4 +562,38 @@
 .SignUp-form-input-box input:focus,
 .SignUp-form-input-box input:valid {
     border-bottom-color: #17a;
+}
+.SignUp-form-input-box {
+    position: relative;
+    width: 100%;
+    height: 25px;
+    margin: 25px 0;
+}
+
+.SignUp-form-input-box label {
+    position: absolute;
+    top: 50%;
+    left: 0; /* Align label to the left */
+    transform: translateY(-50%);
+    font-size: 15px;
+    color: #000;
+    pointer-events: none;
+    transition: 0.5s;
+}
+.SignUp-form-input-box input:focus ~ label,
+.SignUp-form-input-box input:valid ~ label {
+    top: -5px;
+    color: #17a;
+}
+.SignUp-form-input-box i {
+    position: absolute;
+    top: 50%;
+    right: 50px; /* Adjust icon to be closer to the input */
+    transform: translateY(-50%);
+    font-size: 18px;
+    transition: 0.5s;
+}
+.SignUp-form-input-box input:focus ~ i,
+.SignUp-form-input-box input:valid ~ i {
+    color: #17a;
 }
