@@ -1,9 +1,7 @@
-
-
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate,useLocation } from "react-router-dom";
 import axios from "axios";
-import './LoginRegister.css';
+import "./LoginRegister.css";
 import useNotification from "../Notifications";
 
 const TwoFactorMessage = () => (
@@ -45,11 +43,25 @@ const LoginRegister = () => {
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
   const { ErrorNotification, SuccessNotification } = useNotification();
+  const location = useLocation();
   const navigate = useNavigate();
+
   useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const mode = params.get('mode');
+
+    if (mode === 'login' || !mode) {
+      setIsActive(false);
+    } else if (mode === 'signup') {
+      setIsActive(true);
+    }
+
     const checkAuthStatus = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/auth/status`, { withCredentials: true });
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/auth/status`,
+          { withCredentials: true }
+        );
         if (response.data.requireTwoFactor) {
           setRequireTwoFactor(true);
           setUserId(response.data.userId);
@@ -62,7 +74,7 @@ const LoginRegister = () => {
     };
 
     checkAuthStatus();
-  }, [navigate]);
+  }, [navigate, location.search]);
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
@@ -182,7 +194,9 @@ const LoginRegister = () => {
       if (signupData.username && signupData.username.length > 2) {
         try {
           const response = await axios.get(
-            `${import.meta.env.VITE_API_URL}/user/check-username/${signupData.username}`
+            `${import.meta.env.VITE_API_URL}/user/check-username/${
+              signupData.username
+            }`
           );
           setUsernameAvailable(response.data.available);
         } catch (error) {
@@ -207,7 +221,9 @@ const LoginRegister = () => {
       if (validateEmail(signupData.email)) {
         try {
           const response = await axios.get(
-            `${import.meta.env.VITE_API_URL}/user/check-email/${signupData.email}`
+            `${import.meta.env.VITE_API_URL}/user/check-email/${
+              signupData.email
+            }`
           );
           setEmailExists(response.data.exists);
         } catch (error) {
@@ -224,7 +240,6 @@ const LoginRegister = () => {
 
     return () => clearTimeout(timeoutId);
   }, [signupData.email]);
-
 
   // ... (keep all the existing functions and useEffects)
 
@@ -249,112 +264,295 @@ const LoginRegister = () => {
 
   return (
     <div className="LoginRegister-container">
-      <div className={`LoginRegister-wrapper ${isActive ? 'LoginRegister-active' : ''}`}>
+      <div
+        className={`LoginRegister-wrapper ${
+          isActive ? "LoginRegister-active" : ""
+        }`}
+      >
         <span className="LoginRegister-rotate-bg"></span>
         <span className="LoginRegister-rotate-bg2"></span>
 
         <div className="LoginRegister-form-box LoginRegister-login">
-          <h2 className="LoginRegister-title LoginRegister-animation" style={{ "--i": 0, "--j": 21 }}>Login</h2>
+          <h2
+            className="LoginRegister-title LoginRegister-animation"
+            style={{ "--i": 0, "--j": 21 }}
+          >
+            Login
+          </h2>
           {!requireTwoFactor ? (
             <form onSubmit={handleLoginSubmit}>
-              <div className="LoginRegister-input-box LoginRegister-animation" style={{ "--i": 1, "--j": 22 }}>
-                <input type="email" name="email" value={loginData.email} onChange={handleLoginChange} required />
+              <div
+                className="LoginRegister-input-box LoginRegister-animation"
+                style={{ "--i": 1, "--j": 22 }}
+              >
+                <input
+                  type="email"
+                  name="email"
+                  value={loginData.email}
+                  onChange={handleLoginChange}
+                  required
+                />
                 <label>Email</label>
-                <i className='bx bxs-envelope'></i>
+                <i className="bx bxs-envelope"></i>
               </div>
-              <div className="LoginRegister-input-box LoginRegister-animation" style={{ "--i": 2, "--j": 23 }}>
-                <input type={showLoginPassword ? "text" : "password"} name="password" value={loginData.password} onChange={handleLoginChange} required />
+              <div
+                className="LoginRegister-input-box LoginRegister-animation"
+                style={{ "--i": 2, "--j": 23 }}
+              >
+                <input
+                  type={showLoginPassword ? "text" : "password"}
+                  name="password"
+                  value={loginData.password}
+                  onChange={handleLoginChange}
+                  required
+                />
                 <label>Password</label>
-                <i className='bx bxs-lock-alt'></i>
-                <i className={`bx ${showLoginPassword ? 'bxs-hide' : 'bxs-show'}`} onClick={() => setShowLoginPassword(!showLoginPassword)}></i>
+                <i className="bx bxs-lock-alt"></i>
+                <i
+                  className={`bx ${
+                    showLoginPassword ? "bxs-hide" : "bxs-show"
+                  }`}
+                  onClick={() => setShowLoginPassword(!showLoginPassword)}
+                ></i>
               </div>
-              <button type="submit" className="LoginRegister-btn LoginRegister-animation" style={{ "--i": 3, "--j": 24 }}>Login</button>
-              <div className="LoginRegister-login-divider LoginRegister-animation" style={{ "--i": 4, "--j": 24.5 }}>
+              <button
+                type="submit"
+                className="LoginRegister-btn LoginRegister-animation"
+                style={{ "--i": 3, "--j": 24 }}
+              >
+                Login
+              </button>
+              <div
+                className="LoginRegister-login-divider LoginRegister-animation"
+                style={{ "--i": 4, "--j": 24.5 }}
+              >
                 <span>or</span>
               </div>
-              <button onClick={handleGoogleClick} className="LoginRegister-login-google-button LoginRegister-animation" style={{ "--i": 4.5, "--j": 25 }}>
+              <button
+                onClick={handleGoogleClick}
+                className="LoginRegister-login-google-button LoginRegister-animation"
+                style={{ "--i": 4.5, "--j": 25 }}
+              >
                 <i className="fab fa-google"></i> Sign in with Google
               </button>
-              <div className="LoginRegister-linkTxt LoginRegister-animation" style={{ "--i": 5, "--j": 25.5 }}>
-                <p>Don't have an account? <a href="#" className="LoginRegister-register-link" onClick={() => setIsActive(true)}>Sign Up</a></p>
+              <div
+                className="LoginRegister-linkTxt LoginRegister-animation"
+                style={{ "--i": 5, "--j": 25.5 }}
+              >
+                <p>
+                  Don't have an account?{" "}
+                  <a
+                    href="#"
+                    className="LoginRegister-register-link"
+                    onClick={() => setIsActive(true)}
+                  >
+                    Sign Up
+                  </a>
+                </p>
               </div>
             </form>
           ) : (
             <form onSubmit={handleTwoFactorSubmit}>
               <TwoFactorMessage />
-              <div className="LoginRegister-input-box LoginRegister-animation" style={{ "--i": 1, "--j": 22 }}>
-                <input type="text" value={twoFactorToken} onChange={(e) => setTwoFactorToken(e.target.value)} required />
+              <div
+                className="LoginRegister-input-box LoginRegister-animation"
+                style={{ "--i": 1, "--j": 22 }}
+              >
+                <input
+                  type="text"
+                  value={twoFactorToken}
+                  onChange={(e) => setTwoFactorToken(e.target.value)}
+                  required
+                />
                 <label>2FA Code</label>
-                <i className='bx bxs-key'></i>
+                <i className="bx bxs-key"></i>
               </div>
-              <button type="submit" className="LoginRegister-btn LoginRegister-animation" style={{ "--i": 3, "--j": 24 }}>Verify 2FA</button>
+              <button
+                type="submit"
+                className="LoginRegister-btn LoginRegister-animation"
+                style={{ "--i": 3, "--j": 24 }}
+              >
+                Verify 2FA
+              </button>
             </form>
           )}
         </div>
 
-
         <div className="LoginRegister-info-text LoginRegister-login">
-          <h2 className="LoginRegister-animation" style={{ "--i": 0, "--j": 20 }}>Welcome Back!</h2>
-          <p className="LoginRegister-animation" style={{ "--i": 1, "--j": 21 }}>Log in to access your account and explore our features.</p>
+          <h2
+            className="LoginRegister-animation"
+            style={{ "--i": 0, "--j": 20 }}
+          >
+            Welcome Back!
+          </h2>
+          <p
+            className="LoginRegister-animation"
+            style={{ "--i": 1, "--j": 21 }}
+          >
+            Log in to access your account and explore our features.
+          </p>
         </div>
 
         <div className="LoginRegister-form-box LoginRegister-register">
-        <h2 className="LoginRegister-title LoginRegister-animation" style={{ "--i": 17, "--j": 0 }}>Sign Up</h2>
+          <h2
+            className="LoginRegister-title LoginRegister-animation"
+            style={{ "--i": 17, "--j": 0 }}
+          >
+            Sign Up
+          </h2>
 
-
-        <form onSubmit={handleSignupSubmit}>
-          <div className="SignUp-form-input-box animation" style={{ "--i": 18, "--j": 1 }}>
-            <input type="text" name="first_name" value={signupData.first_name} onChange={handleSignupChange} required />
-            <label>First Name</label>
-            <i className='bx bxs-user'></i>
-          </div>
-          <div className="SignUp-form-input-box animation" style={{ "--i": 19, "--j": 2 }}>
-            <input type="text" name="last_name" value={signupData.last_name} onChange={handleSignupChange} required />
-            <label>Last Name</label>
-            <i className='bx bxs-user'></i>
-          </div>
-          <div className="SignUp-form-input-box animation" style={{ "--i": 20, "--j": 3 }}>
-            <input type="text" name="username" value={signupData.username} onChange={handleSignupChange} required />
-            <label>Username</label>
-            <i className='bx bxs-user'></i>
-          </div>
-          {checkingUsername && <span className="checking">Checking username...</span>}
-          {!checkingUsername && usernameAvailable !== null && (
-            <span className={usernameAvailable ? "available" : "unavailable"}>
-              {usernameAvailable ? "✓ Username is available" : "✗ Username is not available"}
-            </span>
-          )}
-          <div className="SignUp-form-input-box animation" style={{ "--i": 21, "--j": 4 }}>
-            <input type="email" name="email" value={signupData.email} onChange={handleSignupChange} required />
-            <label>Email</label>
-            <i className='bx bxs-envelope'></i>
-          </div>
-          {checkingEmail && <span className="checking">Checking email...</span>}
-          {!checkingEmail && emailExists && <span className="unavailable">✗ Account already exists with this email</span>}
-          {emailError && <span className="error">{emailError}</span>}
-          <div className="SignUp-form-input-box animation" style={{ "--i": 22, "--j": 5 }}>
-            <input type={showSignupPassword ? "text" : "password"} name="password" value={signupData.password} onChange={handleSignupChange} required />
-            <label>Password</label>
-            <i className='bx bxs-lock-alt'></i>
-            <i className={`bx ${showSignupPassword ? 'bxs-hide' : 'bxs-show'}`} onClick={() => setShowSignupPassword(!showSignupPassword)}></i>
-          </div>
-          {passwordError && <span className="error">{passwordError}</span>}
-          <div className="SignUp-form-input-box animation" style={{ "--i": 23, "--j": 6 }}>
-            <input type="password" name="confirmPassword" value={signupData.confirmPassword} onChange={handleSignupChange} required />
-            <label>Confirm Password</label>
-            <i className='bx bxs-lock-alt'></i>
-          </div>
-          {confirmPasswordError && <span className="error">{confirmPasswordError}</span>}
-          <button type="submit" className="LoginRegister-btn LoginRegister-animation" style={{ "--i": 24, "--j": 7 }} disabled={!isSignupFormValid()}>Sign Up</button>
-            <div className="LoginRegister-linkTxt LoginRegister-animation" style={{ "--i": 25, "--j": 8 }}>
-              <p>Already have an account? <a href="#" className="LoginRegister-login-link" onClick={() => setIsActive(false)}>Login</a></p>
+          <form onSubmit={handleSignupSubmit}>
+            <div
+              className="SignUp-form-input-box animation"
+              style={{ "--i": 18, "--j": 1 }}
+            >
+              <input
+                type="text"
+                name="first_name"
+                value={signupData.first_name}
+                onChange={handleSignupChange}
+                required
+              />
+              <label>First Name</label>
+              <i className="bx bxs-user"></i>
+            </div>
+            <div
+              className="SignUp-form-input-box animation"
+              style={{ "--i": 19, "--j": 2 }}
+            >
+              <input
+                type="text"
+                name="last_name"
+                value={signupData.last_name}
+                onChange={handleSignupChange}
+                required
+              />
+              <label>Last Name</label>
+              <i className="bx bxs-user"></i>
+            </div>
+            <div
+              className="SignUp-form-input-box animation"
+              style={{ "--i": 20, "--j": 3 }}
+            >
+              <input
+                type="text"
+                name="username"
+                value={signupData.username}
+                onChange={handleSignupChange}
+                required
+              />
+              <label>Username</label>
+              <i className="bx bxs-user"></i>
+            </div>
+            {checkingUsername && (
+              <span className="checking">Checking username...</span>
+            )}
+            {!checkingUsername && usernameAvailable !== null && (
+              <span className={usernameAvailable ? "available" : "unavailable"}>
+                {usernameAvailable
+                  ? "✓ Username is available"
+                  : "✗ Username is not available"}
+              </span>
+            )}
+            <div
+              className="SignUp-form-input-box animation"
+              style={{ "--i": 21, "--j": 4 }}
+            >
+              <input
+                type="email"
+                name="email"
+                value={signupData.email}
+                onChange={handleSignupChange}
+                required
+              />
+              <label>Email</label>
+              <i className="bx bxs-envelope"></i>
+            </div>
+            {checkingEmail && (
+              <span className="checking">Checking email...</span>
+            )}
+            {!checkingEmail && emailExists && (
+              <span className="unavailable">
+                ✗ Account already exists with this email
+              </span>
+            )}
+            {emailError && <span className="error">{emailError}</span>}
+            <div
+              className="SignUp-form-input-box animation"
+              style={{ "--i": 22, "--j": 5 }}
+            >
+              <input
+                type={showSignupPassword ? "text" : "password"}
+                name="password"
+                value={signupData.password}
+                onChange={handleSignupChange}
+                required
+              />
+              <label>Password</label>
+              <i className="bx bxs-lock-alt"></i>
+              <i
+                className={`bx ${showSignupPassword ? "bxs-hide" : "bxs-show"}`}
+                onClick={() => setShowSignupPassword(!showSignupPassword)}
+              ></i>
+            </div>
+            {passwordError && <span className="error">{passwordError}</span>}
+            <div
+              className="SignUp-form-input-box animation"
+              style={{ "--i": 23, "--j": 6 }}
+            >
+              <input
+                type="password"
+                name="confirmPassword"
+                value={signupData.confirmPassword}
+                onChange={handleSignupChange}
+                required
+              />
+              <label>Confirm Password</label>
+              <i className="bx bxs-lock-alt"></i>
+            </div>
+            {confirmPasswordError && (
+              <span className="error">{confirmPasswordError}</span>
+            )}
+            <button
+              type="submit"
+              className="LoginRegister-btn LoginRegister-animation"
+              style={{ "--i": 24, "--j": 7 }}
+              disabled={!isSignupFormValid()}
+            >
+              Sign Up
+            </button>
+            <div
+              className="LoginRegister-linkTxt LoginRegister-animation"
+              style={{ "--i": 25, "--j": 8 }}
+            >
+              <p>
+                Already have an account?{" "}
+                <a
+                  href="#"
+                  className="LoginRegister-login-link"
+                  onClick={() => setIsActive(false)}
+                >
+                  Login
+                </a>
+              </p>
             </div>
           </form>
         </div>
 
         <div className="LoginRegister-info-text LoginRegister-register">
-          <h2 className="LoginRegister-animation" style={{ "--i": 17, "--j": 0 }}>Join Us Today!</h2>
-          <p className="LoginRegister-animation" style={{ "--i": 18, "--j": 1 }}>Create an account to access exclusive features and personalized content.</p>
+          <h2
+            className="LoginRegister-animation"
+            style={{ "--i": 17, "--j": 0 }}
+          >
+            Join Us Today!
+          </h2>
+          <p
+            className="LoginRegister-animation"
+            style={{ "--i": 18, "--j": 1 }}
+          >
+            Create an account to access exclusive features and personalized
+            content.
+          </p>
         </div>
       </div>
     </div>

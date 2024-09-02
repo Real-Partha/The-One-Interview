@@ -151,7 +151,7 @@ router.get(
       // If 2FA is enabled, set a session flag and redirect to the login page
       req.session.requireTwoFactor = true;
       req.session.userId = req.user._id;
-      res.redirect(`${process.env.CLIENT_URL}/login`);
+      res.redirect(`${process.env.CLIENT_URL}/login-register`);
     } else {
       // If 2FA is not enabled, complete the login process
       req.session.user = req.user;

@@ -46,7 +46,7 @@ const Profile = () => {
   useEffect(() => {
     const firstLoading = async () => {
       setIsMainLoading(true);
-      await new Promise((resolve) => setTimeout(resolve, 5000));
+      await new Promise((resolve) => setTimeout(resolve, 3000));
       setIsMainLoading(false);
     };
     fetchUserData();
