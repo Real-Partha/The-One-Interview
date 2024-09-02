@@ -34,8 +34,8 @@ const NavBar = () => {
   const shouldShowSearchBar = () => {
     const { pathname } = location;
     return !(
-      pathname === '/login' ||
-      pathname === '/signup' ||
+      pathname === '/login-register' ||
+      // pathname === '/signup' ||
       pathname === '/profile'
     );
   };
@@ -151,12 +151,12 @@ const NavBar = () => {
             </>
           ) : (
             <>
-              <a href="/login" className="nav-link">
+              <a href="/login-register" className="nav-link">
                 Login
               </a>
-              <a href="/signup" className="nav-link">
+              {/* <a href="/signup" className="nav-link">
                 Register
-              </a>
+              </a> */}
             </>
           )}
         </div>
