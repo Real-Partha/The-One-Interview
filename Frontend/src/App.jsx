@@ -17,6 +17,7 @@ import Footer from './components/Footer/Footer';
 import NotFound from './components/commonPages/NotFound';
 import UnderConstruction from "./components/commonPages/UnderConstruction";
 import CompanyPage from './components/CompanyPage/CompanyPage';
+import AboutUs from "./components/Aboutus/Aboutus";
 
 
 
@@ -42,7 +43,9 @@ function AppContent() {
         <Route path="/tags" element={<UnderConstruction />} />
         <Route path="/interview-blogs" element={<UnderConstruction />} />
         <Route path="/communities" element={<UnderConstruction />} />
+        <Route path="/about-us" element={<AboutUs />} />
         <Route path="*" element={<NotFound />} />
+
       </Routes>
       {shouldShowNavBarAndFooter && <Footer />}
     </>

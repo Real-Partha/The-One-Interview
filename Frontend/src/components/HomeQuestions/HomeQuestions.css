@@ -17,7 +17,7 @@
 }
 
 .main-content{
-  margin-top: 6.8rem;
+  margin-top: 4.8rem;
     /* padding-left: 3rem; */
 }
 /* MainContent.css */
@@ -50,6 +50,7 @@
   /* background:  linear-gradient(90deg, #eff0f3 0%, #f5f5f5 50%, #edf3ff 100%);  #new addition; */
   box-shadow: 0px 0px 10px rgba(0, 0, 0.4, 0.2);
   background-color: #ededf3;
+  margin-top: 2rem;
 }
 
 .course-navigation {
@@ -75,6 +76,7 @@
   margin: 0 1.5%;
   /* margin-right: -8px; */
   border-radius: 30px;
+  margin-top: 2rem;
 }
 
 .light-mode .thread-card {
@@ -267,12 +269,14 @@
   align-items: flex-start;
   padding: 1.2%;
   border-radius: 12px;
+  
   margin-right: 1.2%;
   background-color: aliceblue;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  margin-top: 2rem;
 }
 
 @media (max-width: 768px) {
@@ -298,6 +302,7 @@
     width: 95%;
     margin-left: 1.2%;
     flex-wrap: wrap;
+    margin-top: 2rem;
     justify-content: space-between;
   }
   .Side-bar-cards {
@@ -671,6 +676,7 @@
   background-color: #252525;
   /* Dark Gray */
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+
 }
 
 .dark-mode .join-class {
@@ -759,6 +765,7 @@
 
 .dark-mode .right-sidebar {
   background-color: #252525;
+  margin-top: 2rem;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
 }
 

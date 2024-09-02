@@ -5,6 +5,7 @@
     width: 22%;
     max-width: 235px;
     border-radius: 15px;
+    margin-top: 2rem;
 }
 @media (max-width: 900px) {
   .sidebar {

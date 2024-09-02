@@ -1,0 +1,274 @@
+/* AboutUs.css */
+.about-us-container {
+    font-family: 'Poppins', sans-serif;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    transition: all 0.3s ease;
+    overflow-x: hidden;
+  }
+  
+  .about-us-hero {
+    text-align: center;
+    padding: 10rem 0;
+    background: linear-gradient(135deg, var(--light-accent), var(--dark-accent));
+    color: white;
+    position: relative;
+  }
+  
+  .about-us-hero h1 {
+    font-size: 5rem;
+    margin-bottom: 2rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  }
+
+  .dark-mode .about-us-hero h1 {
+    font-size: 5rem;
+    color: #a39c99;
+    margin-bottom: 2rem;
+    text-shadow: 2px 2px 4px rgb(0 0 0 / 50%);
+  }
+  
+  .about-us-hero p {
+    font-size: 1.8rem;
+    max-width: 800px;
+    margin: 0 auto;
+    color: #000;
+  }
+
+  .dark-mode .about-us-hero p {
+    color: #888482;
+    font-size: 1.8rem;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .about-us-vision,
+  .about-us-features,
+  .about-us-mission {
+    padding: 8rem 0;
+    width: 70%;
+    margin: 0 auto;
+  }
+  
+  h2 {
+    font-size: 4rem;
+    margin-bottom: 4rem;
+    text-align: center;
+  }
+  
+  .about-us-vision-grid,
+  .about-us-features-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem;
+  }
+  
+  .about-us-vision-item,
+  .about-us-feature-item {
+    background-color: var(--main-content-bg);
+    padding: 3rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .about-us-vision-item:hover,
+  .about-us-feature-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  .about-us-vision-item h3,
+  .about-us-feature-item h3 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--accent-color);
+  }
+  
+  .about-us-vision-item p,
+  .about-us-feature-item p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: var(--text-color);
+  }
+  
+  .about-us-mission-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .about-us-mission-content p {
+    font-size: 1.4rem;
+    line-height: 1.8;
+    text-align: center;
+    max-width: 1000px;
+    margin-bottom: 4rem;
+    color: var(--text-color);
+  }
+  
+  .about-us-mission-stats {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+  }
+  
+  .about-us-stat-item {
+    text-align: center;
+    background-color: var(--main-content-bg);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .about-us-stat-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  .about-us-stat-item h3 {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent-color);
+  }
+  
+  .about-us-stat-item p {
+    font-size: 1.2rem;
+    color: var(--text-color);
+  }
+  
+  /* Light Mode Styles */
+  .light-mode {
+    --background-color: #f3f3f9;
+    --main-content-bg: #fff7f2;
+    --accent-color: #3498db;
+    --text-color: #2c3e50;
+    --secondary-text-color: #7f8c8d;
+    --highlight-color: #e74c3c;
+  }
+  
+  /* Dark Mode Styles */
+  .dark-mode {
+    --background-color: #1e1e1e;
+    --main-content-bg: #2e2e2e;
+    --accent-color: #9966cc;
+    --text-color: #d3d3d3;
+    --secondary-text-color: #aaaaaa;
+    --highlight-color: #ff6f61;
+  }
+  
+  .dark-mode .about-us-vision-item,
+  .dark-mode .about-us-feature-item,
+  .dark-mode .about-us-stat-item {
+    background-color: #3b3b3b;
+  }
+  
+  @media (max-width: 1024px) {
+    .about-us-vision,
+    .about-us-features,
+    .about-us-mission {
+      width: 90%;
+    }
+  
+    .about-us-vision-grid,
+    .about-us-features-container {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .about-us-hero h1 {
+      font-size: 3.5rem;
+    }
+  
+    .about-us-hero p {
+      font-size: 1.4rem;
+    }
+  
+    h2 {
+      font-size: 3rem;
+    }
+  
+    .about-us-vision-item h3,
+    .about-us-feature-item h3 {
+      font-size: 1.8rem;
+    }
+  
+    .about-us-vision-item p,
+    .about-us-feature-item p {
+      font-size: 1rem;
+    }
+  
+    .about-us-mission-content p {
+      font-size: 1.2rem;
+    }
+  
+    .about-us-stat-item h3 {
+      font-size: 2.5rem;
+    }
+  
+    .about-us-stat-item p {
+      font-size: 1rem;
+    }
+  
+    .about-us-mission-stats {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .about-us-stat-item {
+      width: 80%;
+      margin-bottom: 2rem;
+    }
+  }
+
+
+
+  .about-us-cta {
+    text-align: center;
+    padding: 6rem 0;
+    background-color: var(--accent-color);
+    color: white;
+    width: 70%;
+    text-align: center;
+    margin: auto;
+  }
+  
+  .about-us-cta h2 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+  
+  .about-us-cta p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    font-style: italic;
+  }
+  
+  .about-us-cta-button {
+    display: inline-block;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    text-decoration: none;
+    color: var(--accent-color);
+    background-color: white;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+  }
+  
+  .about-us-cta-button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .dark-mode .about-us-cta {
+    background-color: #2e2625;
+  }
+  
+  .dark-mode .about-us-cta-button {
+    color: var(--highlight-color);
+    background-color: var(--main-content-bg);
+  }
+  
