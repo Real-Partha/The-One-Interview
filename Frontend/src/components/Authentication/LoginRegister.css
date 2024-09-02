@@ -1,19 +1,6 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
-:root{
-    --white: #fff;
-    --black: #000; 
-    --lightBulue: #17a;
-}
-
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-}
-
-#root {
+.loginregister-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -34,33 +21,28 @@
     align-items: center;
 }
 
-.wrapper{
+.LoginRegister-wrapper {
     position: relative;
-    width: 750px;
-    height: 450px;
-    background: var(--white);
-    border: 2px solid var(--black);
+    /* width: 750px;
+    height: 450px; */
+    width: 950px;
+    height: 600px;
+    background: #fff;
+    border: 2px solid #000;
     border-radius: 10px;
-    box-shadow: 0 0 20px var(--black);
+    box-shadow: 0 0 20px #000;
     overflow: hidden;
     z-index: 1001;
 }
 
-.wrapper .form-box.login .animation,
-.wrapper .info-text.login .animation,
-.wrapper .form-box.register .animation,
-.wrapper .info-text.register .animation {
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-login .LoginRegister-animation,
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-info-text.LoginRegister-login .LoginRegister-animation,
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register .LoginRegister-animation,
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-info-text.LoginRegister-register .LoginRegister-animation {
     transition: 0.7s ease;
 }
 
-.wrapper.active .form-box.login .animation,
-.wrapper.active .info-text.login .animation,
-.wrapper.active .form-box.register .animation,
-.wrapper.active .info-text.register .animation {
-    transition: 0.7s ease;
-}
-
-.wrapper .form-box{
+.LoginRegister-wrapper .LoginRegister-form-box {
     position: absolute;
     top: 0;
     width: 50%;
@@ -70,20 +52,20 @@
     flex-direction: column;
 }
 
-.wrapper .form-box.login{
+.LoginRegister-wrapper .LoginRegister-form-box.LoginRegister-login {
     left: 0;
     padding: 0 60px 0 40px;
 }
 
-.form-box h2{
+.LoginRegister-form-box .LoginRegister-title {
     margin-bottom: -5px;
     position: relative;
     font-size: 15px;
-    color: var(--black);
+    color: #000;
     text-align: center;
 }
 
-.form-box h2::after{
+.LoginRegister-form-box .LoginRegister-title::after {
     content: "";
     position: absolute;
     bottom: -10px;
@@ -91,53 +73,53 @@
     transform: translateX(-50%);
     width: 40px;
     height: 4px;
-    background: var(--black);
+    background: #000;
 }
 
-.form-box .input-box{
+.LoginRegister-form-box .LoginRegister-input-box {
     position: relative;
     width: 100%;
     height: 50px;
     margin: 25px 0;
 }
 
-.input-box input{
+.LoginRegister-input-box input {
     width: 100%;
     height: 100%;
     background: transparent;
-    color: var(--black);
+    color: #000;
     font-size: 16px;
     font-weight: 500;
     border: none;
     outline: none;
-    border-bottom: 2px solid var(--black);
+    border-bottom: 2px solid #000;
     transition: .5s;
     padding-right: 23px;
 }
 
-.input-box input:focus,
-.input-box input:valid{
-    border-bottom-color: var(--lightBulue);
+.LoginRegister-input-box input:focus,
+.LoginRegister-input-box input:valid {
+    border-bottom-color: #17a;
 }
 
-.input-box label{
+.LoginRegister-input-box label {
     position: absolute;
     top: 50%;
     left: 0;
     transform: translateY(-50%);
     font-size: 16px;
-    color: var(--black);
+    color: #000;
     pointer-events: none;
     transition: 0.5s;
 }
 
-.input-box input:focus~label,
-.input-box input:valid~label{
+.LoginRegister-input-box input:focus ~ label,
+.LoginRegister-input-box input:valid ~ label {
     top: -5px;
-    color: var(--lightBulue);
+    color: #17a;
 }
 
-.input-box i{
+.LoginRegister-input-box i {
     position: absolute;
     top: 50%;
     right: 0;
@@ -146,16 +128,16 @@
     transition: 0.5s;
 }
 
-.input-box input:focus~i,
-.input-box input:valid~i{
-    color: var(--lightBulue);
+.LoginRegister-input-box input:focus ~ i,
+.LoginRegister-input-box input:valid ~ i {
+    color: #17a;
 }
 
-form button{
+.LoginRegister-btn {
     width: 100%;
     height: 45px;
     background-color: #9966cc;
-    color: var(--white);
+    color: #fff;
     border: none;
     outline: none;
     border-radius: 40px;
@@ -165,483 +147,228 @@ form button{
     transition: .3s;
 }
 
-.login-divider {
+.LoginRegister-btn:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+}
+
+.LoginRegister-login-divider {
     display: flex;
     align-items: center;
     text-align: center;
     margin: 1rem 0;
 }
 
-.login-divider::before,
-.login-divider::after {
+.LoginRegister-login-divider::before,
+.LoginRegister-login-divider::after {
     content: '';
     flex: 1;
     border-bottom: 1px solid #ccc;
 }
 
-.login-divider span {
+.LoginRegister-login-divider span {
     padding: 0 0.5rem;
     color: #757575;
 }
 
-.login-google-button {
+.LoginRegister-login-google-button {
     width: 100%;
     padding: 0.75rem;
-    border: none;
+    border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
     background-color: #fff;
     color: #757575;
-    border: 1px solid #ccc;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.login-google-button:hover {
+.LoginRegister-login-google-button:hover {
     background-color: #f5f5f5;
 }
 
-.login-google-button i {
+.LoginRegister-login-google-button i {
     margin-right: 0.5rem;
 }
 
-form button:hover{
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-}
-
-form .linkTxt{
+.LoginRegister-linkTxt {
     font-size: 14px;
-    color: var(--black);
+    color: #000;
     text-align: center;
     margin: 20px 0 10px;
 }
 
-.linkTxt p a{
+.LoginRegister-linkTxt p a {
     color: blue;
     text-decoration: none;
     font-weight: 600;
 }
 
-.wrapper .form-box.login .animation{
-    transform: translateX(0);
-    transition: 0.7s ease;
-    opacity: 1;
-    filter: blur(0);
-    transition-delay: calc(.1s * var(--j));
-}
-
-.wrapper.active .form-box.login .animation{
-    transform: translateX(-120%);
-    opacity: 0;
-    filter: blur(10px);
-    transition-delay: calc(.1s * var(--i));
-}
-
-.wrapper .info-text{
+.LoginRegister-wrapper .LoginRegister-info-text {
     position: absolute;
-    top: 0;
-    width: 50%;
+    top: -174px;
+    width: 36%;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-.wrapper .info-text.login{
+.LoginRegister-wrapper .LoginRegister-info-text.LoginRegister-login {
     right: 0;
     text-align: right;
     padding: 0 40px 60px 150px;
 }
 
-.wrapper .info-text h2{
+.LoginRegister-wrapper .LoginRegister-info-text h2 {
     font-size: 36px;
-    color: var(--white);
+    color: #fff;
     line-height: 1.3;
     text-transform: uppercase;
 }
 
-.wrapper .info-text p{
+.LoginRegister-wrapper .LoginRegister-info-text p {
     font-size: 16px;
-    color: var(--white);
+    color: #fff;
 }
 
-.wrapper .info-text.login .animation{
-    transform: translateX(0);
-    opacity: 1;
-    filter: blur(0);
-    transition: 0.7s ease;
-    transition-delay: calc(.1s * var(--j));
-}
 
-.wrapper.active .info-text.login .animation{
-    transform: translateX(120px);
-    opacity: 0;
-    filter: blur(10px);
-    transition: 0.7s ease;
-    transition-delay: calc(.1s * var(--i));
-}
-
-.wrapper .rotate-bg{
+.LoginRegister-wrapper .LoginRegister-rotate-bg {
     position: absolute;
     top: -4px;
-    right: 0;
-    width: 850px;
+    right: -3px;
+    padding-left: 60px;
+    width: 893px;
     height: 600px;
     background: #9966cc;
-    transform: rotate(10deg) skewY(40deg);
+    transform: rotate(4deg) skewY(40deg);
     transform-origin: bottom right;
     transition: 1.5s ease;
     transition-delay: 1.6s;
 }
 
-.wrapper.active .rotate-bg{
+
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-rotate-bg {
     transform: rotate(0) skewY(0);
     transition-delay: 0.5s;
 }
 
-.wrapper .form-box.register{
+.LoginRegister-wrapper .LoginRegister-form-box.LoginRegister-register {
     padding: 0 40px 0 60px;
     right: 0;
     opacity: 0;
     pointer-events: none;
 }
 
-.wrapper.active .form-box.register{
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register {
     opacity: 1;
     pointer-events: auto;
     padding: 0 30px 0 40px;
 }
 
-.wrapper .form-box.register .animation{
-    transform: translateX(120%);
-    opacity: 0;
-    filter: blur(10px);
-    transition: .7s ease;
-    transition-delay: calc(.1s * var(--j));
-}
-
-.wrapper.active .form-box.register .animation{
-    transform: translateX(0);
-    opacity: 1;
-    filter: blur(0);
-    transition-delay: calc(.1s * var(--i));
-}
-
-.wrapper .info-text.register{
+.LoginRegister-wrapper .LoginRegister-info-text.LoginRegister-register {
     left: 0;
     text-align: left;
-    padding: 0 150px 60px 40px;
+    padding: 0 60px 60px 40px;
     pointer-events: none;
 }
 
-.wrapper.active .info-text.register{
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-info-text.LoginRegister-register {
     pointer-events: auto;
 }
 
-.wrapper .info-text.register .animation{
-    transform: translateX(-120%);
-    opacity: 0;
-    filter: blur(10px);
-    transition: .7s ease;
-    transition-delay: calc(.1s * var(--j));
-}
-
-.wrapper.active .info-text.register .animation{
-    transform: translateX(0);
-    opacity: 1;
-    filter: blur(0);
-    transition-delay: calc(.1s * var(--i));
-}
-
-.wrapper .rotate-bg2{
+.LoginRegister-wrapper .LoginRegister-rotate-bg2 {
     position: absolute;
     top: 100%;
     left: 250px;
     width: 850px;
     height: 700px;
-    background: var(--white);
+    background: #fff;
     transform: rotate(0) skewY(0);
     transform-origin: bottom left;
     transition: 1.5s ease;
     transition-delay: 0.5s;
 }
 
-.wrapper.active .rotate-bg2{
-    transform: rotate(-11deg) skewY(-40deg);
-    transition-delay: 1.2s;
+
+    .LoginRegister-wrapper.LoginRegister-active .LoginRegister-rotate-bg2 {
+        transform: rotate(-11deg) skewY(-40deg);
+        transition-delay: 1.2s;
+        width: 1048px;
+        height: 1036px;
+    
 }
 
-.wrapper.active .form-box.register h2 {
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register .LoginRegister-title {
     font-size: 20px;
     margin-bottom: 5px;
 }
 
-.wrapper.active .form-box.register .input-box {
-    height: 40px;
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register .LoginRegister-input-box {
+    height: 30px;
     margin: 15px 0;
 }
 
-.wrapper.active .form-box.register .input-box input {
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register .LoginRegister-input-box input {
     font-size: 12px;
 }
 
-.wrapper.active .form-box.register .input-box label {
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register .LoginRegister-input-box label {
     font-size: 12px;
 }
 
-.wrapper.active .form-box.register .input-box i {
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register .LoginRegister-input-box i {
     font-size: 14px;
 }
 
-.wrapper.active .form-box.register button {
-    height: 40px;
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register .LoginRegister-btn {
+    height: 30px;
     font-size: 14px;
 }
 
-.wrapper.active .form-box.register .linkTxt {
-    font-size: 10px;
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register .LoginRegister-linkTxt {
+    font-size: 15px;
     margin: 10px 0 5px;
 }
 
-.wrapper.active .form-box.register .checking,
-.wrapper.active .form-box.register .available,
-.wrapper.active .form-box.register .unavailable,
-.wrapper.active .form-box.register .error {
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register .checking,
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register .available,
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register .unavailable,
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register .error {
     font-size: 10px;
     margin-top: -10px;
     margin-bottom: 5px;
 }
 
-.wrapper .form-box.register .animation,
-.wrapper.active .form-box.register .animation {
-    transition: 0.5s ease;
-} */
-
-
-
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
-
-:root{
-    --white: #fff;
-    --black: #000; 
-    --lightBulue: #17a;
+.LoginRegister-two-factor-message {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+.LoginRegister-two-factor-icon {
+    font-size: 48px;
+    color: #9966cc;
+    margin-bottom: 10px;
 }
 
-#root {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-}
+/* Continuing the updated CSS */
 
-.hazy-background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    backdrop-filter: blur(10px);
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.wrapper{
-    position: relative;
-    width: 750px;
-    height: 450px;
-    background: var(--white);
-    border: 2px solid var(--black);
-    border-radius: 10px;
-    box-shadow: 0 0 20px var(--black);
-    overflow: hidden;
-    z-index: 1001;
-}
-
-.wrapper.active .form-box.login .animation,
-.wrapper.active .info-text.login .animation,
-.wrapper.active .form-box.register .animation,
-.wrapper.active .info-text.register .animation {
+/* Active states for forms and animations */
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-login .LoginRegister-animation,
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-info-text.LoginRegister-login .LoginRegister-animation,
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register .LoginRegister-animation,
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-info-text.LoginRegister-register .LoginRegister-animation {
+    transform: translateX(0);
+    opacity: 1;
+    filter: blur(0);
     transition: 0.7s ease;
+    transition-delay: calc(.1s * var(--j));
 }
 
-.wrapper .form-box{
-    position: absolute;
-    top: 0;
-    width: 50%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-}
-
-.wrapper .form-box.login{
-    left: 0;
-    padding: 0 60px 0 40px;
-}
-
-.form-box h2{
-    margin-bottom: -5px;
-    position: relative;
-    font-size: 15px;
-    color: var(--black);
-    text-align: center;
-}
-
-.form-box h2::after{
-    content: "";
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 40px;
-    height: 4px;
-    background: var(--black);
-}
-
-.form-box .input-box{
-    position: relative;
-    width: 100%;
-    height: 50px;
-    margin: 25px 0;
-}
-
-.input-box input{
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    color: var(--black);
-    font-size: 16px;
-    font-weight: 500;
-    border: none;
-    outline: none;
-    border-bottom: 2px solid var(--black);
-    transition: .5s;
-    padding-right: 23px;
-}
-
-.input-box input:focus,
-.input-box input:valid{
-    border-bottom-color: var(--lightBulue);
-}
-
-.input-box label{
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
-    font-size: 16px;
-    color: var(--black);
-    pointer-events: none;
-    transition: 0.5s;
-}
-
-.input-box input:focus~label,
-.input-box input:valid~label{
-    top: -5px;
-    color: var(--lightBulue);
-}
-
-.input-box i{
-    position: absolute;
-    top: 50%;
-    right: 0;
-    transform: translateY(-50%);
-    font-size: 18px;
-    transition: 0.5s;
-}
-
-.input-box input:focus~i,
-.input-box input:valid~i{
-    color: var(--lightBulue);
-}
-
-form button{
-    width: 100%;
-    height: 45px;
-    background-color: #9966cc;
-    color: var(--white);
-    border: none;
-    outline: none;
-    border-radius: 40px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 600;
-    transition: .3s;
-}
-
-.login-divider {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    margin: 1rem 0;
-}
-
-.login-divider::before,
-.login-divider::after {
-    content: '';
-    flex: 1;
-    border-bottom: 1px solid #ccc;
-}
-
-.login-divider span {
-    padding: 0 0.5rem;
-    color: #757575;
-}
-
-.login-google-button {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    background-color: #fff;
-    color: #757575;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.login-google-button:hover {
-    background-color: #f5f5f5;
-}
-
-.login-google-button i {
-    margin-right: 0.5rem;
-}
-
-form button:hover{
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-}
-
-form .linkTxt{
-    font-size: 14px;
-    color: var(--black);
-    text-align: center;
-    margin: 20px 0 10px;
-}
-
-.linkTxt p a{
-    color: blue;
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.wrapper .form-box.login .animation{
+/* Login form animations */
+.LoginRegister-wrapper .LoginRegister-form-box.LoginRegister-login .LoginRegister-animation {
     transform: translateX(0);
     transition: 0.7s ease;
     opacity: 1;
@@ -649,89 +376,15 @@ form .linkTxt{
     transition-delay: calc(.1s * var(--j));
 }
 
-.wrapper.active .form-box.login .animation{
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-login .LoginRegister-animation {
     transform: translateX(-120%);
     opacity: 0;
     filter: blur(10px);
     transition-delay: calc(.1s * var(--i));
 }
 
-.wrapper .info-text{
-    position: absolute;
-    top: 0;
-    width: 50%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.wrapper .info-text.login{
-    right: 0;
-    text-align: right;
-    padding: 0 40px 60px 150px;
-}
-
-.wrapper .info-text h2{
-    font-size: 36px;
-    color: var(--white);
-    line-height: 1.3;
-    text-transform: uppercase;
-}
-
-.wrapper .info-text p{
-    font-size: 16px;
-    color: var(--white);
-}
-
-.wrapper .info-text.login .animation{
-    transform: translateX(0);
-    opacity: 1;
-    filter: blur(0);
-    transition: 0.7s ease;
-    transition-delay: calc(.1s * var(--j));
-}
-
-.wrapper.active .info-text.login .animation{
-    transform: translateX(120px);
-    opacity: 0;
-    filter: blur(10px);
-    transition: 0.7s ease;
-    transition-delay: calc(.1s * var(--i));
-}
-
-.wrapper .rotate-bg{
-    position: absolute;
-    top: -4px;
-    right: 0;
-    width: 850px;
-    height: 600px;
-    background: #9966cc;
-    transform: rotate(10deg) skewY(40deg);
-    transform-origin: bottom right;
-    transition: 1.5s ease;
-    transition-delay: 1.6s;
-}
-
-.wrapper.active .rotate-bg{
-    transform: rotate(0) skewY(0);
-    transition-delay: 0.5s;
-}
-
-.wrapper .form-box.register{
-    padding: 0 40px 0 60px;
-    right: 0;
-    opacity: 0;
-    pointer-events: none;
-}
-
-.wrapper.active .form-box.register{
-    opacity: 1;
-    pointer-events: auto;
-    padding: 0 30px 0 40px;
-}
-
-.wrapper .form-box.register .animation{
+/* Register form animations */
+.LoginRegister-wrapper .LoginRegister-form-box.LoginRegister-register .LoginRegister-animation {
     transform: translateX(120%);
     opacity: 0;
     filter: blur(10px);
@@ -739,25 +392,32 @@ form .linkTxt{
     transition-delay: calc(.1s * var(--j));
 }
 
-.wrapper.active .form-box.register .animation{
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register .LoginRegister-animation {
     transform: translateX(0);
     opacity: 1;
     filter: blur(0);
     transition-delay: calc(0.2s * var(--j));
 }
 
-.wrapper .info-text.register{
-    left: 0;
-    text-align: left;
-    padding: 0 150px 60px 40px;
-    pointer-events: none;
+/* Info text for Login */
+.LoginRegister-wrapper .LoginRegister-info-text.LoginRegister-login .LoginRegister-animation {
+    transform: translateX(0);
+    opacity: 1;
+    filter: blur(0);
+    transition: 0.7s ease;
+    transition-delay: calc(.1s * var(--j));
 }
 
-.wrapper.active .info-text.register{
-    pointer-events: auto;
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-info-text.LoginRegister-login .LoginRegister-animation {
+    transform: translateX(120px);
+    opacity: 0;
+    filter: blur(10px);
+    transition: 0.7s ease;
+    transition-delay: calc(.1s * var(--i));
 }
 
-.wrapper .info-text.register .animation{
+/* Info text for Register */
+.LoginRegister-wrapper .LoginRegister-info-text.LoginRegister-register .LoginRegister-animation {
     transform: translateX(-120%);
     opacity: 0;
     filter: blur(10px);
@@ -765,68 +425,124 @@ form .linkTxt{
     transition-delay: calc(0.7s * var(--j));
 }
 
-.wrapper.active .info-text.register .animation{
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-info-text.LoginRegister-register .LoginRegister-animation {
     transform: translateX(0);
     opacity: 1;
     filter: blur(0);
     transition-delay: calc(0.7s * var(--j));
 }
 
-.wrapper .rotate-bg2{
+/* Rotating background elements */
+.LoginRegister-wrapper .LoginRegister-rotate-bg {
+    position: absolute;
+    top: -4px;
+    right: -3px;
+    padding-left: 60px;
+    width: 893px;
+    height: 600px;
+    background: #9966cc;
+    transform: rotate(4deg) skewY(40deg);
+    transform-origin: bottom right;
+    transition: 1.5s ease;
+    transition-delay: 1.6s;
+}
+
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-rotate-bg {
+    transform: rotate(0) skewY(0);
+    transition-delay: 0.5s;
+}
+
+.LoginRegister-wrapper .LoginRegister-rotate-bg2 {
     position: absolute;
     top: 100%;
     left: 250px;
     width: 850px;
     height: 700px;
-    background: var(--white);
+    background: #fff;
     transform: rotate(0) skewY(0);
     transform-origin: bottom left;
     transition: 1.5s ease;
     transition-delay: 0.5s;
 }
 
-.wrapper.active .rotate-bg2{
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-rotate-bg2 {
     transform: rotate(-11deg) skewY(-40deg);
     transition-delay: 1.2s;
 }
 
-.wrapper.active .form-box.register h2 {
+/* Small adjustments for active states on Register form */
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register .LoginRegister-title {
     font-size: 20px;
     margin-bottom: 5px;
 }
 
-.wrapper.active .form-box.register .input-box {
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register .LoginRegister-input-box {
     height: 30px;
     margin: 15px 0;
 }
 
-.wrapper.active .form-box.register .input-box input {
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register .LoginRegister-input-box input {
     font-size: 12px;
 }
 
-.wrapper.active .form-box.register .input-box label {
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register .LoginRegister-input-box label {
     font-size: 12px;
 }
 
-.wrapper.active .form-box.register .input-box i {
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register .LoginRegister-input-box i {
     font-size: 14px;
 }
 
-.wrapper.active .form-box.register button {
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register .LoginRegister-btn {
     height: 30px;
     font-size: 14px;
 }
 
-.wrapper.active .form-box.register .linkTxt {
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register .LoginRegister-linkTxt {
     font-size: 15px;
     margin: 10px 0 5px;
 }
 
-.wrapper.active .form-box.register .checking,
-.wrapper.active .form-box.register .available,
-.wrapper.active .form-box.register .unavailable,
-.wrapper.active .form-box.register .error {
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register .checking,
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register .available,
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register .unavailable,
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register .error {
     font-size: 10px;
     margin-top: -10px;
     margin-bottom: 5px;
+}
+
+/* Two-factor authentication message */
+.LoginRegister-two-factor-message {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.LoginRegister-two-factor-icon {
+    font-size: 48px;
+    color: #9966cc;
+    margin-bottom: 10px;
+}
+
+
+
+
+
+.SignUp-form-input-box input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    color: #000;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    outline: none;
+    border-bottom: 2px solid #000;
+    transition: .5s;
+    padding-right: 23px;
+}
+
+.SignUp-form-input-box input:focus,
+.SignUp-form-input-box input:valid {
+    border-bottom-color: #17a;
 }
