@@ -1,0 +1,521 @@
+/* Css of Upper Profile Card (Non Editable) */
+.profile-upper-card-container {
+  /* width: ; */
+  /* margin-bottom: 1.2rem; */
+  /* display: flex; */
+  width: 40%;
+  margin: 0 1.2rem 1.2rem 1.2rem;
+  flex-shrink: 0;
+  min-width: 400px;
+}
+
+.profile-upper-card {
+  /* min-width: 400px; */
+  background-color: var(--bg-color);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: var(--box-shadow);
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.profile-upper-card-title {
+  font-size: 20px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.profile-upper-card-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-upper-picture-section {
+  display: flex;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+
+.profile-upper-picture {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-right: 2rem;
+  box-shadow: 0 0 15px rgba(154, 89, 207, 0.723);
+}
+
+.profile-upper-info-section {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+
+.profile-upper-email {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.profile-upper-login-type {
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-weight: bold;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.profile-upper-login-type.google {
+  background-color: #f1f3f4;
+  color: #4285f4;
+}
+
+.profile-upper-login-type.oneid {
+  background-color: #fff0ee;
+  color: #ff6f61;
+}
+
+.profile-upper-full-name {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 3px;
+}
+
+.profile-upper-username {
+  margin: 0;
+  font-size: 14px;
+  color: #9c79c8 !important;
+  font-weight: bold;
+}
+
+.profile-upper-details {
+  width: 100%;
+  display: flex;
+  font-size: 14px;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.profile-upper-dob {
+  margin-left: 2rem;
+}
+
+@media (max-width: 1100px) {
+  .profile-upper-card-container {
+    width: calc(100% - 1.2rem);
+    box-sizing: border-box;
+    margin-right: 0;
+    min-width: 0;
+    /* margin-left: 0; */
+  }
+
+  .profile-card {
+    width: calc(100% - 2.4rem - 1.2rem) !important;
+    margin: 1.2rem 0 1.2rem 1.2rem;
+  }
+}
+
+@media (max-width: 735px) {
+  .profile-card-title {
+    font-size: 1.35rem !important;
+  }
+
+  .profile-upper-picture-section img {
+    margin-right: 1rem;
+  }
+
+  .profile-card {
+    margin: 0 !important;
+  }
+
+  .profile-upper-card-container {
+    margin-left: 0;
+  }
+
+  .profile-card,
+  .profile-upper-card-container {
+    width: 100% !important;
+    margin-bottom: 1.2rem;
+    box-sizing: border-box;
+  }
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+}
+
+.profile-card {
+  width: 60%;
+  position: relative;
+  /* overflow: hidden; */
+  background-color: var(--bg-color);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: var(--box-shadow);
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.profile-card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 0.3rem;
+}
+
+.profile-picture-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-picture-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-picture {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  transition: transform 0.3s;
+}
+
+.profile-picture:hover {
+  transform: scale(1.1);
+}
+
+.profile-picture-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.profile-button {
+  background-color: #9966cc;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 5px;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.profile-button:hover {
+  background-color: #8a4fc7;
+}
+
+.profile-info label {
+  display: block;
+  font-weight: bold;
+}
+
+.profile-input,
+.profile-textarea {
+  width: calc(100% - 20px);
+  margin-top: 0.4rem;
+}
+
+.profile-textarea {
+  resize: none;
+}
+
+.profile-input,
+.profile-textarea {
+  padding: 10px;
+  margin-bottom: 0.3rem;
+  border-radius: 5px;
+  border: 1px solid var(--border-color);
+  background-color: var(--input-bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}
+
+.profile-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.6rem;
+}
+
+.profile-save-button {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.profile-save-button:hover {
+  background-color: var(--primary-hover-color);
+}
+
+.profile-card-details h4 {
+  margin-bottom: 5px;
+}
+
+.profile-card-details p {
+  font-size: 14px;
+  color: var(--text-color);
+}
+
+.login-type-badge {
+  display: flex;
+  justify-content: center;
+}
+
+.user-login-type {
+  font-size: 14px;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-weight: bold;
+}
+
+.user-login-type.google {
+  background-color: #f1f3f4;
+  color: #4285f4;
+}
+
+.user-login-type.oneid {
+  background-color: #fff0ee;
+  color: #ff6f61;
+}
+
+.profile-edit-button,
+.profile-save-button,
+.profile-cancel-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.profile-edit-button {
+  position: absolute;
+  top: 1.6rem;
+  right: 1.6rem;
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.profile-save-button {
+  background-color: #4caf50;
+  color: white;
+  margin-right: 10px;
+}
+
+.profile-cancel-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.profile-edit-button:hover,
+.profile-save-button:hover,
+.profile-cancel-button:hover {
+  opacity: 0.9;
+}
+
+.profile-input:disabled {
+  background-color: var(--input-bg-color);
+  color: var(--text-color);
+  opacity: 0.7;
+}
+
+.profile-edit-button,
+.profile-button {
+  background-color: #9966cc;
+  color: white;
+}
+
+.profile-edit-button:hover,
+.profile-button:hover {
+  background-color: #8a4fc7;
+}
+
+.username-availability {
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-bottom: 0.4rem;
+}
+
+.username-availability .available {
+  color: #4caf50;
+}
+
+.username-availability .unavailable {
+  color: #f44336;
+}
+
+.profile-save-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+select.profile-input {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 20px;
+}
+
+.profile-select {
+  width: 100%;
+}
+
+.profile-saving-bar {
+  height: 4px;
+  background-color: #9966cc;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  animation: profileCardsaving-animation 0.5s infinite linear;
+}
+
+@keyframes profileCardsaving-animation {
+  0% {
+    width: 0;
+  }
+
+  50% {
+    width: 50%;
+  }
+
+  100% {
+    width: 100%;
+  }
+}
+
+.profile-save-button:disabled,
+.profile-cancel-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.profile-footer-message {
+  font-size: 14px;
+  color: #eb434b;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+/* Dark CSS for upper profile card */
+.dark-mode .profile-upper-card {
+  background-color: var(--dark-sidebar-cards-bg-color);
+}
+
+.dark-mode .profile-upper-username {
+  color: var(--dark-primary-color);
+}
+
+.dark-mode .profile-upper-edit-button {
+  background-color: var(--dark-primary-color);
+}
+
+.dark-mode .profile-upper-edit-button:hover {
+  background-color: var(--dark-primary-hover-color);
+}
+
+.dark-mode .profile-upper-login-type.google {
+  background-color: #303134;
+  color: #8ab4f8;
+}
+
+.dark-mode .profile-upper-login-type.oneid {
+  background-color: #3d2d2b;
+  color: #ff8f85;
+}
+
+/* Dark Mode Css for Prodile Edit */
+.dark-mode .profile-card {
+  background-color: var(--dark-sidebar-cards-bg-color);
+  box-shadow: var(--dark-box-shadow);
+}
+
+.dark-mode .profile-input,
+.dark-mode .profile-textarea {
+  background-color: var(--dark-input-bg-color);
+  border-color: var(--dark-border-color);
+  color: var(--dark-text-color);
+}
+
+.dark-mode .profile-button,
+.dark-mode .profile-save-button {
+  background-color: var(--dark-primary-color);
+}
+
+.dark-mode .profile-button:hover,
+.dark-mode .profile-save-button:hover {
+  background-color: var(--dark-primary-hover-color);
+}
+
+.dark-mode .user-login-type.google {
+  background-color: #303134;
+  color: #8ab4f8;
+}
+
+.dark-mode .user-login-type.oneid {
+  background-color: #3d2d2b;
+  color: #ff8f85;
+}
+
+.dark-mode .profile-edit-button,
+.dark-mode .profile-save-button,
+.dark-mode .profile-cancel-button {
+  color: var(--dark-text-color);
+}
+
+.dark-mode .profile-edit-button {
+  background-color: var(--dark-primary-color);
+}
+
+.dark-mode .profile-save-button {
+  background-color: #2e7d32;
+}
+
+.dark-mode .profile-cancel-button {
+  background-color: #c62828;
+}
+
+.dark-mode .profile-input:disabled {
+  background-color: var(--dark-input-bg-color);
+  color: var(--dark-text-color);
+}
+
+.dark-mode .profile-edit-button,
+.dark-mode .profile-button {
+  background-color: #9966cc;
+  color: white;
+}
+
+.dark-mode .profile-edit-button:hover,
+.dark-mode .profile-button:hover {
+  background-color: #8a4fc7;
+}
+
+.dark-mode .profile-button {
+  background-color: #9966cc;
+  color: white;
+}
+
+.dark-mode .profile-button:hover {
+  background-color: #8a4fc7;
+}
+
+.dark-mode .user-login-type.google {
+  background-color: #303134;
+  color: #8ab4f8;
+}
+
+.dark-mode .user-login-type.oneid {
+  background-color: #3d2d2b;
+  color: #ff8f85;
+}

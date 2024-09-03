@@ -1,8 +1,13 @@
 import React, { useState, useCallback } from "react";
 import axios from "axios";
 import { debounce } from "lodash";
+import "./ProfileSettings.css";
 
-const ProfileSettings = ({ user, fetchUserData, setRefreshActivityTrigger }) => {
+const ProfileSettings = ({
+  user,
+  fetchUserData,
+  setRefreshActivityTrigger,
+}) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedUser, setEditedUser] = useState(user);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -100,148 +105,194 @@ const ProfileSettings = ({ user, fetchUserData, setRefreshActivityTrigger }) => 
   };
 
   return (
-    <div className="profile-card">
-      <div className="profile-header">
-        <div className="profile-card-title">Profile Settings</div>
-        {!isEditing && (
-          <button
-            className="profile-edit-button"
-            onClick={() => setIsEditing(true)}
-          >
-            Edit Profile
-          </button>
-        )}
-      </div>
-      <div className="profile-picture-section">
-        <div className="profile-picture-container">
-          <img
-            src={user.profile_pic || "/img/default-profile.png"}
-            alt="Profile"
-            className="profile-picture"
-          />
-          {isEditing && (
-            <div className="profile-picture-buttons">
-              <input
-                type="file"
-                onChange={handleFileChange}
-                style={{ display: "none" }}
-                id="fileInput"
-                accept="image/*"
+    <>
+      <div className="profile-upper-card-container">
+        <div className="profile-upper-card">
+          <h2 className="profile-upper-card-title">Profile Card</h2>
+          <div className="profile-upper-card-content">
+            <div className="profile-upper-picture-section">
+              <img
+                src={user.profile_pic || "/img/default-profile.png"}
+                alt="Profile"
+                className="profile-upper-picture"
               />
-              <label htmlFor="fileInput" className="profile-button">
-                Change picture
-              </label>
-              <button className="profile-button" onClick={handleDeletePicture}>
-                Delete picture
-              </button>
+              <div className="profile-upper-info-section">
+                <div className="profile-upper-email">{user.email}</div>
+                <span
+                  className={`profile-upper-login-type ${
+                    user.type === "google" ? "google" : "oneid"
+                  }`}
+                >
+                  {user.type === "google"
+                    ? "Google ID Account"
+                    : "One ID Account"}
+                </span>
+              </div>
             </div>
-          )}
+            <h3 className="profile-upper-full-name">{`${user.first_name} ${user.last_name}`}</h3>
+            <p className="profile-upper-username">@{user.username}</p>
+            <div className="profile-upper-details">
+              <div className="profile-upper-gender">
+                <div>Gender: {user.gender || "Not specified"} </div>
+              </div>
+              <div>
+                <div className="profile-upper-dob">
+                  DOB:{" "}
+                  {user.date_of_birth
+                    ? new Date(user.date_of_birth).toLocaleDateString()
+                    : "Not specified"}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div className="profile-info">
-        <label>First Name</label>
-        <input
-          type="text"
-          name="first_name"
-          value={isEditing ? editedUser.first_name : user.first_name}
-          onChange={handleInputChange}
-          disabled={!isEditing}
-          className="profile-input"
-        />
-        <label>Last Name</label>
-        <input
-          type="text"
-          name="last_name"
-          value={isEditing ? editedUser.last_name : user.last_name}
-          onChange={handleInputChange}
-          disabled={!isEditing}
-          className="profile-input"
-        />
-        <label>Username</label>
-        <input
-          type="text"
-          name="username"
-          value={isEditing ? editedUser.username : user.username}
-          onChange={handleInputChange}
-          disabled={!isEditing}
-          className="profile-input"
-        />
-        {isEditing && (
-          <div className="username-availability">
-            {checkingUsername ? (
-              <span>Checking username...</span>
-            ) : usernameAvailable ? (
-              <span className="available">Username is available</span>
-            ) : validUsername ? (
-              <span className="unavailable">Username is not available</span>
-            ) : (
-              <span className="unavailable">
-                Username should be at least 5 characters
-              </span>
+      <div className="profile-card">
+        <div className="profile-header">
+          <div className="profile-card-title">Profile Settings</div>
+          {!isEditing && (
+            <button
+              className="profile-edit-button"
+              onClick={() => setIsEditing(true)}
+            >
+              Edit Profile
+            </button>
+          )}
+        </div>
+        <div className="profile-picture-section">
+          <div className="profile-picture-container">
+            <img
+              src={user.profile_pic || "/img/default-profile.png"}
+              alt="Profile"
+              className="profile-picture"
+            />
+            {isEditing && (
+              <div className="profile-picture-buttons">
+                <input
+                  type="file"
+                  onChange={handleFileChange}
+                  style={{ display: "none" }}
+                  id="fileInput"
+                  accept="image/*"
+                />
+                <label htmlFor="fileInput" className="profile-button">
+                  Change picture
+                </label>
+                <button
+                  className="profile-button"
+                  onClick={handleDeletePicture}
+                >
+                  Delete picture
+                </button>
+              </div>
             )}
           </div>
-        )}
-        <label>Email</label>
-        <input
-          type="email"
-          value={user.email}
-          disabled
-          className="profile-input"
-        />
-        <label>Gender</label>
-        <select
-          name="gender"
-          value={isEditing ? editedUser.gender : user.gender}
-          onChange={handleInputChange}
-          disabled={!isEditing}
-          className="profile-input profile-select"
-        >
-          <option value="">Select Gender</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-          <option value="Other">Other</option>
-        </select>
-        <label>Date of Birth</label>
-        <input
-          type="date"
-          name="date_of_birth"
-          value={
-            isEditing
-              ? editedUser.date_of_birth
-              : user.date_of_birth
-              ? new Date(user.date_of_birth).toISOString().split("T")[0]
-              : ""
-          }
-          onChange={handleInputChange}
-          disabled={!isEditing}
-          className="profile-input"
-        />
+        </div>
+        <div className="profile-info">
+          <label>First Name</label>
+          <input
+            type="text"
+            name="first_name"
+            value={isEditing ? editedUser.first_name : user.first_name}
+            onChange={handleInputChange}
+            disabled={!isEditing}
+            className="profile-input"
+          />
+          <label>Last Name</label>
+          <input
+            type="text"
+            name="last_name"
+            value={isEditing ? editedUser.last_name : user.last_name}
+            onChange={handleInputChange}
+            disabled={!isEditing}
+            className="profile-input"
+          />
+          <label>Username</label>
+          <input
+            type="text"
+            name="username"
+            value={isEditing ? editedUser.username : user.username}
+            onChange={handleInputChange}
+            disabled={!isEditing}
+            className="profile-input"
+          />
+          {isEditing && (
+            <div className="username-availability">
+              {checkingUsername ? (
+                <span>Checking username...</span>
+              ) : usernameAvailable ? (
+                <span className="available">Username is available</span>
+              ) : validUsername ? (
+                <span className="unavailable">Username is not available</span>
+              ) : (
+                <span className="unavailable">
+                  Username should be at least 5 characters
+                </span>
+              )}
+            </div>
+          )}
+          <label>Email</label>
+          <input
+            type="email"
+            value={user.email}
+            disabled
+            className="profile-input"
+          />
+          <label>Gender</label>
+          <select
+            name="gender"
+            value={isEditing ? editedUser.gender : user.gender}
+            onChange={handleInputChange}
+            disabled={!isEditing}
+            className="profile-input profile-select"
+          >
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+          <label>Date of Birth</label>
+          <input
+            type="date"
+            name="date_of_birth"
+            value={
+              isEditing
+                ? editedUser.date_of_birth
+                : user.date_of_birth
+                ? new Date(user.date_of_birth).toISOString().split("T")[0]
+                : ""
+            }
+            onChange={handleInputChange}
+            disabled={!isEditing}
+            className="profile-input"
+          />
+        </div>
+        <div className="profile-footer">
+          {isEditing && (
+            <>
+              <button
+                className="profile-save-button"
+                onClick={handleSaveChanges}
+                disabled={!usernameAvailable || isSaving}
+              >
+                Save changes
+              </button>
+              <button
+                className="profile-cancel-button"
+                onClick={() => setIsEditing(false)}
+                disabled={isSaving}
+              >
+                Cancel
+              </button>
+            </>
+          )}
+        </div>
+        {isSaving && <div className="profile-saving-bar"></div>}
+        <div className="profile-footer-message">
+          **for sensitive account changes, visit the Account Section.
+        </div>
       </div>
-      <div className="profile-footer">
-        {isEditing && (
-          <>
-            <button
-              className="profile-save-button"
-              onClick={handleSaveChanges}
-              disabled={!usernameAvailable || isSaving}
-            >
-              Save changes
-            </button>
-            <button
-              className="profile-cancel-button"
-              onClick={() => setIsEditing(false)}
-              disabled={isSaving}
-            >
-              Cancel
-            </button>
-          </>
-        )}
-      </div>
-      {isSaving && <div className="profile-saving-bar"></div>}
-      <div className="profile-footer-message">
-        **for sensitive account changes, visit the Account Section.
-      </div>
-    </div>
+    </>
   );
 };
 

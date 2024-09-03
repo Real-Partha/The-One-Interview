@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./Profile.css";
 import { useTheme } from "../../ThemeContext";
 import NavBar from "../Navbar/Navbar";
@@ -12,11 +13,13 @@ import ProfileSettings from "./ProfileSettings";
 const Profile = () => {
   const { isDarkMode } = useTheme();
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [refreshActivityTrigger, setRefreshActivityTrigger] = useState(0);
   const [activeSection, setActiveSection] = useState("profile");
   const [isMainLoading, setIsMainLoading] = useState(true);
+
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const fetchUserData = async () => {
     try {
@@ -26,7 +29,6 @@ const Profile = () => {
       );
       if (response.data.isAuthenticated) {
         setUser(response.data.user);
-        setEditedUser(response.data.user);
       }
     } catch (err) {
       console.error("Error fetching user data:", err);
@@ -37,28 +39,49 @@ const Profile = () => {
   };
 
   useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const tab = params.get("tab");
+
     const firstLoading = async () => {
-      setIsMainLoading(true);
-      await new Promise((resolve) => setTimeout(resolve, 3000));
-      setIsMainLoading(false);
+      if (!tab) {
+        setIsMainLoading(true);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        setIsMainLoading(false);
+      } else {
+        setIsMainLoading(false);
+      }
     };
+
     fetchUserData();
     firstLoading();
-  }, []);
 
-  if (isMainLoading)
+    if (tab && ["profile", "account", "activity"].includes(tab)) {
+      setActiveSection(tab);
+    } else {
+      setActiveSection("profile");
+    }
+  }, [location]);
+
+  const handleSetActiveSection = (section) => {
+    setActiveSection(section);
+    navigate(`?tab=${section}`);
+  };
+
+  if (isMainLoading) {
     return (
       <div>
         <MainLoader />
       </div>
     );
+  }
 
-  if (!user)
+  if (!user) {
     return (
       <div>
         <LoginSignupPopup />
       </div>
     );
+  }
 
   return (
     <div className={`profile-page ${isDarkMode ? "dark-mode" : "light-mode"}`}>
@@ -70,7 +93,7 @@ const Profile = () => {
               className={`profile-sidebar-card ${
                 activeSection === "profile" ? "active" : ""
               }`}
-              onClick={() => setActiveSection("profile")}
+              onClick={() => handleSetActiveSection("profile")}
             >
               <i className="fa fa-user" />
               <div className="profile-card-details">
@@ -81,7 +104,7 @@ const Profile = () => {
               className={`profile-sidebar-card ${
                 activeSection === "account" ? "active" : ""
               }`}
-              onClick={() => setActiveSection("account")}
+              onClick={() => handleSetActiveSection("account")}
             >
               <i className="fa fa-cog" />
               <div className="profile-card-details">
@@ -92,7 +115,7 @@ const Profile = () => {
               className={`profile-sidebar-card ${
                 activeSection === "activity" ? "active" : ""
               }`}
-              onClick={() => setActiveSection("activity")}
+              onClick={() => handleSetActiveSection("activity")}
             >
               <i className="fa fa-clock" />
               <div className="profile-card-details">
@@ -117,53 +140,12 @@ const Profile = () => {
         </aside>
 
         <section className="profile-content">
-          {/* Upper Profile Card */}
           {activeSection === "profile" && (
-            <>
-              <div className="profile-upper-card-container">
-                <div className="profile-upper-card">
-                  <h2 className="profile-upper-card-title">Profile Card</h2>
-                  <div className="profile-upper-card-content">
-                    <div className="profile-upper-picture-section">
-                      <img
-                        src={user.profile_pic || "/img/default-profile.png"}
-                        alt="Profile"
-                        className="profile-upper-picture"
-                      />
-                      <div className="profile-upper-info-section">
-                        <div className="profile-upper-email">{user.email}</div>
-                        <span
-                          className={`profile-upper-login-type ${
-                            user.type === "google" ? "google" : "oneid"
-                          }`}
-                        >
-                          {user.type === "google"
-                            ? "Google ID Account"
-                            : "One ID Account"}
-                        </span>
-                      </div>
-                    </div>
-                    <h3 className="profile-upper-full-name">{`${user.first_name} ${user.last_name}`}</h3>
-                    <p className="profile-upper-username">@{user.username}</p>
-                    <div className="profile-upper-details">
-                      <div className="profile-upper-gender">
-                        <div>Gender: {user.gender || "Not specified"} </div>
-                      </div>
-                      <div>
-                        <div className="profile-upper-dob">
-                          DOB:{" "}
-                          {user.date_of_birth
-                            ? new Date(user.date_of_birth).toLocaleDateString()
-                            : "Not specified"}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <ProfileSettings user={user} fetchUserData={fetchUserData} setRefreshActivityTrigger={setRefreshActivityTrigger} />
-            </>
+            <ProfileSettings
+              user={user}
+              fetchUserData={fetchUserData}
+              setRefreshActivityTrigger={setRefreshActivityTrigger}
+            />
           )}
           {activeSection === "account" && (
             <AccountSettings user={user} fetchUserData={fetchUserData} />
