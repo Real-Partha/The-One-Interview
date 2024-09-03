@@ -5,6 +5,11 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.5);
 }
 
 .hazy-background {
@@ -12,7 +17,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 50%;
     backdrop-filter: blur(10px);
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 1000;
@@ -33,6 +38,10 @@
     box-shadow: 0 0 20px #000;
     overflow: hidden;
     z-index: 1001;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease-in-out;
 }
 
 .LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-login .LoginRegister-animation,
@@ -179,7 +188,7 @@
     border-radius: 5px;
     font-size: 1rem;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.1s ease;
     background-color: #fff;
     color: #757575;
     display: flex;
@@ -447,7 +456,7 @@
 
 .LoginRegister-wrapper.LoginRegister-active .LoginRegister-rotate-bg {
     transform: rotate(0) skewY(0);
-    transition-delay: 0.5s;
+    transition-delay: 0.7s;
 }
 
 .LoginRegister-wrapper .LoginRegister-rotate-bg2 {
@@ -460,7 +469,7 @@
     transform: rotate(0) skewY(0);
     transform-origin: bottom left;
     transition: 1.5s ease;
-    transition-delay: 0.5s;
+    transition-delay: 0.7s;
 }
 
 .LoginRegister-wrapper.LoginRegister-active .LoginRegister-rotate-bg2 {
@@ -501,13 +510,24 @@
     margin: 10px 0 5px;
 }
 
-.LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register .checking,
-.LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register .available,
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register .checking{
+    font-size: 15px;
+    margin-top:-10px;
+    margin-bottom: 2px;
+    color: rgb(7, 7, 177);
+}
+.LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register .available{
+    font-size: 15px;
+    margin-top:-10px;
+    margin-bottom: 2px;
+    color: rgb(38, 187, 38);
+}
 .LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register .unavailable,
 .LoginRegister-wrapper.LoginRegister-active .LoginRegister-form-box.LoginRegister-register .error {
     font-size: 10px;
     margin-top: -10px;
-    margin-bottom: 5px;
+    margin-bottom: 2px;
+    color:red;
 }
 
 /* Two-factor authentication message */
@@ -555,7 +575,7 @@
     border: none;
     outline: none;
     border-bottom: 2px solid #000;
-    transition: .5s;
+    transition: .7s;
     padding-right: 23px;
 }
 
@@ -578,7 +598,7 @@
     font-size: 15px;
     color: #000;
     pointer-events: none;
-    transition: 0.5s;
+    transition: 0.7s;
 }
 .SignUp-form-input-box input:focus ~ label,
 .SignUp-form-input-box input:valid ~ label {
@@ -591,7 +611,7 @@
     right: 50px; /* Adjust icon to be closer to the input */
     transform: translateY(-50%);
     font-size: 18px;
-    transition: 0.5s;
+    transition: 0.7s;
 }
 .SignUp-form-input-box input:focus ~ i,
 .SignUp-form-input-box input:valid ~ i {

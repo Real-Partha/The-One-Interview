@@ -532,6 +532,19 @@ const LoginRegister = () => {
               Sign Up
             </button>
             <div
+                className="LoginRegister-login-divider LoginRegister-animation"
+                style={{ "--i": 4, "--j": 24.5 }}
+              >
+                <span>or</span>
+              </div>
+            <button
+                onClick={handleGoogleClick}
+                className="LoginRegister-login-google-button LoginRegister-animation"
+                style={{ "--i": 4.5, "--j": 25 }}
+              >
+                <i className="fab fa-google"></i> Sign in with Google
+              </button>
+            <div
               className="LoginRegister-linkTxt LoginRegister-animation"
               style={{ "--i": 25, "--j": 8 }}
             >
