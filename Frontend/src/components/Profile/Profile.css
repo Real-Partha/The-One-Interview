@@ -2,7 +2,7 @@
 .profile-main-content {
   display: flex;
   background-color: var(--bg-color);
-  padding: 0 1.2rem 1.2rem 1.2rem;
+  padding: 0 1.2rem 0 0;
   margin-top: 6rem;
   color: var(--text-color);
   transition: background-color 0.3s, color 0.3s;
@@ -21,76 +21,10 @@
   margin: 1rem 0;
 }
 
-.profile-sidebar {
-  max-width: 235px;
-  width: 22%;
-  min-width: 190px;
-  background-color: var(--bg-color);
-  padding: 1rem;
-  border-radius: 15px;
-  box-shadow: var(--box-shadow);
-  transition: background-color 0.3s, box-shadow 0.3s;
-}
-
-.profile-navigation {
-  display: flex;
-  flex-direction: column;
-}
-
-.profile-sidebar-card.active {
-  background-color: var(--primary-color);
-  color: white;
-}
-
-.profile-sidebar-card.active:hover {
-  background-color: var(--primary-hover-color);
-  color: white;
-}
-
-.dark-mode .profile-sidebar-card.active {
-  background-color: var(--dark-primary-color);
-}
-
-.dark-mode .profile-sidebar-card.active:hover {
-  background-color: var(--dark-primary-hover-color);
-}
-
-.profile-sidebar-card {
-  display: flex;
-  align-items: center;
-  padding: 1.3rem 1rem;
-  margin-bottom: 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.profile-sidebar-card:hover {
-  background-color: var(--input-bg-color);
-  transform: translateY(-10px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-
-.profile-sidebar-card i {
-  margin-right: 10px;
-  font-size: 1.2rem;
-}
-
 @media (max-width: 1100px) {
   .profile-content {
     flex-direction: column;
   }
-}
-
-@media (max-width: 735px) {
-  .profile-sidebar {
-    display: none;
-  }
-}
-
-.profile-sidebar-menu-title {
-  font-size: 1.1rem;
-  font-weight: bold;
 }
 
 .profile-main-userActivity {
@@ -111,20 +45,6 @@
 
 .dark-mode .profile-main-content p {
   color: var(--dark-para-color);
-}
-
-.dark-mode .profile-sidebar {
-  background-color: var(--dark-sidebar-bg-color);
-  box-shadow: var(--dark-box-shadow);
-}
-
-.dark-mode .profile-sidebar-card {
-  background-color: var(--dark-sidebar-cards-bg-color);
-  /* box-shadow: var(--dark-box-shadow); */
-}
-
-.dark-mode .profile-sidebar-card:hover {
-  background-color: var(--dark-input-bg-color);
 }
 
 /* Variables to match MainComponent.css */
