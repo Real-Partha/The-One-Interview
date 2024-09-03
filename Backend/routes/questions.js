@@ -615,6 +615,7 @@ router.patch("/downvote", async (req, res) => {
   }
 });
 
+
 router.get("/user/questions", async (req, res) => {
   try {
     if (!req.isAuthenticated()) {
@@ -622,12 +623,28 @@ router.get("/user/questions", async (req, res) => {
     }
 
     const userId = req.user._id;
-    const questions = await Question.find({ user_id: userId }).sort({ created_at: -1 });
+    const questions = await Question.find({ user_id: userId }).sort({
+      created_at: -1,
+    }).lean(); // Use .lean() to get plain JavaScript objects
 
-    res.json(questions);
+    const updatedQuestions = await Promise.all(
+      questions.map(async (question) => {
+        const processedAnswer = await replaceImageUrlsWithSignedUrls(
+          question.answer
+        );
+        return {
+          ...question,
+          answer: processedAnswer,
+        };
+      })
+    );
+
+    return res.json(updatedQuestions);
   } catch (error) {
     console.error("Error fetching user questions:", error);
-    res.status(500).json({ error: "An error occurred while fetching user questions" });
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching user questions" });
   }
 });
 

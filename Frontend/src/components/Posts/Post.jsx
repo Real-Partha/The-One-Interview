@@ -108,7 +108,6 @@ const Post = () => {
 
       if (response.data.error === "User not authenticated") {
         setShowLoginPopup(true);
-        setIsMainLoading(false);
       } else {
         if (response.data.isVerified) {
           setQuestion(response.data);
@@ -128,10 +127,8 @@ const Post = () => {
           });
           setCommentLikes(likesObj);
           setCommentDislikes(dislikesObj);
-          setIsMainLoading(false);
         } else {
           setQuestion({ isVerified: false });
-          setIsMainLoading(false);
         }
       }
     } catch (error) {
@@ -139,6 +136,8 @@ const Post = () => {
       if (error.response && error.response.status === 401) {
         setShowLoginPopup(true);
       }
+    } finally {
+      setIsMainLoading(false);
     }
   };
 
