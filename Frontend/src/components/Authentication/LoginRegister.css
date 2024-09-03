@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
-.loginregister-container {
+
+
+.LoginRegister-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -307,7 +309,7 @@
 
 
     .LoginRegister-wrapper.LoginRegister-active .LoginRegister-rotate-bg2 {
-        transform: rotate(-11deg) skewY(-40deg);
+        transform: rotate(-12.5deg) skewY(-40deg);
         transition-delay: 1.2s;
         width: 1048px;
         height: 1036px;
@@ -473,7 +475,7 @@
 }
 
 .LoginRegister-wrapper.LoginRegister-active .LoginRegister-rotate-bg2 {
-    transform: rotate(-11deg) skewY(-40deg);
+    transform: rotate(-12.5deg) skewY(-40deg);
     transition-delay: 1.2s;
 }
 

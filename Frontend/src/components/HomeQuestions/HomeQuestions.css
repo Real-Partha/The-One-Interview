@@ -2,6 +2,7 @@
 .sidebar,
 .thread-card,
 .card,
+.right-card
 .add-thread-container,
 .add-thread-input,
 .add-thread-button,
@@ -17,8 +18,8 @@
 }
 
 .main-content{
-  margin-top: 6.8rem;
-    /* padding-left: 3rem; */
+  margin-top: 4.8rem;
+    padding-top: 2rem;
 }
 /* MainContent.css */
 .light-mode .main-content {
@@ -27,7 +28,7 @@
   /* background-color: #5bafba; */
   /* background:linear-gradient(-135deg, #e7dbd0 0%, #f7f8fa 50%, #baa899 100%); */
 
-  background: linear-gradient(-101deg, #e7dbd0 0%, #f7f8fa 50%, #baa899 100%);
+  background: linear-gradient(-93deg, #e7dbd0 0%, #f7f8fa 50%, #baa899 100%);
 
 }
 
@@ -40,7 +41,8 @@
   border-radius: 15px;
 }
 
-.light-mode .card {
+.light-mode .card
+.light-mode .right-card {
   background: linear-gradient(90deg, #eff0f3 0%, #f5f5f5 50%, #edf3ff 100%);
 
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
@@ -358,7 +360,8 @@
   margin-bottom: 7%;
 } */
 
-.card {
+.card,
+.right-card {
   /* width: 92%; */
   margin-bottom: 7%;
   display: flex;
@@ -371,7 +374,8 @@
   cursor: pointer;
 }
 
-.card:hover {
+.card:hover
+.right-card:hover {
   background-color: #f0f4ff;
 }
 
@@ -383,7 +387,8 @@
   margin-right: 6px;
 }
 
-.card img {
+.card img,
+.right-card img {
   width: 66px;
   height: 66px;
   border-radius: 50%;
@@ -408,7 +413,8 @@
   color: #555;
 }
 
-.card {
+.card,
+.right-card {
   /* width: 200px; */
   padding: 1.4vw;
   /* width: 85%; */
@@ -424,13 +430,15 @@
   /* margin: 10px; */
 }
 
-.card:hover {
+.card:hover,
+.right-card:hover {
   transform: translateY(-10px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 /* Image inside each card, made circular */
-.card img {
+.card img,
+.right-card img {
   width: 60px;
   height: 60px;
   border-radius: 50%;
@@ -518,7 +526,8 @@
   background-color: #5a48cc;
 }
 
-.right-sidebar .Side-bar-cards .card {
+.Side-bar-cards .card,
+.Side-bar-cards .right-card {
   /* width: 270px; */
   /* width: 100%; */
   position: relative;
@@ -769,12 +778,14 @@
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
 }
 
-.dark-mode .card {
+.dark-mode .card,
+.dark-mode .right-card {
   background-color: #3b3b3b;
   /* Darker Charcoal */
 }
 
-.dark-mode .card:hover {
+.dark-mode .card:hover,
+.dark-mode .right-card:hover {
   background-color: #4b4b4b;
   /* Slightly Lighter Charcoal */
 }

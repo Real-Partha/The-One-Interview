@@ -178,6 +178,7 @@ body {
   border: 1px solid #ccc;
   font-family: "Montserrat", sans-serif;
   width: 35%;
+  margin: auto;
 }
 
 .search-input {
@@ -423,6 +424,7 @@ body {
 .dark-mode .navbar-center {
   border: 1px solid #444;
   background-color: #2b2b2b;
+  margin: auto;
 }
 
 .dark-mode .search-input {

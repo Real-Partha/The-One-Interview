@@ -403,7 +403,7 @@ const MainComponent = () => {
         <section className="right-sidebar">
           <div className="Side-bar-cards">
             <div className="editors-choices">
-              <div className="card">
+              <div className="right-card">
                 <img src="/img/ec.png" alt="Editor's Choice 1" />
                 <div className="card-details">
                   <h4>Editors Choice</h4>
@@ -415,7 +415,7 @@ const MainComponent = () => {
 
           <div className="Side-bar-cards">
             <div className="most-liked">
-              <div className="card">
+              <div className="right-card">
                 <img src="img/mliked.png" alt="Most-Liked" />
                 <div className="card-details">
                   <h4>Most Upvoted</h4>
@@ -427,7 +427,7 @@ const MainComponent = () => {
 
           <div className="Side-bar-cards">
             <div className="top-companies">
-              <div className="card">
+              <div className="right-card">
                 <img src="img/TopComp.png" alt="Editor's Choice 1" />
                 <div className="card-details">
                   <h4>Top Companies</h4>
