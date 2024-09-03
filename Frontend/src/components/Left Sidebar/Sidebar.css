@@ -9,7 +9,7 @@
 }
 @media (max-width: 900px) {
   .sidebar {
-    display: none; /* Hide the sidebar */
+    display: none;
   }
   .main-content {
     padding-left: 0 !important;
@@ -142,4 +142,33 @@ a:-webkit-any-link {
 
 .dark-mode .join-class {
   background-color: #9966cc;
+}
+
+
+/* Mobile Sidebar  */
+.mobile-sidebar {
+  width: 90%;
+  max-width: none;
+  margin: 0;
+  padding: 1rem;
+  border-radius: 0;
+}
+
+.mobile-sidebar .card {
+  margin-bottom: 1rem;
+  padding: 0.8rem;
+}
+
+.mobile-sidebar .card i {
+  font-size: 18px;
+}
+
+.mobile-sidebar .card-details h4 {
+  font-size: 14px;
+}
+
+@media (max-width: 900px) {
+  .sidebar:not(.mobile-sidebar) {
+    display: none;
+  }
 }

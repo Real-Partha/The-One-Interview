@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
 import "./NavBar.css";
 import { useTheme } from "../../ThemeContext";
-import { useNavigate,Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { SearchContext } from "../context/SearchContext";
 import axios from "axios";
-import { useLocation } from 'react-router-dom';
-
+import { useLocation } from "react-router-dom";
+import Sidebar from "../Left Sidebar/Sidebar";
 
 const NavBar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -14,6 +14,8 @@ const NavBar = () => {
   const { setSearchQuery } = useContext(SearchContext);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("profile");
   const location = useLocation();
   const navigate = useNavigate();
   // const { setSearchQuery } = useContext(SearchContext);
@@ -31,12 +33,34 @@ const NavBar = () => {
     }
   };
 
+  const getCurrentPage = () => {
+    if (location.pathname.startsWith("/profile")) {
+      return "profile";
+    }
+    return "homepage";
+  };
+
+  const handleSetActiveSection = (section) => {
+    setActiveSection(section);
+    if (section === "account") {
+      navigate("/profile?tab=account");
+    } else {
+      navigate(`/profile?tab=${section}`);
+    }
+    setIsMobileMenuOpen(false);
+  };
+
+  const handleMobileMenuItemClick = (to) => {
+    navigate(to);
+    setIsMobileMenuOpen(false);
+  };
+
   const shouldShowSearchBar = () => {
     const { pathname } = location;
     return !(
-      pathname === '/login-register' ||
+      pathname === "/login-register" ||
       // pathname === '/signup' ||
-      pathname === '/profile'
+      pathname === "/profile"
     );
   };
 
@@ -80,14 +104,13 @@ const NavBar = () => {
       const searchQuery = e.target.value;
       setSearchQuery(searchQuery);
       e.target.value = "";
-      if (location.pathname.startsWith('/question/')) {
-        navigate('/questions', { state: { searchQuery, fromPost: true } });
+      if (location.pathname.startsWith("/question/")) {
+        navigate("/questions", { state: { searchQuery, fromPost: true } });
       } else {
-        navigate('/questions', { state: { searchQuery } });
+        navigate("/questions", { state: { searchQuery } });
       }
     }
   };
-  
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -110,9 +133,31 @@ const NavBar = () => {
     navigate("/profile");
   };
 
+  const navigateToAccount = () => {
+    setIsSidebarOpen(false);
+    navigate("/profile?tab=account");
+  };
+
+  const navigateToPrivacy = () => {
+    setIsSidebarOpen(false);
+    navigate("/privacy");
+  };
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   return (
     <div className={isDarkMode ? "dark-mode" : "light-mode"}>
       <nav className="navbar">
+        <div className="navbar-left">
+          <button className="hamburger-menu" onClick={toggleMobileMenu}>
+            <i className="fas fa-bars"></i>
+          </button>
+          <button className="search-icon-mobile">
+            <i className="fas fa-search"></i>
+          </button>
+        </div>
         <Link to="/" className="navbar-homepage-link">
           <div className="navbar-left">
             <img
@@ -125,7 +170,7 @@ const NavBar = () => {
           </div>
         </Link>
         {shouldShowSearchBar() && (
-          <div className="navbar-center">
+          <div className="navbar-center desktop-only">
             <input
               type="text"
               placeholder="Type to search"
@@ -152,7 +197,7 @@ const NavBar = () => {
           ) : (
             <>
               <a href="/login-register" className="nav-link">
-                Login
+                Login/Singup
               </a>
               {/* <a href="/signup" className="nav-link">
                 Register
@@ -161,6 +206,29 @@ const NavBar = () => {
           )}
         </div>
       </nav>
+
+      <div className={`mobile-menu ${isMobileMenuOpen ? "open" : ""}`}>
+        <div className="mobile-menu-header">
+          <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>
+            <img
+              className="mobile-logo"
+              src="/img/logo_final_transparent.png"
+              alt="logo"
+            />
+            <span className="mobile-site-name">The One Interview</span>
+          </Link>
+          <button className="close-menu" onClick={toggleMobileMenu}>
+            <i className="fas fa-times"></i>
+          </button>
+        </div>
+        <Sidebar
+          page={getCurrentPage()}
+          isMobile={true}
+          activeSection={activeSection}
+          handleSetActiveSection={handleSetActiveSection}
+          handleMobileMenuItemClick={handleMobileMenuItemClick}
+        />
+      </div>
 
       <div className={`profile-dropdown ${isSidebarOpen ? "open" : ""}`}>
         {user && (
@@ -188,10 +256,10 @@ const NavBar = () => {
           <a onClick={navigateToProfile} className="navbar-account-settings">
             <i className="fas fa-user-cog"></i>Account Settings
           </a>
-          <a href="#">
-            <i className="fas fa-shield-alt"></i>Privacy Settings
+          <a onClick={navigateToPrivacy} className="navbar-account-settings">
+            <i className="fas fa-shield-alt"></i>Privacy Policy
           </a>
-          <a href="#">
+          <a onClick={navigateToAccount} className="navbar-account-settings">
             <i className="fas fa-key"></i>Change Password
           </a>
           <a className="logout-profile" onClick={handleLogout}>

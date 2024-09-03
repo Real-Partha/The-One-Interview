@@ -315,10 +315,10 @@
   .Side-bar-cards:nth-child(3){
     width: 100%;
   }
-  .card {
+  /* .card {
     margin-bottom: 0 !important;
-    /* width: 100%; */
-  }
+    width: 100%;
+  } */
   .thread-info{
     margin: 0;
   }

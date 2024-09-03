@@ -1,14 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Rakkas&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
-body, .navbar, .profile-dropdown, .search-input, .nav-link, .notifications, .profile, .user-info h4, .user-info p, .profile-settings a, .profile-settings i {
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Rakkas&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+body,
+.navbar,
+.profile-dropdown,
+.search-input,
+.nav-link,
+.notifications,
+.profile,
+.user-info h4,
+.user-info p,
+.profile-settings a,
+.profile-settings i {
   transition: all 0.3s ease;
 }
 
 body {
   margin: 0;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
-
 
 .navbar {
   position: fixed;
@@ -24,7 +33,7 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.navbar-homepage-link{
+.navbar-homepage-link {
   cursor: pointer;
   text-decoration: none;
 }
@@ -40,17 +49,125 @@ body {
 }
 
 .university-name {
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
   font-size: 18px;
   font-weight: 500;
   color: #5a5a5a;
 }
-@media (max-width: 500px) {
-  .university-name{
+
+@media (max-width: 900px) {
+  .university-name,
+  .logo {
     display: none;
+  }
+
+  .navbar-center.desktop-only {
+    display: none;
+  }
+
+  .navbar-left {
+    display: flex;
+    align-items: center;
+  }
+
+  .hamburger-menu,
+  .search-icon-mobile {
+    display: block;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #5a5a5a;
+    padding: 0;
+    margin: 0;
+  }
+
+  .hamburger-menu {
+    margin-right: 15px;
+  }
+
+  .dark-mode .hamburger-menu,
+  .dark-mode .search-icon-mobile {
+    color: #e0e0e0;
+  }
+
+  .mobile-menu {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 80%;
+    height: 100%;
+    background-color: #fff;
+    z-index: 1001;
+    transition: left 0.3s ease;
+    overflow-y: auto;
+  }
+
+  .mobile-menu.open {
+    left: 0;
+  }
+
+  .dark-mode .mobile-menu {
+    background-color: #1f1f1f;
+  }
+
+  .mobile-menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .mobile-menu-header a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .dark-mode .mobile-menu-header {
+    border-bottom: 1px solid #444;
+  }
+
+  .mobile-logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 1rem;
+  }
+
+  .mobile-site-name {
+    font-family: "Playfair Display", serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #5a5a5a;
+  }
+
+  .dark-mode .mobile-site-name {
+    color: #e0e0e0;
+  }
+
+  .close-menu {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #5a5a5a;
+    padding: 0;
+    margin: 0;
+  }
+
+  .dark-mode .close-menu {
+    color: #e0e0e0;
   }
 }
 
+@media (min-width: 901px) {
+  .hamburger-menu,
+  .search-icon-mobile,
+  .mobile-menu {
+    display: none;
+  }
+}
 
 .navbar-center {
   display: flex;
@@ -59,7 +176,7 @@ body {
   padding: 12px 17px;
   border-radius: 20px;
   border: 1px solid #ccc;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   width: 35%;
 }
 
@@ -68,7 +185,7 @@ body {
   border: none;
   outline: none;
   border-radius: 20px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-size: 16px;
   color: #5a5a5a;
 }
@@ -96,7 +213,7 @@ body {
   font-size: 16px;
   color: #5a5a5a;
   text-decoration: none;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 .nav-link.active {
@@ -106,13 +223,13 @@ body {
 
 .notifications,
 .profile {
-  margin-left: .6rem;
+  margin-left: 0.6rem;
   cursor: pointer;
 }
 
 .notifications {
   font-size: 20px;
-  margin-right: .6rem;
+  margin-right: 0.6rem;
   color: #5a5a5a;
 }
 
@@ -139,7 +256,7 @@ body {
   z-index: 1000;
 }
 
-.logout-profile{
+.logout-profile {
   cursor: pointer;
 }
 
@@ -223,7 +340,7 @@ body {
   border: none;
   font-size: 24px;
   cursor: pointer;
-  margin-left: .6rem;
+  margin-left: 0.6rem;
   transition: transform 0.3s ease;
 }
 
@@ -231,7 +348,7 @@ body {
   transform: scale(1.1);
 }
 
-.navbar-account-settings{
+.navbar-account-settings {
   cursor: pointer;
 }
 
@@ -280,7 +397,7 @@ body {
 
 .user-login-type.google {
   background-color: #f1f3f4;
-  color: #4285F4;
+  color: #4285f4;
 }
 
 .user-login-type.oneid {
