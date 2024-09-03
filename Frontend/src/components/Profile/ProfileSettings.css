@@ -101,16 +101,16 @@
 
 @media (max-width: 1100px) {
   .profile-upper-card-container {
-    width: calc(100% - 1.2rem);
+    width: calc(100% - 2.4rem);
     box-sizing: border-box;
-    margin-right: 0;
+    /* margin-right: 0; */
     min-width: 0;
     /* margin-left: 0; */
   }
 
   .profile-card {
-    width: calc(100% - 2.4rem - 1.2rem) !important;
-    margin: 1.2rem 0 1.2rem 1.2rem;
+    width: calc(100% - 4.8rem) !important;
+    margin: 0 1.2rem 1.2rem 1.2rem;
   }
 }
 
@@ -123,19 +123,12 @@
     margin-right: 1rem;
   }
 
-  .profile-card {
-    margin: 0 !important;
-  }
-
-  .profile-upper-card-container {
-    margin-left: 0;
-  }
-
   .profile-card,
   .profile-upper-card-container {
-    width: 100% !important;
     margin-bottom: 1.2rem;
-    box-sizing: border-box;
+  }
+  .footer{
+    margin-top: 0;
   }
 }
 
@@ -148,6 +141,7 @@
   width: 60%;
   position: relative;
   /* overflow: hidden; */
+  margin-right: 1.2rem;
   background-color: var(--bg-color);
   padding: 20px;
   border-radius: 15px;
@@ -437,7 +431,7 @@ select.profile-input {
 /* Dark Mode Css for Prodile Edit */
 .dark-mode .profile-card {
   background-color: var(--dark-sidebar-cards-bg-color);
-  box-shadow: var(--dark-box-shadow);
+  /* box-shadow: var(--dark-box-shadow); */
 }
 
 .dark-mode .profile-input,

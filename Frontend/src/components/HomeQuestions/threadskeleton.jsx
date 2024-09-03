@@ -3,7 +3,7 @@ const ThreadSkeleton = () => {
     return (
         <div className="thread-card-link">
             <div className="thread-card" >
-                <h3 className="thread-title"><Skeleton variant="text"  /></h3>
+                <h3 className="thread-title"><Skeleton variant="text" /></h3>
                 <p className="thread-answer-preview">
                     <Skeleton variant="text" />
                     <Skeleton variant="text" />
@@ -11,7 +11,7 @@ const ThreadSkeleton = () => {
                 <div className="thread-info">
                     <Skeleton variant="circular" width={50} height={50} style={{ marginRight: '1rem' }} />
                     <div className="thread-details">
-                    <p className="thread-meta" style={{ display: 'flex', alignItems: 'center' }}>
+                        <p className="thread-meta" style={{ display: 'flex', alignItems: 'center' }}>
                             <span className="username">
                                 <Skeleton variant="rounded" width={80} height={10} />
                             </span> •
@@ -41,10 +41,10 @@ const ThreadSkeleton = () => {
                         <div className="thread-views">
                             <i className="fa-solid fa-eye"></i>
                             <span><Skeleton variant="rounded" width={60} height={10} /></span>
-                            <div className="thread-comments">
-                                <i className="fa-solid fa-comments"></i>
-                                <span><Skeleton variant="rounded" width={60} height={10} /></span>
-                            </div>
+                        </div>
+                        <div className="thread-comments">
+                            <i className="fa-solid fa-comments"></i>
+                            <span><Skeleton variant="rounded" width={60} height={10} /></span>
                         </div>
                     </div>
                 </div>

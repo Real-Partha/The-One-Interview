@@ -4,6 +4,7 @@
   border-radius: 8px;
   box-shadow: var(--box-shadow);
   width: 50%;
+  min-width: 340px;
   margin: 0 auto;
 }
 
