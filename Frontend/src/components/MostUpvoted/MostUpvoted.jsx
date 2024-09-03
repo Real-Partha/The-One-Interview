@@ -15,6 +15,11 @@ const MostUpvoted = () => {
     fetchTopQuestions();
   }, []);
 
+  useEffect(() => {
+    fetchTopQuestions();
+    window.scrollTo(0, 0);
+  }, []);
+
   const fetchTopQuestions = async () => {
     try {
       const response = await axios.get(`${import.meta.env.VITE_API_URL}/questions/most-upvoted`);

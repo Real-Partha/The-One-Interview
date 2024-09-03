@@ -415,16 +415,18 @@ const MainComponent = () => {
 
           <div className="Side-bar-cards">
             <div className="most-liked">
+            <Link to="/most-upvoted">
               <div className="right-card">
                 <img src="img/mliked.png" alt="Most-Liked" />
-                <Link to="/most-upvoted">
+               
                 <div className="card-details">
                   <h4> Most Upvoted</h4>
                   <p>Description of Most Upvoted </p>
                  
                 </div>
-                </Link> 
+               
               </div>
+              </Link> 
             </div>
           </div>
 
