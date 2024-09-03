@@ -9,6 +9,7 @@ import AccountSettings from "./AccountSettings";
 import LoginSignupPopup from "../commonPages/LoginSignupPopup";
 import MainLoader from "../commonPages/MainLoader";
 import ProfileSettings from "./ProfileSettings";
+import Sidebar from "../Left Sidebar/Sidebar";
 
 const Profile = () => {
   const { isDarkMode } = useTheme();
@@ -87,57 +88,11 @@ const Profile = () => {
     <div className={`profile-page ${isDarkMode ? "dark-mode" : "light-mode"}`}>
       <NavBar />
       <div className="profile-main-content">
-        <aside className="profile-sidebar">
-          <nav className="profile-navigation">
-            <div
-              className={`profile-sidebar-card ${
-                activeSection === "profile" ? "active" : ""
-              }`}
-              onClick={() => handleSetActiveSection("profile")}
-            >
-              <i className="fa fa-user" />
-              <div className="profile-card-details">
-                <div className="profile-sidebar-menu-title">Profile</div>
-              </div>
-            </div>
-            <div
-              className={`profile-sidebar-card ${
-                activeSection === "account" ? "active" : ""
-              }`}
-              onClick={() => handleSetActiveSection("account")}
-            >
-              <i className="fa fa-cog" />
-              <div className="profile-card-details">
-                <div className="profile-sidebar-menu-title">Account</div>
-              </div>
-            </div>
-            <div
-              className={`profile-sidebar-card ${
-                activeSection === "activity" ? "active" : ""
-              }`}
-              onClick={() => handleSetActiveSection("activity")}
-            >
-              <i className="fa fa-clock" />
-              <div className="profile-card-details">
-                <div className="profile-sidebar-menu-title">
-                  Recent Activity
-                </div>
-              </div>
-            </div>
-            <div className="profile-sidebar-card">
-              <i className="fa fa-paint-brush" />
-              <div className="profile-card-details">
-                <div className="profile-sidebar-menu-title">Appearance</div>
-              </div>
-            </div>
-            <div className="profile-sidebar-card">
-              <i className="fa fa-bell" />
-              <div className="profile-card-details">
-                <div className="profile-sidebar-menu-title">Notifications</div>
-              </div>
-            </div>
-          </nav>
-        </aside>
+        <Sidebar
+          page="profile"
+          activeSection={activeSection}
+          handleSetActiveSection={handleSetActiveSection}
+        />
 
         <section className="profile-content">
           {activeSection === "profile" && (
