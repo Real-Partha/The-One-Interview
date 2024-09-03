@@ -1,0 +1,213 @@
+.FAQ-page {
+    font-family: 'Montserrat', sans-serif;
+    min-height: 100vh;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .FAQ-page.light-mode {
+    background-color: #f0f4f8;
+    color: #333;
+  }
+  
+  .FAQ-page.dark-mode {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+  }
+  
+  .FAQ-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    margin-top: 5rem;
+    animation: fadeInUp 1s ease-out;
+  }
+  
+  .FAQ-title {
+    color: #6c63ff;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  
+  .FAQ-list {
+    display: grid;
+    gap: 1rem;
+  }
+  
+  .FAQ-item {
+    background-color: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0.25rem 0.375rem rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .FAQ-item:hover {
+    box-shadow: 0 0.375rem 0.5rem rgba(0, 0, 0, 0.15);
+  }
+  
+  .FAQ-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    cursor: pointer;
+    background-color: #f8f9fa;
+    transition: background-color 0.3s ease;
+  }
+  
+  .FAQ-question h3 {
+    font-size: 1.2rem;
+    margin: 0;
+    color: #333;
+  }
+  
+  .FAQ-question svg {
+    font-size: 1.2rem;
+    color: #6c63ff;
+  }
+  
+  .FAQ-answer {
+    padding: 0 1.5rem 1.5rem;
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.6;
+  }
+  
+  .FAQ-item.active .FAQ-question {
+    background-color: #6c63ff;
+  }
+  
+  .FAQ-item.active .FAQ-question h3,
+  .FAQ-item.active .FAQ-question svg {
+    color: #ffffff;
+  }
+  
+  .FAQ-user-question-section {
+    margin-top: 3rem;
+    text-align: center;
+  }
+  
+  .FAQ-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
+  }
+  
+  .FAQ-input {
+    width: 90%;
+    max-width: 500px;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 2px solid #6c63ff;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+  }
+  
+  .FAQ-submit-btn {
+    background-color: #6c63ff;
+    color: #ffffff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .FAQ-submit-btn:hover {
+    background-color: #5a52d5;
+  }
+
+
+  .FAQ-visit-questions-btn {
+    display: inline-block;
+    background-color: #6c63ff;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-bottom: 2rem;
+    position: absolute;
+    top: 6rem;
+    right: 2rem;
+  }
+  
+  .FAQ-visit-questions-btn:hover {
+    background-color: #5a52d5;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .FAQ-visit-questions-btn {
+      
+      display: none;
+    }
+    
+  }
+
+
+
+
+
+  
+  .dark-mode .FAQ-item {
+    background-color: #2b2b2b;
+  }
+  
+  .dark-mode .FAQ-question {
+    background-color: #333;
+  }
+  
+  .dark-mode .FAQ-question h3 {
+    color: #e0e0e0;
+  }
+  
+  .dark-mode .FAQ-answer {
+    color: #bbb;
+  }
+  
+  .dark-mode .FAQ-item.active .FAQ-question {
+    background-color: #6c63ff;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .FAQ-container {
+      padding: 1rem;
+    }
+  
+    .FAQ-title {
+      font-size: 2rem;
+    }
+  }
+  
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+
+  .FAQ-question svg {
+    font-size: 1.2rem;
+    width: 1.2rem;
+    height: 1.2rem;
+    flex-shrink: 0;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .FAQ-question svg {
+      font-size: 1rem;
+      width: 1rem;
+      height: 1rem;
+    }
+  }
+  

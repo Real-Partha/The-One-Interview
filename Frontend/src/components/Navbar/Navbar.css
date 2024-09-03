@@ -204,9 +204,18 @@ body {
   color: #5a5a5a;
 }
 
+/* .navbar-right {
+  display: flex;
+  align-items: center;
+} */
+
+
 .navbar-right {
   display: flex;
   align-items: center;
+  /* justify-content: inherit; */
+  margin: auto;
+  margin-right: revert;
 }
 
 .nav-link {

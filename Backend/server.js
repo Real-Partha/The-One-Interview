@@ -58,6 +58,7 @@ const userRoutes = require('./routes/user');
 const {router:accountRoutes} = require('./routes/account');
 const commentsRouter = require('./routes/comments');
 const companyRoutes = require('./routes/company');
+const faqRoutes = require('./routes/faq');
 
 
 
@@ -112,3 +113,4 @@ app.use("/user", userRoutes);
 app.use("/account", accountRoutes);
 app.use('/admin', adminRoutes);
 app.use('/companies', companyRoutes);
+app.use('/faq', faqRoutes);

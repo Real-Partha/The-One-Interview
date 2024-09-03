@@ -91,6 +91,7 @@ import CompanyPage from './components/CompanyPage/CompanyPage';
 import UnderConstruction from './components/commonPages/UnderConstruction'
 import AboutUs from "./components/Utility Pages/Aboutus/Aboutus";
 import PrivacyPolicy from "./components/Utility Pages/PrivacyPolicy/PrivacyPolicy";
+import FAQs from "./components/Utility Pages/FAQ/FAQ";
 
 
 
@@ -120,6 +121,7 @@ function AppContent() {
         <Route path="*" element={<NotFound />} />
         <Route path="/about-us" element={<AboutUs />} />
         <Route path ="/privacy" element={<PrivacyPolicy />} />
+        <Route path ="/faq" element={<FAQs />} />
       </Routes>
       {shouldShowNavBarAndFooter && <Footer />}
     </>
