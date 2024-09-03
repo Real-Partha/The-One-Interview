@@ -92,6 +92,7 @@ import UnderConstruction from './components/commonPages/UnderConstruction'
 import AboutUs from "./components/Utility Pages/Aboutus/Aboutus";
 import PrivacyPolicy from "./components/Utility Pages/PrivacyPolicy/PrivacyPolicy";
 import FAQs from "./components/Utility Pages/FAQ/FAQ";
+import MostUpvoted from "./components/MostUpvoted/MostUpvoted";
 
 
 
@@ -122,6 +123,7 @@ function AppContent() {
         <Route path="/about-us" element={<AboutUs />} />
         <Route path ="/privacy" element={<PrivacyPolicy />} />
         <Route path ="/faq" element={<FAQs />} />
+        <Route path ="/most-upvoted" element={<MostUpvoted />} />
       </Routes>
       {shouldShowNavBarAndFooter && <Footer />}
     </>

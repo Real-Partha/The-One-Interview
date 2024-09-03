@@ -1,0 +1,313 @@
+.Most-Upvoted-page {
+    display: flex;
+    min-height: 100vh;
+    padding-top: 80px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    transition: background 0.3s ease;
+  }
+  
+  .Most-Upvoted-content {
+    flex-grow: 1;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .Most-Upvoted-title {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    color: #6c63ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .Most-Upvoted-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: #ff6b6b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .Most-Upvoted-trophy-icon {
+    margin-right: 1rem;
+    font-size: 4rem;
+    color: #ffd700;
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+  }
+  
+  .Most-Upvoted-fire-icon {
+    margin-right: 0.5rem;
+    font-size: 2rem;
+    animation: flicker 1.5s infinite alternate;
+  }
+  
+  @keyframes flicker {
+    0% { opacity: 1; }
+    100% { opacity: 0.6; }
+  }
+  
+  .Most-Upvoted-question-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+  
+  .Most-Upvoted-question-card {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid transparent;
+    backdrop-filter: blur(5px);
+  }
+  
+  .Most-Upvoted-question-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(108, 99, 255, 0.2);
+    border-color: #6c63ff;
+  }
+  
+  .Most-Upvoted-question-rank {
+    position: absolute;
+    top: -25px;
+    left: -25px;
+    background-color: #6c63ff;
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: bold;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(-15deg);
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(108, 99, 255, 0.3);
+  }
+  
+  .Most-Upvoted-question-card:hover .Most-Upvoted-question-rank {
+    transform: rotate(0deg) scale(1.1);
+  }
+  
+  .Most-Upvoted-question-rank.gold {
+    background-color: #ffd700;
+  }
+  
+  .Most-Upvoted-question-rank.silver {
+    background-color: #c0c0c0;
+  }
+  
+  .Most-Upvoted-question-rank.bronze {
+    background-color: #cd7f32;
+  }
+  
+  .Most-Upvoted-question-title {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    color: #333;
+    transition: color 0.3s ease;
+  }
+  
+  .Most-Upvoted-question-card:hover .Most-Upvoted-question-title {
+    color: #6c63ff;
+  }
+  
+  .Most-Upvoted-question-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    color: #666;
+  }
+  
+  .Most-Upvoted-question-stats span {
+    display: flex;
+    align-items: center;
+    transition: transform 0.3s ease;
+  }
+  
+  .Most-Upvoted-question-stats span:hover {
+    transform: scale(1.1);
+  }
+  
+  .Most-Upvoted-question-stats svg {
+    margin-right: 0.5rem;
+  }
+  
+  .Most-Upvoted-question-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .Most-Upvoted-tag {
+    background-color: rgba(108, 99, 255, 0.1);
+    color: #6c63ff;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+  }
+  
+  .Most-Upvoted-tag:hover {
+    background-color: #6c63ff;
+    color: #ffffff;
+    transform: scale(1.05);
+  }
+  
+  .Most-Upvoted-loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+  }
+  
+  .Most-Upvoted-loading-spinner::after {
+    content: "";
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #6c63ff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  /* Dark mode styles */
+  .dark-mode .Most-Upvoted-page {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2c3e50 100%);
+  }
+  
+  .dark-mode .Most-Upvoted-content {
+    color: #f0f0f0;
+  }
+  
+  .dark-mode .Most-Upvoted-question-card {
+    background-color: rgba(46, 46, 46, 0.9);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  }
+  
+  .dark-mode .Most-Upvoted-question-title {
+    color: #f0f0f0;
+  }
+  
+  .dark-mode .Most-Upvoted-question-stats {
+    color: #bbb;
+  }
+  
+  .dark-mode .Most-Upvoted-tag {
+    background-color: rgba(108, 99, 255, 0.2);
+    color: #a299ff;
+  }
+  
+  /* Media queries for responsive design */
+  @media screen and (max-width: 1200px) {
+    .Most-Upvoted-content {
+      padding: 1.5rem;
+    }
+  
+    .Most-Upvoted-title {
+      font-size: 3rem;
+    }
+  
+    .Most-Upvoted-subtitle {
+      font-size: 1.3rem;
+    }
+  }
+  
+  @media screen and (max-width: 768px) {
+    .Most-Upvoted-content {
+      padding: 1rem;
+    }
+  
+    .Most-Upvoted-title {
+      font-size: 2.5rem;
+    }
+  
+    .Most-Upvoted-subtitle {
+      font-size: 1.2rem;
+    }
+  
+    .Most-Upvoted-trophy-icon {
+      font-size: 3rem;
+    }
+  
+    .Most-Upvoted-question-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .Most-Upvoted-question-card {
+      padding: 1.2rem;
+    }
+  
+    .Most-Upvoted-question-rank {
+      font-size: 1.2rem;
+      width: 60px;
+      height: 60px;
+    }
+  
+    .Most-Upvoted-question-title {
+      font-size: 1.2rem;
+    }
+  
+    .Most-Upvoted-question-stats {
+      font-size: 0.9rem;
+    }
+  
+    .Most-Upvoted-tag {
+      font-size: 0.8rem;
+    }
+  }
+  
+  @media screen and (max-width: 480px) {
+    .Most-Upvoted-title {
+      font-size: 2rem;
+    }
+  
+    .Most-Upvoted-subtitle {
+      font-size: 1.1rem;
+    }
+  
+    .Most-Upvoted-trophy-icon {
+      font-size: 2.5rem;
+    }
+  
+    .Most-Upvoted-question-card {
+      padding: 1rem;
+    }
+  
+    .Most-Upvoted-question-rank {
+      font-size: 1rem;
+      width: 50px;
+      height: 50px;
+    }
+  
+    .Most-Upvoted-question-title {
+      font-size: 1.1rem;
+    }
+  
+    .Most-Upvoted-question-stats {
+      font-size: 0.8rem;
+    }
+  
+    .Most-Upvoted-tag {
+      font-size: 0.7rem;
+    }
+  }
+  

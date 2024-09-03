@@ -426,6 +426,23 @@ router.get("/questionsearch", async (req, res) => {
   }
 });
 
+
+router.get('/questions/most-upvoted', async (req, res) => {
+  try {
+    const topQuestions = await Question.find({ status: 'approved' })
+      .sort({ upvotes: -1 })
+      .limit(10)
+      .select('question upvotes impressions commentscount tags');
+    res.json(topQuestions);
+  } catch (error) {
+    console.error('Error fetching top questions:', error);
+    res.status(500).json({ message: 'Error fetching top questions' });
+  }
+});
+
+
+
+
 router.post("/question", async (req, res) => {
   const uploadedImages = [];
   try {
