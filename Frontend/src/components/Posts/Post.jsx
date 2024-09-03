@@ -7,6 +7,7 @@ import "./QuillContent.css";
 import DOMPurify from "dompurify";
 import UnverifiedPost from "./UnverifiedPost";
 import LoginSignupPopup from "../commonPages/LoginSignupPopup";
+import MainLoader from "../commonPages/MainLoader";
 
 const Post = () => {
   const { questionId } = useParams();
@@ -20,7 +21,7 @@ const Post = () => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [showLoginPopup, setShowLoginPopup] = useState(false);
-
+  const [isMainLoading, setIsMainLoading] = useState(true);
   const [commentLikes, setCommentLikes] = useState({});
   const [commentDislikes, setCommentDislikes] = useState({});
 
@@ -98,6 +99,8 @@ const Post = () => {
 
   const fetchQuestion = async () => {
     try {
+      setIsMainLoading(true);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/question/${questionId}`,
         { withCredentials: true }
@@ -105,6 +108,7 @@ const Post = () => {
 
       if (response.data.error === "User not authenticated") {
         setShowLoginPopup(true);
+        setIsMainLoading(false);
       } else {
         if (response.data.isVerified) {
           setQuestion(response.data);
@@ -124,8 +128,10 @@ const Post = () => {
           });
           setCommentLikes(likesObj);
           setCommentDislikes(dislikesObj);
+          setIsMainLoading(false);
         } else {
           setQuestion({ isVerified: false });
+          setIsMainLoading(false);
         }
       }
     } catch (error) {
@@ -251,7 +257,13 @@ const Post = () => {
     return years + (years === 1 ? " year ago" : " years ago");
   };
 
-  if (!question && !showLoginPopup) return <div>Loading...</div>;
+  if (isMainLoading) {
+    return (
+      <div>
+        <MainLoader />;
+      </div>
+    );
+  }
 
   const handleCloseLoginPopup = () => {
     setShowLoginPopup(false);
@@ -337,7 +349,8 @@ const Post = () => {
           </div>
           <div className="post-stats">
             <span className="view-count">
-              <i className="fas fa-eye"></i> {question.impressions || 0} {question.impressions===1?"View":"Views"}
+              <i className="fas fa-eye"></i> {question.impressions || 0}{" "}
+              {question.impressions === 1 ? "View" : "Views"}
             </span>
           </div>
           <div className="comments-section">

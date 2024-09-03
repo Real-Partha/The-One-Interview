@@ -598,4 +598,20 @@ router.patch("/downvote", async (req, res) => {
   }
 });
 
+router.get("/user/questions", async (req, res) => {
+  try {
+    if (!req.isAuthenticated()) {
+      return res.status(401).send({ error: "User not authenticated" });
+    }
+
+    const userId = req.user._id;
+    const questions = await Question.find({ user_id: userId }).sort({ created_at: -1 });
+
+    res.json(questions);
+  } catch (error) {
+    console.error("Error fetching user questions:", error);
+    res.status(500).json({ error: "An error occurred while fetching user questions" });
+  }
+});
+
 module.exports = router;

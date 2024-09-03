@@ -39,6 +39,11 @@ const Sidebar = ({
         { section: "account", icon: "fa fa-cog", title: "Account" },
         { section: "activity", icon: "fa fa-clock", title: "Recent Activity" },
         {
+          section: "yourquestions",
+          icon: "fa fa-question-circle",
+          title: "Your Questions",
+        },
+        {
           section: "appearance",
           icon: "fa fa-paint-brush",
           title: "Appearance",

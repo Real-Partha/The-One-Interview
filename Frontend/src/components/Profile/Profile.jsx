@@ -10,6 +10,7 @@ import LoginSignupPopup from "../commonPages/LoginSignupPopup";
 import MainLoader from "../commonPages/MainLoader";
 import ProfileSettings from "./ProfileSettings";
 import Sidebar from "../Left Sidebar/Sidebar";
+import UserQuestions from "./UserQuestions";
 
 const Profile = () => {
   const { isDarkMode } = useTheme();
@@ -56,7 +57,7 @@ const Profile = () => {
     fetchUserData();
     firstLoading();
 
-    if (tab && ["profile", "account", "activity"].includes(tab)) {
+    if (tab && ["profile", "account", "activity","yourquestions"].includes(tab)) {
       setActiveSection(tab);
     } else {
       setActiveSection("profile");
@@ -110,6 +111,7 @@ const Profile = () => {
               <UserActivity refreshTrigger={refreshActivityTrigger} />
             </div>
           )}
+          {activeSection === "yourquestions" && <UserQuestions />}
         </section>
       </div>
     </div>
