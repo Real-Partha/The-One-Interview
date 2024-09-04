@@ -73,6 +73,28 @@ const DevelopersPage = () => {
           </div>
         </div>
       </div>
+      <div className="developers-mobile">
+        <div className="developers-mobile-carousel">
+          {developers.map((developer, index) => (
+            <div
+              key={index}
+              className={`developers-mobile-item ${index === currentSlide ? 'active' : ''}`}
+              style={{ backgroundImage: `url(${developer.background})` }}
+            >
+              <div className="developers-mobile-content">
+                <div className="developers-profile-image" style={{ backgroundImage: `url(${developer.image})` }}></div>
+                <div className="developers-name">{developer.name}</div>
+                <div className="developers-des">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ab, eum!</div>
+                <button className="developers-button">See More</button>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="developers-mobile-button-container">
+          <button className="developers-mobile-prev" onClick={handleMobilePrev}><i className="fa-solid fa-arrow-left"></i></button>
+          <button className="developers-mobile-next" onClick={handleMobileNext}><i className="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </div>
     </>
   );
 };
