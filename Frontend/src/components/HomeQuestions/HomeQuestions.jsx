@@ -2,7 +2,6 @@
 import "./HomeQuestions.css";
 import axios from "axios";
 import { useEffect, useState, useCallback, useContext } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "../../ThemeContext";
 import { Link } from "react-router-dom";
 import CreateQuestionPage from "../Posts/CreateQuestionPage";
@@ -13,7 +12,7 @@ import ThreadSkeleton from "./threadskeleton";
 import DOMPurify from "dompurify";
 import Sidebar from "../Left Sidebar/Sidebar";
 import MainLoader from "../commonPages/MainLoader";
-import QuestionSearchLoader from "./QuestionSearchLoader"
+import QuestionSearchLoader from "./QuestionSearchLoader";
 
 const MainComponent = () => {
   const [threads, setThreads] = useState([]);
@@ -28,10 +27,8 @@ const MainComponent = () => {
   const [searchMessage, setSearchMessage] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const [isMainLoading, setIsMainLoading] = useState(false);
-  const location = useLocation();
   const [isSearchResultsVisible, setIsSearchResultsVisible] = useState(false);
   const { searchQuery, setSearchQuery } = useContext(SearchContext);
-  const navigate = useNavigate();
 
   const handlePageInputChange = (e) => {
     setInputPage(e.target.value);
@@ -50,64 +47,44 @@ const MainComponent = () => {
 
   useEffect(() => {
     const loadFirstThreads = async () => {
-      if (!searchQuery) {
-        setIsMainLoading(true);
-        const savedPage = getPageWithExpiration();
-        if (savedPage) {
-          setCurrentPage(parseInt(savedPage, 10));
-        } else {
-          setCurrentPage(1);
-        }
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        setIsMainLoading(false);
-      }
-
-      if (location.state && location.state.searchQuery) {
-        const { searchQuery: locationSearchQuery, fromPost } = location.state;
-        setSearchQuery(locationSearchQuery);
-        handleUserSearch(locationSearchQuery);
-        setIsSearchResultsVisible(true);
-        if (fromPost) {
-          setSearchMessage(
-            `Your searched result response for "${locationSearchQuery}"`
-          );
-        }
+      setIsMainLoading(true);
+      const savedPage = getPageWithExpiration();
+      if (savedPage) {
+        setCurrentPage(parseInt(savedPage, 10));
       } else {
-        // Reset search query and fetch threads when there's no search query in location state
-        setSearchQuery("");
-        setIsSearchResultsVisible(false);
-        fetchThreads(savedPage ? parseInt(savedPage, 10) : 1);
+        setCurrentPage(1);
       }
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      setIsMainLoading(false);
     };
-
+  
     loadFirstThreads();
-  }, [location, navigate, setSearchQuery]);
+  
+    return () => {
+      setSearchQuery("");
+    };
+  }, [setSearchQuery]);
 
   const fetchThreads = useCallback(async (page) => {
     setIsQuestionLoading(true);
-    if (page) {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/questions`,
-          {
-            params: { page: page },
-            withCredentials: true,
-          }
-        );
-        setIsQuestionLoading(false);
-        setThreads(response.data.questions);
-        setTotalPages(response.data.totalPages);
-        setHasNextPage(response.data.hasNextPage);
-        setHasPrevPage(response.data.hasPrevPage);
-      } catch (error) {
-        console.error("Error fetching threads:", error);
-      }
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/questions`,
+        {
+          params: { page: page },
+          withCredentials: true,
+        }
+      );
+      setThreads(response.data.questions);
+      setTotalPages(response.data.totalPages);
+      setHasNextPage(response.data.hasNextPage);
+      setHasPrevPage(response.data.hasPrevPage);
+    } catch (error) {
+      console.error("Error fetching threads:", error);
+    } finally {
+      setIsQuestionLoading(false);
     }
   }, []);
-
-  useEffect(() => {
-    fetchThreads(currentPage);
-  }, [currentPage, fetchThreads]);
 
   const truncateHTML = (html, maxLength) => {
     const div = document.createElement("div");
@@ -203,15 +180,14 @@ const MainComponent = () => {
     setPageWithExpiration("1");
   };
 
-  const handleUserSearch = async (query) => {
+  const handleUserSearch = useCallback(async (query) => {
     if (!query) {
       setIsSearching(false);
       setIsSearchResultsVisible(false);
       setSearchQuery(""); // Reset the search query in context
-      fetchThreads(currentPage);
-      return;
+      return fetchThreads(currentPage);
     }
-
+  
     try {
       setIsSearching(true);
       setIsSearchResultsVisible(true);
@@ -232,17 +208,28 @@ const MainComponent = () => {
     } finally {
       setIsSearching(false);
     }
-  };
+  }, [currentPage, fetchThreads]);
 
   useEffect(() => {
-    if (searchQuery) {
-      handleUserSearch(searchQuery);
-    } else if (!isMainLoading) {
-      setIsSearching(false);
-      setIsSearchResultsVisible(false);
-      fetchThreads(currentPage);
-    }
-  }, [searchQuery, currentPage, isMainLoading]);
+    const handleInitialLoad = async () => {
+      if (!isMainLoading && currentPage !== null) {
+        setIsQuestionLoading(true);
+        try {
+          if (searchQuery) {
+            await handleUserSearch(searchQuery);
+          } else {
+            await fetchThreads(currentPage);
+          }
+        } catch (error) {
+          console.error("Error loading data:", error);
+        } finally {
+          setIsQuestionLoading(false);
+        }
+      }
+    };
+
+    handleInitialLoad();
+  }, [currentPage, fetchThreads, isMainLoading, searchQuery, handleUserSearch]);
 
   const toggleCreateQuestion = () => {
     setShowCreateQuestion((prev) => !prev);
@@ -267,7 +254,9 @@ const MainComponent = () => {
         <Sidebar />
         <section className="threads">
           {isSearching ? (
-            <div><QuestionSearchLoader /></div>
+            <div>
+              <QuestionSearchLoader />
+            </div>
           ) : isSearchResultsVisible && searchQuery ? (
             <h2>{searchMessage || `Search Results for '${searchQuery}'`}</h2>
           ) : (
@@ -415,18 +404,16 @@ const MainComponent = () => {
 
           <div className="Side-bar-cards">
             <div className="most-liked">
-            <Link to="/most-upvoted">
-              <div className="right-card">
-                <img src="img/mliked.png" alt="Most-Liked" />
-               
-                <div className="card-details">
-                  <h4> Most Upvoted</h4>
-                  <p>Description of Most Upvoted </p>
-                 
+              <Link to="/most-upvoted">
+                <div className="right-card">
+                  <img src="img/mliked.png" alt="Most-Liked" />
+
+                  <div className="card-details">
+                    <h4> Most Upvoted</h4>
+                    <p>Description of Most Upvoted </p>
+                  </div>
                 </div>
-               
-              </div>
-              </Link> 
+              </Link>
             </div>
           </div>
 
