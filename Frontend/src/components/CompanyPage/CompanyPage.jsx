@@ -26,10 +26,16 @@ const CompanyPage = () => {
   const { isDarkMode } = useTheme();
   const questionRefs = useRef({});
   const [isMainLoading, setIsMainLoading] = useState(true);
+  const [filterText, setFilterText] = useState("");
+  const [filteredCompanies, setFilteredCompanies] = useState([]);
 
   useEffect(() => {
     fetchCompanies();
   }, []);
+
+  useEffect(() => {
+    filterCompanies();
+  }, [filterText, companies]);
 
   const fetchCompanies = async () => {
     setIsMainLoading(true);
@@ -91,6 +97,17 @@ const CompanyPage = () => {
         }
       }, 10);
     }
+  };
+
+  const filterCompanies = () => {
+    const filtered = companies.filter((company) =>
+      company.name.toLowerCase().includes(filterText.toLowerCase())
+    );
+    setFilteredCompanies(filtered);
+  };
+
+  const handleFilterChange = (e) => {
+    setFilterText(e.target.value);
   };
 
   const formatDate = (dateString) => {
@@ -183,29 +200,46 @@ const CompanyPage = () => {
               <FontAwesomeIcon icon={faBuilding} />{" "}
               <span className="companypage-title-company">Companies</span>
             </h2>
-            {isLoading
-              ? Array(7)
-                  .fill()
-                  .map((_, index) => <ThreadSkeleton key={index} />)
-              : companies.map((company) => (
-                  <div
-                    key={company.name}
-                    className="companypage-company-card"
-                    onClick={() => fetchCompanyQuestions(company.name)}
-                  >
-                    <h3 className="companypage-company-name">{company.name}</h3>
-                    <div className="companypage-company-stats">
-                      <span className="companypage-question-count">
-                        <FontAwesomeIcon icon={faQuestionCircle} />{" "}
-                        {company.questionCount} questions
-                      </span>
-                      <span className="companypage-last-updated">
-                        <FontAwesomeIcon icon={faClock} /> Last updated:{" "}
-                        {formatDate(company.lastUpdated)}
-                      </span>
-                    </div>
+            <div className="companypage-filter-container">
+              <div className="companypage-filter-title">Search for Compnaies:</div>
+              <input
+                type="text"
+                className="companypage-filter-input"
+                placeholder="Filter companies..."
+                value={filterText}
+                onChange={handleFilterChange}
+              />
+            </div>
+            {isLoading ? (
+              Array(7)
+                .fill()
+                .map((_, index) => <ThreadSkeleton key={index} />)
+            ) : filteredCompanies.length > 0 ? (
+              filteredCompanies.map((company) => (
+                <div
+                  key={company.name}
+                  className="companypage-company-card"
+                  onClick={() => fetchCompanyQuestions(company.name)}
+                >
+                  <h3 className="companypage-company-name">{company.name}</h3>
+                  <div className="companypage-company-stats">
+                    <span className="companypage-question-count">
+                      <FontAwesomeIcon icon={faQuestionCircle} />{" "}
+                      {company.questionCount} questions
+                    </span>
+                    <span className="companypage-last-updated">
+                      <FontAwesomeIcon icon={faClock} /> Last updated:{" "}
+                      {formatDate(company.lastUpdated)}
+                    </span>
                   </div>
-                ))}
+                </div>
+              ))
+            ) : (
+              <div className="companypage-no-results">
+                <FontAwesomeIcon icon={faQuestionCircle} size="2x" />
+                <p>No companies found matching "{filterText}"</p>
+              </div>
+            )}
           </div>
         )}
       </section>
