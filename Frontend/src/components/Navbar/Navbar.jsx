@@ -16,6 +16,7 @@ const NavBar = () => {
   const [user, setUser] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("profile");
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   // const { setSearchQuery } = useContext(SearchContext);
@@ -99,6 +100,21 @@ const NavBar = () => {
     };
   }, [isSidebarOpen]);
 
+  const toggleMobileSearch = () => {
+    setIsMobileSearchOpen(!isMobileSearchOpen);
+  };
+
+  const handleMobileSearch = (e) => {
+    if (e.key === "Enter") {
+      const searchQuery = e.target.value;
+      setSearchQuery(searchQuery);
+      e.target.value = "";
+      setIsMobileSearchOpen(false);
+      e.target.blur();
+      navigate("/questions", { state: { searchQuery } });
+    }
+  };
+
   const handleSearchChange = (e) => {
     if (e.key === "Enter") {
       const searchQuery = e.target.value;
@@ -154,7 +170,7 @@ const NavBar = () => {
           <button className="hamburger-menu" onClick={toggleMobileMenu}>
             <i className="fas fa-bars"></i>
           </button>
-          <button className="search-icon-mobile">
+          <button className="search-icon-mobile" onClick={toggleMobileSearch}>
             <i className="fas fa-search"></i>
           </button>
         </div>
@@ -209,6 +225,14 @@ const NavBar = () => {
           )}
         </div>
       </nav>
+      <div className={`mobile-search-bar ${isMobileSearchOpen ? "open" : ""}`}>
+        <input
+          type="text"
+          placeholder="Type to search"
+          className="mobile-search-input"
+          onKeyDown={handleMobileSearch}
+        />
+      </div>
 
       <div className={`mobile-menu ${isMobileMenuOpen ? "open" : ""}`}>
         <div className="mobile-menu-header">

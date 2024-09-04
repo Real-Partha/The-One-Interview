@@ -103,6 +103,43 @@ body {
     overflow-y: auto;
   }
 
+  .mobile-search-bar {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+    z-index: 999;
+  }
+  
+  .mobile-search-bar.open {
+    transform: translateY(0);
+  }
+  
+  .mobile-search-input {
+    width: 94%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-family: "Montserrat", sans-serif;
+    font-size: 16px;
+    color: #5a5a5a;
+  }
+  
+  .dark-mode .mobile-search-bar {
+    background-color: #1f1f1f;
+  }
+  
+  .dark-mode .mobile-search-input {
+    background-color: #2b2b2b;
+    color: #e0e0e0;
+    border-color: #444;
+  }
+
   .mobile-menu.open {
     left: 0;
   }
