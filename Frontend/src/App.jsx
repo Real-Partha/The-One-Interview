@@ -22,7 +22,7 @@ import PrivacyPolicy from "./components/Utility Pages/PrivacyPolicy/PrivacyPolic
 import FAQs from "./components/Utility Pages/FAQ/FAQ";
 import MostUpvoted from "./components/MostUpvoted/MostUpvoted";
 import ForgotPassword from "./components/Authentication/ForgotPassword";
-
+import DevelopersPage from "./components/DevelopersPage/DevelopersPage";
 import ScrollToTop from "../ScrolltoTop";
 
 
@@ -56,6 +56,7 @@ function AppContent() {
         <Route path ="/privacy" element={<PrivacyPolicy />} />
         <Route path ="/faq" element={<FAQs />} />
         <Route path ="/most-upvoted" element={<MostUpvoted />} />
+        <Route path ="/developers" element={<DevelopersPage />} />
       </Routes>
       {shouldShowNavBarAndFooter && <Footer />}
     </>
