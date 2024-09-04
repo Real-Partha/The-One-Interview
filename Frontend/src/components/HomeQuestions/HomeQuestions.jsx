@@ -57,9 +57,9 @@ const MainComponent = () => {
       await new Promise((resolve) => setTimeout(resolve, 2000));
       setIsMainLoading(false);
     };
-  
+
     loadFirstThreads();
-  
+
     return () => {
       setSearchQuery("");
     };
@@ -180,35 +180,47 @@ const MainComponent = () => {
     setPageWithExpiration("1");
   };
 
-  const handleUserSearch = useCallback(async (query) => {
-    if (!query) {
-      setIsSearching(false);
-      setIsSearchResultsVisible(false);
-      setSearchQuery(""); // Reset the search query in context
-      return fetchThreads(currentPage);
-    }
-  
-    try {
-      setIsSearching(true);
-      setIsSearchResultsVisible(true);
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/questionsearch`,
-        {
-          params: { query: query },
-          withCredentials: true,
+  const handleUserSearch = useCallback(
+    async (query) => {
+      if (!query) {
+        setIsSearching(false);
+        setIsSearchResultsVisible(false);
+        setSearchQuery(""); // Reset the search query in context
+        return fetchThreads(currentPage);
+      }
+
+      try {
+        setIsSearching(true);
+        setIsSearchResultsVisible(true);
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/questionsearch`,
+          {
+            params: { query: query },
+            withCredentials: true,
+          }
+        );
+        setThreads(response.data.questions);
+        setTotalPages(response.data.totalPages);
+        setHasNextPage(response.data.hasNextPage);
+        setHasPrevPage(response.data.hasPrevPage);
+        setCurrentPage(1); // Reset to first page of search results
+
+        if (response.data.questions.length === 0) {
+          setSearchMessage(`No results found for '${query}'`);
+        } else {
+          setSearchMessage(`Search Results for '${query}'`);
         }
-      );
-      setThreads(response.data.questions);
-      setTotalPages(response.data.totalPages);
-      setHasNextPage(response.data.hasNextPage);
-      setHasPrevPage(response.data.hasPrevPage);
-      setCurrentPage(1); // Reset to first page of search results
-    } catch (error) {
-      console.error("Error fetching threads:", error);
-    } finally {
-      setIsSearching(false);
-    }
-  }, [currentPage, fetchThreads]);
+      } catch (error) {
+        console.error("Error fetching threads:", error);
+        setSearchMessage(
+          "An error occurred while searching. Please try again."
+        );
+      } finally {
+        setIsSearching(false);
+      }
+    },
+    [currentPage, fetchThreads]
+  );
 
   useEffect(() => {
     const handleInitialLoad = async () => {
@@ -258,7 +270,18 @@ const MainComponent = () => {
               <QuestionSearchLoader />
             </div>
           ) : isSearchResultsVisible && searchQuery ? (
-            <h2>{searchMessage || `Search Results for '${searchQuery}'`}</h2>
+            <div className="search-results">
+              <h2>{searchMessage}</h2>
+              {threads.length === 0 && (
+                <div className="no-results">
+                  <i className="fas fa-search fa-3x"></i>
+                  <p>No questions found for your search query.</p>
+                  <p>
+                    Try adjusting your search terms or explore other topics.
+                  </p>
+                </div>
+              )}
+            </div>
           ) : (
             <div className="add-thread-container">
               <div className="add-thread-input">
@@ -370,7 +393,7 @@ const MainComponent = () => {
               Previous
             </button>
             <span>
-              Page {currentPage} of {totalPages}
+              Page {threads.length > 0 ? currentPage : 0} of {totalPages}
             </span>
             <button onClick={handleNextPage} disabled={!hasNextPage}>
               Next

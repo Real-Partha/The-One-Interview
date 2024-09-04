@@ -670,6 +670,34 @@
   color: #f44336;
 }
 
+.search-results {
+  margin-bottom: 20px;
+}
+
+.no-results {
+  text-align: center;
+  padding: 40px 20px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.no-results i {
+  color: #6c63ff;
+  margin-bottom: 20px;
+}
+
+.no-results p {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.no-results p:last-child {
+  font-size: 16px;
+  color: #666;
+}
+
 /* MainComponent.css - Dark Mode Styles */
 .dark-mode .main-content {
   display: flex;
@@ -950,3 +978,14 @@ body {
   color: var(--highlight-color);
 }
 
+.dark-mode .no-results {
+  background-color: #2e2e2e;
+}
+
+.dark-mode .no-results p {
+  color: #d3d3d3;
+}
+
+.dark-mode .no-results p:last-child {
+  color: #aaa;
+}
