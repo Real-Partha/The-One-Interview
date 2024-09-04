@@ -3,7 +3,11 @@ const User = require("../models/user");
 const Comment = require("../models/comment");
 const Question = require("../models/question");
 const Activity = require("../models/activity");
-const { getSignedUrlForObject, uploadObject, deleteObject } = require("../utils/amazonS3");
+const {
+  getSignedUrlForObject,
+  uploadObject,
+  deleteObject,
+} = require("../utils/amazonS3");
 const router = express.Router();
 const { v4: uuidv4 } = require("uuid");
 
@@ -232,17 +236,22 @@ router.get("/question/:id", async (req, res) => {
     }
 
     // Check if the question is approved
-    if (question.status !== "approved") {
+    if (
+      question.status !== "approved" &&
+      req.user._id.toString() !== question.user_id.toString()
+    ) {
       return res.status(200).send({
-        isVerified: false,
+        isVerified: question.status,
         message: "This question is not yet approved.",
       });
     }
 
-    await Question.updateOne(
-      { _id: req.params.id },
-      { $inc: { impressions: 1 } }
-    );
+    if (req.user._id.toString() !== question.user_id.toString()) {
+      await Question.updateOne(
+        { _id: req.params.id },
+        { $inc: { impressions: 1 } }
+      );
+    }
     const user = await User.findOne({ _id: question.user_id }).lean();
     const profilepic = await User.findOne({ _id: question.user_id }).select(
       "profile_pic -_id"
@@ -288,13 +297,11 @@ router.get("/question/:id", async (req, res) => {
       ? "downvote"
       : null;
 
-    if (question.status === "approved") {
-      // Replace image URLs with signed URLs in the answer
-      question.answer = await replaceImageUrlsWithSignedUrls(question.answer);
-    }
+    // Replace image URLs with signed URLs in the answer
+    question.answer = await replaceImageUrlsWithSignedUrls(question.answer);
 
     return res.status(200).send({
-      isVerified: true,
+      isVerified: question.status,
       ...question.toObject(),
       username: user.username,
       profile_pic: profilePicUrl,
@@ -310,7 +317,7 @@ router.get("/question/:id", async (req, res) => {
 });
 
 router.get("/questionsearch", async (req, res) => {
-  await new Promise((resolve) => setTimeout(resolve, 5000));
+  await new Promise((resolve) => setTimeout(resolve, 500));
   try {
     const search = req.query.query || "";
     // Record activity (only for authenticated users)
@@ -426,22 +433,18 @@ router.get("/questionsearch", async (req, res) => {
   }
 });
 
-
-router.get('/questions/most-upvoted', async (req, res) => {
+router.get("/questions/most-upvoted", async (req, res) => {
   try {
-    const topQuestions = await Question.find({ status: 'approved' })
+    const topQuestions = await Question.find({ status: "approved" })
       .sort({ upvotes: -1 })
       .limit(10)
-      .select('question upvotes impressions commentscount tags');
+      .select("question upvotes impressions commentscount tags");
     res.json(topQuestions);
   } catch (error) {
-    console.error('Error fetching top questions:', error);
-    res.status(500).json({ message: 'Error fetching top questions' });
+    console.error("Error fetching top questions:", error);
+    res.status(500).json({ message: "Error fetching top questions" });
   }
 });
-
-
-
 
 router.post("/question", async (req, res) => {
   const uploadedImages = [];
@@ -615,7 +618,6 @@ router.patch("/downvote", async (req, res) => {
   }
 });
 
-
 router.get("/user/questions", async (req, res) => {
   try {
     if (!req.isAuthenticated()) {
@@ -623,9 +625,11 @@ router.get("/user/questions", async (req, res) => {
     }
 
     const userId = req.user._id;
-    const questions = await Question.find({ user_id: userId }).sort({
-      created_at: -1,
-    }).lean(); // Use .lean() to get plain JavaScript objects
+    const questions = await Question.find({ user_id: userId })
+      .sort({
+        created_at: -1,
+      })
+      .lean(); // Use .lean() to get plain JavaScript objects
 
     const updatedQuestions = await Promise.all(
       questions.map(async (question) => {

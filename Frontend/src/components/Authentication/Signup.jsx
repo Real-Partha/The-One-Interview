@@ -155,7 +155,7 @@ const Signup = () => {
       );
       if (response.data.user) {
         SuccessNotification(response.data.message);
-        navigate("/");
+        window.location.href = "/";
       }
     } catch (error) {
       console.error("Signup error:", error);

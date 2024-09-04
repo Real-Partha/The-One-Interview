@@ -59,7 +59,7 @@ const Login = () => {
         setUserId(response.data.userId);
       } else if (response.data.user) {
         SuccessNotification(response.data.message);
-        navigate("/");
+        window.location.href = "/";
       }
     } catch (error) {
       ErrorNotification(error.response.data.message);
@@ -77,7 +77,7 @@ const Login = () => {
       );
       if (response.data.user) {
         SuccessNotification(response.data.message);
-        navigate("/");
+        window.location.href = "/";
       }
     } catch (error) {
       ErrorNotification(error.response.data.message);
