@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import "./Login.css";
@@ -22,6 +22,10 @@ const Login = () => {
   const [twoFactorToken, setTwoFactorToken] = useState("");
   const [requireTwoFactor, setRequireTwoFactor] = useState(false);
   const [userId, setUserId] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  const twoFactorTokenRef = useRef(null);
   const { ErrorNotification, SuccessNotification } = useNotification();
   const navigate = useNavigate();
 
@@ -48,6 +52,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/auth/login`,
@@ -59,16 +64,21 @@ const Login = () => {
         setUserId(response.data.userId);
       } else if (response.data.user) {
         SuccessNotification(response.data.message);
-        window.location.href = "/";
+        navigate("/");
       }
     } catch (error) {
       ErrorNotification(error.response.data.message);
       console.error("Login error:", error);
+    } finally {
+      setIsSubmitting(false);
+      emailRef.current.blur();
+      passwordRef.current.blur();
     }
   };
 
   const handleTwoFactorSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/auth/verify-2fa`,
@@ -77,14 +87,16 @@ const Login = () => {
       );
       if (response.data.user) {
         SuccessNotification(response.data.message);
-        window.location.href = "/";
+        navigate("/");
       }
     } catch (error) {
       ErrorNotification(error.response.data.message);
       console.error("2FA verification error:", error);
+    } finally {
+      setIsSubmitting(false);
+      twoFactorTokenRef.current.blur();
     }
   };
-
   const handleGoogleClick = () => {
     window.open(`${import.meta.env.VITE_API_URL}/auth/google`, "_self");
   };
@@ -120,6 +132,8 @@ const Login = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
                 required
+                ref={emailRef}
+                disabled={isSubmitting}
               />
             </div>
             <div className="input-group">
@@ -134,6 +148,8 @@ const Login = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
                   required
+                  ref={passwordRef}
+                  disabled={isSubmitting}
                 />
                 <div className="forgot-password-link">
                   <Link to="/forgot-password">Forgot Password?</Link>
@@ -142,6 +158,7 @@ const Login = () => {
                   type="button"
                   className="password-toggle"
                   onClick={togglePasswordVisibility}
+                  disabled={isSubmitting}
                 >
                   <i
                     className={`fas ${
@@ -151,8 +168,13 @@ const Login = () => {
                 </button>
               </div>
             </div>
-            <button type="submit" className="submit-button">
-              <i className="fas fa-sign-in-alt"></i> Log In
+            <button
+              type="submit"
+              className="submit-button"
+              disabled={isSubmitting}
+            >
+              <i className="fas fa-sign-in-alt"></i>
+              {isSubmitting ? "Logging you in..." : "Log In"}
             </button>
           </form>
         ) : (
@@ -170,10 +192,13 @@ const Login = () => {
                 onKeyPress={handleTwoFactorKeyPress}
                 placeholder="Enter 2FA Code"
                 required
+                ref={twoFactorTokenRef}
+                disabled={isSubmitting}
               />
             </div>
             <button type="submit" className="submit-button">
-              <i className="fas fa-check-circle"></i> Verify 2FA
+              <i className="fas fa-check-circle"></i>
+              {isSubmitting ? "Verifying..." : "Verify 2FA"}
             </button>
           </form>
         )}
@@ -182,7 +207,11 @@ const Login = () => {
             <div className="divider">
               <span>or</span>
             </div>
-            <button onClick={handleGoogleClick} className="google-button">
+            <button
+              onClick={handleGoogleClick}
+              className="google-button"
+              disabled={isSubmitting}
+            >
               <i className="fab fa-google"></i> Sign in with Google
             </button>
             <p className="signup-link">

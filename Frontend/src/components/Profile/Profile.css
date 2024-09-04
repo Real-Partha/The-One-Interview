@@ -25,6 +25,10 @@
   .profile-content {
     flex-direction: column;
   }
+
+  .profile-main-content{
+    margin-top: 6rem;
+  }
 }
 
 .profile-main-userActivity {

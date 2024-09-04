@@ -81,7 +81,7 @@ const NavBar = () => {
 
   useEffect(() => {
     checkAuthStatus();
-  }, []);
+  }, [location]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
