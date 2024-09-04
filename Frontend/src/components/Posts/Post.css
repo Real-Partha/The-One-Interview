@@ -30,6 +30,7 @@
   box-shadow: var(--shadow-light);
   overflow: hidden;
   transition: all 0.3s ease;
+  margin-top: 4rem;
 }
 
 .Post-title {
@@ -57,6 +58,33 @@
   align-items: center;
   padding: 1rem 2rem;
   background-color: rgba(108, 99, 255, 0.1);
+}
+
+.Post-warning{
+  margin: 1rem;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.Post-warning{
+  padding: 1rem;
+  background-color: rgba(214, 197, 9, 0.693);
+}
+
+.Post-rejected{
+  padding: 1rem;
+  background-color: rgba(255, 0, 0, 0.56);
+}
+
+.dark-mode .Post-warning{
+  padding: 1rem;
+  background-color: rgba(255, 238, 0, 0.284);
+}
+
+.dark-mode .Post-rejected{
+  padding: 1rem;
+  background-color: rgba(255, 0, 0, 0.26);
 }
 
 .Post-profile-pic {

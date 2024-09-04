@@ -6,9 +6,18 @@ import "./Post.css";
 import "./QuillContent.css";
 import DOMPurify from "dompurify";
 import UnverifiedPost from "./UnverifiedPost";
+import RejectedPost from "./RejectedPost";
 import LoginSignupPopup from "../commonPages/LoginSignupPopup";
 import MainLoader from "../commonPages/MainLoader";
-import { FaThumbsUp, FaThumbsDown, FaEye, FaComment, FaPaperPlane, FaShareAlt, FaBookmark } from "react-icons/fa";
+import {
+  FaThumbsUp,
+  FaThumbsDown,
+  FaEye,
+  FaComment,
+  FaPaperPlane,
+  FaShareAlt,
+  FaBookmark,
+} from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 const Post = () => {
   const { questionId } = useParams();
@@ -25,6 +34,7 @@ const Post = () => {
   const [isMainLoading, setIsMainLoading] = useState(true);
   const [commentLikes, setCommentLikes] = useState({});
   const [commentDislikes, setCommentDislikes] = useState({});
+  const [questionWarning, setQuestionWarning] = useState("");
 
   const debounce = (func, buttonId) => {
     return async (...args) => {
@@ -41,7 +51,6 @@ const Post = () => {
   };
 
   const commentListRef = useRef(null);
-
 
   const debouncedUpvote = debounce(async () => {
     try {
@@ -68,9 +77,6 @@ const Post = () => {
     }
   }, "upvote");
 
-
-
-  
   const debouncedDownvote = debounce(async () => {
     try {
       const response = await axios.patch(
@@ -116,7 +122,7 @@ const Post = () => {
       if (response.data.error === "User not authenticated") {
         setShowLoginPopup(true);
       } else {
-        if (response.data.isVerified) {
+        if (response.data.isVerified === "approved") {
           setQuestion(response.data);
           setUserVote(response.data.userVote);
           setUpvotes(response.data.upvotes);
@@ -135,7 +141,17 @@ const Post = () => {
           setCommentLikes(likesObj);
           setCommentDislikes(dislikesObj);
         } else {
-          setQuestion({ isVerified: false });
+          setQuestion(response.data);
+          if (response.data.isVerified === "unverified") {
+            setQuestionWarning(
+              "This post is not yet verified by the admin. It is only visible to you."
+            );
+          }
+          if (response.data.isVerified === "rejected") {
+            setQuestionWarning(
+              "This post has been rejected by the admin. It is only visible to you."
+            );
+          }
         }
       }
     } catch (error) {
@@ -279,24 +295,39 @@ const Post = () => {
     return <LoginSignupPopup onClose={handleCloseLoginPopup} />;
   }
 
-  if (question && !question.isVerified) {
+  if (question && question.isVerified==="unverified" && !question.user_id) {
     return <UnverifiedPost />;
   }
 
+  if (question && question.isVerified==="rejected" && !question.user_id) {
+    return <RejectedPost />;
+  }
+
   return (
-    <motion.div 
+    <motion.div
       className={`Post-wrapper ${isDarkMode ? "dark-mode" : ""}`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
       <div className="Post-main">
-        <motion.div 
+        <motion.div
           className="Post-container"
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.5 }}
         >
+          {questionWarning && (
+            <div
+              className={`Post-warning ${
+                question.isVerified === "unverified"
+                  ? "Post-pending"
+                  : "Post-rejected"
+              }`}
+            >
+              {questionWarning}
+            </div>
+          )}
           <h1 className="Post-title">{question.question}</h1>
           <div className="Post-meta">
             <img
@@ -313,21 +344,21 @@ const Post = () => {
           </div>
           <div className="Post-content">
             <div
-              className="Post-quill-content"
+              className="quill-content"
               dangerouslySetInnerHTML={{
                 __html: DOMPurify.sanitize(question.answer),
               }}
             />
           </div>
-          <motion.div 
+          <motion.div
             className="Post-tags-container"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.5 }}
           >
             {question.tags.map((tag, index) => (
-              <motion.span 
-                key={index} 
+              <motion.span
+                key={index}
                 className="Post-tag"
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
@@ -347,7 +378,9 @@ const Post = () => {
           </div>
           <div className="Post-actions">
             <motion.button
-              className={`Post-vote-btn ${userVote === "upvote" ? "active" : ""}`}
+              className={`Post-vote-btn ${
+                userVote === "upvote" ? "active" : ""
+              }`}
               onClick={handleUpvote}
               disabled={isDebouncing}
               whileHover={{ scale: 1.05 }}
@@ -358,7 +391,9 @@ const Post = () => {
               <span className="Post-vote-count">({upvotes})</span>
             </motion.button>
             <motion.button
-              className={`Post-vote-btn ${userVote === "downvote" ? "active" : ""}`}
+              className={`Post-vote-btn ${
+                userVote === "downvote" ? "active" : ""
+              }`}
               onClick={handleDownvote}
               disabled={isDebouncing}
               whileHover={{ scale: 1.05 }}
@@ -393,7 +428,8 @@ const Post = () => {
           </div>
           <div className="Post-comments">
             <h3 className="Post-comments-title">
-              <FaComment /> {comments.length} {comments.length === 1 ? "Comment" : "Comments"}
+              <FaComment /> {comments.length}{" "}
+              {comments.length === 1 ? "Comment" : "Comments"}
             </h3>
             <form onSubmit={handleCommentSubmit} className="Post-comment-form">
               <input
@@ -403,8 +439,8 @@ const Post = () => {
                 placeholder="Add a comment..."
                 className="Post-comment-input"
               />
-              <motion.button 
-                type="submit" 
+              <motion.button
+                type="submit"
                 className="Post-comment-submit"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
@@ -415,10 +451,12 @@ const Post = () => {
             <div className="Post-comments-list" ref={commentListRef}>
               <AnimatePresence>
                 {comments
-                  .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                  .sort(
+                    (a, b) => new Date(b.created_at) - new Date(a.created_at)
+                  )
                   .map((comment, index) => (
-                    <motion.div 
-                      key={comment._id} 
+                    <motion.div
+                      key={comment._id}
                       className="Post-comment"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -431,18 +469,26 @@ const Post = () => {
                       <div className="Post-comment-header">
                         <div className="Post-comment-user-info">
                           <img
-                            src={comment.profile_pic || "/img/default_avatar.png"}
+                            src={
+                              comment.profile_pic || "/img/default_avatar.png"
+                            }
                             alt={comment.username}
                             className="Post-comment-profile-pic"
                           />
-                          <span className="Post-comment-username">{comment.username}</span>
+                          <span className="Post-comment-username">
+                            {comment.username}
+                          </span>
                         </div>
-                        <span className="Post-comment-time">{formatTimeAgo(comment.created_at)}</span>
+                        <span className="Post-comment-time">
+                          {formatTimeAgo(comment.created_at)}
+                        </span>
                       </div>
                       <p className="Post-comment-content">{comment.comment}</p>
                       <div className="Post-comment-actions">
                         <motion.button
-                          className={`Post-comment-like-btn ${commentLikes[comment._id] > 0 ? "liked" : ""}`}
+                          className={`Post-comment-like-btn ${
+                            commentLikes[comment._id] > 0 ? "liked" : ""
+                          }`}
                           onClick={() => handleCommentLike(comment._id)}
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
@@ -451,7 +497,9 @@ const Post = () => {
                           <span>{commentLikes[comment._id] || 0}</span>
                         </motion.button>
                         <motion.button
-                          className={`Post-comment-dislike-btn ${commentDislikes[comment._id] > 0 ? "disliked" : ""}`}
+                          className={`Post-comment-dislike-btn ${
+                            commentDislikes[comment._id] > 0 ? "disliked" : ""
+                          }`}
                           onClick={() => handleCommentDislike(comment._id)}
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
