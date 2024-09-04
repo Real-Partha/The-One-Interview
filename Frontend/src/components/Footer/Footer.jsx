@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../../ThemeContext';
 import './Footer.css';
+import DevelopersPage from '../DevelopersPage/DevelopersPage';
 
 const Footer = () => {
   const [emailInput, setEmailInput] = useState('');
@@ -35,7 +36,7 @@ const Footer = () => {
           <h4>Company</h4>
           <ul>
             <li><Link to="/about-us">About Us</Link></li>
-            <li><Link to="/team">Our Team</Link></li>
+            <li><Link to="/developers">Our Team</Link></li>
             <li><Link to="/careers">Careers</Link></li>
             <li><Link to="/press">Press</Link></li>
             <li><Link to="/contact">Contact Us</Link></li>
