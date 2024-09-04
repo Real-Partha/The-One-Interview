@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useTheme } from "../../ThemeContext";
@@ -8,7 +8,8 @@ import DOMPurify from "dompurify";
 import UnverifiedPost from "./UnverifiedPost";
 import LoginSignupPopup from "../commonPages/LoginSignupPopup";
 import MainLoader from "../commonPages/MainLoader";
-
+import { FaThumbsUp, FaThumbsDown, FaEye, FaComment, FaPaperPlane, FaShareAlt, FaBookmark } from "react-icons/fa";
+import { motion, AnimatePresence } from "framer-motion";
 const Post = () => {
   const { questionId } = useParams();
   const [question, setQuestion] = useState(null);
@@ -39,6 +40,9 @@ const Post = () => {
     };
   };
 
+  const commentListRef = useRef(null);
+
+
   const debouncedUpvote = debounce(async () => {
     try {
       const response = await axios.patch(
@@ -64,6 +68,9 @@ const Post = () => {
     }
   }, "upvote");
 
+
+
+  
   const debouncedDownvote = debounce(async () => {
     try {
       const response = await axios.patch(
@@ -277,145 +284,190 @@ const Post = () => {
   }
 
   return (
-    <div className={`${isDarkMode ? `dark-mode` : ``}`}>
-      <div className="post-main">
-        <div className={`post-container ${isDarkMode ? "dark-mode" : ""}`}>
-          <h1 className="post-title">{question.question}</h1>
-          <div className="post-meta">
+    <motion.div 
+      className={`Post-wrapper ${isDarkMode ? "dark-mode" : ""}`}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <div className="Post-main">
+        <motion.div 
+          className="Post-container"
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+        >
+          <h1 className="Post-title">{question.question}</h1>
+          <div className="Post-meta">
             <img
               src={question.profile_pic || "/img/profile_pic.png"}
               alt="Profile"
-              className="profile-pic"
+              className="Post-profile-pic"
             />
-            <div className="post-info">
-              <p className="username">{question.username}</p>
-              <p className="date">
+            <div className="Post-info">
+              <p className="Post-username">{question.username}</p>
+              <p className="Post-date">
                 {new Date(question.created_at).toLocaleString()}
               </p>
             </div>
           </div>
-          <div className="post-content">
+          <div className="Post-content">
             <div
-              className="quill-content"
+              className="Post-quill-content"
               dangerouslySetInnerHTML={{
                 __html: DOMPurify.sanitize(question.answer),
               }}
             />
           </div>
-          <div className="post-tags">
+          <motion.div 
+            className="Post-tags-container"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+          >
             {question.tags.map((tag, index) => (
-              <span key={index} className="tag">
+              <motion.span 
+                key={index} 
+                className="Post-tag"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.4 + index * 0.1, duration: 0.3 }}
+              >
                 #{tag.toLowerCase()}
-              </span>
+              </motion.span>
             ))}
-          </div>
-          <div className="post-details">
-            <p className="company">
+          </motion.div>
+          <div className="Post-details">
+            <p className="Post-company">
               Company: <span>{question.companyName || "Not specified"}</span>
             </p>
-            <p className="category">
+            <p className="Post-category">
               Category: <span>{question.category || "Not specified"}</span>
             </p>
           </div>
-          <div className="post-actions">
-            <button
-              className={`upvote ${userVote === "upvote" ? "active" : ""} ${
-                debouncingButton === "upvote" ? "debouncing" : ""
-              }`}
+          <div className="Post-actions">
+            <motion.button
+              className={`Post-vote-btn ${userVote === "upvote" ? "active" : ""}`}
               onClick={handleUpvote}
               disabled={isDebouncing}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <i className="fa-solid fa-thumbs-up"></i>{" "}
-              {userVote === "upvote" ? " Upvoted" : " Upvote"} ({upvotes})
-              {debouncingButton === "upvote" && (
-                <div className="debounce-bar"></div>
-              )}
-            </button>
-            <button
-              className={`downvote ${userVote === "downvote" ? "active" : ""} ${
-                debouncingButton === "downvote" ? "debouncing" : ""
-              }`}
+              <FaThumbsUp />
+              <span>{userVote === "upvote" ? "Upvoted" : "Upvote"}</span>
+              <span className="Post-vote-count">({upvotes})</span>
+            </motion.button>
+            <motion.button
+              className={`Post-vote-btn ${userVote === "downvote" ? "active" : ""}`}
               onClick={handleDownvote}
               disabled={isDebouncing}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <i className="fa-solid fa-thumbs-down"></i>{" "}
-              {userVote === "downvote" ? " Downvoted" : " Downvote"} (
-              {downvotes})
-              {debouncingButton === "downvote" && (
-                <div className="debounce-bar"></div>
-              )}
-            </button>
+              <FaThumbsDown />
+              <span>{userVote === "downvote" ? "Downvoted" : "Downvote"}</span>
+              <span className="Post-vote-count">({downvotes})</span>
+            </motion.button>
+            <motion.button
+              className="Post-action-btn"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <FaShareAlt />
+              <span>Share</span>
+            </motion.button>
+            <motion.button
+              className="Post-action-btn"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <FaBookmark />
+              <span>Save</span>
+            </motion.button>
           </div>
-          <div className="post-stats">
-            <span className="view-count">
-              <i className="fas fa-eye"></i> {question.impressions || 0}{" "}
+          <div className="Post-stats">
+            <span className="Post-view-count">
+              <FaEye /> {question.impressions || 0}{" "}
               {question.impressions === 1 ? "View" : "Views"}
             </span>
           </div>
-          <div className="comments-section">
-            <h3>
-              {comments.length} {comments.length == 1 ? "Comment" : "Comments"}
+          <div className="Post-comments">
+            <h3 className="Post-comments-title">
+              <FaComment /> {comments.length} {comments.length === 1 ? "Comment" : "Comments"}
             </h3>
-            <form onSubmit={handleCommentSubmit} className="comment-form">
+            <form onSubmit={handleCommentSubmit} className="Post-comment-form">
               <input
                 type="text"
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
                 placeholder="Add a comment..."
-                className="comment-input"
+                className="Post-comment-input"
               />
-              <button type="submit" className="comment-submit">
-                Send
-              </button>
+              <motion.button 
+                type="submit" 
+                className="Post-comment-submit"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <FaPaperPlane />
+              </motion.button>
             </form>
-            <div className="comments-list">
-              {comments
-                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-                .map((comment) => (
-                  <div key={comment._id} className="comment">
-                    <div className="comment-header">
-                      <div className="comment-user-info">
-                        <img
-                          src={comment.profile_pic || "/img/default_avatar.png"}
-                          alt={comment.username}
-                          className="comment-profile-pic"
-                        />
-                        <span className="comment-username">
-                          {comment.username}
-                        </span>
+            <div className="Post-comments-list" ref={commentListRef}>
+              <AnimatePresence>
+                {comments
+                  .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                  .map((comment, index) => (
+                    <motion.div 
+                      key={comment._id} 
+                      className="Post-comment"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ delay: index * 0.1, duration: 0.3 }}
+                    >
+                      {/* {index < 3 && (
+                        <FaMedal className={`Post-comment-medal Post-medal-${index + 1}`} />
+                      )} */}
+                      <div className="Post-comment-header">
+                        <div className="Post-comment-user-info">
+                          <img
+                            src={comment.profile_pic || "/img/default_avatar.png"}
+                            alt={comment.username}
+                            className="Post-comment-profile-pic"
+                          />
+                          <span className="Post-comment-username">{comment.username}</span>
+                        </div>
+                        <span className="Post-comment-time">{formatTimeAgo(comment.created_at)}</span>
                       </div>
-                      <span className="comment-time">
-                        {formatTimeAgo(comment.created_at)}
-                      </span>
-                    </div>
-                    <p className="comment-content">{comment.comment}</p>
-                    <div className="comment-actions">
-                      <button
-                        className={`like-button ${
-                          commentLikes[comment._id] > 0 ? "liked" : ""
-                        }`}
-                        onClick={() => handleCommentLike(comment._id)}
-                      >
-                        <i className="fa-solid fa-thumbs-up"></i>
-                        <span>{commentLikes[comment._id] || 0}</span>
-                      </button>
-                      <button
-                        className={`dislike-button ${
-                          commentDislikes[comment._id] > 0 ? "disliked" : ""
-                        }`}
-                        onClick={() => handleCommentDislike(comment._id)}
-                      >
-                        <i className="fa-solid fa-thumbs-down"></i>
-                        <span>{commentDislikes[comment._id] || 0}</span>
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                      <p className="Post-comment-content">{comment.comment}</p>
+                      <div className="Post-comment-actions">
+                        <motion.button
+                          className={`Post-comment-like-btn ${commentLikes[comment._id] > 0 ? "liked" : ""}`}
+                          onClick={() => handleCommentLike(comment._id)}
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                        >
+                          <FaThumbsUp />
+                          <span>{commentLikes[comment._id] || 0}</span>
+                        </motion.button>
+                        <motion.button
+                          className={`Post-comment-dislike-btn ${commentDislikes[comment._id] > 0 ? "disliked" : ""}`}
+                          onClick={() => handleCommentDislike(comment._id)}
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                        >
+                          <FaThumbsDown />
+                          <span>{commentDislikes[comment._id] || 0}</span>
+                        </motion.button>
+                      </div>
+                    </motion.div>
+                  ))}
+              </AnimatePresence>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
