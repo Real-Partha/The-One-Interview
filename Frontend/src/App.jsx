@@ -23,6 +23,8 @@ import FAQs from "./components/Utility Pages/FAQ/FAQ";
 import MostUpvoted from "./components/MostUpvoted/MostUpvoted";
 import ForgotPassword from "./components/Authentication/ForgotPassword";
 
+import ScrollToTop from "../ScrolltoTop";
+
 
 function AppContent() {
   const location = useLocation();
@@ -34,6 +36,7 @@ function AppContent() {
     <>
       <Toaster position="top-center" reverseOrder={false}/>
       {shouldShowNavBarAndFooter && <NavBar />}
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<HomeComponent />} />
         <Route path="/questions" element={<MainContent />} />
