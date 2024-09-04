@@ -1,5 +1,5 @@
-import React, { useState,useEffect } from "react";
-import { useNavigate} from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import "./Login.css";
 import useNotification from "../Notifications";
@@ -28,7 +28,10 @@ const Login = () => {
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/auth/status`, { withCredentials: true });
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/auth/status`,
+          { withCredentials: true }
+        );
         if (response.data.requireTwoFactor) {
           setRequireTwoFactor(true);
           setUserId(response.data.userId);
@@ -99,69 +102,89 @@ const Login = () => {
   return (
     <div className="login-container">
       <div className="login-box">
-        <h2 className="login-heading">Login</h2>
+        <div className="login-header">
+          <i className="fas fa-user-circle"></i>
+          <h2 className="login-heading">Welcome Back</h2>
+          <p className="login-subheading">Let's get you logged in!</p>
+        </div>
         {!requireTwoFactor ? (
           <form onSubmit={handleSubmit}>
-            <div className="login-input-group">
+            <div className="input-group">
+              <label htmlFor="email">
+                <i className="fas fa-envelope"></i> Email
+              </label>
               <input
+                id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Email"
+                placeholder="Enter your email"
                 required
-                className="login-input"
               />
             </div>
-            <div className="login-input-group login-password-group">
-              <input
-                type={showPassword ? "text" : "password"}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
-                required
-                className="login-input"
-              />
-              <button
-                type="button"
-                className="login-password-toggle"
-                onClick={togglePasswordVisibility}
-              >
-                <i
-                  className={`fas ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
-                ></i>
-              </button>
+            <div className="input-group">
+              <label htmlFor="password">
+                <i className="fas fa-lock"></i> Password
+              </label>
+              <div className="password-input">
+                <input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter your password"
+                  required
+                />
+                <button
+                  type="button"
+                  className="password-toggle"
+                  onClick={togglePasswordVisibility}
+                >
+                  <i
+                    className={`fas ${
+                      showPassword ? "fa-eye-slash" : "fa-eye"
+                    }`}
+                  ></i>
+                </button>
+              </div>
             </div>
-            <button type="submit" className="login-submit-button">
-              Login
+            <button type="submit" className="submit-button">
+              <i className="fas fa-sign-in-alt"></i> Log In
             </button>
           </form>
         ) : (
           <form onSubmit={handleTwoFactorSubmit}>
             <TwoFactorMessage />
-            <div className="login-input-group">
+            <div className="input-group">
+              <label htmlFor="twoFactorToken">
+                <i className="fas fa-key"></i> 2FA Code
+              </label>
               <input
+                id="twoFactorToken"
                 type="text"
                 value={twoFactorToken}
                 onChange={(e) => setTwoFactorToken(e.target.value)}
                 onKeyPress={handleTwoFactorKeyPress}
                 placeholder="Enter 2FA Code"
                 required
-                className="login-input"
               />
             </div>
-            <button type="submit" className="login-submit-button">
-              Verify 2FA
+            <button type="submit" className="submit-button">
+              <i className="fas fa-check-circle"></i> Verify 2FA
             </button>
           </form>
         )}
         {!requireTwoFactor && (
           <>
-            <div className="login-divider">
+            <div className="divider">
               <span>or</span>
             </div>
-            <button onClick={handleGoogleClick} className="login-google-button">
+            <button onClick={handleGoogleClick} className="google-button">
               <i className="fab fa-google"></i> Sign in with Google
             </button>
+            <p className="signup-link">
+              Don't have an account? <Link to="/signup">Register here</Link>
+            </p>
           </>
         )}
       </div>

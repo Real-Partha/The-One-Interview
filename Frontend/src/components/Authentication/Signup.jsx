@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 import axios from "axios";
 import "./Signup.css";
 import useNotification from "../Notifications";
@@ -194,20 +194,30 @@ const Signup = () => {
   return (
     <div className="signup-container">
       <div className="signup-box">
-        <h2 className="signup-heading">Sign Up</h2>
+        <div className="signup-header">
+          <i className="fas fa-user-plus"></i>
+          <h2 className="signup-heading">Create Account</h2>
+          <p className="signup-subheading">Join our community today!</p>
+        </div>
         <form onSubmit={handleSubmit}>
           <div className="signup-input-group">
+            <label htmlFor="username">
+              <i className="fas fa-user"></i> Username
+            </label>
             <input
+              id="username"
               type="text"
               name="username"
               value={formData.username}
               onChange={handleChange}
-              placeholder="Username"
+              placeholder="Choose a username"
               required
               className="signup-input"
             />
             {checkingUsername && (
-              <span className="signup-username-checking">Checking...</span>
+              <span className="signup-username-checking">
+                <i className="fas fa-spinner fa-spin"></i> Checking...
+              </span>
             )}
             {!checkingUsername && usernameAvailable !== null && (
               <span
@@ -215,63 +225,92 @@ const Signup = () => {
                   usernameAvailable ? "available" : "unavailable"
                 }`}
               >
-                {usernameAvailable
-                  ? "✓ Username is available"
-                  : "✗ Username is not available"}
+                {usernameAvailable ? (
+                  <>
+                    <i className="fas fa-check-circle"></i> Username is
+                    available
+                  </>
+                ) : (
+                  <>
+                    <i className="fas fa-times-circle"></i> Username is not
+                    available
+                  </>
+                )}
               </span>
             )}
           </div>
           <div className="signup-input-group">
+            <label htmlFor="first_name">
+              <i className="fas fa-user-edit"></i> First Name
+            </label>
             <input
+              id="first_name"
               type="text"
               name="first_name"
               value={formData.first_name}
               onChange={handleChange}
-              placeholder="First Name"
+              placeholder="Enter your first name"
               required
               className="signup-input"
             />
           </div>
           <div className="signup-input-group">
+            <label htmlFor="last_name">
+              <i className="fas fa-user-edit"></i> Last Name
+            </label>
             <input
+              id="last_name"
               type="text"
               name="last_name"
               value={formData.last_name}
               onChange={handleChange}
-              placeholder="Last Name"
+              placeholder="Enter your last name"
               required
               className="signup-input"
             />
           </div>
           <div className="signup-input-group">
+            <label htmlFor="email">
+              <i className="fas fa-envelope"></i> Email
+            </label>
             <input
+              id="email"
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              placeholder="Email"
+              placeholder="Enter your email"
               required
               className="signup-input"
             />
             {checkingEmail && !emailError && formData.email && (
-              <span className="signup-email-checking">Checking...</span>
+              <span className="signup-email-checking">
+                <i className="fas fa-spinner fa-spin"></i> Checking...
+              </span>
             )}
             {!checkingEmail && emailExists && (
               <span className="signup-email-error">
-                ✗ Account already exists with this email
+                <i className="fas fa-exclamation-circle"></i> Account already
+                exists with this email
               </span>
             )}
             {emailError && (
-              <span className="signup-email-error">{emailError}</span>
+              <span className="signup-email-error">
+                <i className="fas fa-exclamation-circle"></i> {emailError}
+              </span>
             )}
           </div>
           <div className="signup-input-group signup-password-group">
+            <label htmlFor="password">
+              <i className="fas fa-lock"></i> Password
+            </label>
             <input
+              id="password"
               type={showPassword ? "text" : "password"}
               name="password"
               value={formData.password}
               onChange={handleChange}
-              placeholder="Password"
+              placeholder="Create a password"
               required
               className="signup-input"
             />
@@ -286,26 +325,37 @@ const Signup = () => {
             </button>
           </div>
           {passwordError && (
-            <span className="signup-password-error">{passwordError}</span>
+            <span className="signup-password-error">
+              <i className="fas fa-exclamation-circle"></i> {passwordError}
+            </span>
           )}
           <div className="signup-input-group">
+            <label htmlFor="confirmPassword">
+              <i className="fas fa-lock"></i> Confirm Password
+            </label>
             <input
+              id="confirmPassword"
               type="password"
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}
-              placeholder="Confirm Password"
+              placeholder="Confirm your password"
               required
               className="signup-input"
             />
             {confirmPasswordError && (
               <span className="signup-confirm-password-error">
+                <i className="fas fa-exclamation-circle"></i>{" "}
                 {confirmPasswordError}
               </span>
             )}
           </div>
           <div className="signup-input-group">
+            <label htmlFor="gender">
+              <i className="fas fa-venus-mars"></i> Gender
+            </label>
             <select
+              id="gender"
               name="gender"
               value={formData.gender}
               onChange={handleChange}
@@ -319,7 +369,11 @@ const Signup = () => {
             </select>
           </div>
           <div className="signup-input-group">
+            <label htmlFor="date_of_birth">
+              <i className="fas fa-birthday-cake"></i> Date of Birth
+            </label>
             <input
+              id="date_of_birth"
               type="date"
               name="date_of_birth"
               value={formData.date_of_birth}
@@ -334,7 +388,7 @@ const Signup = () => {
             disabled={!isFormValid()}
             title={!isFormValid() ? "Please fill out all fields properly" : ""}
           >
-            Sign Up
+            <i className="fas fa-user-plus"></i> Sign Up
           </button>
         </form>
         <div className="signup-divider">
@@ -343,6 +397,9 @@ const Signup = () => {
         <button onClick={handleGoogleClick} className="signup-google-button">
           <i className="fab fa-google"></i> Sign up with Google
         </button>
+        <p className="login-link">
+          Already have an account? <Link to="/login">Log in here</Link>
+        </p>
       </div>
     </div>
   );

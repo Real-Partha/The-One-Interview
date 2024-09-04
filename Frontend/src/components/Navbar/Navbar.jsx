@@ -196,12 +196,15 @@ const NavBar = () => {
             </>
           ) : (
             <>
-              <a href="/login-register" className="nav-link">
-                Login/Singup
-              </a>
-              {/* <a href="/signup" className="nav-link">
-                Register
+              {/* <a href="/login-register" className="nav-link">
+                Login/Register
               </a> */}
+              <a href="/login" className="nav-link">
+                Login
+              </a>
+              <a href="/signup" className="nav-link">
+                Register
+              </a>
             </>
           )}
         </div>

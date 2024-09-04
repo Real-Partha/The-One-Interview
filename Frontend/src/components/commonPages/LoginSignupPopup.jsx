@@ -36,7 +36,8 @@ const LoginSignupPopup = () => {
           </p>
           <div className="loginsignuppopup-buttons">
             <Link 
-              to="/login-register?mode=login" 
+              // to="/login-register?mode=login" 
+              to="/login" 
               className={`loginsignuppopup-button loginsignuppopup-login ${activeButton === 'login' ? 'active' : ''}`}
               onMouseEnter={() => handleButtonHover('login')}
               onMouseLeave={handleButtonLeave}
@@ -45,7 +46,8 @@ const LoginSignupPopup = () => {
               <span className="loginsignuppopup-button-highlight"></span>
             </Link>
             <Link 
-              to="/login-register?mode=signup" 
+              // to="/login-register?mode=signup" 
+              to="/signup" 
               className={`loginsignuppopup-button loginsignuppopup-signup ${activeButton === 'signup' ? 'active' : ''}`}
               onMouseEnter={() => handleButtonHover('signup')}
               onMouseLeave={handleButtonLeave}
