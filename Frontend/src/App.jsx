@@ -21,7 +21,7 @@ import AboutUs from "./components/Utility Pages/Aboutus/Aboutus";
 import PrivacyPolicy from "./components/Utility Pages/PrivacyPolicy/PrivacyPolicy";
 import FAQs from "./components/Utility Pages/FAQ/FAQ";
 import MostUpvoted from "./components/MostUpvoted/MostUpvoted";
-
+import ForgotPassword from "./components/Authentication/ForgotPassword";
 
 
 function AppContent() {
@@ -41,6 +41,7 @@ function AppContent() {
         {/* <Route path="/login-register" element={<LoginRegister />} /> */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/company-questions" element={<CompanyPage />} />
         <Route path="/admin" element={<AdminPage />} />

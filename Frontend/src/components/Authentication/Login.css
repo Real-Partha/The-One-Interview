@@ -91,7 +91,7 @@
 .password-toggle {
   position: absolute;
   right: 12px;
-  top: 50%;
+  top: 30%;
   transform: translateY(-50%);
   background: none;
   border: none;
@@ -212,7 +212,34 @@
   margin-bottom: 0.5rem;
 }
 
+.forgot-password-link {
+  text-align: right;
+  margin-top: 0.5rem;
+}
+
+.forgot-password-link a {
+  color: #4a90e2;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.forgot-password-link a:hover {
+  color: #357ae8;
+  text-decoration: underline;
+}
+
+
+
 /* Dark mode styles */
+.dark-mode .forgot-password-link a {
+  color: #6c63ff;
+}
+
+.dark-mode .forgot-password-link a:hover {
+  color: #5a48cc;
+}
+
 .dark-mode .login-container {
   background-color: #1e1e1e;
 }
