@@ -202,68 +202,92 @@ router.get("/logout", (req, res) => {
   });
 });
 
+const generateOTP = () => {
+  return crypto.randomInt(10000000, 99999999).toString();
+};
+
 router.post("/forgot-password", async (req, res) => {
   try {
-    const Email = req.body.email;
-    const user = await User.findOne({ email: Email });
+    const { email } = req.body;
+    const user = await User.findOne({ email });
     if (!user) {
-      return res
-        .status(400)
-        .json({ message: "User with this email does not exist" });
+      return res.status(404).json({ message: "User not found" });
     }
-    const otp = crypto.randomInt(100000, 999999).toString();
-    await OTP.create({
-      email: Email,
-      otp: otp,
-      expiresAt: new Date(Date.now() + 5 * 60 * 1000), // 5 minutes from now
+    const otp = generateOTP();
+    const newOTP = new OTP({
+      email,
+      otp,
+      type: "forgot_password",
     });
-    await sendEmail(Email, "Password Reset OTP", "otp-email-template.html", {
-      OTP: otp,
-    });
-    console.log(user.email);
-    const is2FAEnabled = user.two_factor_auth || false;
-    res.json({ message: "OTP sent to new email", is2FAEnabled: is2FAEnabled });
+    await newOTP.save();
+
+    // Send email with OTP
+    await sendEmail(
+      email,
+      "Forgot Password OTP",
+      "forgot-password-otp-template.html",
+      { OTP: otp }
+    );
+
+    res.json({ message: "OTP sent to your email" });
   } catch (error) {
-    res.status(500).json({ message: "Error sending OTP" });
+    res
+      .status(500)
+      .json({ message: "Error sending OTP", error: error.message });
+  }
+});
+
+router.post("/verify-forgot-password-otp", async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+    const otpRecord = await OTP.findOne({
+      email,
+      otp,
+      type: "forgot_password",
+    });
+    if (!otpRecord) {
+      return res.status(400).json({ message: "Invalid OTP" });
+    }
+    if (otpRecord.expiresAt < Date.now()) {
+      await OTP.deleteOne({ _id: otpRecord._id });
+      return res.status(400).json({ message: "OTP expired" });
+    }
+    res.json({ message: "OTP verified successfully" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error verifying OTP", error: error.message });
   }
 });
 
 router.post("/reset-password", async (req, res) => {
   try {
-    const email = req.body.email;
-    const otp = req.body.otp;
-    const password = req.body.password;
-    const twoFAotp = req.body.twoFAotp || null;
+    const { email, otp, newPassword } = req.body;
     const otpRecord = await OTP.findOne({
       email,
       otp,
-      expiresAt: { $gt: new Date() },
+      type: "forgot_password",
     });
     if (!otpRecord) {
-      return res.status(400).json({ message: "Invalid or expired OTP" });
+      return res.status(400).json({ message: "Invalid OTP" });
+    }
+    if (otpRecord.expiresAt < Date.now()) {
+      await OTP.deleteOne({ _id: otpRecord._id });
+      return res.status(400).json({ message: "OTP expired" });
     }
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    if (user.two_factor_auth) {
-      if (twoFAotp == null) {
-        return res.status(400).json({ message: "2FA OTP required" });
-      }
-      const verified = authenticator.verify({
-        token: twoFAotp.toString().trim(),
-        secret: user.two_factor_secret,
-      });
-      if (!verified) {
-        return res.status(400).json({ message: "Invalid 2FA OTP" });
-      }
-    }
-    user.password = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
     await user.save();
-    await OTP.deleteMany({ email });
-    res.json({ message: "Password reset successful" });
+    await OTP.deleteOne({ _id: otpRecord._id });
+    res.json({ message: "Password reset successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Error resetting password" });
+    res
+      .status(500)
+      .json({ message: "Error resetting password", error: error.message });
   }
 });
 
