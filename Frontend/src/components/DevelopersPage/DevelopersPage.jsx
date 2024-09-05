@@ -1,14 +1,47 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './DevelopersPage.css';
+import { FaLinkedin, FaGithub, FaInstagram, FaSnapchat } from 'react-icons/fa';
 
 const DevelopersPage = () => {
   const slideRef = useRef(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const developers = [
-    { name: "Partha P Paul", image: "/img/joy.png", background: "/img/bgimg1.jpg" },
-    { name: "Dedipya Goswami", image: "/img/joy.png", background: "/img/bgimg2.jpg" },
-    { name: "Joydeep Ghosh", image: "/img/joy.png", background: "/img/bgimg3.jpg" },
-    { name: "Smit Kunpura", image: "/img/joy.png", background: "/img/bgimg4.jpg" },
+    { 
+      name: "Partha P Paul", 
+      image: "/img/joy.png", 
+      background: "/img/bgimg1.jpg",
+      linkedin: "https://linkedin.com/in/partha-p-paul",
+      github: "https://github.com/partha-p-paul",
+      instagram: "https://instagram.com/partha_p_paul",
+      snapchat: "https://snapchat.com/add/partha_p_paul"
+    },
+    { 
+      name: "Dedipya Goswami", 
+      image: "/img/joy.png", 
+      background: "/img/bgimg2.jpg",
+      linkedin: "https://linkedin.com/in/partha-p-paul",
+      github: "https://github.com/partha-p-paul",
+      instagram: "https://instagram.com/partha_p_paul",
+      snapchat: "https://snapchat.com/add/partha_p_paul"
+    },
+    { 
+      name: "Joydeep Ghosh", 
+      image: "/img/joy2.jpg", 
+      background: "/img/bgimg3.jpg",
+      linkedin: "https://linkedin.com/in/partha-p-paul",
+      github: "https://github.com/partha-p-paul",
+      instagram: "https://instagram.com/partha_p_paul",
+      snapchat: "https://snapchat.com/add/partha_p_paul"
+    },
+    { 
+      name: "Smit Kunapara", 
+      image: "/img/joy.png", 
+      background: "/img/bgimg4.jpg",
+      linkedin: "https://linkedin.com/in/partha-p-paul",
+      github: "https://github.com/partha-p-paul",
+      instagram: "https://instagram.com/partha_p_paul",
+      snapchat: "https://snapchat.com/add/partha_p_paul"
+    },
   ];
 
   useEffect(() => {
@@ -44,6 +77,15 @@ const DevelopersPage = () => {
     setCurrentSlide((prev) => (prev - 1 + developers.length) % developers.length);
   };
 
+  const SocialIcons = ({ developer }) => (
+    <div className="developers-social-icons">
+      <a href={developer.linkedin} target="_blank" rel="noopener noreferrer"><FaLinkedin /></a>
+      <a href={developer.github} target="_blank" rel="noopener noreferrer"><FaGithub /></a>
+      <a href={developer.instagram} target="_blank" rel="noopener noreferrer"><FaInstagram /></a>
+      <a href={developer.snapchat} target="_blank" rel="noopener noreferrer"><FaSnapchat /></a>
+    </div>
+  );
+
   return (
     <>
       <div className="developers-laptop">
@@ -62,7 +104,7 @@ const DevelopersPage = () => {
                   <div className="developers-profile-image" style={{ backgroundImage: `url(${developer.image})` }}></div>
                   <div className="developers-name">{developer.name}</div>
                   <div className="developers-des">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ab, eum!</div>
-                  <button className="developers-button">See More</button>
+                  <SocialIcons developer={developer} />
                 </div>
               </div>
             ))}
@@ -85,7 +127,7 @@ const DevelopersPage = () => {
                 <div className="developers-profile-image" style={{ backgroundImage: `url(${developer.image})` }}></div>
                 <div className="developers-name">{developer.name}</div>
                 <div className="developers-des">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ab, eum!</div>
-                <button className="developers-button">See More</button>
+                <SocialIcons developer={developer} />
               </div>
             </div>
           ))}
