@@ -8,34 +8,34 @@ const DevelopersPage = () => {
   const developers = [
     { 
       name: "Partha P Paul", 
-      image: "/img/joy.png", 
-      background: "/img/bgimg1.jpg",
-      linkedin: "https://linkedin.com/in/partha-p-paul",
-      github: "https://github.com/partha-p-paul",
-      instagram: "https://instagram.com/partha_p_paul",
+      image: "/img/partha.jpg", 
+      background: "/img/bgpartha.jpg",
+      linkedin: "https://www.linkedin.com/in/partha-pratim-paul/",
+      github: "https://github.com/Real-Partha",
+      instagram: "https://www.instagram.com/_.parthaa._/",
       snapchat: "https://snapchat.com/add/partha_p_paul"
     },
     { 
       name: "Dedipya Goswami", 
-      image: "/img/joy.png", 
-      background: "/img/bgimg2.jpg",
-      linkedin: "https://linkedin.com/in/partha-p-paul",
-      github: "https://github.com/partha-p-paul",
-      instagram: "https://instagram.com/partha_p_paul",
+      image: "/img/Dedipya1x1.jpg", 
+      background: "/img/bgdedi.jpg",
+      linkedin: "https://www.linkedin.com/in/dedipya-goswami001/",
+      github: "https://github.com/dedipya001",
+      instagram: "https://www.instagram.com/dedipya.goswami/",
       snapchat: "https://snapchat.com/add/partha_p_paul"
     },
     { 
       name: "Joydeep Ghosh", 
       image: "/img/joy2.jpg", 
       background: "/img/bgimg3.jpg",
-      linkedin: "https://linkedin.com/in/partha-p-paul",
-      github: "https://github.com/partha-p-paul",
-      instagram: "https://instagram.com/partha_p_paul",
-      snapchat: "https://snapchat.com/add/partha_p_paul"
+      linkedin: "https://www.linkedin.com/in/joydeep-ghosh-969b6923a/",
+      github: "https://github.com/joydeep2003",
+      instagram: "https://www.instagram.com/__.__joy__deep__.__/",
+      snapchat: "https://www.snapchat.com/add/joyy_deep?share_id=W-_inFgetjI&locale=en-US"
     },
     { 
       name: "Smit Kunapara", 
-      image: "/img/joy.png", 
+      image: "/img/smit.jpg", 
       background: "/img/bgimg4.jpg",
       linkedin: "https://linkedin.com/in/partha-p-paul",
       github: "https://github.com/partha-p-paul",
