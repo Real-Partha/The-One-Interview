@@ -9,6 +9,10 @@ const { getSignedUrlForObject } = require("../utils/amazonS3");
 const { authenticator } = require("otplib");
 const { sendEmail } = require("../routes/account"); // Import sendEmail function
 
+const generateOTP = () => {
+  return crypto.randomInt(100000, 999999).toString();
+};
+
 // OneID Signup
 // Local Signup
 router.post("/signup", async (req, res) => {
@@ -26,31 +30,84 @@ router.post("/signup", async (req, res) => {
     if (existingUser) {
       return res.status(400).json({ message: "Email already exists" });
     }
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({
+
+    // Generate OTP
+    const otp = generateOTP();
+    const newOTP = new OTP({
+      email,
+      otp,
+      type: "registration",
+      expiresAt: new Date(Date.now() + 5 * 60 * 1000), // 5 minutes expiration
+    });
+    await newOTP.save();
+
+    // Send email with OTP
+    await sendEmail(
+      email,
+      "New Registration Email Verification",
+      "registration-otp-template.html",
+      { OTP: otp }
+    );
+
+    // Store user data in session for later use
+    req.session.pendingUser = {
       username,
       first_name,
       last_name,
       email,
+      password,
+      gender,
+      date_of_birth,
+    };
+
+    res.json({ message: "OTP sent to your email for verification" });
+  } catch (error) {
+    res.status(500).json({ message: "Error during signup", error: error.message });
+  }
+});
+
+router.post("/verify-registration-otp", async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+    const otpRecord = await OTP.findOne({
+      email,
+      otp,
+      type: "registration",
+    });
+    if (!otpRecord) {
+      return res.status(400).json({ message: "Invalid OTP" });
+    }
+    if (otpRecord.expiresAt < Date.now()) {
+      await OTP.deleteOne({ _id: otpRecord._id });
+      return res.status(400).json({ message: "OTP expired" });
+    }
+
+    // OTP is valid, create the user
+    const userData = req.session.pendingUser;
+    const hashedPassword = await bcrypt.hash(userData.password, 10);
+    const newUser = new User({
+      ...userData,
       password: hashedPassword,
       type: "oneid",
       role: "user",
-      gender,
-      date_of_birth,
     });
     await newUser.save();
+
+    // Delete OTP and pendingUser from session
+    await OTP.deleteOne({ _id: otpRecord._id });
+    delete req.session.pendingUser;
+
+    // Log the user in
     req.login(newUser, (err) => {
       if (err) {
-        return res
-          .status(500)
-          .json({ message: "Error logging in after signup" });
+        return res.status(500).json({ message: "Error logging in after signup" });
       }
       const user = newUser.toObject();
       delete user.password;
       return res.json({ message: "Signup successful", user: user });
     });
   } catch (error) {
-    res.status(500).json({ message: "Error signing up", error: error.message });
+    res.status(500).json({ message: "Error verifying OTP", error: error.message });
   }
 });
 
@@ -202,7 +259,7 @@ router.get("/logout", (req, res) => {
   });
 });
 
-const generateOTP = () => {
+const generateLongOTP = () => {
   return crypto.randomInt(10000000, 99999999).toString();
 };
 
@@ -213,7 +270,7 @@ router.post("/forgot-password", async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    const otp = generateOTP();
+    const otp = generateLongOTP();
     const newOTP = new OTP({
       email,
       otp,
