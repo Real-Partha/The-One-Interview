@@ -42,7 +42,6 @@ app.use((req, res, next) => {
         const elapsedTime = new Date() - startTime;
         console.log(`[${getFormattedDateTime()}] ${req.method} ${url} - ${res.statusCode} (${elapsedTime}ms)`);
     });
-    
     next();
 });
 
@@ -80,7 +79,11 @@ app.use(session({
     store: MongoStore.create({
         client: mongoose.connection.getClient(),
     }),
-    cookie: { maxAge: 1000 * 60 * 60 * 24 } // 1 day
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24, // 1 day
+        sameSite: 'none',
+        secure: true, // Set to true if using HTTPS
+    }
 }));
 
 

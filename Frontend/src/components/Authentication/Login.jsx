@@ -59,6 +59,7 @@ const Login = () => {
         { email, password },
         { withCredentials: true }
       );
+      console.log("Login response:", response.data);
       if (response.data.requireTwoFactor) {
         setRequireTwoFactor(true);
         setUserId(response.data.userId);

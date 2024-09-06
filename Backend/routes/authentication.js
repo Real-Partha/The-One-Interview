@@ -62,7 +62,9 @@ router.post("/signup", async (req, res) => {
 
     res.json({ message: "OTP sent to your email for verification" });
   } catch (error) {
-    res.status(500).json({ message: "Error during signup", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error during signup", error: error.message });
   }
 });
 
@@ -100,14 +102,18 @@ router.post("/verify-registration-otp", async (req, res) => {
     // Log the user in
     req.login(newUser, (err) => {
       if (err) {
-        return res.status(500).json({ message: "Error logging in after signup" });
+        return res
+          .status(500)
+          .json({ message: "Error logging in after signup" });
       }
       const user = newUser.toObject();
       delete user.password;
       return res.json({ message: "Signup successful", user: user });
     });
   } catch (error) {
-    res.status(500).json({ message: "Error verifying OTP", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error verifying OTP", error: error.message });
   }
 });
 
@@ -144,6 +150,14 @@ router.post("/login", async (req, res, next) => {
       if (user.two_factor_secret) {
         delete user.two_factor_secret;
       }
+
+      res.cookie("connect.sid", req.sessionID, {
+        maxAge: 1000 * 60 * 60 * 24, // 1 day
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+      });
+
       return res.json({
         message: "Login successful",
         user,
