@@ -154,8 +154,9 @@ router.post("/login", async (req, res, next) => {
       res.cookie("connect.sid", req.sessionID, {
         maxAge: 1000 * 60 * 60 * 24, // 1 day
         httpOnly: true,
-        secure: true,
-        sameSite: "none",
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        signed: true,
       });
 
       return res.json({
@@ -195,6 +196,13 @@ router.post("/verify-2fa", async (req, res) => {
         if (userObj.two_factor_secret) {
           delete userObj.two_factor_secret;
         }
+        res.cookie("connect.sid", req.sessionID, {
+          maxAge: 1000 * 60 * 60 * 24, // 1 day
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+          signed: true,
+        });
         return res.json({
           message: "Login successful",
           user: userObj,
@@ -222,10 +230,17 @@ router.get(
       // If 2FA is enabled, set a session flag and redirect to the login page
       req.session.requireTwoFactor = true;
       req.session.userId = req.user._id;
-      res.redirect(`${process.env.CLIENT_URL}/login-register`);
+      res.redirect(`${process.env.CLIENT_URL}/login`);
     } else {
       // If 2FA is not enabled, complete the login process
       req.session.user = req.user;
+      res.cookie("connect.sid", req.sessionID, {
+        maxAge: 1000 * 60 * 60 * 24, // 1 day
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        signed: true,
+      });
       res.redirect(process.env.CLIENT_URL);
     }
   }

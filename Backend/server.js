@@ -7,6 +7,7 @@ const passport = require('passport');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
 const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
@@ -27,7 +28,6 @@ app.use(bodyParser.json({ limit: '5mb' }));
 app.use(express.json({ limit: '5mb' }));
 app.use(express.urlencoded({ limit: '5mb', extended: true }));
 
-// Custom middleware to log requests with formatted time, method, URL, and response code
 function getFormattedDateTime() {
     const now = new Date();
     const date = now.toLocaleDateString('en-GB'); // Format: DD/MM/YYYY
@@ -70,7 +70,7 @@ connectDB().then(() => {
 });
 
 // mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true });
-
+app.use(cookieParser(process.env.SESSION_SECRET))
 // Session middleware
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -80,12 +80,15 @@ app.use(session({
         client: mongoose.connection.getClient(),
     }),
     cookie: {
+        httpOnly: true,
         maxAge: 1000 * 60 * 60 * 24, // 1 day
-        sameSite: 'none',
-        secure: true, // Set to true if using HTTPS
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        secure: process.env.NODE_ENV === 'production',
+        signed: true,
     }
 }));
-
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Middleware to check if session is restored
 app.use((req, res, next) => {
@@ -95,8 +98,7 @@ app.use((req, res, next) => {
     next();
   });
 
-app.use(passport.initialize());
-app.use(passport.session());
+
 
 
 app.use('/comment', (req, res, next) => {
