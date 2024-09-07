@@ -43,8 +43,8 @@ passport.use(
           const newUser = new User({
             username: newUsername,
             email: profile.emails[0].value,
-            first_name: profile.name.givenName,
-            last_name: profile.name.familyName,
+            first_name: profile.name.givenName || " ",
+            last_name: profile.name.familyName || " ",
             type: "google",
             role: "user",
             gender: "Not specified",
