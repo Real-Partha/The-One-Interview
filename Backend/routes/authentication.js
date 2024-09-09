@@ -5,6 +5,7 @@ const OTP = require("../models/otp");
 const crypto = require("crypto");
 const passport = require("passport");
 const User = require("../models/user");
+const PendingUser = require("../models/PendingUser");
 const { getSignedUrlForObject } = require("../utils/amazonS3");
 const { authenticator } = require("otplib");
 const { sendEmail } = require("../routes/account"); // Import sendEmail function
@@ -49,18 +50,24 @@ router.post("/signup", async (req, res) => {
       { OTP: otp }
     );
 
-    // Store user data in session for later use
-    req.session.pendingUser = {
-      username,
-      first_name,
-      last_name,
-      email,
-      password,
-      gender,
-      date_of_birth,
-    };
+    // // Store user data in session for later use
+    // req.session.pendingUser = {
+    //   username,
+    //   first_name,
+    //   last_name,
+    //   email,
+    //   password,
+    //   gender,
+    //   date_of_birth,
+    // };
 
-    res.json({ message: "OTP sent to your email for verification" });
+    const pendingUser = new PendingUser({
+      ...req.body,
+      expiresAt: new Date(Date.now() + 5 * 60 * 1000) // 5 minutes expiration
+    });
+    await pendingUser.save();
+
+    res.json({ message: "OTP sent to your email for verification" , email: req.body.email });
   } catch (error) {
     res
       .status(500)
@@ -85,7 +92,14 @@ router.post("/verify-registration-otp", async (req, res) => {
     }
 
     // OTP is valid, create the user
-    const userData = req.session.pendingUser;
+    // const userData = req.session.pendingUser;
+
+    const pendingUser = await PendingUser.findOne({ email });
+    if (!pendingUser || pendingUser.expiresAt < Date.now()) {
+      return res.status(400).json({ message: "Registration session expired" });
+    }
+    const userData = pendingUser.toObject();
+
     const hashedPassword = await bcrypt.hash(userData.password, 10);
     const newUser = new User({
       ...userData,
@@ -97,7 +111,8 @@ router.post("/verify-registration-otp", async (req, res) => {
 
     // Delete OTP and pendingUser from session
     await OTP.deleteOne({ _id: otpRecord._id });
-    delete req.session.pendingUser;
+    // delete req.session.pendingUser;
+    await PendingUser.deleteOne({ email });
 
     // Log the user in
     req.login(newUser, (err) => {
@@ -108,6 +123,16 @@ router.post("/verify-registration-otp", async (req, res) => {
       }
       const user = newUser.toObject();
       delete user.password;
+
+       // Set the session cookie
+       res.cookie("connect.sid", req.sessionID, {
+        maxAge: 1000 * 60 * 60 * 24, // 1 day
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        signed: true,
+      });
+
       return res.json({ message: "Signup successful", user: user });
     });
   } catch (error) {

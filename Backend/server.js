@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const passport = require('passport');
 const session = require('express-session');
-const MongoStore = require('connect-mongo');
+const MongoDBStore = require('connect-mongodb-session')(session);
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const adminRoutes = require('./routes/adminRoutes');
@@ -69,6 +69,11 @@ connectDB().then(() => {
     console.error('Database connection failed:', error);
 });
 
+const store = new MongoDBStore({
+    uri: process.env.DATABASE_URL,
+    collection: 'sessions'
+  });
+
 // mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true });
 app.use(cookieParser(process.env.SESSION_SECRET))
 // Session middleware
@@ -76,17 +81,15 @@ app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    store: MongoStore.create({
-        client: mongoose.connection.getClient(),
-    }),
+    store: store,
     cookie: {
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24, // 1 day
-        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-        secure: process.env.NODE_ENV === 'production',
-        signed: true,
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24, // 1 day
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      secure: process.env.NODE_ENV === 'production',
+      signed: true,
     }
-}));
+  }));
 app.use(passport.initialize());
 app.use(passport.session());
 
