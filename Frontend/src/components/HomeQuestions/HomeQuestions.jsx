@@ -13,6 +13,7 @@ import DOMPurify from "dompurify";
 import Sidebar from "../Left Sidebar/Sidebar";
 import MainLoader from "../commonPages/MainLoader";
 import QuestionSearchLoader from "./QuestionSearchLoader";
+import LoginSignupPopup from "../commonPages/LoginSignupPopup";
 
 const MainComponent = () => {
   const [threads, setThreads] = useState([]);
@@ -29,6 +30,7 @@ const MainComponent = () => {
   const [isMainLoading, setIsMainLoading] = useState(false);
   const [isSearchResultsVisible, setIsSearchResultsVisible] = useState(false);
   const { searchQuery, setSearchQuery } = useContext(SearchContext);
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
 
   const handlePageInputChange = (e) => {
     setInputPage(e.target.value);
@@ -54,7 +56,7 @@ const MainComponent = () => {
       } else {
         setCurrentPage(1);
       }
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 100));
       setIsMainLoading(false);
     };
 
@@ -175,11 +177,6 @@ const MainComponent = () => {
     }
   }, [hasPrevPage, currentPage, debouncedScrollToTop]);
 
-  const resetPage = () => {
-    setCurrentPage(1);
-    setPageWithExpiration("1");
-  };
-
   const handleUserSearch = useCallback(
     async (query) => {
       if (!query) {
@@ -243,7 +240,20 @@ const MainComponent = () => {
     handleInitialLoad();
   }, [currentPage, fetchThreads, isMainLoading, searchQuery, handleUserSearch]);
 
+  const checkAuthStatus = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/auth/status`,
+        { withCredentials: true }
+      );
+      setShowLoginPopup(!response.data.isAuthenticated);
+    } catch (error) {
+      console.error("Error checking auth status:", error);
+    }
+  };
+
   const toggleCreateQuestion = () => {
+    checkAuthStatus();
     setShowCreateQuestion((prev) => !prev);
   };
 
@@ -308,7 +318,7 @@ const MainComponent = () => {
               showCreateQuestion ? "show" : ""
             }`}
           >
-            <CreateQuestionPage onClose={toggleCreateQuestion} />
+            <CreateQuestionPage onClose={toggleCreateQuestion} loginPopup={showLoginPopup} />
           </div>
 
           {isquestionloading
@@ -324,7 +334,11 @@ const MainComponent = () => {
                   rel="noopener noreferrer"
                 >
                   <div className="thread-card">
-                    <h3 className="thread-title">{thread.question.length>105 ? thread.question.slice(0,105) + "..." : thread.question }</h3>
+                    <h3 className="thread-title">
+                      {thread.question.length > 105
+                        ? thread.question.slice(0, 105) + "..."
+                        : thread.question}
+                    </h3>
                     <p className="thread-answer-preview">
                       {truncateHTML(thread.answer, 150)}
                     </p>
@@ -453,7 +467,7 @@ const MainComponent = () => {
           </div>
         </section>
 
-        {/* </aside> */}
+        {showLoginPopup && <LoginSignupPopup />}
       </div>
     </div>
   );

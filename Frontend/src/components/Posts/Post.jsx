@@ -159,7 +159,7 @@ const Post = () => {
   const fetchQuestion = async () => {
     try {
       setIsMainLoading(true);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 300));
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/question/${questionId}`,
         { withCredentials: true }

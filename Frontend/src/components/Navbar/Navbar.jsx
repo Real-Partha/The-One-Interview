@@ -19,7 +19,6 @@ const NavBar = () => {
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  // const { setSearchQuery } = useContext(SearchContext);
 
   const checkAuthStatus = async () => {
     try {
@@ -204,7 +203,7 @@ const NavBar = () => {
           </button>
           {isAuthenticated ? (
             <>
-              <i className="notifications fa fa-bell"></i>
+              {/* <i className="notifications fa fa-bell"></i> */}
               <i
                 className="fas fa-user-circle profile"
                 onClick={toggleSidebar}
@@ -281,7 +280,7 @@ const NavBar = () => {
         )}
         <div className="profile-settings">
           <a onClick={navigateToProfile} className="navbar-account-settings">
-            <i className="fas fa-user-cog"></i>Account Settings
+            <i className="fas fa-user-cog"></i>Your Space
           </a>
           <a onClick={navigateToPrivacy} className="navbar-account-settings">
             <i className="fas fa-shield-alt"></i>Privacy Policy

@@ -38,7 +38,7 @@ const FormTooltip = ({ isVisible, formData }) => {
   );
 };
 
-const CreateQuestionPage = ({ onClose }) => {
+const CreateQuestionPage = ({ onClose,loginPopup }) => {
   const [formData, setFormData] = useState({
     companyName: "",
     category: "General",
@@ -202,7 +202,7 @@ const CreateQuestionPage = ({ onClose }) => {
   }
 
   return (
-    <div className={`${isDarkMode ? "dark" : ""}`}>
+    !loginPopup && <div className={`${isDarkMode ? "dark" : ""}`}>
       {showPayloadSizePopup && (
         <PayloadSizeExceededPopup
           onClose={() => setShowPayloadSizePopup(false)}

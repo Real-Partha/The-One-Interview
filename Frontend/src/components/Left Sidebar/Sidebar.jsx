@@ -48,11 +48,11 @@ const Sidebar = ({
           icon: "fa fa-bookmark",
           title: "Saved Questions",
         },
-        {
-          section: "notifications",
-          icon: "fa fa-bell",
-          title: "Notifications",
-        },
+        // {
+        //   section: "notifications",
+        //   icon: "fa fa-bell",
+        //   title: "Notifications",
+        // },
         {
           section: "Back to Questions",
           icon: "fa-solid fa-arrow-left",

@@ -48,7 +48,6 @@ const CompanyPage = () => {
       );
       setCompanies(companiesData);
       setIsLoading(false);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
       setIsMainLoading(false);
     } catch (error) {
       console.error("Error fetching companies:", error);
