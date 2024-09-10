@@ -324,7 +324,7 @@ const MainComponent = () => {
                   rel="noopener noreferrer"
                 >
                   <div className="thread-card">
-                    <h3 className="thread-title">{thread.question}</h3>
+                    <h3 className="thread-title">{thread.question.length>105 ? thread.question.slice(0,105) + "..." : thread.question }</h3>
                     <p className="thread-answer-preview">
                       {truncateHTML(thread.answer, 150)}
                     </p>

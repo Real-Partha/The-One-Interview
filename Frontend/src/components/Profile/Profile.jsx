@@ -12,6 +12,7 @@ import ProfileSettings from "./ProfileSettings";
 import Sidebar from "../Left Sidebar/Sidebar";
 import UserQuestions from "./UserQuestions";
 import SavedQuestions from "./SavedQuestions";
+import HomeQuestions from "../HomeQuestions/HomeQuestions";
 
 
 const Profile = () => {
@@ -59,7 +60,7 @@ const Profile = () => {
     fetchUserData();
     firstLoading();
 
-    if (tab && ["profile", "account", "activity","yourquestions","savedquestions"].includes(tab)) {
+    if (tab && ["profile", "account", "activity","yourquestions","savedquestions","Back to Questions"].includes(tab)) {
       setActiveSection(tab);
     } else {
       setActiveSection("profile");
@@ -115,6 +116,7 @@ const Profile = () => {
           )}
           {activeSection === "yourquestions" && <UserQuestions />}
           {activeSection === "savedquestions" && <SavedQuestions />}
+          {activeSection === "Back to Questions" && navigate("/questions")}
         </section>
       </div>
     </div>

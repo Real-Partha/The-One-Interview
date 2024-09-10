@@ -4,29 +4,30 @@ const Question = require('../models/question');
 
 // Fetch all unique companies
 router.get('/', async (req, res) => {
-    try {
-      const companies = await Question.aggregate([
-        { $match: { companyName: { $exists: true, $ne: '' }, status: 'approved' } },
-        { $group: {
-          _id: '$companyName',
-          questionCount: { $sum: 1 },
-          lastUpdated: { $max: '$created_at' }
-        }},
-        { $project: {
-          name: '$_id',
-          questionCount: 1,
-          lastUpdated: 1,
-          _id: 0
-        }},
-        { $sort: { name: 1 } }
-      ]);
-  
-      res.json(companies);
-    } catch (error) {
-      console.error('Error fetching companies:', error);
-      res.status(500).json({ error: 'An error occurred while fetching companies' });
-    }
-  });
+  try {
+    const companies = await Question.aggregate([
+      { $match: { companyName: { $exists: true, $ne: '' }, status: 'approved' } },
+      { $group: {
+        _id: { $toLower: '$companyName' },
+        name: { $first: '$companyName' },
+        questionCount: { $sum: 1 },
+        lastUpdated: { $max: '$created_at' }
+      }},
+      { $project: {
+        _id: 0,
+        name: 1,
+        questionCount: 1,
+        lastUpdated: 1
+      }},
+      { $sort: { name: 1 } }
+    ]);
+
+    res.json(companies);
+  } catch (error) {
+    console.error('Error fetching companies:', error);
+    res.status(500).json({ error: 'An error occurred while fetching companies' });
+  }
+});
 
 // Fetch questions for a specific company
 router.get('/:companyName/questions', async (req, res) => {

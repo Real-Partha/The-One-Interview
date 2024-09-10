@@ -59,7 +59,7 @@ const MostUpvoted = () => {
                 <div className={`Most-Upvoted-question-rank ${getMedalColor(index)}`}>
                   {index < 3 ? <FaMedal /> : index + 1}
                 </div>
-                <h2 className="Most-Upvoted-question-title">{question.question}</h2>
+                <h2 className="Most-Upvoted-question-title">{question.question.length > 105 ? question.question.splice(0,105)+ "..." : question.question}</h2>
                 <div className="Most-Upvoted-question-stats">
                   <span className="Most-Upvoted-upvotes">
                     <FaArrowUp /> {question.upvotes}

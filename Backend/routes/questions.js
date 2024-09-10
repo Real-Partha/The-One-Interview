@@ -463,7 +463,7 @@ router.post("/question", async (req, res) => {
 
     const questionData = {
       ...req.body,
-      companyName: capitalizeWords(req.body.companyName),
+      companyName: capitalizeWords(req.body.companyName.toLowerCase()),
       answer: processedAnswer,
       status: "unverified",
       user_id: req.user._id,

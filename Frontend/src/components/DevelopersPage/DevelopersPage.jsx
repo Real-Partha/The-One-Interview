@@ -13,7 +13,8 @@ const DevelopersPage = () => {
       linkedin: "https://www.linkedin.com/in/partha-pratim-paul/",
       github: "https://github.com/Real-Partha",
       instagram: "https://www.instagram.com/_.parthaa._/",
-      snapchat: "https://snapchat.com/add/partha_p_paul"
+      snapchat: "https://snapchat.com/add/partha_p_paul",
+      desc: "There are 10 types of people in this world: those who understand binary, and those who don't"
     },
     { 
       name: "Dedipya Goswami", 
@@ -22,7 +23,8 @@ const DevelopersPage = () => {
       linkedin: "https://www.linkedin.com/in/dedipya-goswami001/",
       github: "https://github.com/dedipya001",
       instagram: "https://www.instagram.com/dedipya.goswami/",
-      snapchat: "https://snapchat.com/add/partha_p_paul"
+      snapchat: "https://www.snapchat.com/add/dedipyaaaa?share_id=TwlAkS0P7AE&locale=en-US",
+      desc: "I dodge DSA like bullets in the Matrix, but debug your life in O(1). My love for dev is inversely proportional to my patience for leetcode. "
     },
     { 
       name: "Joydeep Ghosh", 
@@ -31,7 +33,8 @@ const DevelopersPage = () => {
       linkedin: "https://www.linkedin.com/in/joydeep-ghosh-969b6923a/",
       github: "https://github.com/joydeep2003",
       instagram: "https://www.instagram.com/__.__joy__deep__.__/",
-      snapchat: "https://www.snapchat.com/add/joyy_deep?share_id=W-_inFgetjI&locale=en-US"
+      snapchat: "https://www.snapchat.com/add/joyy_deep?share_id=W-_inFgetjI&locale=en-US",
+      desc: "I dont need sleep, I need more RAM and CPU cores."
     },
     { 
       name: "Smit Kunapara", 
@@ -40,7 +43,8 @@ const DevelopersPage = () => {
       linkedin: "https://linkedin.com/in/partha-p-paul",
       github: "https://github.com/partha-p-paul",
       instagram: "https://instagram.com/partha_p_paul",
-      snapchat: "https://snapchat.com/add/partha_p_paul"
+      snapchat: "https://snapchat.com/add/partha_p_paul",
+      desc: "My code is so clean, it makes my room look messy. I speak fluent JavaScript and sarcasm."
     },
   ];
 
@@ -103,7 +107,7 @@ const DevelopersPage = () => {
                 <div className="developers-content">
                   <div className="developers-profile-image" style={{ backgroundImage: `url(${developer.image})` }}></div>
                   <div className="developers-name">{developer.name}</div>
-                  <div className="developers-des">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ab, eum!</div>
+                  <div className="developers-des">{developer.desc}</div>
                   <SocialIcons developer={developer} />
                 </div>
               </div>
@@ -126,7 +130,7 @@ const DevelopersPage = () => {
               <div className="developers-mobile-content">
                 <div className="developers-profile-image" style={{ backgroundImage: `url(${developer.image})` }}></div>
                 <div className="developers-name">{developer.name}</div>
-                <div className="developers-des">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ab, eum!</div>
+                <div className="developers-des">{developer.desc}</div>
                 <SocialIcons developer={developer} />
               </div>
             </div>

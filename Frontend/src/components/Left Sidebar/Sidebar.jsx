@@ -53,6 +53,11 @@ const Sidebar = ({
           icon: "fa fa-bell",
           title: "Notifications",
         },
+        {
+          section: "Back to Questions",
+          icon: "fa-solid fa-arrow-left",
+          title: "Back to Questions",
+        }
       ];
     }
   };
