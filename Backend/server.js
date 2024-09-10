@@ -6,9 +6,11 @@ const express = require('express');
 const passport = require('passport');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
-const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const adminRoutes = require('./routes/adminRoutes');
+const os = require('os');
+const fs = require('fs').promises;
+const path = require('path');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -102,7 +104,43 @@ app.use((req, res, next) => {
   });
 
 
+  app.get('/', async (req, res) => {
+    const healthCheck = {
+        uptime: Math.floor(process.uptime()),
+        message: 'OK',
+        timestamp: new Date().toISOString(),
+        nodeVersion: process.version,
+        memoryUsage: process.memoryUsage(),
+        cpuUsage: process.cpuUsage(),
+        hostname: os.hostname(),
+        platform: process.platform,
+        numberOfCpus: os.cpus().length,
+        totalMemory: (os.totalmem() / (1024 * 1024 * 1024)).toFixed(2),
+        freeMemory: (os.freemem() / (1024 * 1024 * 1024)).toFixed(2)
+    };
 
+    try {
+        const templatePath = path.join(__dirname, 'templates', 'health-check.html');
+        let htmlContent = await fs.readFile(templatePath, 'utf-8');
+
+        // Replace placeholders in the template
+        htmlContent = htmlContent.replace('{{statusClass}}', healthCheck.message === 'OK' ? 'ok' : 'error');
+        htmlContent = htmlContent.replace('{{message}}', healthCheck.message);
+        htmlContent = htmlContent.replace('{{uptime}}', healthCheck.uptime);
+        htmlContent = htmlContent.replace('{{timestamp}}', healthCheck.timestamp);
+        htmlContent = htmlContent.replace('{{nodeVersion}}', healthCheck.nodeVersion);
+        htmlContent = htmlContent.replace('{{hostname}}', healthCheck.hostname);
+        htmlContent = htmlContent.replace('{{platform}}', healthCheck.platform);
+        htmlContent = htmlContent.replace('{{numberOfCpus}}', healthCheck.numberOfCpus);
+        htmlContent = htmlContent.replace('{{totalMemory}}', healthCheck.totalMemory);
+        htmlContent = htmlContent.replace('{{freeMemory}}', healthCheck.freeMemory);
+
+        res.status(200).send(htmlContent);
+    } catch (error) {
+        healthCheck.message = error.message;
+        res.status(503).json(healthCheck);
+    }
+});
 
 app.use('/comment', (req, res, next) => {
     if (req.isAuthenticated()) {
@@ -113,7 +151,6 @@ app.use('/comment', (req, res, next) => {
   
   app.use('/comment', commentsRouter);
 
-  
 //routes middleware
 app.use("/auth", authRoutes);
 app.use("/", questionRoutes);

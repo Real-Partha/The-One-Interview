@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Health Check</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .status {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .status.ok {
+            color: #4CAF50;
+        }
+        .status.error {
+            color: #F44336;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .info-item {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .info-item strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Server Health Check</h1>
+        <div class="status {{statusClass}}">{{message}}</div>
+        <div class="info-grid">
+            <div class="info-item">
+                <strong>Uptime:</strong> {{uptime}} seconds
+            </div>
+            <div class="info-item">
+                <strong>Timestamp:</strong> {{timestamp}}
+            </div>
+            <div class="info-item">
+                <strong>Node Version:</strong> {{nodeVersion}}
+            </div>
+            <div class="info-item">
+                <strong>Hostname:</strong> {{hostname}}
+            </div>
+            <div class="info-item">
+                <strong>Platform:</strong> {{platform}}
+            </div>
+            <div class="info-item">
+                <strong>CPUs:</strong> {{numberOfCpus}}
+            </div>
+            <div class="info-item">
+                <strong>Total Memory:</strong> {{totalMemory}} GB
+            </div>
+            <div class="info-item">
+                <strong>Free Memory:</strong> {{freeMemory}} GB
+            </div>
+        </div>
+    </div>
+</body>
+</html>
