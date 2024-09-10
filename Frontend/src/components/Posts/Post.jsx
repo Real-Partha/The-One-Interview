@@ -19,6 +19,9 @@ import {
   FaBookmark,
 } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import useNotification from "../Notifications.jsx";
+
 const Post = () => {
   const { questionId } = useParams();
   const [question, setQuestion] = useState(null);
@@ -35,6 +38,49 @@ const Post = () => {
   const [commentLikes, setCommentLikes] = useState({});
   const [commentDislikes, setCommentDislikes] = useState({});
   const [questionWarning, setQuestionWarning] = useState("");
+  const [isSaved, setIsSaved] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const navigate = useNavigate();
+  const { SuccessNotification, ErrorNotification } = useNotification();
+
+  const handleShare = () => {
+    const postUrl = window.location.href;
+    navigator.clipboard
+      .writeText(postUrl)
+      .then(() => {
+        SuccessNotification("Link copied to clipboard!");
+      })
+      .catch((err) => {
+        console.error("Failed to copy: ", err);
+        ErrorNotification("Failed to copy link");
+      });
+  };
+
+  const handleSave = async () => {
+    setIsSaving(true);
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/account/savequestion`,
+        { questionId },
+        { withCredentials: true }
+      );
+      if (response.data.saved) {
+        setIsSaved(true);
+        SuccessNotification("Question saved successfully!");
+      } else {
+        setIsSaved(false);
+        SuccessNotification("Question removed from saved list");
+      }
+    } catch (error) {
+      console.error("Error saving question:", error);
+      ErrorNotification("Error saving question. Please try again.");
+      if (error.response && error.response.status === 401) {
+        navigate("/login");
+      }
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   const debounce = (func, buttonId) => {
     return async (...args) => {
@@ -206,6 +252,18 @@ const Post = () => {
 
   useEffect(() => {
     fetchQuestion();
+    const checkSavedStatus = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/account/issaved/${questionId}`,
+          { withCredentials: true }
+        );
+        setIsSaved(response.data.isSaved);
+      } catch (error) {
+        console.error("Error checking saved status:", error);
+      }
+    };
+    checkSavedStatus();
   }, [questionId]);
 
   const handleCommentSubmit = async (e) => {
@@ -295,11 +353,11 @@ const Post = () => {
     return <LoginSignupPopup onClose={handleCloseLoginPopup} />;
   }
 
-  if (question && question.isVerified==="unverified" && !question.user_id) {
+  if (question && question.isVerified === "unverified" && !question.user_id) {
     return <UnverifiedPost />;
   }
 
-  if (question && question.isVerified==="rejected" && !question.user_id) {
+  if (question && question.isVerified === "rejected" && !question.user_id) {
     return <RejectedPost />;
   }
 
@@ -379,7 +437,7 @@ const Post = () => {
           <div className="Post-actions">
             <motion.button
               className={`Post-vote-btn ${
-                userVote === "upvote" ? "active" : ""
+                userVote === "upvote" ? "active upvote" : ""
               }`}
               onClick={handleUpvote}
               disabled={isDebouncing}
@@ -392,7 +450,7 @@ const Post = () => {
             </motion.button>
             <motion.button
               className={`Post-vote-btn ${
-                userVote === "downvote" ? "active" : ""
+                userVote === "downvote" ? "active downvote" : ""
               }`}
               onClick={handleDownvote}
               disabled={isDebouncing}
@@ -404,7 +462,8 @@ const Post = () => {
               <span className="Post-vote-count">({downvotes})</span>
             </motion.button>
             <motion.button
-              className="Post-action-btn"
+              className="Post-action-btn share"
+              onClick={handleShare}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -412,12 +471,14 @@ const Post = () => {
               <span>Share</span>
             </motion.button>
             <motion.button
-              className="Post-action-btn"
+              className={`Post-action-btn ${isSaved ? "saved" : ""}`}
+              onClick={handleSave}
+              disabled={isSaving}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               <FaBookmark />
-              <span>Save</span>
+              <span>{isSaving ? "Saving..." : isSaved ? "Saved" : "Save"}</span>
             </motion.button>
           </div>
           <div className="Post-stats">

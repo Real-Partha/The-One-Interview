@@ -16,6 +16,8 @@ const nodemailer = require("nodemailer");
 const { profile } = require("console");
 const { authenticator } = require("otplib");
 const qrcode = require("qrcode");
+const SavedQuestion = require('../models/savedQuestion');
+const Question = require('../models/question');
 
 const OAuth2 = google.auth.OAuth2;
 
@@ -529,6 +531,89 @@ router.post("/disable-2fa", async (req, res) => {
     res
       .status(500)
       .json({ message: "Error disabling 2FA", error: error.message });
+  }
+});
+
+router.post('/savequestion', async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.status(401).json({ message: 'Not authenticated' });
+  }
+
+  try {
+    const { questionId } = req.body;
+    let savedQuestion = await SavedQuestion.findOne({ userId: req.user._id });
+
+    if (!savedQuestion) {
+      savedQuestion = new SavedQuestion({ userId: req.user._id, saved: [] });
+    }
+
+    const index = savedQuestion.saved.indexOf(questionId);
+    if (index > -1) {
+      // Question is already saved, so remove it
+      savedQuestion.saved.splice(index, 1);
+      await savedQuestion.save();
+      res.json({ saved: false });
+    } else {
+      // Question is not saved, so add it
+      savedQuestion.saved.push(questionId);
+      await savedQuestion.save();
+      res.json({ saved: true });
+    }
+  } catch (error) {
+    console.error('Error saving question:', error);
+    res.status(500).json({ message: 'Error saving question', error: error.message });
+  }
+});
+
+router.get('/issaved/:questionId', async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.status(401).json({ message: 'Not authenticated' });
+  }
+
+  try {
+    const { questionId } = req.params;
+    const savedQuestion = await SavedQuestion.findOne({ userId: req.user._id });
+
+    if (!savedQuestion) {
+      return res.json({ isSaved: false });
+    }
+
+    const isSaved = savedQuestion.saved.includes(questionId);
+    res.json({ isSaved });
+  } catch (error) {
+    console.error('Error checking saved status:', error);
+    res.status(500).json({ message: 'Error checking saved status', error: error.message });
+  }
+});
+
+router.get('/saved-questions', async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.status(401).json({ message: 'Not authenticated' });
+  }
+
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10;
+    const skip = (page - 1) * limit;
+
+    const savedQuestion = await SavedQuestion.findOne({ userId: req.user._id });
+
+    if (!savedQuestion) {
+      return res.json({ questions: [], hasMore: false });
+    }
+
+    const questionIds = savedQuestion.saved.slice(skip, skip + limit);
+    const questions = await Question.find({ _id: { $in: questionIds } })
+      .select('question companyName category tags upvotes downvotes commentscount created_at')
+      .lean();
+
+    const totalSaved = savedQuestion.saved.length;
+    const hasMore = totalSaved > (page * limit);
+
+    res.json({ questions, hasMore });
+  } catch (error) {
+    console.error('Error fetching saved questions:', error);
+    res.status(500).json({ message: 'Error fetching saved questions', error: error.message });
   }
 });
 

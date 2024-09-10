@@ -183,8 +183,13 @@
   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
-.Post-vote-btn.active {
-  background-color: var(--primary-color);
+.Post-vote-btn.active[class*="upvote"] {
+  background-color: #4CAF50; /* Green color for upvoted */
+  color: white;
+}
+
+.Post-vote-btn.active[class*="downvote"] {
+  background-color: #F44336; /* Red color for downvoted */
   color: white;
 }
 
@@ -344,6 +349,21 @@
   color: var(--primary-color);
 }
 
+.Post-action-btn.share {
+  background-color: #007bff;
+  color: white;
+}
+
+.Post-action-btn.saved {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.Post-action-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
 /* Dark mode styles */
 .dark-mode .Post-wrapper {
   background-color: var(--background-dark);
@@ -374,9 +394,29 @@
   color: var(--text-dark);
 }
 
+.dark-mode .Post-vote-btn.active[class*="upvote"] {
+  background-color: #45a049; /* Slightly darker green for dark mode */
+  color: white;
+}
+
+.dark-mode .Post-vote-btn.active[class*="downvote"] {
+  background-color: #d32f2f; /* Slightly darker red for dark mode */
+  color: white;
+}
+
+.dark-mode .Post-action-btn.share {
+  background-color: #0056b3;
+  color: white;
+}
+
 .dark-mode .Post-comment-like-btn,
 .dark-mode .Post-comment-dislike-btn {
   color: #aaa;
+}
+
+.dark-mode .Post-action-btn.saved {
+  background-color: #9a6709;
+  color: white;
 }
 
 /* Responsive design */
