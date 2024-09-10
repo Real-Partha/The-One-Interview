@@ -1,0 +1,111 @@
+.SavedQuestions {
+    padding: 20px;
+    background-color: var(--bg-color);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-left: 20px; /* Add margin to prevent sticking to the sidebar */
+  }
+  
+  .SavedQuestions-title {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+  }
+  
+  .SavedQuestions-empty {
+    font-style: italic;
+    color: var(--text-color);
+  }
+  
+  .SavedQuestions-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .SavedQuestions-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .SavedQuestions-link {
+    text-decoration: none;
+    color: var(--text-color);
+    flex-grow: 1;
+  }
+  
+  .SavedQuestions-question-title {
+    font-size: 1rem;
+    margin: 0;
+  }
+  
+  .SavedQuestions-unsave-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .SavedQuestions-unsave-btn:hover {
+    background-color: var(--primary-hover-color);
+  }
+  
+  .SavedQuestions-loader {
+    text-align: center;
+    margin-top: 20px;
+    color: var(--text-color);
+  }
+  
+  /* Dark mode styles */
+  .dark-mode .SavedQuestions {
+    background-color: var(--dark-bg-color);
+    box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+  }
+  
+  .dark-mode .SavedQuestions-title {
+    color: var(--dark-primary-color);
+  }
+  
+  .dark-mode .SavedQuestions-empty,
+  .dark-mode .SavedQuestions-link,
+  .dark-mode .SavedQuestions-loader {
+    color: var(--dark-text-color);
+  }
+  
+  .dark-mode .SavedQuestions-item {
+    border-bottom-color: var(--dark-border-color);
+  }
+  
+  .dark-mode .SavedQuestions-unsave-btn {
+    background-color: var(--dark-primary-color);
+  }
+  
+  .dark-mode .SavedQuestions-unsave-btn:hover {
+    background-color: var(--dark-primary-hover-color);
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .SavedQuestions {
+      padding: 15px;
+    }
+  
+    .SavedQuestions-title {
+      font-size: 1.2rem;
+    }
+  
+    .SavedQuestions-question-title {
+      font-size: 0.9rem;
+    }
+  
+    .SavedQuestions-unsave-btn {
+      font-size: 0.8rem;
+      padding: 3px 8px;
+    }
+  }
+  

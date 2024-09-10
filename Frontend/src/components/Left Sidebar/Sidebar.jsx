@@ -44,9 +44,9 @@ const Sidebar = ({
           title: "Your Questions",
         },
         {
-          section: "appearance",
-          icon: "fa fa-paint-brush",
-          title: "Appearance",
+          section: "savedquestions",
+          icon: "fa fa-bookmark",
+          title: "Saved Questions",
         },
         {
           section: "notifications",
