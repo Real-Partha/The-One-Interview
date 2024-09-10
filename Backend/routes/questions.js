@@ -139,18 +139,15 @@ router.get("/questions", async (req, res) => {
 
     // Fetch questions with applied filters
     questions = await Question.find(filter).skip(skip).limit(limit).lean();
-
     const userIds = questions.map((q) => q.user_id);
     const users = await User.find(
       { _id: { $in: userIds } },
       { _id: 1, username: 1 }
     ).lean();
-
     const userMap = users.reduce((acc, user) => {
       acc[user._id.toString()] = user.username;
       return acc;
     }, {});
-
     const questionsWithUsernames = await Promise.all(
       questions.map(async (question) => {
         const profilepic = await User.findOne({ _id: question.user_id }).select(

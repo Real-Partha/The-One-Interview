@@ -604,7 +604,7 @@ router.get('/saved-questions', async (req, res) => {
 
     const questionIds = savedQuestion.saved.slice(skip, skip + limit);
     const questions = await Question.find({ _id: { $in: questionIds } })
-      .select('question companyName category tags upvotes downvotes commentscount created_at')
+      .select('question companyName category tags upvotes downvotes commentscount created_at impressions')
       .lean();
 
     const totalSaved = savedQuestion.saved.length;
