@@ -9,9 +9,14 @@ const PendingUser = require("../models/PendingUser");
 const { getSignedUrlForObject } = require("../utils/amazonS3");
 const { authenticator } = require("otplib");
 const { sendEmail } = require("../routes/account"); // Import sendEmail function
+const jwt = require("jsonwebtoken");
 
 const generateOTP = () => {
   return crypto.randomInt(100000, 999999).toString();
+};
+
+const generateTempToken = (userId) => {
+  return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: "5m" });
 };
 
 // OneID Signup
@@ -50,24 +55,16 @@ router.post("/signup", async (req, res) => {
       { OTP: otp }
     );
 
-    // // Store user data in session for later use
-    // req.session.pendingUser = {
-    //   username,
-    //   first_name,
-    //   last_name,
-    //   email,
-    //   password,
-    //   gender,
-    //   date_of_birth,
-    // };
-
     const pendingUser = new PendingUser({
       ...req.body,
-      expiresAt: new Date(Date.now() + 5 * 60 * 1000) // 5 minutes expiration
+      expiresAt: new Date(Date.now() + 5 * 60 * 1000), // 5 minutes expiration
     });
     await pendingUser.save();
 
-    res.json({ message: "OTP sent to your email for verification" , email: req.body.email });
+    res.json({
+      message: "OTP sent to your email for verification",
+      email: req.body.email,
+    });
   } catch (error) {
     res
       .status(500)
@@ -90,9 +87,6 @@ router.post("/verify-registration-otp", async (req, res) => {
       await OTP.deleteOne({ _id: otpRecord._id });
       return res.status(400).json({ message: "OTP expired" });
     }
-
-    // OTP is valid, create the user
-    // const userData = req.session.pendingUser;
 
     const pendingUser = await PendingUser.findOne({ email });
     if (!pendingUser || pendingUser.expiresAt < Date.now()) {
@@ -124,12 +118,12 @@ router.post("/verify-registration-otp", async (req, res) => {
       const user = newUser.toObject();
       delete user.password;
 
-       // Set the session cookie
-       res.cookie("connect.sid", req.sessionID, {
+      // Set the session cookie
+      res.cookie("connect.sid", req.sessionID, {
         maxAge: 1000 * 60 * 60 * 24, // 1 day
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         signed: true,
       });
 
@@ -155,14 +149,13 @@ router.post("/login", async (req, res, next) => {
     }
 
     if (user.two_factor_auth) {
-      // If 2FA is enabled, don't log in yet, but send a flag indicating 2FA is required
+      const tempToken = generateTempToken(user._id);
       return res.json({
         message: "2FA required",
         requireTwoFactor: true,
-        userId: user._id,
+        tempToken: tempToken,
       });
     }
-
     // If 2FA is not enabled, proceed with normal login
     req.login(user, (err) => {
       if (err) {
@@ -179,8 +172,8 @@ router.post("/login", async (req, res, next) => {
       res.cookie("connect.sid", req.sessionID, {
         maxAge: 1000 * 60 * 60 * 24, // 1 day
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         signed: true,
       });
 
@@ -194,9 +187,13 @@ router.post("/login", async (req, res, next) => {
 });
 
 router.post("/verify-2fa", async (req, res) => {
-  const { userId, token } = req.body;
+  const { tempToken, token } = req.body;
 
   try {
+    // Verify the temporary token
+    const decoded = jwt.verify(tempToken, process.env.JWT_SECRET);
+    const userId = decoded.userId;
+
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -208,8 +205,6 @@ router.post("/verify-2fa", async (req, res) => {
     });
 
     if (verified) {
-      req.session.requireTwoFactor = false;
-      req.session.user = user;
       req.login(user, (err) => {
         if (err) {
           return res
@@ -224,14 +219,13 @@ router.post("/verify-2fa", async (req, res) => {
         res.cookie("connect.sid", req.sessionID, {
           maxAge: 1000 * 60 * 60 * 24, // 1 day
           httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+          secure: process.env.NODE_ENV === "production",
+          sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
           signed: true,
         });
         return res.json({
           message: "Login successful",
           user: userObj,
-          sessionRestored: req.session.sessionRestored,
         });
       });
     } else {
@@ -249,21 +243,37 @@ router.get("/google", passport.authenticate("google"));
 
 router.get(
   "/google/callback",
-  passport.authenticate("google", { failureRedirect: "/login" }),
+  passport.authenticate("google", {
+    failureRedirect: `${process.env.CLIENT_URL}/login`,
+  }),
   async (req, res) => {
     if (req.user.two_factor_auth) {
-      // If 2FA is enabled, set a session flag and redirect to the login page
-      req.session.requireTwoFactor = true;
-      req.session.userId = req.user._id;
-      res.redirect(`${process.env.CLIENT_URL}/login`);
+      const tempToken = generateTempToken(req.user._id);
+      req.logout((err) => {
+        if (err) {
+          return res
+            .status(500)
+            .json({ message: "Error logging out", error: err.message });
+        }
+        req.session.destroy((err) => {
+          if (err) {
+            return res
+              .status(500)
+              .json({ message: "Error destroying session", error: err.message });
+          }
+          res.clearCookie("connect.sid");
+          return res.redirect(
+            `${process.env.CLIENT_URL}/login?tempToken=${tempToken}&require2FA=true`
+          );
+        });
+      });
     } else {
       // If 2FA is not enabled, complete the login process
-      req.session.user = req.user;
       res.cookie("connect.sid", req.sessionID, {
         maxAge: 1000 * 60 * 60 * 24, // 1 day
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         signed: true,
       });
       res.redirect(process.env.CLIENT_URL);

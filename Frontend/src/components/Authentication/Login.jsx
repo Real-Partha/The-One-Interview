@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import "./Login.css";
 import useNotification from "../Notifications";
@@ -27,28 +27,39 @@ const Login = () => {
   const passwordRef = useRef(null);
   const twoFactorTokenRef = useRef(null);
   const { ErrorNotification, SuccessNotification } = useNotification();
+  const [tempToken, setTempToken] = useState(null);
+  const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const checkAuthStatus = async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/auth/status`,
-          { withCredentials: true }
-        );
-        if (response.data.requireTwoFactor) {
-          setRequireTwoFactor(true);
-          setUserId(response.data.userId);
-        } else if (response.data.isAuthenticated) {
-          navigate("/");
-        }
-      } catch (error) {
-        console.error("Error checking auth status:", error);
-      }
-    };
+    const queryParams = new URLSearchParams(location.search);
+    const tempTokenParam = queryParams.get("tempToken");
+    const require2FAParam = queryParams.get("require2FA");
 
-    checkAuthStatus();
-  }, [navigate]);
+    if (tempTokenParam && require2FAParam === "true") {
+      setRequireTwoFactor(true);
+      setTempToken(tempTokenParam);
+    } else {
+      const checkAuthStatus = async () => {
+        try {
+          const response = await axios.get(
+            `${import.meta.env.VITE_API_URL}/auth/status`,
+            { withCredentials: true }
+          );
+          if (response.data.requireTwoFactor) {
+            setRequireTwoFactor(true);
+            setUserId(response.data.userId);
+          } else if (response.data.isAuthenticated) {
+            navigate("/");
+          }
+        } catch (error) {
+          console.error("Error checking auth status:", error);
+        }
+      };
+
+      checkAuthStatus();
+    }
+  }, [navigate, location.search]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,7 +73,7 @@ const Login = () => {
       console.log("Login response:", response.data);
       if (response.data.requireTwoFactor) {
         setRequireTwoFactor(true);
-        setUserId(response.data.userId);
+        setTempToken(response.data.tempToken);
       } else if (response.data.user) {
         SuccessNotification(response.data.message);
         navigate("/");
@@ -83,7 +94,7 @@ const Login = () => {
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/auth/verify-2fa`,
-        { userId, token: twoFactorToken },
+        { tempToken, token: twoFactorToken },
         { withCredentials: true }
       );
       if (response.data.user) {
@@ -98,6 +109,7 @@ const Login = () => {
       twoFactorTokenRef.current.blur();
     }
   };
+
   const handleGoogleClick = () => {
     window.open(`${import.meta.env.VITE_API_URL}/auth/google`, "_self");
   };
