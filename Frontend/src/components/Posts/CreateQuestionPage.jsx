@@ -12,25 +12,27 @@ const FormTooltip = ({ isVisible, formData }) => {
   if (!isVisible) return null;
 
   return (
-    <div className="form-tooltip">
+    <div className="CreateQuestionPage-form-tooltip">
       <h3>Please complete the following:</h3>
       <ul>
         {formData.question.trim() === "" && (
           <li>
-            <FaQuestionCircle className="tooltip-icon" />
+            <FaQuestionCircle className="CreateQuestionPage-tooltip-icon" />
             <span>Enter a question</span>
           </li>
         )}
         {formData.answer.trim() === "" && (
           <li>
-            <FaExclamationTriangle className="tooltip-icon" />
+            <FaExclamationTriangle className="CreateQuestionPage-tooltip-icon" />
             <span>Provide an answer</span>
           </li>
         )}
         {formData.tags.length < 2 && (
           <li>
-            <FaTag className="tooltip-icon" />
-            <span>{`Add at least ${2-formData.tags.length} more ${(2-formData.tags.length)===1?"tag":"tags"}`}</span>
+            <FaTag className="CreateQuestionPage-tooltip-icon" />
+            <span>{`Add at least ${2 - formData.tags.length} more ${
+              2 - formData.tags.length === 1 ? "tag" : "tags"
+            }`}</span>
           </li>
         )}
       </ul>
@@ -38,7 +40,7 @@ const FormTooltip = ({ isVisible, formData }) => {
   );
 };
 
-const CreateQuestionPage = ({ onClose,loginPopup }) => {
+const CreateQuestionPage = ({ onClose, loginPopup }) => {
   const [formData, setFormData] = useState({
     companyName: "",
     category: "General",
@@ -180,20 +182,20 @@ const CreateQuestionPage = ({ onClose,loginPopup }) => {
     return (
       <div
         ref={successMessageRef}
-        className={`create-question-submission-success ${
-          isDarkMode ? "create-question-dark" : ""
+        className={`CreateQuestionPage-submission-success ${
+          isDarkMode ? "CreateQuestionPage-dark" : ""
         }`}
       >
-        <div className="create-question-success-content">
-          <i className="fas fa-check-circle create-question-success-icon"></i>
-          <h2 className="create-question-success-title">
+        <div className="CreateQuestionPage-success-content">
+          <i className="fas fa-check-circle CreateQuestionPage-success-icon"></i>
+          <h2 className="CreateQuestionPage-success-title">
             Question Submitted Successfully!
           </h2>
-          <p className="create-question-success-message">
+          <p className="CreateQuestionPage-success-message">
             Your question has been sent for approval. Thank you for your
             contribution!
           </p>
-          <button onClick={handleDone} className="create-question-btn-done">
+          <button onClick={handleDone} className="CreateQuestionPage-btn-done">
             Done
           </button>
         </div>
@@ -202,109 +204,117 @@ const CreateQuestionPage = ({ onClose,loginPopup }) => {
   }
 
   return (
-    !loginPopup && <div className={`${isDarkMode ? "dark" : ""}`}>
-      {showPayloadSizePopup && (
-        <PayloadSizeExceededPopup
-          onClose={() => setShowPayloadSizePopup(false)}
-        />
-      )}
-      <form className="interview-experience-container" onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="companyName">Company Name:</label>
-          <input
-            type="text"
-            id="companyName"
-            className="form-control"
-            value={formData.companyName}
-            onChange={(e) => handleChange(e.target.value, "companyName")}
+    !loginPopup && (
+      <div
+        className={`CreateQuestionPage ${
+          isDarkMode ? "CreateQuestionPage-dark" : ""
+        }`}
+      >
+        {showPayloadSizePopup && (
+          <PayloadSizeExceededPopup
+            onClose={() => setShowPayloadSizePopup(false)}
           />
-        </div>
-        <div className="form-group">
-          <label htmlFor="category">
-            In which Round can the Question be Expected?{" "}
-          </label>
-          <select
-            id="category"
-            className="form-control special-form-control"
-            value={formData.category}
-            onChange={(e) => handleChange(e.target.value, "category")}
-          >
-            <option value="General">General</option>
-            <option value="Technical Round">Technical Round</option>
-            <option value="HR Round">HR Round</option>
-            <option value="Aptitude">Aptitude</option>
-            <option value="Online Coding Round">Online Coding Round</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <label htmlFor="level">Level:</label>
-          <select
-            id="level"
-            className="form-control special-form-control"
-            value={formData.level}
-            onChange={(e) => handleChange(e.target.value, "level")}
-          >
-            <option value="Beginner">Beginner</option>
-            <option value="Intermediate">Intermediate</option>
-            <option value="Advanced">Advanced</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <label htmlFor="question">What was the Question asked?</label>
-          <input
-            type="text"
-            id="question"
-            className="form-control"
-            value={formData.question}
-            onChange={(e) => handleChange(e.target.value, "question")}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="answer">What should be the Perfect Answer? </label>
-          <ReactQuill
-            theme="snow"
-            value={formData.answer}
-            onChange={(value) => handleChange(value, "answer")}
-            modules={CreateQuestionPage.modules}
-            formats={CreateQuestionPage.formats}
-          />
-        </div>
-        <div className="form-group">
-          <label>Tags:</label>
-          <div className="tags-input-container">
-            {formData.tags.map((tag, index) => (
-              <div key={index} className="tag-item">
-                {tag}
-                <span
-                  className="tag-remove"
-                  onClick={() => handleTagRemove(index)}
-                >
-                  x
-                </span>
-              </div>
-            ))}
+        )}
+        <form className="CreateQuestionPage-form" onSubmit={handleSubmit}>
+          <div className="CreateQuestionPage-form-group">
+            <label htmlFor="companyName">Company Name:</label>
             <input
               type="text"
-              className="tag-input"
-              value={tagInput}
-              onChange={handleTagInputChange}
-              onKeyDown={handleTagInputKeyDown}
-              placeholder="Add tags that describe the post"
+              id="companyName"
+              className="CreateQuestionPage-form-control"
+              value={formData.companyName}
+              onChange={(e) => handleChange(e.target.value, "companyName")}
             />
           </div>
-        </div>
-        <div className="form-group submit-group">
-          <button
-            type="submit"
-            className={`btn-submit ${!isFormValid ? "disabled" : ""}`}
-            disabled={!isFormValid}
-          >
-            Submit
-          </button>
-          <FormTooltip isVisible={!isFormValid} formData={formData} />
-        </div>
-      </form>
-    </div>
+          <div className="CreateQuestionPage-form-group">
+            <label htmlFor="category">
+              In which Round can the Question be Expected?{" "}
+            </label>
+            <select
+              id="category"
+              className="CreateQuestionPage-form-control CreateQuestionPage-special-form-control"
+              value={formData.category}
+              onChange={(e) => handleChange(e.target.value, "category")}
+            >
+              <option value="General">General</option>
+              <option value="Technical Round">Technical Round</option>
+              <option value="HR Round">HR Round</option>
+              <option value="Aptitude">Aptitude</option>
+              <option value="Online Coding Round">Online Coding Round</option>
+            </select>
+          </div>
+          <div className="CreateQuestionPage-form-group">
+            <label htmlFor="level">Level:</label>
+            <select
+              id="level"
+              className="CreateQuestionPage-form-control CreateQuestionPage-special-form-control"
+              value={formData.level}
+              onChange={(e) => handleChange(e.target.value, "level")}
+            >
+              <option value="Beginner">Beginner</option>
+              <option value="Intermediate">Intermediate</option>
+              <option value="Advanced">Advanced</option>
+            </select>
+          </div>
+          <div className="CreateQuestionPage-form-group">
+            <label htmlFor="question">What was the Question asked?</label>
+            <input
+              type="text"
+              id="question"
+              className="CreateQuestionPage-form-control"
+              value={formData.question}
+              onChange={(e) => handleChange(e.target.value, "question")}
+            />
+          </div>
+          <div className="CreateQuestionPage-form-group">
+            <label htmlFor="answer">What should be the Perfect Answer? </label>
+            <ReactQuill
+              theme="snow"
+              value={formData.answer}
+              onChange={(value) => handleChange(value, "answer")}
+              modules={CreateQuestionPage.modules}
+              formats={CreateQuestionPage.formats}
+            />
+          </div>
+          <div className="CreateQuestionPage-form-group">
+            <label>Tags:</label>
+            <div className="CreateQuestionPage-tags-input-container">
+              {formData.tags.map((tag, index) => (
+                <div key={index} className="CreateQuestionPage-tag-item">
+                  {tag}
+                  <span
+                    className="CreateQuestionPage-tag-remove"
+                    onClick={() => handleTagRemove(index)}
+                  >
+                    x
+                  </span>
+                </div>
+              ))}
+              <input
+                type="text"
+                className="CreateQuestionPage-tag-input"
+                value={tagInput}
+                onChange={handleTagInputChange}
+                onKeyDown={handleTagInputKeyDown}
+                placeholder="Add tags that describe the post"
+              />
+            </div>
+          </div>
+          <div className="CreateQuestionPage-form-group CreateQuestionPage-submit-group">
+            <button
+              type="submit"
+              className={`CreateQuestionPage-btn-submit ${
+                !isFormValid ? "CreateQuestionPage-disabled" : ""
+              }`}
+              disabled={!isFormValid}
+            >
+              Submit
+            </button>
+            <FormTooltip isVisible={!isFormValid} formData={formData} />
+          </div>
+        </form>
+      </div>
+    )
   );
 };
 

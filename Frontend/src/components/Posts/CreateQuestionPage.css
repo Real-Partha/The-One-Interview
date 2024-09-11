@@ -1,28 +1,30 @@
-.interview-experience-container {
-  width: calc(100%-40px);
-  /* margin: auto; */
+.CreateQuestionPage {
+  width: calc(100% - 40px);
   padding: 20px;
   font-weight: 600;
   font-family: "Montserrat", sans-serif;
+  border-radius: 15px;
 }
 
-.form-group {
+.CreateQuestionPage-form-group {
   margin-bottom: 20px;
   white-space: pre-wrap;
-  overflow-wrap: break-word; 
+  overflow-wrap: break-word;
 }
+
 .ql-toolbar {
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   background-color: white;
 }
-.ql-container{
+
+.ql-container {
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   background-color: white;
 }
 
-.form-control {
+.CreateQuestionPage-form-control {
   width: 100%;
   padding: 10px;
   font-size: 16px;
@@ -31,25 +33,28 @@
   margin-top: 10px;
   box-sizing: border-box;
 }
-.special-form-control {
+
+.CreateQuestionPage-special-form-control {
   width: 100%;
 }
 
-.btn-submit {
-  background-color: #007bff;
+.CreateQuestionPage-btn-submit {
+  background-color: #1e960c;
   color: white;
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
+  transition: all 0.4s ease; 
 }
 
-.btn-submit:hover {
-  background-color: #0056b3;
+.CreateQuestionPage-btn-submit:hover {
+  background-color: #156309;
 }
 
-.ql-toolbar.ql-snow + .ql-container.ql-snow {
+.ql-toolbar.ql-snow
+  + .ql-container.ql-snow {
   border-top: 0px;
   height: 500px;
 }
@@ -58,7 +63,7 @@
   margin-top: 10px;
 }
 
-.tags-input-container {
+.CreateQuestionPage-tags-input-container {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -69,7 +74,7 @@
   background-color: #f9f9f9;
 }
 
-.tag-item {
+.CreateQuestionPage-tag-item {
   background-color: #6c5ce7;
   font-size: 14px;
   color: #fff;
@@ -81,14 +86,14 @@
   margin-bottom: 5px;
 }
 
-.tag-remove {
+.CreateQuestionPage-tag-remove {
   margin-left: 8px;
   cursor: pointer;
   font-weight: bold;
   color: #fff;
 }
 
-.tag-input {
+.CreateQuestionPage-tag-input {
   border: none;
   flex: 1;
   padding: 5px;
@@ -97,7 +102,7 @@
   background-color: transparent;
 }
 
-.btn-add-tag {
+.CreateQuestionPage-btn-add-tag {
   background-color: #007bff;
   color: white;
   border: none;
@@ -108,18 +113,11 @@
   font-size: 14px;
 }
 
-.btn-add-tag:hover {
+.CreateQuestionPage-btn-add-tag:hover {
   background-color: #0056b3;
 }
 
-/* Dark MODE Theme  */
-
-.dark-mode .create-question-animation {
-  background-color: #282828;
-  border-radius: 10px;
-}
-
-.create-question-submission-success {
+.CreateQuestionPage-submission-success {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -127,7 +125,7 @@
   padding: 2rem;
 }
 
-.create-question-success-content {
+.CreateQuestionPage-success-content {
   text-align: center;
   border-radius: 8px;
   padding: 2rem;
@@ -135,31 +133,23 @@
   width: 100%;
 }
 
-.create-question-dark .create-question-success-content {
-  color: #ffffff;
-}
-
-.create-question-success-icon {
+.CreateQuestionPage-success-icon {
   font-size: 4rem;
   color: #4caf50;
   margin-bottom: 1rem;
 }
 
-.create-question-success-title {
+.CreateQuestionPage-success-title {
   font-size: 1.5rem;
   margin-bottom: 1rem;
 }
 
-.create-question-success-message {
+.CreateQuestionPage-success-message {
   font-size: 1rem;
   color: #666666;
 }
 
-.create-question-dark .create-question-success-message {
-  color: #bbbbbb;
-}
-
-.create-question-btn-done {
+.CreateQuestionPage-btn-done {
   background-color: #4caf50;
   color: white;
   border: none;
@@ -170,27 +160,25 @@
   margin-top: 20px;
 }
 
-.create-question-btn-done:hover {
+.CreateQuestionPage-btn-done:hover {
   background-color: #45a049;
 }
 
-.btn-submit.disabled {
-  background-color: #cccccc;
+.CreateQuestionPage-btn-submit.CreateQuestionPage-disabled {
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
-.submit-group {
+.CreateQuestionPage-submit-group {
   position: relative;
-  /* display: inline-block; */
   display: flex;
   margin-bottom: 0;
-  justify-content: flex-end; /* Align items to the right */
 }
 
-.form-tooltip {
+.CreateQuestionPage-form-tooltip {
   position: absolute;
   bottom: calc(100% + 10px);
-  left: calc(155%);
+  left: 8.8rem;
   transform: translateX(-50%);
   background-color: #333;
   color: #fff;
@@ -206,122 +194,136 @@
   pointer-events: none;
 }
 
-.form-tooltip::before {
-  content: '';
+.CreateQuestionPage-form-tooltip::before {
+  content: "";
   position: absolute;
   bottom: -10px;
-  left: 15%;
+  left: 16%;
   transform: translateX(-50%);
   border-width: 10px 10px 0;
   border-style: solid;
   border-color: #333 transparent transparent transparent;
 }
 
-.btn-submit:hover + .form-tooltip,
-.btn-submit:focus + .form-tooltip {
+.CreateQuestionPage-btn-submit:hover + .CreateQuestionPage-form-tooltip,
+.CreateQuestionPage-btn-submit:focus + .CreateQuestionPage-form-tooltip,
+.CreateQuestionPage-btn-submit.CreateQuestionPage-disabled:hover
+  + .CreateQuestionPage-form-tooltip,
+.CreateQuestionPage-btn-submit.CreateQuestionPage-disabled:focus
+  + .CreateQuestionPage-form-tooltip {
   opacity: 1;
   visibility: visible;
   transform: translateX(-50%) translateY(-5px);
 }
 
-.form-tooltip h3 {
+.CreateQuestionPage-form-tooltip h3 {
   margin: 0 0 10px;
   font-size: 16px;
   font-weight: bold;
 }
 
-.form-tooltip ul {
+.CreateQuestionPage-form-tooltip ul {
   margin: 0;
   padding-left: 0;
   list-style-type: none;
 }
 
-.form-tooltip li {
+.CreateQuestionPage-form-tooltip li {
   margin-bottom: 8px;
   display: flex;
   align-items: center;
 }
 
-.tooltip-icon {
+.CreateQuestionPage-tooltip-icon {
   margin-right: 8px;
   font-size: 16px;
   color: #f1c40f;
 }
 
-@keyframes createQuestioniconPulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); }
+@keyframes CreateQuestionPage-iconPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
-.tooltip-icon {
-  animation: createQuestioniconPulse 1.5s infinite;
+.CreateQuestionPage-tooltip-icon {
+  animation: CreateQuestionPage-iconPulse 1.5s infinite;
 }
 
 /* Dark mode styles */
-.dark-mode .form-tooltip {
+.CreateQuestionPage-dark {
+  background-color: #282828;
+  color: #e0e0e0;
+}
+
+.CreateQuestionPage-dark .CreateQuestionPage-form-tooltip {
   background-color: #555;
   color: #fff;
 }
 
-.dark-mode .form-tooltip::before {
+.CreateQuestionPage-dark .CreateQuestionPage-form-tooltip::before {
   border-color: #555 transparent transparent transparent;
 }
-.dark-mode .create-question-btn-done {
+
+.CreateQuestionPage-dark .CreateQuestionPage-btn-done {
   background-color: #45a049;
 }
 
-.dark-mode .create-question-btn-done:hover {
+.CreateQuestionPage-dark .CreateQuestionPage-btn-done:hover {
   background-color: #3d8b3d;
 }
 
-.dark-mode .interview-experience-container {
-  background-color: #282828;
-  color: #e0e0e0;
-}
-
-.dark-mode .form-control,
-.dark-mode .ql-toolbar,
-.dark-mode .ql-container {
+.CreateQuestionPage-dark .CreateQuestionPage-form-control,
+.CreateQuestionPage-dark .ql-toolbar,
+.CreateQuestionPage-dark .ql-container {
   background-color: #3b3b3b;
   color: #e0e0e0;
   border-color: #555;
 }
 
-.dark-mode .ql-toolbar .ql-stroke {
+.CreateQuestionPage-dark .ql-toolbar .ql-stroke {
   stroke: #e0e0e0;
 }
 
-.dark-mode .ql-toolbar .ql-fill {
+.CreateQuestionPage-dark .ql-toolbar .ql-fill {
   fill: #e0e0e0;
 }
 
-.dark-mode .ql-toolbar .ql-picker {
+.CreateQuestionPage-dark .ql-toolbar .ql-picker {
   color: #e0e0e0;
 }
 
-.dark-mode .tags-input-container {
+.CreateQuestionPage-dark .CreateQuestionPage-tags-input-container {
   background-color: #3b3b3b;
   border-color: #555;
 }
 
-.dark-mode .tag-item {
+.CreateQuestionPage-dark .CreateQuestionPage-tag-item {
   background-color: #ff6e61ae;
 }
 
-.dark-mode .tag-input {
+.CreateQuestionPage-dark .CreateQuestionPage-tag-input {
   color: #e0e0e0;
 }
 
-.dark-mode .btn-submit {
-  background-color: #4a4a4a;
+.CreateQuestionPage-dark .CreateQuestionPage-btn-submit {
+  background-color: #1bb72385;
 }
 
-.dark-mode .btn-submit:hover {
-  background-color: #5a5a5a;
+.CreateQuestionPage-dark .CreateQuestionPage-btn-submit:hover {
+  background-color: #16711ba1;
 }
 
-.dark-mode .create-question-animation {
-  background-color: #282828;
-  border-radius: 10px;
+.CreateQuestionPage-dark .CreateQuestionPage-success-content {
+  color: #ffffff;
+}
+
+.CreateQuestionPage-dark .CreateQuestionPage-success-message {
+  color: #bbbbbb;
 }
