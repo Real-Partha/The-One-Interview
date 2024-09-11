@@ -46,15 +46,36 @@
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
-  transition: all 0.4s ease; 
+  transition: all 0.4s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .CreateQuestionPage-btn-submit:hover {
   background-color: #156309;
 }
 
-.ql-toolbar.ql-snow
-  + .ql-container.ql-snow {
+.CreateQuestionPage-btn-submit.CreateQuestionPage-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.CreateQuestionPage-spinner {
+  margin-right: 8px;
+  animation: CreateQuestionPage-spin 1s linear infinite;
+}
+
+@keyframes CreateQuestionPage-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.ql-toolbar.ql-snow + .ql-container.ql-snow {
   border-top: 0px;
   height: 500px;
 }
@@ -287,16 +308,48 @@
   border-color: #555;
 }
 
-.CreateQuestionPage-dark .ql-toolbar .ql-stroke {
+.CreateQuestionPage-dark .ql-toolbar.ql-snow,
+.CreateQuestionPage-dark .ql-container.ql-snow {
+  border-color: #555;
+}
+
+.CreateQuestionPage-dark .ql-toolbar.ql-snow {
+  background-color: #333;
+}
+
+.CreateQuestionPage-dark .ql-editor {
+  color: #e0e0e0;
+}
+
+.CreateQuestionPage-dark .ql-picker-label,
+.CreateQuestionPage-dark .ql-picker-options {
+  background-color: #333;
+  color: #e0e0e0;
+}
+
+.CreateQuestionPage-dark .ql-picker-options {
+  border-color: #555;
+}
+
+.CreateQuestionPage-dark .ql-stroke {
   stroke: #e0e0e0;
 }
 
-.CreateQuestionPage-dark .ql-toolbar .ql-fill {
+.CreateQuestionPage-dark .ql-fill {
   fill: #e0e0e0;
 }
 
-.CreateQuestionPage-dark .ql-toolbar .ql-picker {
+.CreateQuestionPage-dark .ql-picker.ql-expanded .ql-picker-options {
+  background-color: #444;
+  border-color: #666;
+}
+
+.CreateQuestionPage-dark .ql-picker-item {
   color: #e0e0e0;
+}
+
+.CreateQuestionPage-dark .ql-picker-item:hover {
+  background-color: #555;
 }
 
 .CreateQuestionPage-dark .CreateQuestionPage-tags-input-container {

@@ -46,6 +46,35 @@
   border-radius: 15px;
 }
 
+.search-results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+
+.clear-search-btn {
+  background-color: #f0f0f0;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.clear-search-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.clear-search-btn i {
+  color: rgb(254, 24, 21);
+  margin-right: 5px;
+}
+
 .light-mode .card
 .light-mode .right-card {
   background: linear-gradient(90deg, #eff0f3 0%, #f5f5f5 50%, #edf3ff 100%);
@@ -287,6 +316,14 @@
 }
 
 @media (max-width: 768px) {
+
+  .search-results-header {
+    display: flex;
+    margin-bottom: 20px;
+    flex-direction: column;
+    
+  }
+  
   .thread-title {
     font-size: 1.1rem;
   }
@@ -786,6 +823,15 @@
   /* Amethyst with opacity */
   color: #ffffff;
   /* White */
+}
+
+.dark-mode .clear-search-btn {
+  background-color: #444;
+  color: #fff;
+}
+
+.dark-mode .clear-search-btn:hover {
+  background-color: #555;
 }
 
 .dark-mode .add-response {

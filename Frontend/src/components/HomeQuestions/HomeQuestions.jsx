@@ -257,6 +257,13 @@ const MainComponent = () => {
     setShowCreateQuestion((prev) => !prev);
   };
 
+  const handleClearSearch = useCallback(() => {
+    setSearchQuery("");
+    setIsSearchResultsVisible(false);
+    fetchThreads(1);
+    setCurrentPage(1);
+  }, [fetchThreads, setSearchQuery]);
+
   useEffect(() => {
     return () => {
       setSearchQuery("");
@@ -281,7 +288,15 @@ const MainComponent = () => {
             </div>
           ) : isSearchResultsVisible && searchQuery ? (
             <div className="search-results">
-              <h2>{searchMessage}</h2>
+              <div className="search-results-header">
+                <h2>{searchMessage}</h2>
+                <button
+                  className="clear-search-btn"
+                  onClick={handleClearSearch}
+                >
+                  <i className="fas fa-times"></i> Clear Search
+                </button>
+              </div>
               {threads.length === 0 && (
                 <div className="no-results">
                   <i className="fas fa-search fa-3x"></i>
@@ -313,13 +328,18 @@ const MainComponent = () => {
               </button>
             </div>
           )}
-          <div
-            className={`create-question-animation ${
-              showCreateQuestion ? "show" : ""
-            }`}
-          >
-            <CreateQuestionPage onClose={toggleCreateQuestion} loginPopup={showLoginPopup} />
-          </div>
+          {!isSearchResultsVisible && (
+            <div
+              className={`create-question-animation ${
+                showCreateQuestion ? "show" : ""
+              }`}
+            >
+              <CreateQuestionPage
+                onClose={toggleCreateQuestion}
+                loginPopup={showLoginPopup}
+              />
+            </div>
+          )}
 
           {isquestionloading
             ? Array(7)

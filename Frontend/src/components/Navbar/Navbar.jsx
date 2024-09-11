@@ -176,9 +176,9 @@ const NavBar = () => {
         <Link to="/" className="navbar-homepage-link">
           <div className="navbar-left">
             <img
-              style={{ width: "60px", height: "60px", margin: "-15px 10px" }}
+              style={{ width: "70px", height: "70px", margin: "-15px 10px" }}
               className="logo"
-              src="/img/logo_final_transparent.png"
+              src="logo1.png"
               alt="logo"
             />
             <span className="university-name">The One Interview</span>
@@ -238,7 +238,7 @@ const NavBar = () => {
           <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>
             <img
               className="mobile-logo"
-              src="/img/logo_final_transparent.png"
+              src="logo1.png"
               alt="logo"
             />
             <span className="mobile-site-name">The One Interview</span>

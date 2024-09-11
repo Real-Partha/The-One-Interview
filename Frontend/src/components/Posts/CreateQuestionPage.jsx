@@ -6,7 +6,12 @@ import { useTheme } from "../../ThemeContext";
 import axios from "axios";
 import PayloadSizeExceededPopup from "./PayloadSizeExceededPopup";
 import useNotification from "../Notifications";
-import { FaExclamationTriangle, FaQuestionCircle, FaTag } from "react-icons/fa";
+import {
+  FaExclamationTriangle,
+  FaQuestionCircle,
+  FaTag,
+  FaSpinner,
+} from "react-icons/fa";
 
 const FormTooltip = ({ isVisible, formData }) => {
   if (!isVisible) return null;
@@ -21,7 +26,7 @@ const FormTooltip = ({ isVisible, formData }) => {
             <span>Enter a question</span>
           </li>
         )}
-        {formData.answer.trim() === "" && (
+        {formData.answer.replace(/<[^>]*>/g, "").trim() === "" && (
           <li>
             <FaExclamationTriangle className="CreateQuestionPage-tooltip-icon" />
             <span>Provide an answer</span>
@@ -56,12 +61,13 @@ const CreateQuestionPage = ({ onClose, loginPopup }) => {
   const successMessageRef = useRef(null);
   const [showPayloadSizePopup, setShowPayloadSizePopup] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { ErrorNotification, SuccessNotification } = useNotification();
 
   const checkFormValidity = () => {
     const isValid =
       formData.question.trim() !== "" &&
-      formData.answer.trim() !== "" &&
+      formData.answer.replace(/<[^>]*>/g, "").trim() !== "" && // This line checks for non-empty content in Quill
       formData.tags.length >= 2;
     setIsFormValid(isValid);
   };
@@ -126,6 +132,7 @@ const CreateQuestionPage = ({ onClose, loginPopup }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsSubmitting(true);
     try {
       // Check payload size
       const payloadSize = new Blob([JSON.stringify(formData)]).size;
@@ -154,6 +161,8 @@ const CreateQuestionPage = ({ onClose, loginPopup }) => {
       setTimeout(scrollToSuccessMessage, 100);
     } catch (error) {
       ErrorNotification(error.response.data.message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -274,6 +283,7 @@ const CreateQuestionPage = ({ onClose, loginPopup }) => {
               onChange={(value) => handleChange(value, "answer")}
               modules={CreateQuestionPage.modules}
               formats={CreateQuestionPage.formats}
+              className={isDarkMode ? "CreateQuestionPage-dark-quill" : ""}
             />
           </div>
           <div className="CreateQuestionPage-form-group">
@@ -304,13 +314,25 @@ const CreateQuestionPage = ({ onClose, loginPopup }) => {
             <button
               type="submit"
               className={`CreateQuestionPage-btn-submit ${
-                !isFormValid ? "CreateQuestionPage-disabled" : ""
+                !isFormValid || isSubmitting
+                  ? "CreateQuestionPage-disabled"
+                  : ""
               }`}
-              disabled={!isFormValid}
+              disabled={!isFormValid || isSubmitting}
             >
-              Submit
+              {isSubmitting ? (
+                <>
+                  <FaSpinner className="CreateQuestionPage-spinner" />
+                  Saving...
+                </>
+              ) : (
+                "Submit"
+              )}
             </button>
-            <FormTooltip isVisible={!isFormValid} formData={formData} />
+            <FormTooltip
+              isVisible={!isFormValid && !isSubmitting}
+              formData={formData}
+            />
           </div>
         </form>
       </div>

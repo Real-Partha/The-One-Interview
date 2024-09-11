@@ -45,7 +45,13 @@ body {
 
 .logo {
   height: 40px;
+  width: 40px;
   margin-right: 20px;
+  filter: drop-shadow(0 2px 1px rgba(0, 0, 0, 0.4));
+}
+
+.dark-mode .logo{
+  filter: drop-shadow(0 2px 1px rgba(255, 255, 255, 0.1));
 }
 
 .university-name {
