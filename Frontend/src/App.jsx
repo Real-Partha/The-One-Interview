@@ -24,7 +24,7 @@ import MostUpvoted from "./components/MostUpvoted/MostUpvoted";
 import ForgotPassword from "./components/Authentication/ForgotPassword";
 import DevelopersPage from "./components/DevelopersPage/DevelopersPage";
 import ScrollToTop from "../ScrolltoTop";
-
+import Feedback from "./components/Utility Pages/Feedback/Feedback";
 
 function AppContent() {
   const location = useLocation();
@@ -57,6 +57,7 @@ function AppContent() {
         <Route path ="/faq" element={<FAQs />} />
         <Route path ="/most-upvoted" element={<MostUpvoted />} />
         <Route path ="/developers" element={<DevelopersPage />} />
+        <Route path="/feedback" element={<Feedback />} />
       </Routes>
       {shouldShowNavBarAndFooter && <Footer />}
     </>
