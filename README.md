@@ -1,4 +1,4 @@
-# <img src="https://github.com/user-attachments/assets/b2bf51d3-386a-43dc-a343-eded63e3b509" alt="logo_final_transparent" width="50" height="50"> The One Interview: Ace Your Next Interview
+# <img src="https://github.com/user-attachments/assets/dd9ceb14-084b-43d9-a935-6d2d7e645245" alt="logo" width="50" height="50"> The One Interview: Ace Your Next Interview
 
 
 ## 🌟 About The One Interview
