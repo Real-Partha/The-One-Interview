@@ -14,4 +14,16 @@ router.post('/', async (req, res) => {
   }
 });
 
+
+
+router.get('/', async (req, res) => {
+  try {
+    const feedbackData = await Feedback.find();
+    res.json(feedbackData);
+  } catch (error) {
+    console.log('Error fetching feedback:', error);
+    res.status(500).json({ error: 'Failed to fetch feedback data' });
+  }
+});
+
 module.exports = router;

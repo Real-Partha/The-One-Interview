@@ -7,6 +7,8 @@ import useNotification from '../Notifications';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import './AdminPage.css';
 
+import FeedbackCharts from './FeedbackCharts';
+
 const AdminPage = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
@@ -81,6 +83,23 @@ const AdminPage = () => {
     }
   };
 
+    const [feedbackData, setFeedbackData] = useState([]);
+  
+    useEffect(() => {
+      // Fetch feedback data from your API
+      const fetchFeedbackData = async () => {
+        try {
+          const response = await fetch(`${import.meta.env.VITE_API_URL}/api/feedback`);
+          const data = await response.json();
+          setFeedbackData(data);
+        } catch (error) {
+          console.error('Error fetching feedback data:', error);
+        }
+      };
+  
+      fetchFeedbackData();
+    }, []);
+
   const toggleFAQ = (index) => {
     setActiveFAQ(activeFAQ === index ? null : index);
   };
@@ -120,6 +139,7 @@ const AdminPage = () => {
           ))}
         </div>
       </section>
+      <FeedbackCharts feedbackData={feedbackData} />
     </div>
   );
 };

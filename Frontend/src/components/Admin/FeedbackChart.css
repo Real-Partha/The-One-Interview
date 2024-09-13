@@ -1,0 +1,332 @@
+/* components/FeedbackCharts/FeedbackCharts.css */
+.Analysis-feedback-charts {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #f5f7fa;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.Analysis-feedback-charts h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #333;
+}
+
+.Analysis-chart-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.Analysis-chart-controls select {
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.Analysis-chart-container {
+  margin-bottom: 2rem;
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.Analysis-export-controls {
+  background-color: #e8e8e8;
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+.Analysis-export-controls h3 {
+  margin-bottom: 1rem;
+}
+
+.Analysis-export-controls label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.Analysis-export-controls button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #6c63ff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.Analysis-export-controls button:hover:not(:disabled) {
+  background-color: #5a52d5;
+}
+
+.Analysis-export-controls button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Dark mode styles */
+.dark-mode .Analysis-feedback-charts {
+  background-color: #2c3e50;
+  color: #e0e0e0;
+}
+
+.dark-mode .Analysis-feedback-charts h2 {
+  color: #e0e0e0;
+}
+
+.dark-mode .Analysis-chart-container {
+  background-color: #34495e;
+}
+
+.dark-mode .Analysis-export-controls {
+  background-color: #2c3e50;
+}
+
+.dark-mode .Analysis-export-controls button {
+  background-color: #6c63ff;
+}
+
+.dark-mode .Analysis-export-controls button:hover:not(:disabled) {
+  background-color: #5a52d5;
+}
+
+.dark-mode .Analysis-export-controls button:disabled {
+  background-color: #4a4a4a;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+  .Analysis-feedback-charts {
+    margin: 1rem;
+    padding: 1rem;
+  }
+
+  .Analysis-chart-controls {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .Analysis-chart-controls select {
+    width: 100%;
+  }
+
+  .Analysis-export-controls label {
+    font-size: 0.9rem;
+  }
+
+  .Analysis-export-controls button {
+    width: 100%;
+  }
+}
+
+/* Animation for chart transitions */
+.Analysis-chart-container {
+  transition: opacity 0.3s ease;
+}
+
+.Analysis-chart-container.loading {
+  opacity: 0.5;
+}
+
+/* Tooltip styles for charts */
+.Analysis-tooltip {
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode .Analysis-tooltip {
+  background-color: rgba(44, 62, 80, 0.9);
+  border-color: #4a5568;
+  color: #e0e0e0;
+}
+
+/* Legend styles */
+.Analysis-legend {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.Analysis-legend-item {
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.Analysis-legend-color {
+  width: 20px;
+  height: 20px;
+  margin-right: 0.5rem;
+  border-radius: 50%;
+}
+
+/* Additional styles for better chart readability */
+.Analysis-chart-container text {
+  font-size: 12px;
+}
+
+.Analysis-chart-container .recharts-cartesian-axis-tick-value {
+  fill: #333;
+}
+
+.dark-mode .Analysis-chart-container .recharts-cartesian-axis-tick-value {
+  fill: #e0e0e0;
+}
+
+.Analysis-chart-container .recharts-cartesian-grid line {
+  stroke: #e0e0e0;
+}
+
+.dark-mode .Analysis-chart-container .recharts-cartesian-grid line {
+  stroke: #4a5568;
+}
+
+/* components/FeedbackCharts/FeedbackCharts.css */
+.Analysis-feedback-charts {
+  max-width: 800px;
+  margin: 6.8rem auto;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  transition: all 0.3s ease;
+}
+
+.Analysis-feedback-charts h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: #333;
+  animation: feedback-fadeIn 1s ease-out;
+}
+
+.Analysis-chart-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.Analysis-chart-controls select {
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  background-color: white;
+  color: #333;
+}
+
+.Analysis-chart-container {
+  margin-bottom: 2rem;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.Analysis-export-button {
+  background-color: #6c63ff;
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 0 auto;
+}
+
+.Analysis-export-button:hover {
+  background-color: #5a52d5;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Dark mode styles */
+.dark-mode .Analysis-feedback-charts {
+  background: linear-gradient(135deg, #2c3e50 0%, #4a5568 100%);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .Analysis-feedback-charts h2 {
+  color: #e0e0e0;
+}
+
+.dark-mode .Analysis-chart-controls select {
+  background-color: #2c3e50;
+  color: #e0e0e0;
+  border-color: #4a5568;
+}
+
+.dark-mode .Analysis-chart-container {
+  background-color: #34495e;
+}
+
+.dark-mode .Analysis-export-button {
+  background-color: #6c63ff;
+}
+
+.dark-mode .Analysis-export-button:hover {
+  background-color: #5a52d5;
+}
+
+@keyframes feedback-fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .Analysis-chart-controls {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .Analysis-chart-controls select {
+    width: 100%;
+  }
+
+  .Analysis-export-button {
+    width: 100%;
+  }
+}
+
+
+.Analysis-date-range {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.Analysis-date-range input {
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  width: 45%; /* Adjust as needed */
+}
+
+.dark-mode .Analysis-date-range input {
+  background-color: #2c3e50;
+  color: #e0e0e0;
+  border-color: #4a5568;
+}
+
