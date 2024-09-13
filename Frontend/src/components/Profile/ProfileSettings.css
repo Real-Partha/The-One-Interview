@@ -129,8 +129,12 @@
   .profile-upper-card-container {
     margin-bottom: 1.2rem;
   }
-  .footer{
+  .footer {
     margin-top: 0;
+  }
+
+  .profile-main-content {
+    margin-top: 8.5rem;
   }
 }
 

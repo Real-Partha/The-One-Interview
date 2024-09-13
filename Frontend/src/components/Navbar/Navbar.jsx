@@ -6,6 +6,7 @@ import { SearchContext } from "../context/SearchContext";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import Sidebar from "../Left Sidebar/Sidebar";
+import DevelopmentBanner from "./DevelopmentBanner";
 
 const NavBar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -224,6 +225,7 @@ const NavBar = () => {
           )}
         </div>
       </nav>
+      <DevelopmentBanner />
       <div className={`mobile-search-bar ${isMobileSearchOpen ? "open" : ""}`}>
         <input
           type="text"
@@ -236,11 +238,7 @@ const NavBar = () => {
       <div className={`mobile-menu ${isMobileMenuOpen ? "open" : ""}`}>
         <div className="mobile-menu-header">
           <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>
-            <img
-              className="mobile-logo"
-              src="logo1.png"
-              alt="logo"
-            />
+            <img className="mobile-logo" src="logo1.png" alt="logo" />
             <span className="mobile-site-name">The One Interview</span>
           </Link>
           <button className="close-menu" onClick={toggleMobileMenu}>

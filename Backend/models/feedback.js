@@ -1,5 +1,5 @@
 // models/feedback.js
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const feedbackSchema = new mongoose.Schema({
   usability: { type: Number, required: true, min: 1, max: 5 },
@@ -13,9 +13,9 @@ const feedbackSchema = new mongoose.Schema({
   lightMode: { type: Number, required: true, min: 1, max: 5 },
   darkMode: { type: Number, required: true, min: 1, max: 5 },
   comment: { type: String },
-  createdAt: { type: Date, default: Date.now }
+  createdAt: { type: Date, default: Date.now },
 });
 
-const Feedback = mongoose.model('Feedback', feedbackSchema);
+const Feedback = mongoose.model("Feedback", feedbackSchema);
 
 module.exports = Feedback;

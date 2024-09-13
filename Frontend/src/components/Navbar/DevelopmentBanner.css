@@ -1,0 +1,70 @@
+/* components/DevelopmentBanner.css */
+.development-banner {
+  position: fixed;
+  top: 5.4rem;
+  left: 0;
+  right: 0;
+  background-color: #f0f8ff;
+  color: #333;
+  font-size: 14px;
+  padding: 0.5rem;
+  z-index: 999;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.banner-content {
+  white-space: nowrap;
+  animation: scrollBanner 30s linear infinite;
+}
+
+@keyframes scrollBanner {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.banner-content p {
+  margin: 0;
+  display: inline-block;
+}
+
+.development-banner-feedback-link {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+.development-banner-feedback-link:hover {
+  text-decoration: underline;
+}
+
+.close-banner {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #333;
+}
+
+/* Dark mode styles */
+.dark-mode .development-banner {
+  background-color: #2c3e50;
+  color: #ecf0f1;
+}
+
+.dark-mode .development-banner-feedback-link {
+  color: #3498db;
+}
+
+.dark-mode .close-banner {
+  color: #ecf0f1;
+}

@@ -15,8 +15,25 @@ import {
   FaSun,
   FaComments,
   FaHome,
+  FaExclamationTriangle,
 } from "react-icons/fa";
 import "./Feedback.css";
+
+const FormTooltip = ({ isVisible }) => {
+  if (!isVisible) return null;
+
+  return (
+    <div className="feedback-form-tooltip">
+      <h3>Please complete the following:</h3>
+      <ul>
+        <li>
+          <FaExclamationTriangle className="feedback-tooltip-icon" />
+          <span>Rate all categories</span>
+        </li>
+      </ul>
+    </div>
+  );
+};
 
 const Feedback = () => {
   const [ratings, setRatings] = useState({
@@ -36,6 +53,14 @@ const Feedback = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showConfetti, setShowConfetti] = useState(true);
+  const [isFormValid, setIsFormValid] = useState(false);
+
+  useEffect(() => {
+    const allRatingsGiven = Object.values(ratings).every(
+      (rating) => rating > 0
+    );
+    setIsFormValid(allRatingsGiven);
+  }, [ratings]);
 
   useEffect(() => {
     if (isSubmitted) {
@@ -133,7 +158,7 @@ const Feedback = () => {
             We appreciate your input and will use it to improve our website.
           </p>
           <Link to="/" className="feedback-home-button">
-            <FaHome /> Return to Home
+            <FaHome /> Home
           </Link>
           <div className="feedback-confetti">{renderConfetti()}</div>
         </div>
@@ -209,7 +234,7 @@ const Feedback = () => {
             </div>
           </div>
           <div className="feedback-comment">
-            <label htmlFor="comment">Your thoughts</label>
+            <label htmlFor="comment">Your thoughts (Optional)</label>
             <textarea
               id="comment"
               value={comment}
@@ -217,21 +242,26 @@ const Feedback = () => {
               placeholder="Tell us what you think about our forum..."
             />
           </div>
-          <button
-            type="submit"
-            className="feedback-submit"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? (
-              <>
-                <FaSpinner className="feedback-spinner" /> Submitting...
-              </>
-            ) : (
-              <>
-                <FaPaperPlane /> Submit Feedback
-              </>
-            )}
-          </button>
+          <div className="feedback-submit-group">
+            <button
+              type="submit"
+              className={`feedback-submit ${
+                !isFormValid || isSubmitting ? "feedback-disabled" : ""
+              }`}
+              disabled={!isFormValid || isSubmitting}
+            >
+              {isSubmitting ? (
+                <>
+                  <FaSpinner className="feedback-spinner" /> Submitting...
+                </>
+              ) : (
+                <>
+                  <FaPaperPlane /> Submit Feedback
+                </>
+              )}
+            </button>
+            <FormTooltip isVisible={!isFormValid && !isSubmitting} />
+          </div>
         </form>
       </div>
     </div>

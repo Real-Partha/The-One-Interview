@@ -12,8 +12,6 @@ import ProfileSettings from "./ProfileSettings";
 import Sidebar from "../Left Sidebar/Sidebar";
 import UserQuestions from "./UserQuestions";
 import SavedQuestions from "./SavedQuestions";
-import HomeQuestions from "../HomeQuestions/HomeQuestions";
-
 
 const Profile = () => {
   const { isDarkMode } = useTheme();

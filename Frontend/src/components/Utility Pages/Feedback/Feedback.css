@@ -58,7 +58,7 @@
 
 .feedback-star {
   font-size: 1.5rem;
-  color: #ccc;
+  color: #d1b361;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -222,6 +222,91 @@
   }
 }
 
+.feedback-submit-group {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0;
+}
+
+.feedback-form-tooltip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  width: 250px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  font-size: 14px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+  pointer-events: none;
+}
+
+.feedback-form-tooltip::before {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 10px 10px 0;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
+
+.feedback-submit:hover + .feedback-form-tooltip,
+.feedback-submit:focus + .feedback-form-tooltip,
+.feedback-submit.feedback-disabled:hover + .feedback-form-tooltip,
+.feedback-submit.feedback-disabled:focus + .feedback-form-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(-5px);
+}
+
+.feedback-form-tooltip h3 {
+  margin: 0 0 10px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.feedback-form-tooltip ul {
+  margin: 0;
+  padding-left: 0;
+  list-style-type: none;
+}
+
+.feedback-form-tooltip li {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.feedback-tooltip-icon {
+  margin-right: 8px;
+  font-size: 16px;
+  color: #f1c40f;
+}
+
+@keyframes feedback-iconPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.feedback-tooltip-icon {
+  animation: feedback-iconPulse 1.5s infinite;
+}
+
+.feedback-submit.feedback-disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
 /* Dark mode styles */
 .dark-mode .feedback-container {
   background: linear-gradient(135deg, #2c3e50 0%, #4a5568 100%);
@@ -265,8 +350,17 @@
   color: #66bb6a;
 }
 
+.dark-mode .feedback-form-tooltip {
+  background-color: #555;
+  color: #fff;
+}
+
+.dark-mode .feedback-form-tooltip::before {
+  border-color: #555 transparent transparent transparent;
+}
+
 .dark-mode .feedback-star {
-  color: #555;
+  color: #bba361;
 }
 
 .dark-mode .feedback-star:hover,
