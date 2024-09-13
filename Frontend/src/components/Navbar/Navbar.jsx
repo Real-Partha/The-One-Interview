@@ -179,7 +179,7 @@ const NavBar = () => {
             <img
               style={{ width: "70px", height: "70px", margin: "-15px 10px" }}
               className="logo"
-              src="logo1.png"
+              src="/logo1.png"
               alt="logo"
             />
             <span className="university-name">The One Interview</span>
@@ -238,7 +238,7 @@ const NavBar = () => {
       <div className={`mobile-menu ${isMobileMenuOpen ? "open" : ""}`}>
         <div className="mobile-menu-header">
           <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>
-            <img className="mobile-logo" src="logo1.png" alt="logo" />
+            <img className="mobile-logo" src="/logo1.png" alt="logo" />
             <span className="mobile-site-name">The One Interview</span>
           </Link>
           <button className="close-menu" onClick={toggleMobileMenu}>

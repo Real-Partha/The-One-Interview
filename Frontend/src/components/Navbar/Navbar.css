@@ -63,6 +63,11 @@ body {
 }
 
 @media (max-width: 900px) {
+
+  .navbar {
+    height: 2rem;
+  }
+
   .university-name,
   .logo {
     display: none;
