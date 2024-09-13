@@ -4,6 +4,7 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const User = require("../models/user");
 const { uploadObject } = require("../utils/amazonS3");
 const axios = require('axios');
+const { sendEmail } = require("../routes/account");
 
 passport.use(
   new GoogleStrategy(
@@ -52,6 +53,21 @@ passport.use(
             profile_pic: profile_pic_id,
           });
           await newUser.save();
+
+          try {
+            await sendEmail(
+              newUser.email,
+              "Welcome to The One Interview!",
+              "welcome-email-template.html",
+              {
+                NAME: newUser.first_name || "there",
+                LOGIN_URL: `${process.env.CLIENT_URL}/`,
+              }
+            );
+          } catch (emailError) {
+            console.error("Error sending welcome email:", emailError);
+          }
+
           return done(null, newUser);
         }
       } catch (error) {

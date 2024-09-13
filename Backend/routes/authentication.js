@@ -103,6 +103,20 @@ router.post("/verify-registration-otp", async (req, res) => {
     });
     await newUser.save();
 
+    try {
+      await sendEmail(
+        email,
+        "Welcome to The One Interview!",
+        "welcome-email-template.html",
+        {
+          NAME: userData.first_name || "there",
+          LOGIN_URL: `${process.env.CLIENT_URL}/`,
+        }
+      );
+    } catch (emailError) {
+      console.error("Error sending welcome email:", emailError);
+    }
+
     // Delete OTP and pendingUser from session
     await OTP.deleteOne({ _id: otpRecord._id });
     // delete req.session.pendingUser;
@@ -259,7 +273,10 @@ router.get(
           if (err) {
             return res
               .status(500)
-              .json({ message: "Error destroying session", error: err.message });
+              .json({
+                message: "Error destroying session",
+                error: err.message,
+              });
           }
           res.clearCookie("connect.sid");
           return res.redirect(

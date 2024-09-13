@@ -30,7 +30,7 @@
   box-shadow: var(--shadow-light);
   overflow: hidden;
   transition: all 0.3s ease;
-  margin-top: 4rem;
+  margin-top: 4.5rem;
 }
 
 .Post-title {

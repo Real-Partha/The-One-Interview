@@ -379,7 +379,7 @@ select.profile-input {
   bottom: 0;
   left: 0;
   width: 0;
-  animation: profileCardsaving-animation 0.5s infinite linear;
+  animation: profileCardsaving-animation 1.2s infinite linear;
 }
 
 @keyframes profileCardsaving-animation {
