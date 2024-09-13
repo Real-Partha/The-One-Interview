@@ -10,15 +10,9 @@ import { Helmet } from 'react-helmet';
 const HomeComponent = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const carouselImages = [
-    '/img/banner1.png',
-    '/img/banner2.png',
-    '/img/carousel-3.jpg',
-  ];
-
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentSlide((prevSlide) => (prevSlide + 1) % carouselImages.length);
+      setCurrentSlide((prevSlide) => (prevSlide + 1) % carouselContent.length);
     }, 5000);
 
     return () => clearInterval(interval);
@@ -29,22 +23,55 @@ const HomeComponent = () => {
     {
       tagline: "Ace Your Next Interview",
       description: "Get access to expert-curated questions and answers. Start your journey to success today!",
-      image: "/img/banner1.png",
-      ctaPrimary: "Start Practicing"
+      image: "/carousel/car1.jpeg",
+      ctaPrimary: "Start Practicing",
+      link: "/questions"
     },
     {
       tagline: "Master Your Skills",
       description: "Learn from industry experts and boost your confidence. Your dream job is within reach!",
-      image: "/img/banner2.png",
-      ctaPrimary: "Explore Companies"
+      image: "/carousel/car2.jpeg",
+      ctaPrimary: "Explore Companies",
+      link: "/company-questions"
     },
     {
       tagline: "Land Your Dream Job",
       description: "Join thousands of successful candidates who prepared with us. Your future starts here!",
-      image: "/img/carousel-3.jpg",
-      ctaPrimary: "Start Exploring"
+      image: "/carousel/car3.jpeg",
+      ctaPrimary: "Start Exploring",
+      link: "/questions"
     },
+    {
+      tagline: "Got Questions? We've Got Answers!",
+      description: "Find solutions to your queries in our comprehensive FAQ section. Get the clarity you need!",
+      image: "/carousel/car4.jpeg",
+      ctaPrimary: "Visit FAQ",
+      link: "/faq"
+    },
+    {
+      tagline: "Meet the Minds Behind Your Success",
+      description: "Discover our passionate team of experts dedicated to helping you achieve your career goals.",
+      image: "/carousel/car5.jpeg",
+      ctaPrimary: "Meet Our Team",
+      link: "/developers"
+    },
+    {
+      tagline: "Learn from Real Experiences",
+      description: "Dive into our collection of interview blogs and gain insights from those who've been there.",
+      image: "/carousel/car6.jpeg",
+      ctaPrimary: "Read Interview Blogs",
+      link: "interview-blogs"
+    },
+    {
+      tagline: "Your Feedback Shapes Our Future",
+      description: "Help us improve and tailor our platform to your needs. Your opinion matters!",
+      image: "/carousel/car7.jpeg",
+      ctaPrimary: "Give Feedback",
+      link: "/feedback"
+    }
   ];
+
+
   const features = [
     { 
       title: "Comprehensive Question Bank", 
@@ -151,7 +178,7 @@ const HomeComponent = () => {
       </Helmet>
       <NavBar />
       <main>
-        <section className="hero">
+      <section className="hero">
           <div className="hero-carousel">
             {carouselContent.map((slide, index) => (
               <motion.div
@@ -168,7 +195,7 @@ const HomeComponent = () => {
                   <h1>{slide.tagline}</h1>
                   <p>{slide.description}</p>
                   <div className="cta-buttons">
-                    <Link to="/questions" className="cta-button primary">{slide.ctaPrimary}</Link>
+                    <Link to={slide.link} className="cta-button primary">{slide.ctaPrimary}</Link>
                   </div>
                 </div>
               </motion.div>
