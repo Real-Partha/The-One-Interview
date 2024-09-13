@@ -9,6 +9,7 @@ import UnverifiedPost from "./UnverifiedPost";
 import RejectedPost from "./RejectedPost";
 import LoginSignupPopup from "../commonPages/LoginSignupPopup";
 import MainLoader from "../commonPages/MainLoader";
+import { Helmet } from "react-helmet";
 import {
   FaThumbsUp,
   FaThumbsDown,
@@ -54,6 +55,12 @@ const Post = () => {
         console.error("Failed to copy: ", err);
         ErrorNotification("Failed to copy link");
       });
+  };
+
+
+  const generateMetaDescription = (question, answer) => {
+    const cleanAnswer = answer.replace(/<[^>]*>/g, ''); // Remove HTML tags
+    return `${question} - ${cleanAnswer.slice(0, 150)}...`;
   };
 
   const handleSave = async () => {
@@ -368,6 +375,21 @@ const Post = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
+
+{question && (
+        <Helmet>
+          <title>{`${question.question} | The One Interview`}</title>
+          <meta name="description" content={generateMetaDescription(question.question, question.answer)} />
+          <meta name="keywords" content={`interview question, ${question.tags.join(', ')}, ${question.companyName}, ${question.category}`} />
+          <meta property="og:title" content={`${question.question} | The One Interview`} />
+          <meta property="og:description" content={generateMetaDescription(question.question, question.answer)} />
+          <meta property="og:type" content="article" />
+          <meta property="og:url" content={`https://the-one-interview.vercel.app/question/${questionId}`} />
+          <meta property="og:image" content="/img/og-image.png"/>
+          <link rel="canonical" href={`https://the-one-interview.vercel.app/question/${questionId}`} />
+        </Helmet>
+      )}
+
       <div className="Post-main">
         <motion.div
           className="Post-container"

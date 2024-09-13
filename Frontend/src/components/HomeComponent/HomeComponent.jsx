@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { FaChartLine, FaHandshake } from 'react-icons/fa';
 import { FaQuestionCircle, FaClipboardCheck,FaChevronLeft,FaChevronRight, FaUserGraduate, FaBuilding } from 'react-icons/fa';
+import { Helmet } from 'react-helmet';
 
 const HomeComponent = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -143,6 +144,11 @@ const HomeComponent = () => {
 
   return (
     <div className="homepage">
+      <Helmet>
+        <title>The One Interview - Ace Your Next Job Interview</title>
+        <meta name="description" content="Prepare for your next job interview with expert-curated questions and answers. Access a comprehensive question bank and real interview experiences from top companies." />
+        <link rel="canonical" href="https://the-one-interview.vercel.app/" />
+      </Helmet>
       <NavBar />
       <main>
         <section className="hero">

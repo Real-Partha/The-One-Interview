@@ -5,6 +5,7 @@ import { useTheme } from "../../ThemeContext";
 import ThreadSkeleton from "../HomeQuestions/threadskeleton";
 import Sidebar from "../Left Sidebar/Sidebar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Helmet } from "react-helmet";
 import {
   faBuilding,
   faQuestionCircle,
@@ -127,6 +128,12 @@ const CompanyPage = () => {
         isDarkMode ? "dark-mode" : "light-mode"
       }`}
     >
+
+<Helmet>
+        <title>Campus Recruiting Company Questions - The One Interview</title>
+        <meta name="description" content="Explore our comprehensive database of interview questions and expert answers. Prepare for your next job interview with real experiences from top companies.You will find questions of companies posted here that mostly hire from Campus Recruitments including Paypal , JP Morgan and Chase, Flipkart, Amazon and Juspay" />
+        <link rel="canonical" href="https://the-one-interview.vercel.app/" />
+      </Helmet>
       <Sidebar />
       <section className="companypage-content">
         {selectedCompany ? (

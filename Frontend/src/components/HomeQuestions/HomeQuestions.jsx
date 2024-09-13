@@ -14,6 +14,8 @@ import Sidebar from "../Left Sidebar/Sidebar";
 import MainLoader from "../commonPages/MainLoader";
 import QuestionSearchLoader from "./QuestionSearchLoader";
 import LoginSignupPopup from "../commonPages/LoginSignupPopup";
+import { Helmet } from 'react-helmet';
+
 
 const MainComponent = () => {
   const [threads, setThreads] = useState([]);
@@ -279,6 +281,11 @@ const MainComponent = () => {
 
   return (
     <div className={`${isDarkMode ? "dark-mode" : "light-mode"}`}>
+       <Helmet>
+        <title>Interview Questions - The One Interview</title>
+        <meta name="description" content="Explore our comprehensive database of interview questions and expert answers. Prepare for your next job interview with real experiences from top companies." />
+        <link rel="canonical" href="https://the-one-interview.vercel.app/" />
+      </Helmet>
       <div className={`main-content`}>
         <Sidebar />
         <section className="threads">

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './DevelopersPage.css';
 import { FaLinkedin, FaGithub, FaInstagram, FaSnapchat } from 'react-icons/fa';
+import { Helmet } from 'react-helmet';
 
 const DevelopersPage = () => {
   const slideRef = useRef(null);
@@ -92,6 +93,44 @@ const DevelopersPage = () => {
 
   return (
     <>
+     <Helmet>
+        <title>Meet Our Developers | The One Interview</title>
+        <meta name="description" content="Meet the talented developers behind The One Interview: Partha P Paul, Dedipya Goswami, Joydeep Ghosh, and Smit Kunapara. Learn about their skills and connect with them on social media." />
+        <meta name="keywords" content="developers, Partha P Paul, Dedipya Goswami, Joydeep Ghosh, Smit Kunapara, The One Interview, Interview Preparation, SRM University AP, SRMUAP, Job preparation, Campus Recruitment" />
+        <meta property="og:title" content="Meet Our Developers | The One Interview" />
+        <meta property="og:description" content="Meet the talented developers behind The One Interview: Partha P Paul, Dedipya Goswami, Joydeep Ghosh, and Smit Kunapara. Learn about their skills and connect with them on social media." />
+        <meta property="og:image" content="/img/og-image.png" /> 
+        <meta property="og:url" content="https://the-one-interview.vercel.app/developers" />
+        <meta name="twitter:card" content="/img/og-image.png" />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "http://schema.org",
+            "@type": "WebPage",
+            "name": "Meet Our Developers | The One Interview",
+            "description": "Meet the talented developers behind The One Interview: Partha P Paul, Dedipya Goswami, Joydeep Ghosh, and Smit Kunapara.",
+            "publisher": {
+              "@type": "Organization",
+              "name": "The One Interview"
+            },
+            "mainEntity": {
+              "@type": "ItemList",
+              "itemListElement": developers.map((dev, index) => ({
+                "@type": "Person",
+                "position": index + 1,
+                "name": dev.name,
+                "description": dev.desc,
+                "image": `https://the-one-interview.vercel.app/${dev.image}`,
+                "sameAs": [
+                  dev.linkedin,
+                  dev.github,
+                  dev.instagram,
+                  dev.snapchat
+                ]
+              }))
+            }
+          })}
+        </script>
+      </Helmet>
       <div className="developers-laptop">
         <div className="developers-container">
           <div className="developers-slide" ref={slideRef}>
