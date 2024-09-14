@@ -15,6 +15,7 @@
 @media (max-width: 900px) {
   .development-banner {
     top: 4.4rem;
+    font-size: 0.75rem;
   }
 }
 
@@ -112,10 +113,37 @@
   .banner-content {
     animation-duration: 20s;
   }
+  .development-banner {
+    font-size: 0.7rem;
+  }
 }
 
 @media (max-width: 480px) {
+  .development-banner {
+    font-size: 0.7rem;
+    padding: 0.4rem 2rem 0.4rem 0.4rem;
+  }
+
+  .close-banner {
+    font-size: 16px;
+  }
   .banner-content {
     animation-duration: 15s;
+  }
+}
+
+@media (max-width: 375px) {
+  .development-banner {
+    font-size: 0.6rem;
+    padding: 0.3rem 1.5rem 0.3rem 0.3rem;
+  }
+
+  .close-banner {
+    font-size: 14px;
+    width: 1.5rem;
+  }
+
+  .banner-fade-right {
+    right: 1.5rem;
   }
 }

@@ -25,10 +25,11 @@ const TagPage = () => {
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const tag = params.get("tag");
-    if (tag) {
-      setSelectedTag(tag);
-      fetchQuestionsByTag(tag);
+    const encodedTag = params.get("tag");
+    if (encodedTag) {
+      const decodedTag = decodeURIComponent(encodedTag);
+      setSelectedTag(decodedTag);
+      fetchQuestionsByTag(decodedTag);
       scrollToTop();
     } else {
       setSelectedTag(null);
@@ -75,7 +76,8 @@ const TagPage = () => {
   };
 
   const handleTagClick = (tag) => {
-    navigate(`/tags?tag=${tag}`);
+    const encodedTag = encodeURIComponent(tag);
+    navigate(`/tags?tag=${encodedTag}`);
   };
 
   const handleViewAllTags = () => {
