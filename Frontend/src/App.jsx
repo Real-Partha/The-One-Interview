@@ -26,6 +26,7 @@ import DevelopersPage from "./components/DevelopersPage/DevelopersPage";
 import ScrollToTop from "../ScrolltoTop";
 import Feedback from "./components/Utility Pages/Feedback/Feedback";
 import { BannerProvider } from "./components/context/BannerContext";
+import TagPage from "./components/TagPage/TagPage";
 
 function AppContent() {
   const location = useLocation();
@@ -51,7 +52,6 @@ function AppContent() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/company-questions" element={<CompanyPage />} />
         <Route path="/admin" element={<AdminPage />} />
-        <Route path="/tags" element={<UnderConstruction />} />
         <Route path="/interview-blogs" element={<UnderConstruction />} />
         <Route path="/communities" element={<UnderConstruction />} />
         <Route path="*" element={<NotFound />} />
@@ -61,6 +61,7 @@ function AppContent() {
         <Route path="/most-upvoted" element={<MostUpvoted />} />
         <Route path="/developers" element={<DevelopersPage />} />
         <Route path="/feedback" element={<Feedback />} />
+        <Route path="/tags" element={<TagPage />} />
       </Routes>
       {shouldShowNavBarAndFooter && <Footer />}
     </>

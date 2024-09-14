@@ -61,7 +61,7 @@ const commentsRouter = require('./routes/comments');
 const companyRoutes = require('./routes/company');
 const faqRoutes = require('./routes/faq');
 const feedbackRoutes = require('./routes/feedback');
-
+const tagRoutes = require('./routes/tags');
 
 
 connectDB().then(() => {
@@ -161,3 +161,4 @@ app.use('/admin', adminRoutes);
 app.use('/companies', companyRoutes);
 app.use('/faq', faqRoutes);
 app.use('/api/feedback', feedbackRoutes);
+app.use('/tags', tagRoutes);
