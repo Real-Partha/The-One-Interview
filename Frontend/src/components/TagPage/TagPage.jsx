@@ -1,10 +1,9 @@
-// src/components/TagPage/TagPage.jsx
-
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useTheme } from "../../ThemeContext";
 import MainLoader from "../commonPages/MainLoader";
+import { FaSearch, FaHashtag, FaArrowUp, FaTags } from "react-icons/fa";
 import "./TagPage.css";
 
 const TagPage = () => {
@@ -14,9 +13,11 @@ const TagPage = () => {
   const [loading, setLoading] = useState(true);
   const [selectedTag, setSelectedTag] = useState(null);
   const [questions, setQuestions] = useState([]);
+  const [loadingQuestions, setLoadingQuestions] = useState(false);
   const { isDarkMode } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
+  const containerRef = useRef(null);
 
   useEffect(() => {
     fetchTags();
@@ -28,6 +29,7 @@ const TagPage = () => {
     if (tag) {
       setSelectedTag(tag);
       fetchQuestionsByTag(tag);
+      scrollToTop();
     } else {
       setSelectedTag(null);
       setQuestions([]);
@@ -50,6 +52,7 @@ const TagPage = () => {
   };
 
   const fetchQuestionsByTag = async (tag) => {
+    setLoadingQuestions(true);
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/tags/questions/${tag}`
@@ -57,6 +60,8 @@ const TagPage = () => {
       setQuestions(response.data);
     } catch (error) {
       console.error("Error fetching questions by tag:", error);
+    } finally {
+      setLoadingQuestions(false);
     }
   };
 
@@ -88,6 +93,10 @@ const TagPage = () => {
     }, {});
   };
 
+  const scrollToTop = () => {
+    containerRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   if (loading) {
     return <MainLoader />;
   }
@@ -95,35 +104,53 @@ const TagPage = () => {
   const groupedTags = groupTagsByFirstLetter(filteredTags);
 
   return (
-    <div className={`tagpage ${isDarkMode ? "dark-mode" : ""}`}>
-      <h1 className="tagpage-title">Tags</h1>
+    <div
+      className={`tagpage ${isDarkMode ? "dark-mode" : ""}`}
+      ref={containerRef}
+    >
+      <h1 className="tagpage-title">
+        <FaTags className="tagpage-title-icon" /> Tags
+      </h1>
       {!selectedTag && (
-        <input
-          type="text"
-          placeholder="Search tags..."
-          value={searchTerm}
-          onChange={handleSearch}
-          className="tagpage-search"
-        />
+        <div className="tagpage-search-container">
+          <FaSearch className="tagpage-search-icon" />
+          <input
+            type="text"
+            placeholder="Search tags..."
+            value={searchTerm}
+            onChange={handleSearch}
+            className="tagpage-search"
+          />
+        </div>
       )}
       {selectedTag ? (
         <div className="tagpage-questions">
-          <h2>Questions tagged with "#{selectedTag}"</h2>
+          <h2 className="tagpage-selected-tag">
+            <FaHashtag className="tagpage-hashtag-icon" />
+            {selectedTag}
+          </h2>
           <button onClick={handleViewAllTags} className="tagpage-view-all">
             View All Tags
           </button>
-          {questions.map((question) => (
-            <Link
-              to={`/question/${question._id}`}
-              key={question._id}
-              className="tagpage-question-card"
-            >
-              <h3>{question.question}</h3>
-              <p>
-                Upvotes: {question.upvotes} | Answers: {question.commentscount}
-              </p>
-            </Link>
-          ))}
+          {loadingQuestions ? (
+            <div className="tagpage-questions-loader">
+              <div className="tagpage-loader"></div>
+            </div>
+          ) : (
+            questions.map((question) => (
+              <Link
+                to={`/question/${question._id}`}
+                key={question._id}
+                className="tagpage-question-card"
+              >
+                <h3>{question.question}</h3>
+                <p>
+                  Upvotes: {question.upvotes} | Comments:{" "}
+                  {question.commentscount}
+                </p>
+              </Link>
+            ))
+          )}
         </div>
       ) : (
         <div className="tagpage-tags-container">
@@ -137,7 +164,8 @@ const TagPage = () => {
                     className="tagpage-tag"
                     onClick={() => handleTagClick(tag.name)}
                   >
-                    <span className="tagpage-tag-name">#{tag.name}</span>
+                    <FaHashtag className="tagpage-tag-icon" />
+                    <span className="tagpage-tag-name">{tag.name}</span>
                     <span className="tagpage-tag-count">{tag.count}</span>
                   </div>
                 ))}
@@ -149,6 +177,9 @@ const TagPage = () => {
           )}
         </div>
       )}
+      <button className="tagpage-scroll-top" onClick={scrollToTop}>
+        <FaArrowUp />
+      </button>
     </div>
   );
 };
