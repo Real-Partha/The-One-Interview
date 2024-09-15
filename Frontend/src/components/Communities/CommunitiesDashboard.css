@@ -30,7 +30,7 @@
   border: none;
   border-radius: 25px;
   transition: all 0.3s ease;
-  margin: 0 0.5rem;
+  margin: 0 1.2rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -62,12 +62,14 @@
 
 .communities-dashboard-content {
   display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .communities-dashboard-section {
-  width: 48%;
+  width: 90%;
+  max-width: 800px;
   margin-bottom: 2rem;
   background-color: var(--card-light);
   border-radius: 15px;
@@ -143,17 +145,37 @@
 }
 
 @media (max-width: 768px) {
-  .communities-dashboard-content {
+  .communities-dashboard {
+    padding: 1rem;
+    margin-top: 60px;
+  }
+
+  .communities-dashboard-title {
+    font-size: 2rem;
+  }
+
+  .communities-dashboard-actions {
     flex-direction: column;
+    align-items: center;
+  }
+
+  .communities-dashboard-button {
+    margin: 1rem 0;
+    width: 100%;
+    max-width: 250px;
   }
 
   .communities-dashboard-section {
-    width: 100%;
+    padding: 1rem;
+  }
+
+  .communities-dashboard-card {
+    margin-bottom: 0.75rem;
   }
 }
 
 /* Animations and glowing effects */
-@keyframes glow {
+@keyframes communities-dashboard-glow {
   0% {
     box-shadow: 0 0 5px rgba(108, 99, 255, 0.5);
   }
@@ -166,7 +188,7 @@
 }
 
 .communities-dashboard-button {
-  animation: glow 2s infinite alternate;
+  animation: communities-dashboard-glow 2s infinite alternate;
 }
 
 .communities-dashboard-card {
@@ -174,7 +196,7 @@
 }
 
 .communities-dashboard-card:hover {
-  animation: glow 1.5s infinite alternate;
+  animation: communities-dashboard-glow 1.5s infinite alternate;
 }
 
 /* Dark mode styles */

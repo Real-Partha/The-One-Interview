@@ -88,4 +88,17 @@ router.post('/:id/join', isAuthenticated, async (req, res) => {
   }
 });
 
+router.get('/search', async (req, res) => {
+  try {
+    const { query } = req.query;
+    const communities = await Community.find(
+      { name: { $regex: query, $options: 'i' } },
+      'name description members'
+    ).limit(10);
+    res.json(communities);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;

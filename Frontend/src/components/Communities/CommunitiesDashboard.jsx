@@ -1,4 +1,3 @@
-// src/components/Communities/CommunitiesDashboard.jsx
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -57,6 +56,13 @@ const CommunitiesDashboard = () => {
     visible: { y: 0, opacity: 1, transition: { duration: 0.5 } },
   };
 
+  if (showJoinCommunity) {
+    return <JoinCommunity onClose={() => setShowJoinCommunity(false)} />;
+  }
+
+  if (showCreateCommunity) {
+    return <CreateCommunity onClose={() => setShowCreateCommunity(false)} />;
+  }
   return (
     <motion.div
       className="communities-dashboard"

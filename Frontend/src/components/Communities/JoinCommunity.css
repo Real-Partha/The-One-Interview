@@ -1,67 +1,207 @@
 /* src/components/Communities/JoinCommunity.css */
-.join-community-modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: var(--card-light);
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
+.joincommunity-container {
+  max-width: 1200px;
+  margin: 80px auto 0;
+  padding: 2rem;
+  font-family: "Montserrat", sans-serif;
+  background-color: var(--background-light);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.joincommunity-title {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: var(--primary-color);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.joincommunity-search {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.joincommunity-search input {
+  width: 100%;
+  padding: 1rem 1rem 1rem 3rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 25px;
+  background-color: var(--card-light);
+  color: var(--text-color);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.joincommunity-search input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+.joincommunity-search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+}
+
+.joincommunity-card {
+  background-color: var(--card-light);
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.joincommunity-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.joincommunity-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.joincommunity-card-header:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.joincommunity-card-header h3 {
+  margin: 0;
+  color: var(--primary-color);
+}
+
+.joincommunity-card-details {
+  padding: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.joincommunity-card-details p {
+  margin-bottom: 0.5rem;
+  color: var(--text-secondary);
+}
+
+.joincommunity-card-details span {
+  display: flex;
+  align-items: center;
+  color: var(--text-tertiary);
+  margin-bottom: 1rem;
+}
+
+.joincommunity-card-details span svg {
+  margin-right: 0.5rem;
+}
+
+.joincommunity-card-details button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.joincommunity-card-details button:hover {
+  background-color: var(--primary-hover-color);
+}
+
+.joincommunity-joined {
+  color: var(--success-color);
+  font-weight: bold;
+}
+
+.joincommunity-loading,
+.joincommunity-error,
+.joincommunity-no-results {
+  text-align: center;
+  color: var(--text-secondary);
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+
+.joincommunity-error {
+  color: var(--error-color);
+}
+
+.joincommunity-close {
+  display: block;
+  margin: 2rem auto 0;
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.joincommunity-close:hover {
+  background-color: var(--secondary-hover-color);
+}
+
+@media (max-width: 768px) {
+  .joincommunity-container {
+    padding: 1rem;
+    margin-top: 60px;
   }
-  
-  .join-community-modal h2 {
-    margin-bottom: 1rem;
+
+  .joincommunity-title {
+    font-size: 2rem;
   }
-  
-  .join-community-modal input {
-    width: 100%;
-    padding: 0.5rem;
-    margin-bottom: 1rem;
-    font-size: 1rem;
+}
+
+/* Animations and glowing effects */
+@keyframes joincommunity-glow {
+  0% {
+    box-shadow: 0 0 5px rgba(108, 99, 255, 0.5);
   }
-  
-  .community-search-results {
-    max-height: 300px;
-    overflow-y: auto;
-    margin-bottom: 1rem;
+  50% {
+    box-shadow: 0 0 20px rgba(108, 99, 255, 0.8);
   }
-  
-  .community-search-results li {
-    padding: 0.5rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  100% {
+    box-shadow: 0 0 5px rgba(108, 99, 255, 0.5);
   }
-  
-  .community-search-results li:hover {
-    background-color: var(--primary-color);
-    color: white;
-  }
-  
-  .join-community-modal button {
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    cursor: pointer;
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .join-community-modal button:hover {
-    background-color: var(--primary-hover-color);
-  }
-  
-  /* Dark mode styles */
-  .dark-mode .join-community-modal {
-    background-color: var(--card-dark);
-    color: var(--text-dark);
-  }
-  
-  .dark-mode .community-search-results li:hover {
-    background-color: var(--primary-color);
-    color: white;
-  }
-  
+}
+
+.joincommunity-card {
+  animation: joincommunity-glow 3s infinite alternate;
+}
+
+.joincommunity-card:hover {
+  animation: joincommunity-glow 1.5s infinite alternate;
+}
+
+/* Dark mode styles */
+.dark-mode .joincommunity-container {
+  background-color: var(--background-dark);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .joincommunity-search input {
+  background-color: var(--card-dark);
+  color: var(--text-dark);
+}
+
+.dark-mode .joincommunity-card {
+  background-color: var(--card-dark);
+}
+
+.dark-mode .joincommunity-card-header:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.dark-mode .joincommunity-card-details {
+  border-top-color: var(--border-dark);
+}
