@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { useTheme } from "../../ThemeContext";
 import "./Post.css";
@@ -57,9 +57,8 @@ const Post = () => {
       });
   };
 
-
   const generateMetaDescription = (question, answer) => {
-    const cleanAnswer = answer.replace(/<[^>]*>/g, ''); // Remove HTML tags
+    const cleanAnswer = answer.replace(/<[^>]*>/g, "");
     return `${question} - ${cleanAnswer.slice(0, 150)}...`;
   };
 
@@ -375,18 +374,43 @@ const Post = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-
-{question && (
+      {question && (
         <Helmet>
           <title>{`${question.question} | The One Interview`}</title>
-          <meta name="description" content={generateMetaDescription(question.question, question.answer)} />
-          <meta name="keywords" content={`interview question, ${question.tags.join(', ')}, ${question.companyName}, ${question.category}`} />
-          <meta property="og:title" content={`${question.question} | The One Interview`} />
-          <meta property="og:description" content={generateMetaDescription(question.question, question.answer)} />
+          <meta
+            name="description"
+            content={generateMetaDescription(
+              question.question,
+              question.answer
+            )}
+          />
+          <meta
+            name="keywords"
+            content={`interview question, ${question.tags.join(", ")}, ${
+              question.companyName
+            }, ${question.category}`}
+          />
+          <meta
+            property="og:title"
+            content={`${question.question} | The One Interview`}
+          />
+          <meta
+            property="og:description"
+            content={generateMetaDescription(
+              question.question,
+              question.answer
+            )}
+          />
           <meta property="og:type" content="article" />
-          <meta property="og:url" content={`https://the-one-interview.vercel.app/question/${questionId}`} />
-          <meta property="og:image" content="/img/og-image.png"/>
-          <link rel="canonical" href={`https://the-one-interview.vercel.app/question/${questionId}`} />
+          <meta
+            property="og:url"
+            content={`https://the-one-interview.vercel.app/question/${questionId}`}
+          />
+          <meta property="og:image" content="/img/og-image.png" />
+          <link
+            rel="canonical"
+            href={`https://the-one-interview.vercel.app/question/${questionId}`}
+          />
         </Helmet>
       )}
 
@@ -437,15 +461,17 @@ const Post = () => {
             transition={{ delay: 0.4, duration: 0.5 }}
           >
             {question.tags.map((tag, index) => (
-              <motion.span
-                key={index}
-                className="Post-tag"
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.4 + index * 0.1, duration: 0.3 }}
-              >
-                #{tag.toLowerCase()}
-              </motion.span>
+              <Link to={`/tags?tag=${tag.toLowerCase()}`} target="_blank" key={index}>
+                <motion.span
+                  key={index}
+                  className="Post-tag"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.4 + index * 0.1, duration: 0.3 }}
+                >
+                  #{tag.toLowerCase()}
+                </motion.span>
+              </Link>
             ))}
           </motion.div>
           <div className="Post-details">
