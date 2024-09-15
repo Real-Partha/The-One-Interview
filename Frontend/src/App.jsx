@@ -27,6 +27,7 @@ import ScrollToTop from "../ScrolltoTop";
 import Feedback from "./components/Utility Pages/Feedback/Feedback";
 import { BannerProvider } from "./components/context/BannerContext";
 import TagPage from "./components/TagPage/TagPage";
+import CommunitiesDashboard from './components/Communities/CommunitiesDashboard';
 
 function AppContent() {
   const location = useLocation();
@@ -53,7 +54,7 @@ function AppContent() {
         <Route path="/company-questions" element={<CompanyPage />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/interview-blogs" element={<UnderConstruction />} />
-        <Route path="/communities" element={<UnderConstruction />} />
+        <Route path="/communities" element={<CommunitiesDashboard />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />

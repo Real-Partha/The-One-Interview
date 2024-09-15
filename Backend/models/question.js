@@ -63,6 +63,16 @@ const questionSchema = new mongoose.Schema({
         type: String,
         enum: ['unverified', 'approved', 'rejected'],
         default: 'unverified'
+    },
+    community: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Community',
+        default: null
+    },
+    visibility: {
+        type: String,
+        enum: ['all', 'community'],
+        default: 'all'
     }
 });
 

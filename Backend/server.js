@@ -12,6 +12,8 @@ const os = require('os');
 const fs = require('fs').promises;
 const path = require('path');
 
+const communityRoutes = require('./routes/communityRoutes');
+
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -162,3 +164,4 @@ app.use('/companies', companyRoutes);
 app.use('/faq', faqRoutes);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/tags', tagRoutes);
+app.use('/communities', communityRoutes);

@@ -1,0 +1,205 @@
+/* src/components/Communities/CommunitiesDashboard.css */
+.communities-dashboard {
+  max-width: 1200px;
+  margin: 80px auto 0;
+  padding: 2rem;
+  font-family: "Montserrat", sans-serif;
+  background-color: var(--background-light);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.communities-dashboard-title {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: var(--primary-color);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.communities-dashboard-actions {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.communities-dashboard-button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+  margin: 0 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.communities-dashboard-join {
+  background-color: var(--primary-color);
+  color: white;
+  box-shadow: 0 4px 6px rgba(108, 99, 255, 0.2);
+}
+
+.communities-dashboard-create {
+  background-color: var(--secondary-color);
+  color: white;
+  box-shadow: 0 4px 6px rgba(255, 107, 107, 0.2);
+}
+
+.communities-dashboard-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+.communities-dashboard-button svg {
+  margin-right: 0.5rem;
+}
+
+.communities-dashboard-content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.communities-dashboard-section {
+  width: 48%;
+  margin-bottom: 2rem;
+  background-color: var(--card-light);
+  border-radius: 15px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.communities-dashboard-section:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.communities-dashboard-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+}
+
+.communities-dashboard-section h2 svg {
+  margin-right: 0.5rem;
+}
+
+.communities-dashboard-card {
+  background-color: var(--background-light);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.communities-dashboard-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.communities-dashboard-card a {
+  text-decoration: none;
+  color: var(--text-color);
+}
+
+.communities-dashboard-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: var(--primary-color);
+}
+
+.communities-dashboard-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-secondary);
+}
+
+.communities-dashboard-card span {
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+}
+
+.communities-dashboard-card span svg {
+  margin-right: 0.3rem;
+}
+
+.communities-dashboard-loading,
+.communities-dashboard-empty {
+  text-align: center;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .communities-dashboard-content {
+    flex-direction: column;
+  }
+
+  .communities-dashboard-section {
+    width: 100%;
+  }
+}
+
+/* Animations and glowing effects */
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 5px rgba(108, 99, 255, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(108, 99, 255, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(108, 99, 255, 0.5);
+  }
+}
+
+.communities-dashboard-button {
+  animation: glow 2s infinite alternate;
+}
+
+.communities-dashboard-card {
+  transition: all 0.3s ease;
+}
+
+.communities-dashboard-card:hover {
+  animation: glow 1.5s infinite alternate;
+}
+
+/* Dark mode styles */
+.dark-mode .communities-dashboard {
+  background-color: var(--background-dark);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .communities-dashboard-section {
+  background-color: var(--card-dark);
+}
+
+.dark-mode .communities-dashboard-card {
+  background-color: var(--background-dark);
+}
+
+.dark-mode .communities-dashboard-join {
+  background-color: var(--primary-dark);
+}
+
+.dark-mode .communities-dashboard-create {
+  background-color: var(--secondary-dark);
+}
+
+.dark-mode .communities-dashboard-loading,
+.dark-mode .communities-dashboard-empty {
+  color: var(--text-dark);
+}

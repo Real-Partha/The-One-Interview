@@ -1,0 +1,77 @@
+/* src/components/Communities/CreateCommunity.css */
+.create-community-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--card-light);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+  
+  .create-community-modal h2 {
+    margin-bottom: 1rem;
+  }
+  
+  .create-community-modal form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .create-community-modal input,
+  .create-community-modal textarea {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+  }
+  
+  .create-community-modal button {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    margin-right: 0.5rem;
+  }
+  
+  .create-community-modal button:hover {
+    background-color: var(--primary-hover-color);
+  }
+  
+  .create-community-modal button[type="button"] {
+    background-color: #ccc;
+    color: #333;
+  }
+  
+  .create-community-modal button[type="button"]:hover {
+    background-color: #bbb;
+  }
+  
+  /* Dark mode styles */
+  .dark-mode .create-community-modal {
+    background-color: var(--card-dark);
+    color: var(--text-dark);
+  }
+  
+  .dark-mode .create-community-modal input,
+  .dark-mode .create-community-modal textarea {
+    background-color: var(--background-dark);
+    color: var(--text-dark);
+    border: 1px solid var(--text-dark);
+  }
+  
+  .dark-mode .create-community-modal button[type="button"] {
+    background-color: #555;
+    color: #eee;
+  }
+  
+  .dark-mode .create-community-modal button[type="button"]:hover {
+    background-color: #666;
+  }
+  
