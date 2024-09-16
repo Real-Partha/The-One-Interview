@@ -8,7 +8,7 @@ import {
   faUsers,
   faChevronDown,
   faChevronUp,
-  faTimes,
+  faArrowLeft,
   faSpinner,
   faExclamationCircle,
 } from "@fortawesome/free-solid-svg-icons";
@@ -20,6 +20,23 @@ const JoinCommunity = ({ onClose }) => {
   const [loading, setLoading] = useState(false);
   const [expandedCommunity, setExpandedCommunity] = useState(null);
   const [error, setError] = useState(null);
+  const [currentUser, setCurrentUser] = useState({ communities: [] });
+
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/auth/status`,
+          { withCredentials: true }
+        );
+        setCurrentUser(response.data.user);
+      } catch (error) {
+        console.error("Error fetching current user:", error);
+      }
+    };
+
+    fetchCurrentUser();
+  }, []);
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -40,7 +57,12 @@ const JoinCommunity = ({ onClose }) => {
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/communities/search?query=${term}`
       );
-      setSearchResults(response.data);
+      setSearchResults(
+        response.data.map((community) => ({
+          ...community,
+          isJoined: currentUser.communities.includes(community._id),
+        }))
+      );
     } catch (error) {
       console.error("Error fetching communities:", error);
       setError("Failed to fetch communities. Please try again.");
@@ -184,12 +206,12 @@ const JoinCommunity = ({ onClose }) => {
         </motion.p>
       )}
       <motion.button
-        className="joincommunity-close"
+        className="joincommunity-back"
         onClick={onClose}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
-        <FontAwesomeIcon icon={faTimes} /> Close
+        <FontAwesomeIcon icon={faArrowLeft} /> Back to Dashboard
       </motion.button>
     </motion.div>
   );
