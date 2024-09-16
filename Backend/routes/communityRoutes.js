@@ -89,6 +89,7 @@ router.post(
         rules,
         profilePhoto: profilePhotoKey || "com_prof.jpg",
         bannerPhoto: bannerPhotoKey || "com_banner.jpg",
+        members: [req.user._id],
         createdBy: req.user._id,
       });
 

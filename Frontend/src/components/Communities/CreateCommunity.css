@@ -2,116 +2,159 @@
 .createcommunity-container {
   max-width: 600px;
   width: 100%;
-  margin: 80px auto 0;
-  padding: 2rem;
+  margin: 6.8rem auto 0;
   font-family: "Montserrat", sans-serif;
-  background-color: #ffffff;
+  background-color: transparent;
   border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
+  overflow: hidden;
+  padding: 0 15px;
 }
 
-.createcommunity-title {
-  font-size: 2rem;
-  margin-bottom: 2rem;
-  text-align: center;
-  color: #6c63ff;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.createcommunity-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.createcommunity-input-group {
-  /* position: relative;
-  margin-bottom: 1rem; */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.createcommunity-input-group input,
-.createcommunity-input-group textarea {
-  width: 100%;
-  padding: 0.75rem;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f8f8f8;
-  color: #333333;
-  transition: all 0.3s ease;
-}
-
-.createcommunity-input-group textarea {
-  min-height: 100px;
-  resize: vertical;
-}
-
-.createcommunity-input-group input:focus,
-.createcommunity-input-group textarea:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px #6c63ff;
-}
-
-.createcommunity-file-inputs {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.createcommunity-file-input {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.createcommunity-file-input label {
-  width: 100%;
-  text-align: center;
-  padding: 0.75rem;
-  background-color: #6c63ff;
-  color: white;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.createcommunity-file-input label:hover {
-  background-color: #5a52d5;
-}
-
-.createcommunity-file-input input[type="file"] {
-  display: none;
-}
-
-.createcommunity-image-preview {
-  margin-top: 0.5rem;
-  width: 100%;
-  max-width: 200px;
+.createcommunity-card {
+  background-color: #ffffff;
+  border-radius: 20px 20px 0 0;
+  overflow: hidden;
   position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
-.createcommunity-image-preview img {
+.createcommunity-banner {
+  height: 200px;
+  background-color: #e1e4e8;
+  position: relative;
+  overflow: hidden;
+}
+
+.createcommunity-banner img {
   width: 100%;
-  height: auto;
-  border-radius: 5px;
+  height: 100%;
   object-fit: cover;
 }
 
-.createcommunity-image-preview button {
+.createcommunity-banner-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #8e8e8e;
+  font-size: 1.2rem;
+}
+
+.createcommunity-banner input[type="file"],
+.createcommunity-profile-photo input[type="file"] {
   position: absolute;
-  top: -0.5rem;
-  right: -0.5rem;
-  background-color: #ff4d4d;
-  color: white;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.createcommunity-profile-section {
+  display: flex;
+  align-items: center;
+  padding: 1rem 2rem;
+}
+
+.createcommunity-profile-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  position: absolute;
+  top: 8.4rem;
+  left: 2rem;
+  border: 4px solid #ffffff;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.createcommunity-profile-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.createcommunity-profile-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background-color: #e1e4e8;
+  color: #8e8e8e;
+  font-size: 2rem;
+}
+
+.createcommunity-header {
+  margin-top: 4rem;
+  flex-grow: 1;
+}
+
+.community-name,
+.community-nickname {
+  background: transparent;
+  border: none;
+  color: #333333;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+  width: 100%;
+}
+
+.community-nickname {
+  font-size: 1rem;
+  font-weight: normal;
+  color: #666666;
+}
+
+.createcommunity-content {
+  padding: 2rem;
+}
+
+.createcommunity-content textarea,
+.createcommunity-content input[type="text"] {
+  width: 100%;
+  margin-bottom: 15px;
+  border: none;
+  border-bottom: 1px solid #e1e4e8;
+  font-size: 1rem;
+  background: transparent;
+}
+
+.createcommunity-content textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+.createcommunity-privacy {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.createcommunity-privacy label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.createcommunity-privacy input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.remove-image {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #ffffff;
   border: none;
   border-radius: 50%;
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -119,221 +162,135 @@
   transition: all 0.3s ease;
 }
 
-.createcommunity-image-preview button:hover {
-  background-color: #ff3333;
+.remove-image:hover {
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
-.createcommunity-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-  margin-top: 2rem;
-}
-
-.createcommunity-actions button {
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
+.createcommunity-submit {
+  width: 100%;
+  padding: 15px;
+  background-color: #6c63ff;
+  color: #ffffff;
   border: none;
-  border-radius: 5px;
+  border-radius: 0 0 20px 20px;
+  font-size: 1rem;
+  font-weight: bold;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.createcommunity-actions button[type="submit"] {
-  background-color: #6c63ff;
-  color: white;
+.createcommunity-submit:disabled {
+  background-color: #a5a5a5;
+  cursor: not-allowed;
 }
 
-.createcommunity-actions button[type="submit"]:hover {
+.createcommunity-submit:not(:disabled):hover {
   background-color: #5a52d5;
 }
 
-.createcommunity-actions button[type="button"] {
-  background-color: #f0f0f0;
-  color: #333333;
-}
-
-.createcommunity-actions button[type="button"]:hover {
-  background-color: #e0e0e0;
+.custom-tooltip {
+  background-color: #6c63ff !important;
+  color: #ffffff !important;
+  padding: 10px !important;
+  border-radius: 5px !important;
+  font-size: 0.9rem !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
 }
 
 /* Dark mode styles */
-.dark-mode .createcommunity-container {
-  background-color: #1e1e1e;
-  color: #ffffff;
-}
-
-.dark-mode .createcommunity-input-group input,
-.dark-mode .createcommunity-input-group textarea {
+.dark-mode .createcommunity-card {
   background-color: #2c2c2c;
-  color: #ffffff;
-  border-color: #444444;
 }
 
-.dark-mode .createcommunity-file-input label {
-  background-color: #5a52d5;
-}
-
-.dark-mode .createcommunity-file-input label:hover {
-  background-color: #4a43b0;
-}
-
-.dark-mode .createcommunity-actions button[type="button"] {
-  background-color: #2c2c2c;
-  color: #ffffff;
-}
-
-.dark-mode .createcommunity-actions button[type="button"]:hover {
+.dark-mode .createcommunity-banner,
+.dark-mode .createcommunity-profile-placeholder {
   background-color: #3c3c3c;
 }
 
-/* Animations */
-@keyframes createcommunity-glow {
-  0% {
-    box-shadow: 0 0 5px rgba(108, 99, 255, 0.5);
-  }
-  50% {
-    box-shadow: 0 0 20px rgba(108, 99, 255, 0.8);
-  }
-  100% {
-    box-shadow: 0 0 5px rgba(108, 99, 255, 0.5);
-  }
+.dark-mode .createcommunity-content textarea,
+.dark-mode .createcommunity-content input[type="text"] {
+  color: #ffffff;
+  border-color: #4a4a4a;
 }
 
-.createcommunity-container {
-  animation: createcommunity-glow 3s infinite alternate;
+.dark-mode .createcommunity-submit {
+  background-color: #5a52d5;
 }
 
-.createcommunity-file-input label,
-.createcommunity-actions button {
-  transition: all 0.3s ease;
+.dark-mode .createcommunity-submit:disabled {
+  background-color: #4a4a4a;
 }
 
-.createcommunity-file-input label:hover,
-.createcommunity-actions button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+.dark-mode .createcommunity-submit:not(:disabled):hover {
+  background-color: #4a43b0;
 }
 
-
-/* src/components/Communities/CreateCommunity.css */
-.createcommunity-container {
-  max-width: 600px;
-  width: 100%;
-  margin: 80px auto 0;
-  padding: 2rem;
-  font-family: "Montserrat", sans-serif;
-  background-color: #ffffff;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-}
-
-.createcommunity-title {
-  font-size: 2rem;
-  margin-bottom: 2rem;
-  text-align: center;
-  color: #6c63ff;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.createcommunity-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.createcommunity-input-group {
-  position: relative;
-  margin-bottom: 1rem;
-}
-
-.createcommunity-input-group input,
-.createcommunity-input-group textarea {
-  width: 100%;
-  padding: 0.75rem;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f8f8f8;
-  color: #333333;
-  transition: all 0.3s ease;
-}
-
-.createcommunity-input-group input {
-  height: 40px;
-}
-
-.createcommunity-input-group textarea {
-  height: 100px;
-  resize: none;
-}
-
-.createcommunity-input-group input:focus,
-.createcommunity-input-group textarea:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px #6c63ff;
-}
-
-/* ... (keep the rest of the styles unchanged) ... */
-
-/* Media Queries for Responsiveness */
+/* Responsive styles */
 @media (max-width: 768px) {
-  .createcommunity-container {
-    margin-top: 60px;
-    padding: 1.5rem;
+
+  .createcommunity-banner {
+    height: 150px;
   }
 
-  .createcommunity-title {
-    font-size: 1.75rem;
+  .createcommunity-profile-section {
+    padding: 1rem 2rem;
   }
 
-  .createcommunity-input-group input,
-  .createcommunity-input-group textarea {
+  .createcommunity-profile-photo {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 6.4rem;
+    left: 2rem;
+  }
+
+  .createcommunity-content {
+    padding: 0 2rem;
+  }
+
+  .community-name {
+    font-size: 1.2rem;
+  }
+
+  .community-nickname {
     font-size: 0.9rem;
-  }
-
-  .createcommunity-input-group input {
-    height: 36px;
-  }
-
-  .createcommunity-input-group textarea {
-    height: 80px;
-  }
-
-  .createcommunity-file-inputs {
-    flex-direction: column;
-  }
-
-  .createcommunity-actions {
-    flex-direction: column;
-  }
-
-  .createcommunity-actions button {
-    width: 100%;
-    margin-bottom: 0.5rem;
   }
 }
 
 @media (max-width: 480px) {
-  .createcommunity-container {
-    padding: 1rem;
+
+  .createcommunity-banner {
+    height: 120px;
   }
 
-  .createcommunity-title {
-    font-size: 1.5rem;
+  .createcommunity-header {
+    margin-top: 2rem;
+    flex-grow: 1;
   }
 
-  .createcommunity-input-group input,
-  .createcommunity-input-group textarea {
+  .createcommunity-profile-section {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .createcommunity-profile-photo {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 10px;
+    position: absolute;
+    top: 4.8rem;
+    left: 1rem;
+  }
+
+  .createcommunity-content {
+    padding: 15px;
+  }
+
+  .community-name {
+    font-size: 1rem;
+  }
+
+  .community-nickname {
     font-size: 0.8rem;
-  }
-
-  .createcommunity-input-group input {
-    height: 32px;
-  }
-
-  .createcommunity-input-group textarea {
-    height: 60px;
   }
 }

@@ -1,9 +1,15 @@
 // src/components/Communities/CreateCommunity.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faImage, faTimes, faUpload } from "@fortawesome/free-solid-svg-icons";
+import {
+  faImage,
+  faTimes,
+  faLock,
+  faGlobe,
+} from "@fortawesome/free-solid-svg-icons";
+import { Tooltip } from "react-tooltip";
 import "./CreateCommunity.css";
 
 const CreateCommunity = ({ onClose }) => {
@@ -12,15 +18,25 @@ const CreateCommunity = ({ onClose }) => {
     nickname: "",
     description: "",
     lookingFor: "",
-    rules: "",
+    isPrivate: false,
     profilePhoto: null,
     bannerPhoto: null,
   });
   const [profilePreview, setProfilePreview] = useState(null);
   const [bannerPreview, setBannerPreview] = useState(null);
+  const [isFormValid, setIsFormValid] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    const { name, nickname, description } = formData;
+    setIsFormValid(
+      name.trim() !== "" && nickname.trim() !== "" && description.trim() !== ""
+    );
+  }, [formData]);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value, type, checked } = e.target;
+    setFormData({ ...formData, [name]: type === "checkbox" ? checked : value });
   };
 
   const handleFileChange = (e, type) => {
@@ -51,6 +67,9 @@ const CreateCommunity = ({ onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!isFormValid) return;
+
+    setIsSubmitting(true);
     try {
       const formDataToSend = new FormData();
       for (const key in formData) {
@@ -70,6 +89,8 @@ const CreateCommunity = ({ onClose }) => {
       onClose();
     } catch (error) {
       console.error("Error creating community:", error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -80,59 +101,41 @@ const CreateCommunity = ({ onClose }) => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 20 }}
     >
-      <h2 className="createcommunity-title">Create a Community</h2>
-      <form onSubmit={handleSubmit} className="createcommunity-form">
-        <div className="createcommunity-input-group">
+      <div className="createcommunity-card">
+        <div className="createcommunity-banner">
+          {bannerPreview ? (
+            <img src={bannerPreview} alt="Banner Preview" />
+          ) : (
+            <div className="createcommunity-banner-placeholder">
+              <FontAwesomeIcon icon={faImage} />
+              <span>Add Banner Image</span>
+            </div>
+          )}
           <input
-            type="text"
-            name="name"
-            placeholder="Community Name"
-            value={formData.name}
-            onChange={handleChange}
-            required
+            type="file"
+            id="bannerPhoto"
+            name="bannerPhoto"
+            onChange={(e) => handleFileChange(e, "bannerPhoto")}
+            accept="image/*"
           />
+          {bannerPreview && (
+            <button
+              className="remove-image"
+              onClick={() => removeImage("bannerPhoto")}
+            >
+              <FontAwesomeIcon icon={faTimes} />
+            </button>
+          )}
         </div>
-        <div className="createcommunity-input-group">
-          <input
-            type="text"
-            name="nickname"
-            placeholder="Unique Nickname"
-            value={formData.nickname}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="createcommunity-input-group">
-          <textarea
-            name="description"
-            placeholder="Community Description"
-            value={formData.description}
-            onChange={handleChange}
-            required
-          ></textarea>
-        </div>
-        <div className="createcommunity-input-group">
-          <input
-            type="text"
-            name="lookingFor"
-            placeholder="Looking for (comma-separated)"
-            value={formData.lookingFor}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="createcommunity-input-group">
-          <textarea
-            name="rules"
-            placeholder="Community Rules"
-            value={formData.rules}
-            onChange={handleChange}
-          ></textarea>
-        </div>
-        <div className="createcommunity-file-inputs">
-          <div className="createcommunity-file-input">
-            <label htmlFor="profilePhoto">
-              <FontAwesomeIcon icon={faImage} /> Profile Photo
-            </label>
+        <div className="createcommunity-profile-section">
+          <div className="createcommunity-profile-photo">
+            {profilePreview ? (
+              <img src={profilePreview} alt="Profile Preview" />
+            ) : (
+              <div className="createcommunity-profile-placeholder">
+                <FontAwesomeIcon icon={faImage} />
+              </div>
+            )}
             <input
               type="file"
               id="profilePhoto"
@@ -140,74 +143,87 @@ const CreateCommunity = ({ onClose }) => {
               onChange={(e) => handleFileChange(e, "profilePhoto")}
               accept="image/*"
             />
-            <AnimatePresence>
-              {profilePreview && (
-                <motion.div
-                  className="createcommunity-image-preview"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                >
-                  <img src={profilePreview} alt="Profile Preview" />
-                  <button
-                    type="button"
-                    onClick={() => removeImage("profilePhoto")}
-                  >
-                    <FontAwesomeIcon icon={faTimes} />
-                  </button>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {profilePreview && (
+              <button
+                className="remove-image"
+                onClick={() => removeImage("profilePhoto")}
+              >
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
+            )}
           </div>
-          <div className="createcommunity-file-input">
-            <label htmlFor="bannerPhoto">
-              <FontAwesomeIcon icon={faImage} /> Banner Photo
-            </label>
+          <div className="createcommunity-header">
             <input
-              type="file"
-              id="bannerPhoto"
-              name="bannerPhoto"
-              onChange={(e) => handleFileChange(e, "bannerPhoto")}
-              accept="image/*"
+              type="text"
+              name="name"
+              placeholder="Community Name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+              className="community-name"
             />
-            <AnimatePresence>
-              {bannerPreview && (
-                <motion.div
-                  className="createcommunity-image-preview"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                >
-                  <img src={bannerPreview} alt="Banner Preview" />
-                  <button
-                    type="button"
-                    onClick={() => removeImage("bannerPhoto")}
-                  >
-                    <FontAwesomeIcon icon={faTimes} />
-                  </button>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            <input
+              type="text"
+              name="nickname"
+              placeholder="Unique Nickname"
+              value={formData.nickname}
+              onChange={handleChange}
+              required
+              className="community-nickname"
+            />
           </div>
         </div>
-        <div className="createcommunity-actions">
-          <motion.button
-            type="submit"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <FontAwesomeIcon icon={faUpload} /> Create Community
-          </motion.button>
-          <motion.button
-            type="button"
-            onClick={onClose}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Cancel
-          </motion.button>
+        <div className="createcommunity-content">
+          <textarea
+            name="description"
+            placeholder="Community Description"
+            value={formData.description}
+            onChange={handleChange}
+            required
+          ></textarea>
+          <input
+            type="text"
+            name="lookingFor"
+            placeholder="Looking for (comma-separated)"
+            value={formData.lookingFor}
+            onChange={handleChange}
+          />
+          <div className="createcommunity-privacy">
+            <label>
+              <input
+                type="checkbox"
+                name="isPrivate"
+                checked={formData.isPrivate}
+                onChange={handleChange}
+              />
+              Private Community
+            </label>
+            <FontAwesomeIcon icon={formData.isPrivate ? faLock : faGlobe} />
+          </div>
         </div>
-      </form>
+      </div>
+      <motion.button
+        className="createcommunity-submit"
+        type="submit"
+        onClick={handleSubmit}
+        disabled={!isFormValid || isSubmitting}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        data-tooltip-id="submit-tooltip"
+        data-tooltip-content={
+          !isFormValid
+            ? "Please complete all required fields before creating the community"
+            : ""
+        }
+      >
+        {isSubmitting ? "Creating Community..." : "Create Community"}
+      </motion.button>
+      <Tooltip
+        id="submit-tooltip"
+        place="top"
+        effect="solid"
+        className="custom-tooltip"
+      />
     </motion.div>
   );
 };
