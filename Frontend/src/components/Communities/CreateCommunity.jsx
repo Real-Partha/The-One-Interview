@@ -1,5 +1,5 @@
 // src/components/Communities/CreateCommunity.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -26,6 +26,7 @@ const CreateCommunity = ({ onClose }) => {
   const [bannerPreview, setBannerPreview] = useState(null);
   const [isFormValid, setIsFormValid] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [nicknameAvailable, setNicknameAvailable] = useState(null);
 
   useEffect(() => {
     const { name, nickname, description } = formData;
@@ -37,6 +38,19 @@ const CreateCommunity = ({ onClose }) => {
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({ ...formData, [name]: type === "checkbox" ? checked : value });
+
+    if (name === "nickname") {
+      checkNicknameAvailability(value);
+    }
+  };
+
+  // Debounce utility function
+  const debounce = (func, delay) => {
+    let timeoutId;
+    return (...args) => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => func(...args), delay);
+    };
   };
 
   const handleFileChange = (e, type) => {
@@ -64,6 +78,27 @@ const CreateCommunity = ({ onClose }) => {
       setBannerPreview(null);
     }
   };
+
+  const checkNicknameAvailability = useCallback(
+    debounce(async (nickname) => {
+      if (nickname.trim() === "") {
+        setNicknameAvailable(null);
+        return;
+      }
+      try {
+        const response = await axios.get(
+          `${
+            import.meta.env.VITE_API_URL
+          }/communities/check-nickname/${nickname}`
+        );
+        setNicknameAvailable(response.data.available);
+      } catch (error) {
+        console.error("Error checking nickname availability:", error);
+        setNicknameAvailable(false);
+      }
+    }, 500),
+    []
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -162,15 +197,34 @@ const CreateCommunity = ({ onClose }) => {
               required
               className="community-name"
             />
-            <input
-              type="text"
-              name="nickname"
-              placeholder="Unique Nickname"
-              value={formData.nickname}
-              onChange={handleChange}
-              required
-              className="community-nickname"
-            />
+            <div className="createcommunity-nickname-input">
+              <input
+                type="text"
+                name="nickname"
+                placeholder="Unique Nickname"
+                value={formData.nickname}
+                onChange={handleChange}
+                required
+                className="community-nickname"
+              />
+              {formData.nickname && (
+                <span
+                  className={`createcommunity-nickname-availability ${
+                    nicknameAvailable === null
+                      ? ""
+                      : nicknameAvailable
+                      ? "available"
+                      : "unavailable"
+                  }`}
+                >
+                  {nicknameAvailable === null
+                    ? "Checking..."
+                    : nicknameAvailable
+                    ? "Available"
+                    : "Unavailable"}
+                </span>
+              )}
+            </div>
           </div>
         </div>
         <div className="createcommunity-content">
@@ -201,29 +255,43 @@ const CreateCommunity = ({ onClose }) => {
             <FontAwesomeIcon icon={formData.isPrivate ? faLock : faGlobe} />
           </div>
         </div>
+        <motion.button
+          className="createcommunity-submit"
+          type="submit"
+          onClick={handleSubmit}
+          disabled={!isFormValid || isSubmitting || !nicknameAvailable}
+          whileTap={{ scale: 0.95 }}
+          data-tooltip-id="submit-tooltip"
+          data-tooltip-content={
+            !isFormValid
+              ? "Please complete all required fields before creating the community"
+              : ""
+          }
+        >
+          {isSubmitting ? (
+            <>
+              <i className="fas fa-spinner fa-spin"></i> Creating Community...
+            </>
+          ) : (
+            "Create Community"
+          )}
+        </motion.button>
+        <Tooltip
+          id="submit-tooltip"
+          place="top"
+          effect="solid"
+          className="custom-tooltip"
+        />
       </div>
       <motion.button
-        className="createcommunity-submit"
-        type="submit"
-        onClick={handleSubmit}
-        disabled={!isFormValid || isSubmitting}
+        className="createcommunity-back-to-dashboard"
+        onClick={onClose}
+        disabled={isSubmitting}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        data-tooltip-id="submit-tooltip"
-        data-tooltip-content={
-          !isFormValid
-            ? "Please complete all required fields before creating the community"
-            : ""
-        }
       >
-        {isSubmitting ? "Creating Community..." : "Create Community"}
+        Back to Dashboard
       </motion.button>
-      <Tooltip
-        id="submit-tooltip"
-        place="top"
-        effect="solid"
-        className="custom-tooltip"
-      />
     </motion.div>
   );
 };

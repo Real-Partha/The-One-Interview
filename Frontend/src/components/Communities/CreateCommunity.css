@@ -12,10 +12,21 @@
 
 .createcommunity-card {
   background-color: #ffffff;
-  border-radius: 20px 20px 0 0;
+  border-radius: 20px;
   overflow: hidden;
   position: relative;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  margin: 1rem auto;
+  animation: create-community-glow 2s infinite alternate;
+}
+
+@keyframes create-community-glow {
+  from {
+    box-shadow: 0 0 5px rgba(108, 99, 255, 0.5);
+  }
+  to {
+    box-shadow: 0 0 20px rgba(108, 99, 255, 0.8);
+  }
 }
 
 .createcommunity-banner {
@@ -123,9 +134,26 @@
   background: transparent;
 }
 
+.createcommunity-content textarea,
+.createcommunity-content input[type="text"] {
+  width: 100%;
+  margin-bottom: 15px;
+  border: none;
+  border-bottom: 1px solid #e1e4e8;
+  font-size: 1rem;
+  background: transparent;
+}
+
+.createcommunity-card input[type="text"]:focus,
+.createcommunity-content textarea:focus
+{
+  outline: none;
+}
+
 .createcommunity-content textarea {
   height: 100px;
-  resize: vertical;
+  resize: none;
+  overflow: auto;
 }
 
 .createcommunity-privacy {
@@ -197,9 +225,53 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
 }
 
+.createcommunity-nickname-input {
+  position: relative;
+}
+
+.createcommunity-nickname-availability {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.8rem;
+}
+
+.createcommunity-nickname-availability.available {
+  color: green;
+}
+
+.createcommunity-nickname-availability.unavailable {
+  color: red;
+}
+
+.createcommunity-back-to-dashboard {
+  margin-top: 1rem;
+  padding: 10px 20px;
+  background-color: #f0f0f0;
+  color: #333;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.createcommunity-back-to-dashboard:hover {
+  background-color: #e0e0e0;
+}
+
+.createcommunity-back-to-dashboard:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* Dark mode styles */
 .dark-mode .createcommunity-card {
   background-color: #2c2c2c;
+}
+
+.dark-mode .createcommunity-header input[type="text"]{
+  color: #ffffff;
 }
 
 .dark-mode .createcommunity-banner,
@@ -227,7 +299,6 @@
 
 /* Responsive styles */
 @media (max-width: 768px) {
-
   .createcommunity-banner {
     height: 150px;
   }
@@ -258,7 +329,6 @@
 }
 
 @media (max-width: 480px) {
-
   .createcommunity-banner {
     height: 120px;
   }

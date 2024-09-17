@@ -102,6 +102,7 @@ router.post(
 
       res.status(201).json(community);
     } catch (error) {
+      console.log(error);
       res.status(400).json({ message: error.message });
     }
   }
@@ -138,6 +139,16 @@ router.get("/search", async (req, res) => {
       "name description members"
     ).limit(10);
     res.json(communities);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.get("/check-nickname/:nickname", async (req, res) => {
+  try {
+    const { nickname } = req.params;
+    const existingCommunity = await Community.findOne({ nickname });
+    res.json({ available: !existingCommunity });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

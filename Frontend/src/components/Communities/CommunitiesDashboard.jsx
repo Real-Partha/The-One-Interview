@@ -22,24 +22,24 @@ const CommunitiesDashboard = () => {
   const [showCreateCommunity, setShowCreateCommunity] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchCommunities = async () => {
-      try {
-        const [userCommunitiesRes, topCommunitiesRes] = await Promise.all([
-          axios.get(`${import.meta.env.VITE_API_URL}/communities/user`, {
-            withCredentials: true,
-          }),
-          axios.get(`${import.meta.env.VITE_API_URL}/communities/top`),
-        ]);
-        setUserCommunities(userCommunitiesRes.data);
-        setTopCommunities(topCommunitiesRes.data);
-      } catch (error) {
-        console.error("Error fetching communities:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchCommunities = async () => {
+    try {
+      const [userCommunitiesRes, topCommunitiesRes] = await Promise.all([
+        axios.get(`${import.meta.env.VITE_API_URL}/communities/user`, {
+          withCredentials: true,
+        }),
+        axios.get(`${import.meta.env.VITE_API_URL}/communities/top`),
+      ]);
+      setUserCommunities(userCommunitiesRes.data);
+      setTopCommunities(topCommunitiesRes.data);
+    } catch (error) {
+      console.error("Error fetching communities:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchCommunities();
   }, []);
 
@@ -57,11 +57,25 @@ const CommunitiesDashboard = () => {
   };
 
   if (showJoinCommunity) {
-    return <JoinCommunity onClose={() => setShowJoinCommunity(false)} />;
+    return (
+      <JoinCommunity
+        onClose={() => {
+          setShowJoinCommunity(false);
+          fetchCommunities();
+        }}
+      />
+    );
   }
 
   if (showCreateCommunity) {
-    return <CreateCommunity onClose={() => setShowCreateCommunity(false)} />;
+    return (
+      <CreateCommunity
+        onClose={() => {
+          setShowCreateCommunity(false);
+          fetchCommunities();
+        }}
+      />
+    );
   }
   return (
     <motion.div

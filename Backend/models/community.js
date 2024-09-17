@@ -50,7 +50,7 @@ const communitySchema = new mongoose.Schema({
   },
   profilePhoto: {
     type: String,
-    default: "com_prof.jpg",
+    default: "com_prof.png",
   },
   bannerPhoto: {
     type: String,
