@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import {
   faImage,
   faTimes,
@@ -86,6 +87,7 @@ const CreateCommunity = ({ onClose }) => {
         return;
       }
       try {
+        setNicknameAvailable(null);
         const response = await axios.get(
           `${
             import.meta.env.VITE_API_URL
@@ -216,14 +218,21 @@ const CreateCommunity = ({ onClose }) => {
                       ? "available"
                       : "unavailable"
                   }`}
+                  data-tooltip-id="nickname-tooltip"
+                  data-tooltip-content={
+                    nicknameAvailable
+                      ? "Nickname is all yours!"
+                      : "Sorry, nickname is already taken"
+                  }
                 >
                   {nicknameAvailable === null
-                    ? "Checking..."
+                    ? "✓"
                     : nicknameAvailable
-                    ? "Available"
-                    : "Unavailable"}
+                    ? "✓"
+                    : "✗"}
                 </span>
               )}
+              <Tooltip id="nickname-tooltip" place="top" effect="solid" />
             </div>
           </div>
         </div>
@@ -290,7 +299,7 @@ const CreateCommunity = ({ onClose }) => {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
-        Back to Dashboard
+        <FontAwesomeIcon icon={faArrowLeft} /> Back to Dashboard
       </motion.button>
     </motion.div>
   );
