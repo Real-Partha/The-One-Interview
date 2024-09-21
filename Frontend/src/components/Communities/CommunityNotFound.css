@@ -1,0 +1,50 @@
+/* CommunityNotFound.css */
+
+.communitynotfound-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+  padding: 20px;
+}
+
+.communitynotfound-title {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.communitynotfound-message {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
+
+.communitynotfound-link {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.communitynotfound-link:hover {
+  background-color: #0056b3;
+}
+
+/* Dark mode styles */
+.communitynotfound-container.dark-mode {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+.communitynotfound-container.dark-mode .communitynotfound-link {
+  background-color: #4a90e2;
+}
+
+.communitynotfound-container.dark-mode .communitynotfound-link:hover {
+  background-color: #3a78c2;
+}

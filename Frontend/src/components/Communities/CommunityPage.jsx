@@ -9,11 +9,12 @@ import Sidebar from "../Left Sidebar/Sidebar";
 import NavBar from "../Navbar/Navbar";
 import MainLoader from "../commonPages/MainLoader";
 import LoginSignupPopup from "../commonPages/LoginSignupPopup";
-import CommunityOverview from "./CommunityOverview";
-import CommunityPosts from "./CommunityPosts";
-import CommunityAnnouncements from "./CommunityAnnouncements";
-import CommunitySettings from "./CommunitySettings";
-import "./CommunityPage.css"; // You'll need to create this CSS file
+import CommunityOverview from "./CommunityPage/CommunityOverview";
+import CommunityPosts from "./CommunityPage/CommunityPosts";
+import CommunityAnnouncements from "./CommunityPage/CommunityAnnouncements";
+import CommunitySettings from "./CommunityPage/CommunitySettings";
+import CommunityNotFound from "./CommunityNotFound";
+import "./CommunityPage.css";
 
 const CommunityPage = () => {
   const { isDarkMode } = useTheme();
@@ -22,10 +23,23 @@ const CommunityPage = () => {
   const [error, setError] = useState(null);
   const [activeSection, setActiveSection] = useState("overview");
   const [isMainLoading, setIsMainLoading] = useState(true);
-  const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
 
   const location = useLocation();
   const navigate = useNavigate();
+
+  const checkAuthStatus = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/auth/status`,
+        { withCredentials: true }
+      );
+      setIsAuthenticated(response.data.isAuthenticated);
+    } catch (err) {
+      console.error("Error checking auth status:", err);
+      setIsAuthenticated(false);
+    }
+  };
 
   const fetchCommunityData = async () => {
     try {
@@ -36,35 +50,36 @@ const CommunityPage = () => {
       setCommunity(response.data);
     } catch (err) {
       console.error("Error fetching community data:", err);
-      setError("Error fetching community data");
+      setError("Community not found");
     } finally {
-      setLoading(false);
+      setIsMainLoading(false);
     }
   };
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const tab = params.get("tab");
-
-    const firstLoading = async () => {
-      if (!tab) {
-        setIsMainLoading(true);
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-        setIsMainLoading(false);
+    const initializePage = async () => {
+      await checkAuthStatus();
+      if (isAuthenticated) {
+        await fetchCommunityData();
       } else {
         setIsMainLoading(false);
       }
     };
 
-    fetchCommunityData();
-    firstLoading();
+    initializePage();
 
-    if (tab && ["overview", "posts", "announcements", "settings"].includes(tab)) {
+    const params = new URLSearchParams(location.search);
+    const tab = params.get("tab");
+
+    if (
+      tab &&
+      ["overview", "posts", "announcements", "settings"].includes(tab)
+    ) {
       setActiveSection(tab);
     } else {
       setActiveSection("overview");
     }
-  }, [location, nickname]);
+  }, [location, nickname, isAuthenticated]);
 
   const handleSetActiveSection = (section) => {
     if (section === "Back To Feed") {
@@ -79,45 +94,73 @@ const CommunityPage = () => {
     return <MainLoader />;
   }
 
-  if (!community) {
+  if (!isAuthenticated) {
     return <LoginSignupPopup />;
   }
 
-  const pageTitle = community ? `${community.name} | The One Interview` : 'Community | The One Interview';
+  if (error) {
+    return <CommunityNotFound />;
+  }
+
+  const pageTitle = community
+    ? `${community.name} | The One Interview`
+    : "Community | The One Interview";
   const pageDescription = community
     ? `Explore the ${community.name} community on The One Interview. Join discussions, share knowledge, and connect with like-minded individuals.`
-    : 'Explore communities on The One Interview. Join discussions, share knowledge, and connect with like-minded individuals.';
+    : "Explore communities on The One Interview. Join discussions, share knowledge, and connect with like-minded individuals.";
 
   return (
-    <div className={`community-page ${isDarkMode ? "dark-mode" : "light-mode"}`}>
+    <div
+      className={`communitypage-container ${
+        isDarkMode ? "dark-mode" : "light-mode"
+      }`}
+    >
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
         <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={pageDescription} />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={`https://the-one-interview.vercel.app/community/${nickname}`} />
-        {community && community.bannerPhoto && <meta property="og:image" content={community.bannerPhoto} />}
+        <meta
+          property="og:url"
+          content={`https://the-one-interview.vercel.app/community/${nickname}`}
+        />
+        {community && community.bannerPhoto && (
+          <meta property="og:image" content={community.bannerPhoto} />
+        )}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={pageTitle} />
         <meta name="twitter:description" content={pageDescription} />
-        {community && community.bannerPhoto && <meta name="twitter:image" content={community.bannerPhoto} />}
-        <link rel="canonical" href={`https://the-one-interview.vercel.app/community/${nickname}`} />
+        {community && community.bannerPhoto && (
+          <meta name="twitter:image" content={community.bannerPhoto} />
+        )}
+        <link
+          rel="canonical"
+          href={`https://the-one-interview.vercel.app/community/${nickname}`}
+        />
       </Helmet>
 
       <NavBar />
-      <div className="community-main-content">
+      <div className="communitypage-main-content">
         <Sidebar
           page="community"
           activeSection={activeSection}
           handleSetActiveSection={handleSetActiveSection}
         />
 
-        <section className="community-content">
-          {activeSection === "overview" && <CommunityOverview community={community} />}
-          {activeSection === "posts" && <CommunityPosts community={community} />}
-          {activeSection === "announcements" && <CommunityAnnouncements community={community} />}
-          {activeSection === "settings" && <CommunitySettings community={community} />}
+        <section className="communitypage-content">
+          {activeSection === "overview" && (
+            <CommunityOverview community={community} />
+          )}
+          {activeSection === "posts" && (
+            <CommunityPosts community={community} />
+          )}
+          {activeSection === "announcements" && (
+            <CommunityAnnouncements community={community} />
+          )}
+          {activeSection === "settings" && (
+            <CommunitySettings community={community} />
+          )}
         </section>
       </div>
     </div>

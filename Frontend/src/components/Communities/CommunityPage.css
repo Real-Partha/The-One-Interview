@@ -1,0 +1,42 @@
+/* CommunityPage.css */
+
+.communitypage-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .communitypage-main-content {
+    display: flex;
+    flex: 1;
+    margin-top: 6.8rem; /* Adjust based on your navbar height */
+  }
+  
+  .communitypage-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+  }
+  
+  /* Dark mode styles */
+  .communitypage-container.dark-mode {
+    background-color: #1a1a1a;
+    color: #ffffff;
+  }
+  
+  .communitypage-container.light-mode {
+    background-color: #ffffff;
+    color: #333333;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .communitypage-main-content {
+      flex-direction: column;
+    }
+  
+    .communitypage-content {
+      padding: 10px;
+    }
+  }
+  

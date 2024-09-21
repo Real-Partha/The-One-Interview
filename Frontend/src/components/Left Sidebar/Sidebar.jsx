@@ -1,3 +1,5 @@
+// Sidebar.jsx
+
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Sidebar.css";
@@ -33,7 +35,7 @@ const Sidebar = ({
           title: "Interview Blogs",
         },
       ];
-    } else {
+    } else if (page === "profile") {
       return [
         { section: "profile", icon: "fa fa-user", title: "Profile" },
         { section: "account", icon: "fa fa-cog", title: "Account" },
@@ -48,16 +50,27 @@ const Sidebar = ({
           icon: "fa fa-bookmark",
           title: "Saved Questions",
         },
-        // {
-        //   section: "notifications",
-        //   icon: "fa fa-bell",
-        //   title: "Notifications",
-        // },
         {
           section: "Back to Questions",
           icon: "fa-solid fa-arrow-left",
           title: "Back to Questions",
-        }
+        },
+      ];
+    } else if (page === "community") {
+      return [
+        { section: "overview", icon: "fa-solid fa-home", title: "Overview" },
+        { section: "posts", icon: "fa-solid fa-file-alt", title: "Posts" },
+        {
+          section: "announcements",
+          icon: "fa-solid fa-bullhorn",
+          title: "Announcements",
+        },
+        { section: "settings", icon: "fa-solid fa-cog", title: "Settings" },
+        {
+          section: "Back To Feed",
+          icon: "fa-solid fa-arrow-left",
+          title: "Back To Feed",
+        },
       ];
     }
   };
@@ -85,7 +98,13 @@ const Sidebar = ({
                 className={`card ${
                   activeSection === item.section ? "active" : ""
                 }`}
-                onClick={() => handleSetActiveSection(item.section)}
+                onClick={() => {
+                  if (isMobile) {
+                    handleMobileMenuItemClick(item.section);
+                  } else {
+                    handleSetActiveSection(item.section);
+                  }
+                }}
               >
                 <i className={item.icon} />
                 <div className="card-details">
@@ -96,7 +115,7 @@ const Sidebar = ({
           </div>
         ))}
       </nav>
-      {page === "homepage" && !isMobile && (
+      {(page === "homepage" || isMobile) && (
         <Link to="/communities" className="commnties_button">
           <button className="join-class">Join a Community</button>
         </Link>

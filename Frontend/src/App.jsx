@@ -28,6 +28,7 @@ import Feedback from "./components/Utility Pages/Feedback/Feedback";
 import { BannerProvider } from "./components/context/BannerContext";
 import TagPage from "./components/TagPage/TagPage";
 import CommunitiesDashboard from './components/Communities/CommunitiesDashboard';
+import CommunityPage from './components/Communities/CommunityPage';
 
 function AppContent() {
   const location = useLocation();
@@ -53,9 +54,7 @@ function AppContent() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/company-questions" element={<CompanyPage />} />
         <Route path="/admin" element={<AdminPage />} />
-        <Route path="/interview-blogs" element={<UnderConstruction />} />
         <Route path="/communities" element={<CommunitiesDashboard />} />
-        <Route path="*" element={<NotFound />} />
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/faq" element={<FAQs />} />
@@ -63,6 +62,9 @@ function AppContent() {
         <Route path="/developers" element={<DevelopersPage />} />
         <Route path="/feedback" element={<Feedback />} />
         <Route path="/tags" element={<TagPage />} />
+        <Route path="/community/:nickname" element={<CommunityPage />} />
+        <Route path="/interview-blogs" element={<UnderConstruction />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       {shouldShowNavBarAndFooter && <Footer />}
     </>

@@ -144,6 +144,18 @@ router.get("/search", async (req, res) => {
   }
 });
 
+router.get("/:nickname", async (req, res) => {
+  try {
+    const community = await Community.findOne({ nickname: req.params.nickname });
+    if (!community) {
+      return res.status(404).json({ message: "Community not found" });
+    }
+    res.json(community);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 router.get("/check-nickname/:nickname", async (req, res) => {
   try {
     const { nickname } = req.params;

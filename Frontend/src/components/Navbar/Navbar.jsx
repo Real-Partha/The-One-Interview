@@ -38,12 +38,17 @@ const NavBar = () => {
     if (location.pathname.startsWith("/profile")) {
       return "profile";
     }
+    if (location.pathname.startsWith("/community")) {
+      return "community";
+    }
     return "homepage";
   };
 
   const handleSetActiveSection = (section) => {
     setActiveSection(section);
-    if (section === "account") {
+    if (getCurrentPage() === "community") {
+      navigate(`/community/${location.pathname.split("/")[2]}?tab=${section}`);
+    } else if (section === "account") {
       navigate("/profile?tab=account");
     } else {
       navigate(`/profile?tab=${section}`);
@@ -52,7 +57,11 @@ const NavBar = () => {
   };
 
   const handleMobileMenuItemClick = (to) => {
-    navigate(to);
+    if (typeof to === "string" && to.startsWith("/")) {
+      navigate(to);
+    } else {
+      handleSetActiveSection(to);
+    }
     setIsMobileMenuOpen(false);
   };
 

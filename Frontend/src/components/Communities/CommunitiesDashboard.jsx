@@ -138,7 +138,7 @@ const CommunitiesDashboard = () => {
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <Link to={`/communities/${community._id}`}>
+                  <Link to={`/community/${community.nickname}`}>
                     <h3>{community.name}</h3>
                     <p>{community.description}</p>
                     <span>
@@ -178,7 +178,7 @@ const CommunitiesDashboard = () => {
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <Link to={`/communities/${community._id}`}>
+                  <Link to={`/community/${community.nickname}`}>
                     <h3>{community.name}</h3>
                     <p>{community.description}</p>
                     <span>
