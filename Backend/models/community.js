@@ -54,7 +54,7 @@ const communitySchema = new mongoose.Schema({
   },
   bannerPhoto: {
     type: String,
-    default: "com_banner.jpg",
+    default: "com_banner.png",
   },
 });
 

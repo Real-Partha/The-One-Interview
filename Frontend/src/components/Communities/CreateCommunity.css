@@ -170,6 +170,7 @@
 
 .createcommunity-privacy input[type="checkbox"] {
   margin-right: 10px;
+  outline: none;
 }
 
 .remove-image {
@@ -226,14 +227,27 @@
 
 .createcommunity-nickname-input {
   position: relative;
+  display: flex;
+  width: 100%;
+}
+
+.createcommunity-nickname-input input[type="text"] {
+  overflow: hidden;
+  width: 90%;
 }
 
 .createcommunity-nickname-availability {
   position: absolute;
-  right: 10px;
-  top: 50%;
+  right: 1rem;
+  top: 0.7rem;
   transform: translateY(-50%);
   font-size: 0.8rem;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.createcommunity-nickname-availability.too-long {
+  color: red;
 }
 
 .createcommunity-nickname-availability.available {
@@ -264,23 +278,6 @@
   cursor: not-allowed;
 }
 
-.createcommunity-nickname-availability {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 1.2rem;
-  cursor: pointer;
-}
-
-.createcommunity-nickname-availability.available {
-  color: #4caf50;
-}
-
-.createcommunity-nickname-availability.unavailable {
-  color: #f44336;
-}
-
 .createcommunity-back-to-dashboard {
   margin-top: 1rem;
   padding: 10px 20px;
@@ -303,14 +300,21 @@
   margin-right: 8px;
 }
 
-/* Tooltip styles */
-/* .react-tooltip {
-  background-color: #333 !important;
-  color: #fff !important;
-  font-size: 14px !important;
-  padding: 8px 12px !important;
-  border-radius: 4px !important;
-} */
+.createcommunity-privacy label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.createcommunity-privacy label .fa-lock,
+.createcommunity-privacy label .fa-globe {
+  margin-right: 10px;
+}
+
+.createcommunity-privacy input[type="checkbox"] {
+  margin-right: 10px;
+}
+
 
 /* Dark mode styles */
 .dark-mode .createcommunity-card {

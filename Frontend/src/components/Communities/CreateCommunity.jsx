@@ -3,14 +3,18 @@ import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import {
+  faArrowLeft,
+  faCheckCircle,
+  faTimesCircle,
+  faSpinner,
   faImage,
   faTimes,
   faLock,
   faGlobe,
 } from "@fortawesome/free-solid-svg-icons";
 import { Tooltip } from "react-tooltip";
+import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import "./CreateCommunity.css";
 
 const CreateCommunity = ({ onClose }) => {
@@ -28,11 +32,13 @@ const CreateCommunity = ({ onClose }) => {
   const [isFormValid, setIsFormValid] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [nicknameAvailable, setNicknameAvailable] = useState(null);
+  const [isChecking, setIsChecking] = useState(false);
+  const [isNicknameTooLong, setIsNicknameTooLong] = useState(false);
 
   useEffect(() => {
     const { name, nickname, description } = formData;
     setIsFormValid(
-      name.trim() !== "" && nickname.trim() !== "" && description.trim() !== ""
+      name.trim() !== "" && !isNicknameTooLong && nickname.trim() !== "" && description.trim() !== ""
     );
   }, [formData]);
 
@@ -41,7 +47,13 @@ const CreateCommunity = ({ onClose }) => {
     setFormData({ ...formData, [name]: type === "checkbox" ? checked : value });
 
     if (name === "nickname") {
-      checkNicknameAvailability(value);
+      if (value.length > 30) {
+        setIsNicknameTooLong(true);
+        setNicknameAvailable(null);
+      } else {
+        setIsNicknameTooLong(false);
+        checkNicknameAvailability(value);
+      }
     }
   };
 
@@ -82,11 +94,12 @@ const CreateCommunity = ({ onClose }) => {
 
   const checkNicknameAvailability = useCallback(
     debounce(async (nickname) => {
-      if (nickname.trim() === "") {
+      if (nickname.trim() === "" || nickname.length > 30) {
         setNicknameAvailable(null);
         return;
       }
       try {
+        setIsChecking(true);
         setNicknameAvailable(null);
         const response = await axios.get(
           `${
@@ -97,6 +110,8 @@ const CreateCommunity = ({ onClose }) => {
       } catch (error) {
         console.error("Error checking nickname availability:", error);
         setNicknameAvailable(false);
+      } finally {
+        setIsChecking(false);
       }
     }, 500),
     []
@@ -212,7 +227,9 @@ const CreateCommunity = ({ onClose }) => {
               {formData.nickname && (
                 <span
                   className={`createcommunity-nickname-availability ${
-                    nicknameAvailable === null
+                    isNicknameTooLong
+                      ? "too-long"
+                      : nicknameAvailable === null
                       ? ""
                       : nicknameAvailable
                       ? "available"
@@ -220,16 +237,27 @@ const CreateCommunity = ({ onClose }) => {
                   }`}
                   data-tooltip-id="nickname-tooltip"
                   data-tooltip-content={
-                    nicknameAvailable
+                    isNicknameTooLong
+                      ? "Nickname cannot be more than 30 characters"
+                      : nicknameAvailable
                       ? "Nickname is all yours!"
                       : "Sorry, nickname is already taken"
                   }
                 >
-                  {nicknameAvailable === null
-                    ? "✓"
-                    : nicknameAvailable
-                    ? "✓"
-                    : "✗"}
+                  <FontAwesomeIcon
+                    icon={
+                      isNicknameTooLong
+                        ? faExclamationCircle
+                        : isChecking
+                        ? faSpinner
+                        : nicknameAvailable === null
+                        ? faSpinner
+                        : nicknameAvailable
+                        ? faCheckCircle
+                        : faTimesCircle
+                    }
+                    spin={isChecking}
+                  />
                 </span>
               )}
               <Tooltip id="nickname-tooltip" place="top" effect="solid" />
@@ -253,6 +281,7 @@ const CreateCommunity = ({ onClose }) => {
           />
           <div className="createcommunity-privacy">
             <label>
+              <FontAwesomeIcon icon={formData.isPrivate ? faLock : faGlobe} />
               <input
                 type="checkbox"
                 name="isPrivate"
@@ -261,7 +290,6 @@ const CreateCommunity = ({ onClose }) => {
               />
               Private Community
             </label>
-            <FontAwesomeIcon icon={formData.isPrivate ? faLock : faGlobe} />
           </div>
         </div>
         <motion.button
