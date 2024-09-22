@@ -197,6 +197,7 @@ const UserProfile = () => {
 
 
   const getGenderIcon = (gender) => {
+    if (!gender) return "";
     switch (gender.toLowerCase()) {
       case 'male':
         return faMars;
@@ -206,6 +207,7 @@ const UserProfile = () => {
         return faGenderless;
     }
   };
+  
 
   if (loading) return <div className="UserProfile-loading">Loading...</div>;
   if (error) return <div className="UserProfile-error">{error}</div>;

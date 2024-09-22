@@ -1,0 +1,165 @@
+.ProfilePreview-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+  }
+  
+  .ProfilePreview-overlay.light {
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+  
+  .ProfilePreview-overlay.dark {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+  
+  .ProfilePreview {
+    position: relative;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 90%;
+    width: 350px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .ProfilePreview-overlay.light .ProfilePreview {
+    background-color: white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  .ProfilePreview-overlay.dark .ProfilePreview {
+    background-color: #2a2a2a;
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
+  }
+  
+  .ProfilePreview-imageWrapper {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .ProfilePreview-pic {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .ProfilePreview-username {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+  }
+  
+  .ProfilePreview-overlay.light .ProfilePreview-username {
+    color: #333;
+  }
+  
+  .ProfilePreview-overlay.dark .ProfilePreview-username {
+    color: #fff;
+  }
+  
+  .ProfilePreview-bio {
+    font-size: 1em;
+    margin-bottom: 20px;
+    line-height: 1.5;
+    transition: all 0.3s ease;
+  }
+  
+  .ProfilePreview-overlay.light .ProfilePreview-bio {
+    color: #666;
+  }
+  
+  .ProfilePreview-overlay.dark .ProfilePreview-bio {
+    color: #ccc;
+  }
+  
+  .ProfilePreview-link {
+    display: inline-block;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+  }
+  
+  .ProfilePreview-overlay.light .ProfilePreview-link {
+    background-color: #6c63ff;
+    color: white;
+  }
+  
+  .ProfilePreview-overlay.dark .ProfilePreview-link {
+    background-color: #8c8aff;
+    color: #1a1a1a;
+  }
+  
+  .ProfilePreview-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(108, 99, 255, 0.4);
+  }
+  
+  .ProfilePreview-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .ProfilePreview-overlay.light .ProfilePreview-close {
+    color: #666;
+  }
+  
+  .ProfilePreview-overlay.dark .ProfilePreview-close {
+    color: #ccc;
+  }
+  
+  .ProfilePreview-close:hover {
+    color: #ff6b6b;
+  }
+  
+  .ProfilePreview h2,
+  .ProfilePreview p,
+  .ProfilePreview-link {
+    margin-bottom: 15px;
+  }
+  
+  .ProfilePreview svg {
+    margin-right: 8px;
+  }
+  
+  @media (max-width: 480px) {
+    .ProfilePreview {
+      padding: 30px;
+      width: 90%;
+    }
+  
+    .ProfilePreview-imageWrapper {
+      width: 100px;
+      height: 100px;
+    }
+  
+    .ProfilePreview-username {
+      font-size: 1.3em;
+    }
+  
+    .ProfilePreview-bio {
+      font-size: 0.9em;
+    }
+  }
+  

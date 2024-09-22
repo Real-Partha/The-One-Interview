@@ -22,6 +22,8 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import useNotification from "../Notifications.jsx";
+import ProfilePreview from '../UserProfile/ProfilePreview.jsx';
+
 
 const Post = () => {
   const { questionId } = useParams();
@@ -43,6 +45,8 @@ const Post = () => {
   const [isSaving, setIsSaving] = useState(false);
   const navigate = useNavigate();
   const { SuccessNotification, ErrorNotification } = useNotification();
+  const [showProfilePreview, setShowProfilePreview] = useState(false);
+  const [previewUser, setPreviewUser] = useState(null);
 
   const handleShare = () => {
     const postUrl = window.location.href;
@@ -56,6 +60,26 @@ const Post = () => {
         ErrorNotification("Failed to copy link");
       });
   };
+
+
+  const handleProfileClick = async (username) => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/users/${username}`);
+      setPreviewUser({
+        ...response.data,
+        profilePicture: response.data.profilePicture || response.data.profile_pic
+      });
+      setShowProfilePreview(true);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
+
+  const handleCloseProfilePreview = () => {
+    setShowProfilePreview(false);
+    setPreviewUser(null);
+  };
+
 
   const generateMetaDescription = (question, answer) => {
     const cleanAnswer = answer.replace(/<[^>]*>/g, "");
@@ -434,11 +458,13 @@ const Post = () => {
           )}
           <h1 className="Post-title">{question.question}</h1>
           <div className="Post-meta">
-            <img
-              src={question.profile_pic || "/img/profile_pic.png"}
-              alt="Profile"
-              className="Post-profile-pic"
-            />
+        <img
+          src={question.profile_pic || "/img/profile_pic.png"}
+          alt="Profile"
+          className="Post-profile-pic"
+          onClick={() => handleProfileClick(question.username)}
+          style={{ cursor: 'pointer' }}
+        />
             <div className="Post-info">
               <p className="Post-username">{question.username}</p>
               <p className="Post-date">
@@ -624,6 +650,11 @@ const Post = () => {
           </div>
         </motion.div>
       </div>
+      <AnimatePresence>
+        {showProfilePreview && previewUser && (
+          <ProfilePreview user={previewUser} onClose={handleCloseProfilePreview} />
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 };
