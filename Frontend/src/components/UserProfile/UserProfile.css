@@ -590,3 +590,231 @@ body.dark-mode .UserProfile-votes {
     font-size: 1rem;
   }
 }
+
+/* UserProfile.css */
+
+.UserProfile-container {
+  max-width: 70rem;
+  margin: 5rem auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.UserProfile-banner {
+  position: relative;
+  height: 250px;
+  overflow: hidden;
+}
+
+.UserProfile-bannerImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.UserProfile-banner:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.UserProfile-content {
+  padding: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.UserProfile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.UserProfile-profilePicture {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 4px solid #ffffff;
+  object-fit: cover;
+  margin-top: -80px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.UserProfile-nameWrapper {
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.UserProfile-name {
+  font-size: 28px;
+  font-weight: bold;
+  color: #fff;
+  margin-right: 10px;
+}
+
+.UserProfile-genderIcon {
+  font-size: 18px;
+  color: #fff;
+}
+
+.UserProfile-username {
+  font-size: 16px;
+  color: #ccc;
+  margin-top: 5px;
+}
+
+.UserProfile-bio {
+  font-size: 14px;
+  color: #eee;
+  margin-top: 10px;
+}
+
+.UserProfile-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.UserProfile-likeButton,
+.UserProfile-followButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 25px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.UserProfile-likeButton {
+  background-color: #ff4d4d;
+  color: white;
+}
+
+.UserProfile-likeButton:hover {
+  background-color: #e63946;
+}
+
+.UserProfile-followButton {
+  background-color: #4267b2;
+  color: white;
+}
+
+.UserProfile-followButton:hover {
+  background-color: #365899;
+}
+
+.UserProfile-stats {
+  display: flex;
+  justify-content: space-around;
+  margin: 2rem 0;
+  background-color: #f7f7f7;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.UserProfile-stat {
+  text-align: center;
+}
+
+.UserProfile-stat svg {
+  font-size: 1.5rem;
+  color: #6c63ff;
+  margin-bottom: 0.5rem;
+}
+
+.UserProfile-stat span {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.UserProfile-stat p {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.UserProfile-questionTabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.UserProfile-questionTabs button {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: #666;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  transition: all 0.3s ease;
+}
+
+.UserProfile-questionTabs button.active {
+  color: #6c63ff;
+  border-bottom: 2px solid #6c63ff;
+}
+
+.UserProfile-questionList {
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.UserProfile-questionList h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.UserProfile-questionList h2 svg {
+  margin-right: 0.5rem;
+  color: #6c63ff;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .UserProfile-container {
+    margin: 2rem 1rem;
+  }
+
+  .UserProfile-banner {
+    height: 200px;
+  }
+
+  .UserProfile-profilePicture {
+    width: 120px;
+    height: 120px;
+    margin-top: -60px;
+  }
+
+  .UserProfile-name {
+    font-size: 24px;
+  }
+
+  .UserProfile-username {
+    font-size: 14px;
+  }
+
+  .UserProfile-stats {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .UserProfile-stat {
+    margin-bottom: 1rem;
+  }
+}

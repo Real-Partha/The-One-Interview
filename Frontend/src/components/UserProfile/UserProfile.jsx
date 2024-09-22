@@ -148,53 +148,49 @@ const UserProfile = () => {
 
   return (
     <motion.div
-      className="UserProfile-container"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+    className="UserProfile-container"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <motion.div
+      className="UserProfile-banner"
+      initial={{ height: 0 }}
+      animate={{ height: '350px' }}
       transition={{ duration: 0.5 }}
     >
-      <motion.div
-        className="UserProfile-banner"
-        initial={{ height: 0 }}
-        animate={{ height: '200px' }}
-        transition={{ duration: 0.5 }}
-      >
-        <img src={userProfile.bannerPicture} alt="Banner" className="UserProfile-bannerImage" />
-      </motion.div>
-      <div className="UserProfile-content">
-        <div className="UserProfile-header">
-          <motion.img
-            src={userProfile.profilePicture}
-            alt="Profile"
-            className="UserProfile-profilePicture"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.5, type: 'spring', stiffness: 260, damping: 20 }}
-          />
-          <motion.div
-            className="UserProfile-info"
-            initial={{ y: 50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.7, duration: 0.5 }}
-          >
-            <div className="UserProfile-nameWrapper">
-              <h1 className="UserProfile-name">{userProfile.name}               <FontAwesomeIcon icon={getGenderIcon(userProfile.gender)} className="UserProfile-genderIcon" />
-              </h1>
-              {/* <FontAwesomeIcon icon={getGenderIcon(userProfile.gender)} className="UserProfile-genderIcon" /> */}
-            </div>
-            <p className="UserProfile-username">@{userProfile.username}</p>
-            <p className="UserProfile-bio">{userProfile.bio}</p>
-
-          </motion.div>
-
-
-
-          <motion.div
-            className="UserProfile-actions"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.9, duration: 0.5 }}
-          >
+      <img src={userProfile.bannerPicture} alt="Banner" className="UserProfile-bannerImage" />
+    </motion.div>
+    <div className="UserProfile-content">
+      <div className="UserProfile-header">
+        <motion.img
+          src={userProfile.profilePicture}
+          alt="Profile"
+          className="UserProfile-profilePicture"
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.5, type: 'spring', stiffness: 260, damping: 20 }}
+        />
+        <motion.div
+          className="UserProfile-info"
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.7, duration: 0.5 }}
+        >
+          <div className="UserProfile-nameWrapper">
+            <h1 className="UserProfile-name">{userProfile.name}</h1>
+            <FontAwesomeIcon icon={getGenderIcon(userProfile.gender)} className="UserProfile-genderIcon" />
+          </div>
+          <p className="UserProfile-username">@{userProfile.username}</p>
+          <p className="UserProfile-bio">{userProfile.bio}</p>
+        </motion.div>
+        <motion.div
+          className="UserProfile-actions"
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.9, duration: 0.5 }}
+        >
+     
             <motion.button
               className={`UserProfile-likeButton ${isLiked ? 'liked' : ''}`}
               onClick={handleLike}
