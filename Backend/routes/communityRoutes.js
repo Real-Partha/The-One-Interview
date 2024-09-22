@@ -2,9 +2,10 @@
 const express = require("express");
 const router = express.Router();
 const Community = require("../models/community");
+const Question = require("../models/question");
 const User = require("../models/user");
 const multer = require("multer");
-const { uploadObject, deleteObject } = require("../utils/amazonS3");
+const { uploadObject, deleteObject,getSignedUrlForObject } = require("../utils/amazonS3");
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -146,10 +147,17 @@ router.get("/search", async (req, res) => {
 
 router.get("/:nickname", async (req, res) => {
   try {
-    const community = await Community.findOne({ nickname: req.params.nickname });
+    const community = await Community.findOne({
+      nickname: req.params.nickname,
+    });
     if (!community) {
       return res.status(404).json({ message: "Community not found" });
     }
+    const profilePhotoUrl = await getSignedUrlForObject(community.profilePhoto);
+    const bannerPhotoUrl = await getSignedUrlForObject(community.bannerPhoto);
+
+    community.profilePhoto = profilePhotoUrl;
+    community.bannerPhoto = bannerPhotoUrl;
     res.json(community);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -165,5 +173,47 @@ router.get("/check-nickname/:nickname", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
+router.get("/:nickname/top-questions", async (req, res) => {
+  try {
+    const community = await Community.findOne({
+      nickname: req.params.nickname,
+    });
+    if (!community) {
+      return res.status(404).json({ message: "Community not found" });
+    }
+
+    const topQuestions = await Question.find({ community: community._id })
+      .sort({ upvotes: -1 })
+      .limit(5)
+      .select("question upvotes commentscount");
+
+    res.json(topQuestions);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Check membership status
+router.get(
+  "/:nickname/membership-status",
+  isAuthenticated,
+  async (req, res) => {
+    try {
+      const community = await Community.findOne({
+        nickname: req.params.nickname,
+      });
+      if (!community) {
+        return res.status(404).json({ message: "Community not found" });
+      }
+
+      const isMember = community.members.includes(req.user._id);
+      res.json({ isMember });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+);
 
 module.exports = router;

@@ -1,0 +1,322 @@
+/* CommunityOverview.css */
+
+.communityoverview-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.25rem 0.375rem rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.communityoverview-banner {
+  height: 12.5rem;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.communityoverview-profile-pic {
+  position: absolute;
+  bottom: -3.125rem;
+  left: 1.25rem;
+  width: 6.25rem;
+  height: 6.25rem;
+  border-radius: 50%;
+  border: 0.25rem solid #ffffff;
+  overflow: hidden;
+}
+
+.communityoverview-profile-pic img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.communityoverview-content {
+  padding: 3.75rem 1.25rem 1.25rem;
+}
+
+.communityoverview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.25rem;
+}
+
+.communityoverview-title {
+  margin-bottom: 0.625rem;
+}
+
+.communityoverview-header h1 {
+  font-size: 1.75rem;
+  margin: 0;
+}
+
+.communityoverview-nickname {
+  font-size: 1.125rem;
+  color: #666666;
+  display: block;
+  margin-top: 0.3125rem;
+}
+
+.communityoverview-join-btn {
+  background-color: #4a90e2;
+  color: #ffffff;
+  border: none;
+  padding: 0.625rem 1.25rem;
+  border-radius: 1.25rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 1rem;
+}
+
+.communityoverview-join-btn:hover {
+  background-color: #3a7bc8;
+}
+
+.communityoverview-member {
+  color: #4caf50;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.communityoverview-description {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+}
+
+.communityoverview-looking-for h3 {
+  font-size: 1.125rem;
+  margin-bottom: 0.625rem;
+}
+
+.communityoverview-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+}
+
+.communityoverview-tag {
+  background-color: #f0f0f0;
+  color: #333333;
+  padding: 0.3125rem 0.625rem;
+  border-radius: 0.9375rem;
+  font-size: 0.875rem;
+}
+
+.communityoverview-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-top: 1.25rem;
+}
+
+.communityoverview-stat {
+  display: flex;
+  align-items: center;
+  gap: 0.3125rem;
+  font-size: 1rem;
+}
+
+.communityoverview-top-questions {
+  margin-top: 1.875rem;
+}
+
+.communityoverview-top-questions h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.9375rem;
+}
+
+.communityoverview-questions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9375rem;
+}
+
+.communityoverview-question {
+  background-color: #f9f9f9;
+  padding: 0.9375rem;
+  border-radius: 0.5rem;
+}
+
+.communityoverview-question h4 {
+  font-size: 1rem;
+  margin: 0 0 0.625rem;
+}
+
+.communityoverview-question-stats {
+  display: flex;
+  gap: 0.9375rem;
+  font-size: 0.875rem;
+  color: #666666;
+}
+
+/* Dark mode styles */
+.dark-mode .communityoverview-container {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+.dark-mode .communityoverview-profile-pic {
+  border-color: #1a1a1a;
+}
+
+.dark-mode .communityoverview-nickname {
+  color: #b0b0b0;
+}
+
+.dark-mode .communityoverview-join-btn {
+  background-color: #3a7bc8;
+}
+
+.dark-mode .communityoverview-join-btn:hover {
+  background-color: #2c5e99;
+}
+
+.dark-mode .communityoverview-tag {
+  background-color: #333333;
+  color: #ffffff;
+}
+
+.dark-mode .communityoverview-question {
+  background-color: #2a2a2a;
+}
+
+.dark-mode .communityoverview-question-stats {
+  color: #b0b0b0;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.communityoverview-container {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.communityoverview-profile-pic {
+  transition: transform 0.3s ease-in-out;
+}
+
+.communityoverview-profile-pic:hover {
+  transform: scale(1.05);
+}
+
+.communityoverview-tag {
+  transition: background-color 0.3s ease;
+}
+
+.communityoverview-tag:hover {
+  background-color: #e0e0e0;
+}
+
+.dark-mode .communityoverview-tag:hover {
+  background-color: #444444;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .communityoverview-banner {
+    height: 9.375rem;
+  }
+
+  .communityoverview-profile-pic {
+    width: 5rem;
+    height: 5rem;
+    bottom: -2.5rem;
+  }
+
+  .communityoverview-content {
+    padding: 3.125rem 0.9375rem 0.9375rem;
+  }
+
+  .communityoverview-header {
+    flex-direction: column;
+  }
+
+  .communityoverview-join-btn {
+    margin-top: 0.625rem;
+  }
+
+  .communityoverview-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .communityoverview-nickname {
+    font-size: 1rem;
+  }
+
+  .communityoverview-description {
+    font-size: 0.875rem;
+  }
+
+  .communityoverview-looking-for h3,
+  .communityoverview-top-questions h3 {
+    font-size: 1.125rem;
+  }
+
+  .communityoverview-tag {
+    font-size: 0.75rem;
+  }
+
+  .communityoverview-question h4 {
+    font-size: 0.875rem;
+  }
+
+  .communityoverview-question-stats {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .communityoverview-banner {
+    height: 7.5rem;
+  }
+
+  .communityoverview-profile-pic {
+    width: 3.75rem;
+    height: 3.75rem;
+    bottom: -1.875rem;
+  }
+
+  .communityoverview-content {
+    padding: 2.5rem 0.625rem 0.625rem;
+  }
+
+  .communityoverview-header h1 {
+    font-size: 1.25rem;
+  }
+
+  .communityoverview-nickname {
+    font-size: 0.875rem;
+  }
+
+  .communityoverview-description {
+    font-size: 0.75rem;
+  }
+
+  .communityoverview-looking-for h3,
+  .communityoverview-top-questions h3 {
+    font-size: 1rem;
+  }
+
+  .communityoverview-tag {
+    font-size: 0.625rem;
+  }
+
+  .communityoverview-question h4 {
+    font-size: 0.75rem;
+  }
+
+  .communityoverview-question-stats {
+    font-size: 0.625rem;
+  }
+}

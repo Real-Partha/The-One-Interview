@@ -69,7 +69,7 @@ const Sidebar = ({
         {
           section: "Back To Feed",
           icon: "fa-solid fa-arrow-left",
-          title: "Back To Feed",
+          title: "Back To Dashboard",
         },
       ];
     }
