@@ -145,6 +145,14 @@ app.use((req, res, next) => {
     }
 });
 
+const authMiddleware = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.status(401).json({ message: "Unauthorized" });
+};
+
+
 app.use('/comment', (req, res, next) => {
     if (req.isAuthenticated()) {
       return next();
@@ -157,7 +165,7 @@ app.use('/comment', (req, res, next) => {
 //routes middleware
 app.use("/auth", authRoutes);
 app.use("/", questionRoutes);
-app.use("/user", userRoutes);
+// app.use("/user", userRoutes);
 app.use("/account", accountRoutes);
 app.use('/admin', adminRoutes);
 app.use('/companies', companyRoutes);
@@ -165,3 +173,6 @@ app.use('/faq', faqRoutes);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/tags', tagRoutes);
 app.use('/communities', communityRoutes);
+app.use("/users", userRoutes);
+app.use("/users/:username/like", authMiddleware);
+app.use("/users/:username/follow", authMiddleware);

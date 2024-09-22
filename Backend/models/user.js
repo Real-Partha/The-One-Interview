@@ -38,6 +38,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "user.png",
   },
+  banner_pic: {
+    type: String,
+    default: "default_user_banner.png",
+  },
   gender: {
     type: String,
   },
@@ -61,6 +65,31 @@ const userSchema = new mongoose.Schema({
       ref: "Community",
     },
   ],
+  followers: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  }],
+  profile_likes: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  }],
+
+  total_post_upvotes: {
+    type: Number,
+    default: 0,
+  },
+  bio: {
+    type: String,
+  },
+  linkedin: {
+    type: String,
+  },
+  instagram: {
+    type: String,
+  },
+  github: {
+    type: String,
+  },
 });
 
 const User = mongoose.model("User", userSchema);

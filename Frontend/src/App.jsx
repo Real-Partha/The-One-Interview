@@ -29,6 +29,8 @@ import { BannerProvider } from "./components/context/BannerContext";
 import TagPage from "./components/TagPage/TagPage";
 import CommunitiesDashboard from './components/Communities/CommunitiesDashboard';
 import CommunityPage from './components/Communities/CommunityPage';
+import UserProfile from './components/UserProfile/UserProfile';
+
 
 function AppContent() {
   const location = useLocation();
@@ -65,6 +67,8 @@ function AppContent() {
         <Route path="/community/:nickname" element={<CommunityPage />} />
         <Route path="/interview-blogs" element={<UnderConstruction />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/users/:username" element={<UserProfile/>} />
+
       </Routes>
       {shouldShowNavBarAndFooter && <Footer />}
     </>
