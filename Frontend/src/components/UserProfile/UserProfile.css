@@ -818,3 +818,71 @@ body.dark-mode .UserProfile-votes {
     margin-bottom: 1rem;
   }
 }
+
+.UserProfile-likeButton,
+.UserProfile-followButton {
+  position: relative;
+  overflow: visible;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 25px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.UserProfile-likeButton {
+  background-color: #f0f0f0;
+  color: #ff6b6b;
+}
+
+.UserProfile-likeButton.liked {
+  background-color: #ff6b6b;
+  color: white;
+}
+
+.UserProfile-followButton {
+  background-color: #6c63ff;
+  color: white;
+}
+
+.UserProfile-followButton.following {
+  background-color: #4CAF50;
+}
+
+.button-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button-content svg {
+  margin-right: 8px;
+}
+
+.heart-burst,
+.follow-burst {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.heart-particle {
+  position: absolute;
+  font-size: 16px;
+}
+
+.follow-circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: rgba(108, 99, 255, 0.2);
+}

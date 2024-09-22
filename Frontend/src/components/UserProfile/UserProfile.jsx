@@ -8,7 +8,7 @@ import { faLinkedin, faInstagram, faGithub } from '@fortawesome/free-brands-svg-
 import { faUser, faHeart, faThumbsUp, faThumbsDown, faUserPlus, faQuestion, faMars, faVenus, faGenderless, faCheck } from '@fortawesome/free-solid-svg-icons';
 import './UserProfile.css';
 import { useNavigate } from 'react-router-dom';
-
+import ScrollToTop from './ScrolltoTop';
 
 const UserProfile = () => {
   const [userProfile, setUserProfile] = useState(null);
@@ -33,20 +33,31 @@ const UserProfile = () => {
 
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
+
+  useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/users/${username}`);
-        // The backend should now return signed URLs for the profile and banner pictures
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/users/${username}`, {
+          withCredentials: true
+        });
         setUserProfile(response.data);
+        setIsLiked(response.data.isLiked || false);
+        setIsFollowing(response.data.isFollowing || false);
         setLoading(false);
       } catch (err) {
         setError(`Error fetching user profile: ${err.message}`);
         setLoading(false);
       }
     };
-
+    
     fetchUserProfile();
   }, [username]);
+  
+
+  
 
   useEffect(() => {
     const fetchUserQuestions = async () => {
@@ -100,6 +111,17 @@ const UserProfile = () => {
       console.error('Error liking profile:', error);
     }
   });
+
+
+  const truncateQuestions = (question, maxLength = 120) => {
+    // Remove HTML tags
+    const plainText = question.replace(/<[^>]*>/g, '');
+  
+    if (plainText.length <= maxLength) return plainText;
+    return plainText.substr(0, maxLength) + '...';
+  };
+  
+
   const truncateAnswer = (answer, maxLength = 105) => {
     // Remove HTML tags
     const plainText = answer.replace(/<[^>]*>/g, '');
@@ -123,11 +145,54 @@ const UserProfile = () => {
       setTimeout(() => setFollowAnimation(false), 1000);
     } catch (error) {
       console.error('Error following user:', error);
-      if (error.response) {
-        console.error('Response data:', error.response.data);
-        console.error('Response status:', error.response.status);
-      }
     }
+  };
+
+  const buttonVariants = {
+    hover: {
+      scale: 1.05,
+      transition: {
+        duration: 0.2,
+        yoyo: Infinity,
+      },
+    },
+    tap: {
+      scale: 0.95,
+    },
+  };
+
+  const likeButtonVariants = {
+    liked: {
+      backgroundColor: '#ff6b6b',
+      color: 'white',
+      transition: {
+        duration: 0.3,
+      },
+    },
+    unliked: {
+      backgroundColor: '#f0f0f0',
+      color: '#ff6b6b',
+      transition: {
+        duration: 0.3,
+      },
+    },
+  };
+
+  const followButtonVariants = {
+    following: {
+      backgroundColor: '#4CAF50',
+      color: 'white',
+      transition: {
+        duration: 0.3,
+      },
+    },
+    notFollowing: {
+      backgroundColor: '#6c63ff',
+      color: 'white',
+      transition: {
+        duration: 0.3,
+      },
+    },
   };
 
 
@@ -184,57 +249,95 @@ const UserProfile = () => {
           <p className="UserProfile-username">@{userProfile.username}</p>
           <p className="UserProfile-bio">{userProfile.bio}</p>
         </motion.div>
-        <motion.div
-          className="UserProfile-actions"
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.9, duration: 0.5 }}
-        >
-     
-            <motion.button
-              className={`UserProfile-likeButton ${isLiked ? 'liked' : ''}`}
-              onClick={handleLike}
-              whileTap={{ scale: 0.95 }}
+        <motion.div className="UserProfile-actions">
+      
+
+
+<motion.button
+  className={`UserProfile-likeButton ${isLiked ? 'liked' : ''}`}
+  onClick={handleLike}
+  variants={buttonVariants}
+  whileHover="hover"
+  whileTap="tap"
+  animate={isLiked ? 'liked' : 'unliked'}
+  initial="unliked"
+>
+  <motion.div
+    className="button-content"
+    animate={{ rotate: isLiked ? [0, -45, 45, 0] : 0 }}
+    transition={{ duration: 0.5 }}
+  >
+    <FontAwesomeIcon icon={faHeart} />
+    <span>{isLiked ? 'Liked' : 'Like'}</span>
+  </motion.div>
+
+        <AnimatePresence>
+          {likeAnimation && (
+            <motion.div
+              className="heart-burst"
+              initial={{ scale: 0 }}
+              animate={{ scale: [0, 1.5, 0] }}
+              exit={{ scale: 0 }}
+              transition={{ duration: 0.5 }}
             >
-              <FontAwesomeIcon icon={faHeart} />
-              <AnimatePresence>
-                {likeAnimation && (
-                  <motion.div
-                    className="UserProfile-likeAnimation"
-                    initial={{ y: 0, opacity: 1 }}
-                    animate={{ y: -50, opacity: 0 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 1 }}
-                  >
-                    {Array(5).fill().map((_, i) => (
-                      <FontAwesomeIcon key={i} icon={faHeart} className="floating-heart" />
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.button>
-            <motion.button
-              className={`UserProfile-followButton ${isFollowing ? 'following' : ''}`}
-              onClick={handleFollow}
-              whileTap={{ scale: 0.95 }}
+              {Array(18).fill().map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="heart-particle"
+                  initial={{ x: 0, y: 0 }}
+                  animate={{
+                    x: Math.cos(i * Math.PI / 4) * 50,
+                    y: Math.sin(i * Math.PI / 4) * 50,
+                    opacity: 0,
+                  }}
+                  transition={{ duration: 0.5 }}
+                >
+                  ❤️
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.button>
+      <motion.button
+  className={`UserProfile-followButton ${isFollowing ? 'following' : ''}`}
+  onClick={handleFollow}
+  variants={buttonVariants}
+  whileHover="hover"
+  whileTap="tap"
+  animate={isFollowing ? 'following' : 'notFollowing'}
+  initial="notFollowing"
+>
+  <motion.div
+    className="button-content"
+    animate={{ y: isFollowing ? [-30, 0] : 0 }}
+    transition={{ duration: 0.3 }}
+  >
+    <FontAwesomeIcon icon={isFollowing ? faCheck : faUserPlus} />
+    <span>{isFollowing ? 'Following' : 'Follow'}</span>
+  </motion.div>
+        <AnimatePresence>
+          {followAnimation && (
+            <motion.div
+              className="follow-burst"
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              transition={{ duration: 0.5 }}
             >
-              <FontAwesomeIcon icon={isFollowing ? faCheck : faUserPlus} />
-              {isFollowing ? 'Following' : 'Follow'}
-              <AnimatePresence>
-                {followAnimation && (
-                  <motion.div
-                    className="UserProfile-followAnimation"
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    exit={{ scale: 0, opacity: 0 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <FontAwesomeIcon icon={faCheck} />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.button>
-          </motion.div>
+              <motion.div
+                className="follow-circle"
+                animate={{
+                  scale: [1, 1.5, 1],
+                  opacity: [1, 0.5, 0],
+                }}
+                transition={{ duration: 0.5 }}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.button>
+    </motion.div>
         </div>
         <motion.div
           className="UserProfile-socialLinks"
@@ -352,7 +455,8 @@ const UserProfile = () => {
                       className="UserProfile-questionCard"
                       onClick={() => handleQuestionClick(question._id)}
                       style={{ cursor: 'pointer' }}
-                    >                  <h3>{question.question}</h3>
+                    >                 <h3>{truncateQuestions(question.question)}</h3>
+
                       <p>{truncateAnswer(question.answer)}</p>
                       <div className="UserProfile-questionMeta">
                         <span className="UserProfile-category">Category: {question.category}</span>
@@ -376,6 +480,7 @@ const UserProfile = () => {
           )}
         </motion.div>
       </div>
+      <ScrollToTop />
     </motion.div>
   );
 };

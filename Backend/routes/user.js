@@ -31,38 +31,43 @@ router.get("/check-email/:email", async (req, res) => {
 
 router.get("/:username", async (req, res) => {
     try {
-        const { username } = req.params;
-        const user = await User.findOne({ username }).select('-password -two_factor_secret');
-        
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
-
-        const profilePictureUrl = await getSignedUrlForObject(user.profile_pic);
-    const bannerPictureUrl = await getSignedUrlForObject(user.banner_pic);
-
-        const userProfile = {
-      profilePicture: profilePictureUrl,
-      bannerPicture: bannerPictureUrl,
-      name: `${user.first_name} ${user.last_name}`,
-      username: user.username,
-      followers: user.followers.length,
-      profileLikes: user.profile_likes.length,
-      totalPostUpvotes: user.total_post_upvotes,
-      gender: user.gender,
-      bio: user.bio,
-      linkedin: user.linkedin,
-      instagram: user.instagram,
-      github: user.github
-    };
-
-        console.log('Sending user profile:', userProfile);
-    res.json(userProfile);
-  } catch (error) {
-    console.error('Error fetching user profile:', error);
-    res.status(500).json({ message: "Error fetching user profile", error: error.message });
-  }
-});
+      const { username } = req.params;
+      const user = await User.findOne({ username }).select('-password -two_factor_secret');
+      
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+  
+      const profilePictureUrl = await getSignedUrlForObject(user.profile_pic);
+      const bannerPictureUrl = await getSignedUrlForObject(user.banner_pic);
+  
+      const isLiked = req.user ? user.profile_likes.includes(req.user.id) : false;
+      const isFollowing = req.user ? user.followers.includes(req.user.id) : false;
+  
+      const userProfile = {
+        profilePicture: profilePictureUrl,
+        bannerPicture: bannerPictureUrl,
+        name: `${user.first_name} ${user.last_name}`,
+        username: user.username,
+        followers: user.followers.length,
+        profileLikes: user.profile_likes.length,
+        totalPostUpvotes: user.total_post_upvotes,
+        gender: user.gender,
+        bio: user.bio,
+        linkedin: user.linkedin,
+        instagram: user.instagram,
+        github: user.github,
+        isLiked,
+        isFollowing
+      };
+  
+      res.json(userProfile);
+    } catch (error) {
+      console.error('Error fetching user profile:', error);
+      res.status(500).json({ message: "Error fetching user profile", error: error.message });
+    }
+  });
+  
 
 router.post("/:username/like", async (req, res) => {
     try {
@@ -137,8 +142,8 @@ router.get("/:username/questions", async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
-        const questions = await Question.find({ user_id: user._id })
-            .sort({ created_at: -1 }) // Ensure the field name matches the schema
+        const questions = await Question.find({ user_id: user._id, status: "approved" })
+            .sort({ created_at: -1 })
             .populate('user_id', 'username profile_pic')
             .populate('tags', 'name');
 
@@ -149,7 +154,7 @@ router.get("/:username/questions", async (req, res) => {
     }
 });
 
-// Get top 5 most upvoted questions of a user
+// Get top 5 most upvoted approved questions of a user
 router.get("/:username/top-questions", async (req, res) => {
     try {
         const { username } = req.params;
@@ -159,7 +164,7 @@ router.get("/:username/top-questions", async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
-        const questions = await Question.find({ user_id: user._id })
+        const questions = await Question.find({ user_id: user._id, status: "approved" })
             .sort({ upvotes: -1 })
             .limit(5)
             .populate('user_id', 'username profile_pic')
