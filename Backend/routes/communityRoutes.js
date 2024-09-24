@@ -5,7 +5,11 @@ const Community = require("../models/community");
 const Question = require("../models/question");
 const User = require("../models/user");
 const multer = require("multer");
-const { uploadObject, deleteObject,getSignedUrlForObject } = require("../utils/amazonS3");
+const {
+  uploadObject,
+  deleteObject,
+  getSignedUrlForObject,
+} = require("../utils/amazonS3");
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -215,5 +219,43 @@ router.get(
     }
   }
 );
+
+router.get("/:nickname/questions", async (req, res) => {
+  try {
+    const community = await Community.findOne({
+      nickname: req.params.nickname,
+    });
+    if (!community) {
+      return res.status(404).json({ message: "Community not found" });
+    }
+
+    const questions = await Question.find({
+      _id: { $in: community.posts },
+      status: "approved",
+    })
+      .sort({ created_at: -1 })
+      .populate("user_id", "username profile_pic");
+
+    const questionsWithSignedUrls = await Promise.all(
+      questions.map(async (question) => {
+        const profilePicUrl = await getSignedUrlForObject(
+          question.user_id.profile_pic
+        );
+        return {
+          ...question.toObject(),
+          user_id: {
+            ...question.user_id.toObject(),
+            profile_pic: profilePicUrl,
+          },
+        };
+      })
+    );
+
+    res.json(questionsWithSignedUrls);
+  } catch (error) {
+    console.error("Error fetching community questions:", error);
+    res.status(500).json({ message: error.message });
+  }
+});
 
 module.exports = router;

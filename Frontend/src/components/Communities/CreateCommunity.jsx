@@ -36,9 +36,9 @@ const CreateCommunity = ({ onClose }) => {
   const [isNicknameTooLong, setIsNicknameTooLong] = useState(false);
 
   useEffect(() => {
-    const { name, nickname, description } = formData;
+    const { name, nickname, description, lookingFor } = formData;
     setIsFormValid(
-      name.trim() !== "" && !isNicknameTooLong && nickname.trim() !== "" && description.trim() !== ""
+      name.trim() !== "" && !isNicknameTooLong && nickname.trim() !== "" && description.trim() !== "" && lookingFor.trim() !== ""
     );
   }, [formData]);
 

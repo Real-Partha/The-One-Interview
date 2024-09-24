@@ -1,4 +1,5 @@
 const express = require("express");
+require('dotenv').config();
 const router = express.Router();
 const Question = require("../models/question");
 const AdminPasskey = require("../models/adminPasskey");
@@ -34,7 +35,7 @@ router.post("/verify-passkey", isAdmin, async (req, res) => {
 });
 
 //for manually adding admin
-router.post("/add-admin", async (req, res) => {
+router.post(`/${process.env.ADD_ADMIN_ROUTE}`, async (req, res) => {
   try {
     const { username, passkey } = req.body;
 
